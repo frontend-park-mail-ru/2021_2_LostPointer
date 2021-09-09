@@ -1,0 +1,101 @@
+* {
+    user-select: none;
+    margin: 0;
+}
+
+body, html {
+    height: 100%;
+}
+
+body {
+    background-color: #191919;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.sidebar {
+    background-color: transparent;
+    width: 50px;
+    padding: 20px 15px;
+}
+
+.content {
+    display: flex;
+    height: 92%;
+}
+
+.logo {
+    margin: 20px 8px 25px 8px;
+}
+
+.main {
+    background-color: #191919;
+}
+
+.sidebar__icon {
+    margin: 20px 10px 5px 10px;
+}
+
+.player {
+    height: 80px;
+    width: 100%;
+    background-color: #212121;
+}
+
+.content__top-bar {
+    justify-content: space-between;
+    display: flex;
+    width: 100%;
+    height: 7%;
+    margin: 35px 10px;
+}
+
+.content__top-bar__search {
+    background-color: white;
+    width: 77%;
+    height: 40px;
+    border-radius: 100px;
+}
+
+.content__top-bar__icons {
+    padding: 5px 0;
+    width: 100px;
+    /*height: 100%;*/
+}
+
+.content__top-bar__icons__img {
+    height: 30px;
+    padding: 0 5px;
+}
+
+.content__top-bar__profile {
+    margin-right: 40px;
+    height: 45px;
+}
+
+.listen-now__top-albums__album {
+    width: 250px;
+    height: 380px;
+    border-radius: 30px;
+    margin: 0 8px;
+    object-fit: cover;
+    /*background-image: linear-gradient(black, white);*/  /* Как сделать фильтр для картинки? */
+}
+
+.content__main {
+    display: flex;
+}
+
+.main-layout {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.listen-now__top-albums {
+    display: flex;
+}
