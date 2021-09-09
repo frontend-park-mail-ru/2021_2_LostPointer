@@ -8,7 +8,7 @@ body, html {
 }
 
 body {
-    background-color: #191919;
+    background-color: #000000;
 }
 
 .app {
@@ -55,21 +55,22 @@ body {
 }
 
 .content__top-bar__search {
-    background-color: white;
+    background-color: #191919;
     width: 77%;
     height: 40px;
     border-radius: 100px;
 }
 
 .content__top-bar__icons {
-    padding: 5px 0;
+    background-color: #191919;
+    border-radius: 100px;
+    padding: 6px 0;
     width: 100px;
-    /*height: 100%;*/
 }
 
 .content__top-bar__icons__img {
     height: 30px;
-    padding: 0 5px;
+    margin: 3px 10px;
 }
 
 .content__top-bar__profile {
