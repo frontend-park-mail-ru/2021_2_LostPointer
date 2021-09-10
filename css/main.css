@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;700;800&display=swap');
+
 * {
     user-select: none;
     margin: 0;
@@ -37,6 +39,7 @@ body {
 }
 
 .sidebar__icon {
+    /*cursor: pointer;*/
     margin: 20px 10px 5px 10px;
 }
 
@@ -50,14 +53,14 @@ body {
     justify-content: space-between;
     display: flex;
     width: 100%;
-    height: 7%;
-    margin: 35px 10px;
+    /*height: 7%;*/
+    margin: 25px 10px;
 }
 
 .content__top-bar__search {
     background-color: #191919;
     width: 77%;
-    height: 40px;
+    height: 100%;
     border-radius: 100px;
 }
 
@@ -65,16 +68,20 @@ body {
     background-color: #191919;
     border-radius: 100px;
     padding: 6px 0;
+    margin-left: 6%;
     width: 100px;
 }
 
 .content__top-bar__icons__img {
+    cursor: pointer;
     height: 30px;
-    margin: 3px 10px;
+    margin: 8px 11px 3px 10px;
 }
 
 .content__top-bar__profile {
+    cursor: pointer;
     margin-right: 40px;
+    padding: 8px 8px;
     height: 45px;
 }
 
@@ -98,5 +105,37 @@ body {
 }
 
 .listen-now__top-albums {
+    width: 70%;
     display: flex;
+}
+
+.main-content__friend-activity {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    margin: 0 30px;
+    background-color: #191919;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+}
+
+.main-content__friend-activity__header {
+    padding: 10px 10px;
+}
+
+.main-content__friend-activity__text {
+    display: inline-block;
+    width: 70%;
+    padding: 20px 15px;
+    font-size: 18px;
+}
+
+.main-content__friend-activity__img {
+    padding-top: 10px;
+    display: inline-flex;
+    height: 20px;
+
 }
