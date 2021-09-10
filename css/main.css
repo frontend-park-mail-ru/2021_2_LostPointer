@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@350&display=swap');
+
+* {
+    user-select: none;
+    margin: 0;
+}
+
+body, html {
+    height: 100%;
+}
+
+body {
+    background-color: #1A1919;
+}
+
+.app {
+    display: flex;
+    height: 100%;
+}
+
+.welcome-image__photo {
+    height: 100%;
+    width: 57vw;
+    object-fit: cover;
+}
+
+.login-container {
+    height: 71.1vh;
+    width: 29vw;
+    margin-top: 8.9vh;
+    margin-left: 8.3vw;
+}
+
+.login-container__logo-container {
+    display: flex;
+}
+
+.login-container__logo-container__logo {
+    width: 4vw;
+    display: inline-block;
+    margin: 20px;
+}
+
+.login-container__logo-container__text-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-container__logo-container__text-container__header {
+    /*background: radial-gradient(circle, #890084, #CD0037);*/
+    /*-webkit-background-clip: text;*/
+    background: linear-gradient(45deg, #890084 10%, #CD0037 90%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: Oswald;
+    font-size: 45px;
+}
+
+.login-container__logo-container__text-container__music {
+    margin-top: -12px;
+    background: linear-gradient(45deg, #890084 10%, #CD0037 90%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: Oswald;
+    font-size: 27px;
+    display: inline-block;
+}
+
+.login-container__singup-header {
+    font-family: Montserrat;
+    color: aliceblue;
+    font-size: 45px;
+    font-weight: 400;
+    margin-top: 4vh;
+}
+
+.login-container__singup-description {
+    font-family: Montserrat;
+    color: aliceblue;
+    font-size: 21px;
+    font-weight: 400;
+    margin-top: 4vh;
+    line-height: 3.5vh;
+}
+
+.login-container__input {
+    width: 26.3vw;
+    height: 5.5vh;
+    border-radius: 10px;
+    border: none;
+    background-color: #3D3D3D;
+    color: #FFFFFF;
+    font-family: Montserrat;
+    font-size: 16px;
+    padding-left: 2%;
+    margin-top: 3vh;
+}
+
+:focus::-webkit-input-placeholder {
+    color: transparent
+}
+
+:focus::-moz-placeholder {
+    color: transparent
+}
+
+:focus:-moz-placeholder {
+    color: transparent
+}
+
+:focus:-ms-input-placeholder {
+    color: transparent
+}
+
+.login-container__button {
+    margin-top: 3vh;
+}
+
+.login-container__button__signup {
+    width: 13.8vw;
+    height: 4.8vh;
+    border-radius: 100px;
+    border: none;
+    font-family: Montserrat;
+    font-weight: 200;
+    color: #FFFFFF;
+    font-size: 22px;
+    background: linear-gradient(45deg, #890084 10%, #CD0037 90%);
+}
+
+
