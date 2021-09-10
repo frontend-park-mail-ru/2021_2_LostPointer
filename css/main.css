@@ -89,7 +89,7 @@ body {
     width: 250px;
     height: 380px;
     border-radius: 30px;
-    margin: 0 8px;
+    margin: 0 16px 0 0;
     object-fit: cover;
     /*background-image: linear-gradient(black, white);*/  /* Как сделать фильтр для картинки? */
 }
@@ -115,10 +115,10 @@ body {
     color: white;
     display: flex;
     flex-direction: column;
-    margin: 0 30px;
+    margin: 10px 20px 0 10px;
     background-color: #191919;
     width: 100%;
-    height: 100%;
+    height: 73.5vh;
     border-radius: 20px;
 }
 
@@ -138,4 +138,52 @@ body {
     display: inline-flex;
     height: 20px;
 
+}
+
+.listen-now__suggested-content {
+    margin: 50px 0 0 15px;
+    display: flex;
+    height: 30vh;
+}
+
+.listen-now {
+    padding: 10px;
+}
+
+.listen-now__suggested-content__playlists {
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+    margin-right: 16px;
+}
+
+.listen-now__suggested-content__playlists__header {
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    width: max-content;
+}
+
+.listen-now__suggested-content__playlists__container {
+    padding: 12px 0 0 0;
+    width: 100%;
+    height: 100%;
+}
+
+.listen-now__suggested-content__playlists__item {
+    background-color: #191919;
+    width: 100%;
+    height: 65px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.listen-now__suggested-content__tracks {
+    margin-right: 16px;
+    width: 30vw;
+}
+
+.listen-now__suggested-content__artists {
+    width: 100%;
+    margin-right: 16px;
 }
