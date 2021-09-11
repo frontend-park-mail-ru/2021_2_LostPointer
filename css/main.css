@@ -60,7 +60,7 @@ body {
 .content__top-bar__search {
     background-color: #191919;
     width: 77%;
-    height: 100%;
+    height: 65px;
     border-radius: 100px;
 }
 
@@ -69,13 +69,15 @@ body {
     border-radius: 100px;
     padding: 6px 0;
     margin-left: 6%;
-    width: 100px;
+    width: 85px;
+    height: 30px;
+    margin-top: 10px;
 }
 
 .content__top-bar__icons__img {
     cursor: pointer;
     height: 30px;
-    margin: 8px 11px 3px 10px;
+    padding-left: 9px;
 }
 
 .content__top-bar__profile {
@@ -88,7 +90,7 @@ body {
 .listen-now__top-albums__album {
     width: 250px;
     height: 380px;
-    border-radius: 30px;
+    border-radius: 25px;
     margin: 0 16px 0 0;
     object-fit: cover;
     /*background-image: linear-gradient(black, white);*/  /* Как сделать фильтр для картинки? */
@@ -157,7 +159,7 @@ body {
     margin-right: 16px;
 }
 
-.listen-now__suggested-content__playlists__header {
+.listen-now__suggested-content__playlists__header, .listen-now__suggested-content__tracks__header, .listen-now__suggested-content__artists__header {
     color: white;
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
@@ -168,6 +170,14 @@ body {
     padding: 12px 0 0 0;
     width: 100%;
     height: 100%;
+}
+
+.listen-now__suggested-content__tracks__container {
+    margin: 12px 0 0 0;
+    width: 100%;
+    height: 100%;
+    background-color: #191919;
+    border-radius: 10px;
 }
 
 .listen-now__suggested-content__playlists__item {
@@ -182,8 +192,38 @@ body {
     margin-right: 16px;
     width: 30vw;
 }
+.listen-now__suggested-content__artists__container {
+    padding: 12px 0 0 0;
+    width: 20vw;
+    height: 20vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+}
 
 .listen-now__suggested-content__artists {
-    width: 100%;
-    margin-right: 16px;
+    width: 20vw;
+}
+
+.listen-now__suggested-content__artists__artist {
+    background-color: white;
+    width: 9.4vw;
+    height: 9.4vw;
+    object-fit: cover;
+}
+
+.listen-now__suggested-content__artists__artist:nth-child(1) {
+    border-radius: 20px 10px 10px 10px;
+}
+
+.listen-now__suggested-content__artists__artist:nth-child(2) {
+    border-radius: 10px 20px 10px 10px;
+}
+
+.listen-now__suggested-content__artists__artist:nth-child(3) {
+    border-radius: 10px 10px 10px 20px;
+}
+
+.listen-now__suggested-content__artists__artist:nth-child(4) {
+    border-radius: 10px 10px 20px 10px;
 }
