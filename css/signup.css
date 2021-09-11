@@ -17,18 +17,25 @@ body {
 .app {
     display: flex;
     height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
 }
 
-.signup-placeholder__photo {
+.auth-page__placeholder {
+    width: 50%;
     height: 100%;
-    width: 820px;
+}
+
+.auth_page__placeholder-photo {
+    height: 100%;
+    width: 100%;
     object-fit: cover;
 }
 
-.auth-page {
-    height: 640px;
+.auth-page__content {
     width: 450px;
-    margin: auto auto auto 120px;
+    margin-left: 120px;
 }
 
 .auth-page__logo {
@@ -65,7 +72,7 @@ body {
     width: 380px;
     height: 50px;
     border-radius: 10px;
-    border: none;
+    border: 2px solid #3D3D3D;
     background-color: #3D3D3D;
     color: #FFFFFF;
     font-family: Montserrat;
@@ -74,14 +81,9 @@ body {
     margin-bottom: 30px;
 }
 
-.auth-form__input :focus::-webkit-input-placeholder {
-    color: transparent;
-    outline: none !important;
-}
-
-.auth-form__input:focus::-moz-placeholder {
-    color: transparent;
-    outline: none !important;
+.auth-form__input:focus {
+    outline: none;
+    border-color: #ff4d5b;
 }
 
 .auth-form__submit {
@@ -95,8 +97,17 @@ body {
     font-size: 22px;
     background: #ff4d5b;
     cursor: pointer;
+    -webkit-transition: All 0.2s ease;
+    -moz-transition: All 0.2s ease;
+    -o-transition: All 0.2s ease;
+    -ms-transition: All 0.2s ease;
+    transition: All 0.2s ease;
+}
+
+.auth-form__submit:hover {
+    background: #992e39;
 }
 
 .auth-form__submit:active {
-    background: #bf3643;
+    background: #571d22;
 }
