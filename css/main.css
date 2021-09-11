@@ -19,28 +19,28 @@ body {
     height: 100%;
 }
 
-.welcome-image__photo {
+.signup-placeholder__photo {
     height: 100%;
     width: 820px;
     object-fit: cover;
 }
 
-.login-container {
+.signup-container {
     height: 640px;
     width: 450px;
     margin: auto auto auto 120px;
 }
 
-.login-container__logo-container {
+.signup-container__logo {
     display: flex;
 }
 
-.login-container__logo-container-image {
+.signup-container__logo-image {
     width: 272px;
     display: inline-block;
 }
 
-.login-container__singup-header {
+.signup-container__title {
     font-family: Montserrat;
     color: aliceblue;
     font-size: 45px;
@@ -48,7 +48,7 @@ body {
     margin-top: 20px;
 }
 
-.login-container__singup-description {
+.signup-container__description {
     font-family: Montserrat;
     color: aliceblue;
     font-size: 21px;
@@ -57,11 +57,11 @@ body {
     line-height: 30px;
 }
 
-.login-container__signup-form {
+.auth-form {
     margin-top: 30px;
 }
 
-.login-container__input {
+.auth-form__input {
     width: 380px;
     height: 50px;
     border-radius: 10px;
@@ -74,30 +74,29 @@ body {
     margin-bottom: 30px;
 }
 
-.login-container__input, :focus::-webkit-input-placeholder {
+.auth-form__input :focus::-webkit-input-placeholder {
     color: transparent;
     outline: none !important;
 }
 
-.login-container__input, :focus::-moz-placeholder {
+.auth-form__input:focus::-moz-placeholder {
     color: transparent;
     outline: none !important;
 }
 
-.login-container__button {
+.auth-form__submit {
     width: 200px;
-    height: 25px;
-    border-radius: 100px;
+    height: 45px;
+    border-radius: 25px;
     border: none;
     font-family: Montserrat;
     font-weight: 200;
     color: #FFFFFF;
-    font-size: 15px;
+    font-size: 22px;
     background: #ff4d5b;
     cursor: pointer;
 }
 
-.login-container__button:active {
-    filter: brightness(75%);
-    color: #FFFFFF;
+.auth-form__submit:active {
+    background: #bf3643;
 }
