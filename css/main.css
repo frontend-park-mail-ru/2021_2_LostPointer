@@ -74,43 +74,30 @@ body {
     margin-bottom: 30px;
 }
 
-*, :focus::-webkit-input-placeholder {
+.login-container__input, :focus::-webkit-input-placeholder {
     color: transparent;
     outline: none !important;
 }
 
-*, :focus::-moz-placeholder {
+.login-container__input, :focus::-moz-placeholder {
     color: transparent;
     outline: none !important;
 }
-
 
 .login-container__button {
     width: 200px;
-    height: 45px;
+    height: 25px;
     border-radius: 100px;
     border: none;
     font-family: Montserrat;
     font-weight: 200;
     color: #FFFFFF;
-    font-size: 22px;
-    background: #B22222;
-}
-
-.login-container__button:hover {
-    outline: none;
-    box-shadow: 0 0 0 1px #FFFFFF;
+    font-size: 15px;
+    background: #ff4d5b;
     cursor: pointer;
 }
 
-/*.login-container__button:focus {
-    outline: none;
-    box-shadow: 0 0 0 1px #FFFFFF;
-}*/
-
 .login-container__button:active {
-    background-color: #3D3D3D;
+    filter: brightness(75%);
     color: #FFFFFF;
 }
-
-
