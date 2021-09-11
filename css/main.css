@@ -25,22 +25,22 @@ body {
     object-fit: cover;
 }
 
-.signup-container {
+.auth-page {
     height: 640px;
     width: 450px;
     margin: auto auto auto 120px;
 }
 
-.signup-container__logo {
+.auth-page__logo {
     display: flex;
 }
 
-.signup-container__logo-image {
+.auth-page__logo-image {
     width: 272px;
     display: inline-block;
 }
 
-.signup-container__title {
+.auth-page__title {
     font-family: Montserrat;
     color: aliceblue;
     font-size: 45px;
@@ -48,7 +48,7 @@ body {
     margin-top: 20px;
 }
 
-.signup-container__description {
+.auth-page__description {
     font-family: Montserrat;
     color: aliceblue;
     font-size: 21px;
