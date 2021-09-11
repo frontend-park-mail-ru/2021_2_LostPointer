@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;700;800&display=swap');
 
 * {
     user-select: none;
@@ -7,6 +7,7 @@
 
 body, html {
     height: 100%;
+    overflow: hidden;
 }
 
 body {
@@ -27,7 +28,7 @@ body {
 
 .content {
     display: flex;
-    height: 92%;
+    height: 90%;
 }
 
 .logo {
@@ -44,7 +45,8 @@ body {
 }
 
 .player {
-    height: 80px;
+    display: flex;
+    height: 10vh;
     width: 100%;
     background-color: #212121;
 }
@@ -71,7 +73,7 @@ body {
     margin-left: 6%;
     width: 85px;
     height: 30px;
-    margin-top: 10px;
+    margin-top: 12px;
 }
 
 .content__top-bar__icons__img {
@@ -83,6 +85,7 @@ body {
 .content__top-bar__profile {
     cursor: pointer;
     margin-right: 40px;
+    margin-top: 2px;
     padding: 8px 8px;
     height: 45px;
 }
@@ -93,11 +96,13 @@ body {
     border-radius: 25px;
     margin: 0 16px 0 0;
     object-fit: cover;
+    cursor: pointer;
     /*background-image: linear-gradient(black, white);*/  /* Как сделать фильтр для картинки? */
 }
 
 .content__main {
     display: flex;
+    overflow: scroll;
 }
 
 .main-layout {
@@ -181,6 +186,7 @@ body {
 }
 
 .listen-now__suggested-content__playlists__item {
+    cursor: pointer;
     background-color: #191919;
     width: 100%;
     height: 65px;
@@ -210,6 +216,7 @@ body {
     width: 9.4vw;
     height: 9.4vw;
     object-fit: cover;
+    cursor: pointer;
 }
 
 .listen-now__suggested-content__artists__artist:nth-child(1) {
@@ -226,4 +233,33 @@ body {
 
 .listen-now__suggested-content__artists__artist:nth-child(4) {
     border-radius: 10px 10px 20px 10px;
+}
+
+.player-artwork {
+    background-color: white;
+    height: 8vh;
+    width: 8vh;
+    margin: 7.5px 0 auto 15px;
+    border-radius: 10px;
+}
+
+.player-controls {
+    margin: 0 40px 0 250px;
+}
+
+.player-seekbar {
+    background-color: grey;
+    margin: auto 0 auto 10px;
+    height: 5px;
+    width: 30%;
+    border-radius: 10px;
+}
+
+.player-time {
+    color: white;
+    font-size: 16px;
+    margin: auto 0 auto 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+
 }
