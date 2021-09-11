@@ -23,7 +23,7 @@ body {
 .sidebar {
     background-color: transparent;
     width: 50px;
-    padding: 20px 15px;
+    padding: 1.389vw 1.042vw;
 }
 
 .content {
@@ -32,6 +32,7 @@ body {
 }
 
 .logo {
+    cursor: pointer;
     margin: 20px 8px 25px 8px;
 }
 
@@ -40,7 +41,7 @@ body {
 }
 
 .sidebar__icon {
-    /*cursor: pointer;*/
+    cursor: pointer;
     margin: 20px 10px 5px 10px;
 }
 
@@ -56,38 +57,38 @@ body {
     display: flex;
     width: 100%;
     /*height: 7%;*/
-    margin: 25px 10px;
+    margin: 1.736vw 0.694vw;
 }
 
 .content__top-bar__search {
     background-color: #191919;
     width: 77%;
-    height: 65px;
-    border-radius: 100px;
+    height: 4.514vw;
+    border-radius: 6.944vw;
 }
 
 .content__top-bar__icons {
     background-color: #191919;
-    border-radius: 100px;
+    border-radius: 6.944vw;
     padding: 6px 0;
     margin-left: 6%;
-    width: 85px;
-    height: 30px;
-    margin-top: 12px;
+    width: 5.903vw;
+    height: 2.083vw;
+    margin-top: 0.833vw;
 }
 
 .content__top-bar__icons__img {
     cursor: pointer;
-    height: 30px;
-    padding-left: 9px;
+    height: 2.083vw;
+    padding-left: 0.625vw;
 }
 
 .content__top-bar__profile {
     cursor: pointer;
-    margin-right: 40px;
-    margin-top: 2px;
-    padding: 8px 8px;
-    height: 45px;
+    margin-right: 2.778vw;
+    margin-top: 0.139vw;
+    padding: 0.556vw 0.556vw;
+    height: 3.125vw;
 }
 
 .listen-now__top-albums__album {
@@ -117,44 +118,51 @@ body {
 }
 
 .main-content__friend-activity {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    margin: 10px 20px 0 10px;
-    background-color: #191919;
-    width: 100%;
-    height: 73.5vh;
-    border-radius: 20px;
+    display: none;
 }
 
+@media screen and (min-width: 1420px) {
+    .main-content__friend-activity {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        margin: 0.694vw 1.389vw 0 0.694vw;
+        background-color: #191919;
+        width: 100%;
+        height: 73.5vh;
+        border-radius: 1.389vw;
+    }
+}
+
+
 .main-content__friend-activity__header {
-    padding: 10px 10px;
+    padding: 0.694vw 0.694vw;
 }
 
 .main-content__friend-activity__text {
     display: inline-block;
     width: 70%;
-    padding: 20px 15px;
-    font-size: 18px;
+    padding: 1.389vw 1.042vw;
+    font-size: 1.250vw;
 }
 
 .main-content__friend-activity__img {
-    padding-top: 10px;
+    padding-top: 0.694vw;
     display: inline-flex;
-    height: 20px;
+    height: 1.389vw;
 
 }
 
 .listen-now__suggested-content {
-    margin: 50px 0 0 15px;
+    margin: 50px 0 0 1.042vw;
     display: flex;
     height: 30vh;
 }
 
 .listen-now {
-    padding: 10px;
+    padding: 0.694vw;
 }
 
 .listen-now__suggested-content__playlists {
@@ -182,7 +190,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: #191919;
-    border-radius: 10px;
+    border-radius: 0.694vw;
 }
 
 .listen-now__suggested-content__playlists__item {
@@ -190,8 +198,9 @@ body {
     background-color: #191919;
     width: 100%;
     height: 65px;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    border-radius: 0.694vw;
+    margin-bottom: 0.694vw;
+    display: flex;
 }
 
 .listen-now__suggested-content__tracks {
@@ -220,46 +229,100 @@ body {
 }
 
 .listen-now__suggested-content__artists__artist:nth-child(1) {
-    border-radius: 20px 10px 10px 10px;
+    border-radius: 1.389vw 0.694vw 0.694vw 0.694vw;
 }
 
 .listen-now__suggested-content__artists__artist:nth-child(2) {
-    border-radius: 10px 20px 10px 10px;
+    border-radius: 0.694vw 1.389vw 0.694vw 0.694vw;
 }
 
 .listen-now__suggested-content__artists__artist:nth-child(3) {
-    border-radius: 10px 10px 10px 20px;
+    border-radius: 0.694vw 0.694vw 0.694vw 1.389vw;
 }
 
 .listen-now__suggested-content__artists__artist:nth-child(4) {
-    border-radius: 10px 10px 20px 10px;
+    border-radius: 0.694vw 0.694vw 1.389vw 0.694vw;
 }
 
 .player-artwork {
     background-color: white;
     height: 8vh;
     width: 8vh;
-    margin: 7.5px 0 auto 15px;
-    border-radius: 10px;
+    margin: 1vh 0 auto 1vw;
+    border-radius: 0.694vw;
+    cursor: pointer;
 }
 
 .player-controls {
-    margin: 0 40px 0 250px;
+    margin: 0 3vw 0 8vw;
+    width: 8vw;
+    cursor: pointer;
 }
 
 .player-seekbar {
     background-color: grey;
-    margin: auto 0 auto 10px;
-    height: 5px;
+    margin: auto 0 auto 1vw;
+    height: 0.7vh;
     width: 30%;
-    border-radius: 10px;
+    border-radius: 0.694vw;
+    cursor: pointer;
 }
 
 .player-time {
     color: white;
-    font-size: 16px;
-    margin: auto 0 auto 10px;
+    font-size: 1.2vw;
+    margin: auto 0 auto 1vw;
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
+}
 
+.shuffle {
+    margin-left: 3.125vw;
+    margin-right: 0.694vw;
+    cursor: pointer;
+}
+
+.player-volume {
+    margin-left: 7.5vw;
+    width: 8%;
+    cursor: pointer;
+}
+
+.player-volume-icon {
+    margin: auto 0 auto 1vw;
+    cursor: pointer;
+}
+
+.repeat {
+    cursor: pointer;
+}
+
+.now-playing {
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    margin: auto 0 auto 1vw;
+}
+
+.track-name {
+    font-weight: 700;
+}
+
+.artist-name {
+    font-weight: 400;
+}
+
+.listen-now__suggested-content__playlists__item img {
+    height: 100%;
+    width: auto;
+    border-radius: inherit;
+}
+
+.listen-now__suggested-content__playlists__item div {
+    margin: auto 0 auto 0.8vw;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    font-weight: 400;
+    overflow: hidden;
+    white-space: nowrap;
+    box-shadow: inset ;
 }
