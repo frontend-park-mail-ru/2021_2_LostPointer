@@ -2,7 +2,7 @@ const http = require('http')
 const fs = require('fs')
 
 const host = 'localhost';
-const port = process.argv[2]
+const port = process.env.PORT || 8080;
 
 const requestListener = (request, response) => {
     const path = request.url === '/' ? '/index.html' : request.url;
