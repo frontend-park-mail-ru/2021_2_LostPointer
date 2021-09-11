@@ -21,49 +21,22 @@ body {
 
 .welcome-image__photo {
     height: 100%;
-    width: 57vw;
+    width: 820px;
     object-fit: cover;
 }
 
 .login-container {
-    height: 71.1vh;
-    width: 29vw;
-    margin-top: 8.9vh;
-    margin-left: 8.3vw;
+    height: 640px;
+    width: 450px;
+    margin: auto auto auto 120px;
 }
 
 .login-container__logo-container {
     display: flex;
 }
 
-.login-container__logo-container__logo {
-    width: 4vw;
-    display: inline-block;
-    margin: 20px;
-}
-
-.login-container__logo-container__text-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.login-container__logo-container__text-container__header {
-    /*background: radial-gradient(circle, #890084, #CD0037);*/
-    /*-webkit-background-clip: text;*/
-    background: linear-gradient(45deg, #890084 10%, #CD0037 90%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-family: Oswald;
-    font-size: 45px;
-}
-
-.login-container__logo-container__text-container__music {
-    margin-top: -12px;
-    background: linear-gradient(45deg, #890084 10%, #CD0037 90%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-family: Oswald;
-    font-size: 27px;
+.login-container__logo-container-image {
+    width: 272px;
     display: inline-block;
 }
 
@@ -72,7 +45,7 @@ body {
     color: aliceblue;
     font-size: 45px;
     font-weight: 400;
-    margin-top: 4vh;
+    margin-top: 20px;
 }
 
 .login-container__singup-description {
@@ -80,53 +53,64 @@ body {
     color: aliceblue;
     font-size: 21px;
     font-weight: 400;
-    margin-top: 4vh;
-    line-height: 3.5vh;
+    margin-top: 15px;
+    line-height: 30px;
+}
+
+.login-container__signup-form {
+    margin-top: 30px;
 }
 
 .login-container__input {
-    width: 26.3vw;
-    height: 5.5vh;
+    width: 380px;
+    height: 50px;
     border-radius: 10px;
     border: none;
     background-color: #3D3D3D;
     color: #FFFFFF;
     font-family: Montserrat;
     font-size: 16px;
-    padding-left: 2%;
-    margin-top: 3vh;
+    padding-left: 10px;
+    margin-bottom: 30px;
 }
 
-:focus::-webkit-input-placeholder {
-    color: transparent
+*, :focus::-webkit-input-placeholder {
+    color: transparent;
+    outline: none !important;
 }
 
-:focus::-moz-placeholder {
-    color: transparent
+*, :focus::-moz-placeholder {
+    color: transparent;
+    outline: none !important;
 }
 
-:focus:-moz-placeholder {
-    color: transparent
-}
-
-:focus:-ms-input-placeholder {
-    color: transparent
-}
 
 .login-container__button {
-    margin-top: 3vh;
-}
-
-.login-container__button__signup {
-    width: 13.8vw;
-    height: 4.8vh;
+    width: 200px;
+    height: 45px;
     border-radius: 100px;
     border: none;
     font-family: Montserrat;
     font-weight: 200;
     color: #FFFFFF;
     font-size: 22px;
-    background: linear-gradient(45deg, #890084 10%, #CD0037 90%);
+    background: #B22222;
+}
+
+.login-container__button:hover {
+    outline: none;
+    box-shadow: 0 0 0 1px #FFFFFF;
+    cursor: pointer;
+}
+
+/*.login-container__button:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px #FFFFFF;
+}*/
+
+.login-container__button:active {
+    background-color: #3D3D3D;
+    color: #FFFFFF;
 }
 
 
