@@ -9,71 +9,184 @@
 <body>
 <div class="app">
     <div class="content">
-        <div class="app sidebar">
-            <img class="logo" src="img/logo.png">
+        <div class="sidebar">
+            <img class="sidebar__logo" src="img/logo.png">
             <object class="sidebar__icon" data="img/home.svg"></object>
             <object class="sidebar__icon" data="img/explore.svg"></object>
             <object class="sidebar__icon" data="img/favorite.svg"></object>
             <object class="sidebar__icon" data="img/more.svg"></object>
         </div>
         <div class="main-layout">
-            <div class="content__top-bar">
-                <span class="content__top-bar__search"></span>
-                <span class="content__top-bar__icons">
-                    <img class="content__top-bar__icons__img" src="img/notifications-none.svg">
-                    <img class="content__top-bar__icons__img" src="img/settings.svg">
-                </span>
-                <img class="content__top-bar__profile" src="img/ava.png">
+            <div class="content__topbar">
+                <span class="topbar__search"></span>
+                <span class="topbar-icons">
+                  <img class="topbar-icon" src="img/notifications-none.svg">
+                  <img class="topbar-icon" src="img/settings.svg">
+                  </span>
+                <img class="topbar-profile" src="img/ava.png">
             </div>
             <div class="content__main">
                 <div class="listen-now">
                     <div class="listen-now__top-albums">
-                        <img src="img/id.jpeg" class="listen-now__top-albums__album"/>
-                        <img src="img/albina.jpeg" class="listen-now__top-albums__album"/>
-                        <img src="img/starboy.jpg" class="listen-now__top-albums__album"/>
-                        <img src="img/yur.jpg" class="listen-now__top-albums__album"/>
+                        <img src="img/id.jpeg" class="top-album"/>
+                        <img src="img/albina.jpeg" class="top-album"/>
+                        <img src="img/starboy.jpg" class="top-album"/>
+                        <img src="img/yur.jpg" class="top-album"/>
                     </div>
                     <div class="listen-now__suggested-content">
-                        <div class="listen-now__suggested-content__playlists">
-                            <div class="listen-now__suggested-content__playlists__header">Your Playlists</div>
-                            <div class="listen-now__suggested-content__playlists__container">
-                                <div class="listen-now__suggested-content__playlists__item">
-                                    <img src="img/yur.jpg">
-                                    <div>Jail Mix</div>
+                        <div class="suggested-playlists">
+                            <div class="suggested-playlists__header">Your Playlists</div>
+                            <div class="suggested-playlists__container">
+                                <div class="suggested-playlist">
+                                    <img class="suggested-playlist-artwork" src="img/yur.jpg">
+                                    <div class="suggested-playlist-name">Jail Mix</div>
                                 </div>
-                                <div class="listen-now__suggested-content__playlists__item">
-                                    <img src="img/albina.jpeg">
-                                    <div>Resine Working Mix Extended</div>
+                                <div class="suggested-playlist">
+                                    <img class="suggested-playlist-artwork" src="img/albina.jpeg">
+                                    <div class="suggested-playlist-name">Resine Working Mix Extended</div>
                                 </div>
-                                <div class="listen-now__suggested-content__playlists__item">
-                                    <img src="img/starboy.jpg">
-                                    <div>Workout Mix 2</div>
+                                <div class="suggested-playlist">
+                                    <img class="suggested-playlist-artwork" src="img/starboy.jpg">
+                                    <div class="suggested-playlist-name">Workout Mix 2</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="listen-now__suggested-content__tracks">
-                            <div class="listen-now__suggested-content__tracks__header">Tracks of the Week</div>
-                            <div class="listen-now__suggested-content__tracks__container">
-                                <div class="listen-now__suggested-content__playlists__item"></div>
-                                <div class="listen-now__suggested-content__playlists__item"></div>
-                                <div class="listen-now__suggested-content__playlists__item"></div>
+                        <div class="suggested-tracks">
+                            <div class="suggested-tracks__header">Tracks of the Week</div>
+                            <div class="suggested-tracks-container">
+                                <div class="suggested-track">
+                                    <img class="suggested-track__artwork" src="img/saptded.webp">
+                                    <div class="suggested-track__name-container">
+                                        <div class="suggested-track__name">Песня про кабанчик и стаканчик и прочие приколы</div>
+                                        <div class="suggested-track__artist">Saptded</div>
+                                    </div>
+                                    <div class="suggested-track__ellipsis">
+                                        <img class="suggested-track-fav" src="img/favorite.svg">
+                                        <img class="suggested-track-play" src="img/play-outline.svg">
+                                    </div>
+                                </div>
+                                <div class="suggested-track">
+                                    <img class="suggested-track__artwork" src="img/saptded.webp">
+                                    <div class="suggested-track__name-container">
+                                        <div class="suggested-track__name">Песня про кабанчик и стаканчик и прочие приколы</div>
+                                        <div class="suggested-track__artist">Saptded</div>
+                                    </div>
+                                    <div class="suggested-track__ellipsis">
+                                        <img class="suggested-track-fav" src="img/favorite.svg">
+                                        <img class="suggested-track-play" src="img/play-outline.svg">
+                                    </div>
+                                </div>
+                                <div class="suggested-track">
+                                    <img class="suggested-track__artwork" src="img/saptded.webp">
+                                    <div class="suggested-track__name-container">
+                                        <div class="suggested-track__name">Песня про кабанчик и стаканчик и прочие приколы</div>
+                                        <div class="suggested-track__artist">Saptded</div>
+                                    </div>
+                                    <div class="suggested-track__ellipsis">
+                                        <img class="suggested-track-fav" src="img/favorite.svg">
+                                        <img class="suggested-track-play" src="img/play-outline.svg">
+                                    </div>
+                                </div>
+                                <div class="suggested-track">
+                                    <img class="suggested-track__artwork" src="img/saptded.webp">
+                                    <div class="suggested-track__name-container">
+                                        <div class="suggested-track__name">Песня про кабанчик и стаканчик и прочие приколы</div>
+                                        <div class="suggested-track__artist">Saptded</div>
+                                    </div>
+                                    <div class="suggested-track__ellipsis">
+                                        <img class="suggested-track-fav" src="img/favorite.svg">
+                                        <img class="suggested-track-play" src="img/play-outline.svg">
+                                    </div>
+                                </div>
+                                <div class="suggested-track">
+                                    <img class="suggested-track__artwork" src="img/saptded.webp">
+                                    <div class="suggested-track__name-container">
+                                        <div class="suggested-track__name">Песня про кабанчик и стаканчик и прочие приколы</div>
+                                        <div class="suggested-track__artist">Saptded</div>
+                                    </div>
+                                    <div class="suggested-track__ellipsis">
+                                        <img class="suggested-track-fav" src="img/favorite.svg">
+                                        <img class="suggested-track-play" src="img/play-outline.svg">
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="listen-now__suggested-content__artists">
-                            <div class="listen-now__suggested-content__artists__header">Top Artists</div>
-                            <div class="listen-now__suggested-content__artists__container">
-                                <img class="listen-now__suggested-content__artists__artist" src="img/starboy.jpg">
-                                <img class="listen-now__suggested-content__artists__artist" src="img/albina.jpeg">
-                                <img class="listen-now__suggested-content__artists__artist"  src="img/yur.jpg">
-                                <img class="listen-now__suggested-content__artists__artist" src="img/id.jpeg">
+                        <div class="suggested-artists">
+                            <div class="suggested-artists__header">Top Artists</div>
+                            <div class="suggested-artists__container">
+                                <img class="suggested-artist" src="img/starboy.jpg">
+                                <img class="suggested-artist" src="img/albina.jpeg">
+                                <img class="suggested-artist"  src="img/yur.jpg">
+                                <img class="suggested-artist" src="img/id.jpeg">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="main-content__friend-activity">
-                    <div class="main-content__friend-activity__header">
-                        <span class="main-content__friend-activity__text">Friends Activity</span>
-                        <img class="main-content__friend-activity__img" src="img/more_friends.svg" alt="">
+                <div class="friend-activity">
+                    <div class="friend-activity__header">
+                        <span class="friend-activity__header-text">Friends Activity</span>
+                        <img class="friend-activity__header-img" src="img/more_friends.svg" alt="">
+                    </div>
+                    <div class="friends-container">
+                        <div class="friend">
+                            <img class="friend-avatar" src="img/saptded.webp">
+                            <div class="friend-info-container">
+                                <div class="friend-nickname">Saptded</div>
+                                <div class="listening-to">ТЁЛКА-дрейн</div>
+                            </div>
+                        </div>
+                        <div class="friend">
+                            <img class="friend-avatar" src="img/saptded.webp">
+                            <div class="friend-info-container">
+                                <div class="friend-nickname">Saptded</div>
+                                <div class="listening-to">ТЁЛКА-дрейн</div>
+                            </div>
+                        </div>
+                        <div class="friend">
+                            <img class="friend-avatar" src="img/saptded.webp">
+                            <div class="friend-info-container">
+                                <div class="friend-nickname">Saptded</div>
+                                <div class="listening-to">ТЁЛКА-дрейн</div>
+                            </div>
+                        </div>
+                        <div class="friend">
+                            <img class="friend-avatar" src="img/saptded.webp">
+                            <div class="friend-info-container">
+                                <div class="friend-nickname">Saptded</div>
+                                <div class="listening-to">ТЁЛКА-дрейн</div>
+                            </div>
+                        </div>
+                        <div class="friend">
+                            <img class="friend-avatar" src="img/saptded.webp">
+                            <div class="friend-info-container">
+                                <div class="friend-nickname">Saptded</div>
+                                <div class="listening-to">ТЁЛКА-дрейн</div>
+                            </div>
+                        </div>
+                        <div class="friend">
+                            <img class="friend-avatar" src="img/saptded.webp">
+                            <div class="friend-info-container">
+                                <div class="friend-nickname">Saptded</div>
+                                <div class="listening-to">ТЁЛКА-дрейн</div>
+                            </div>
+                        </div>
+                        <div class="friend">
+                            <img class="friend-avatar" src="img/saptded.webp">
+                            <div class="friend-info-container">
+                                <div class="friend-nickname">Saptded</div>
+                                <div class="listening-to">ТЁЛКА-дрейн</div>
+                            </div>
+                        </div>
+                        <div class="friend">
+                            <img class="friend-avatar" src="img/vershov.webp">
+                            <div class="friend-info-container">
+                                <div class="friend-nickname">VErshovBMSTU</div>
+                                <div class="listening-to">Чёрные Глаза</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="more-friends">
+                        <div class="view-all-text">View All</div>
                     </div>
                 </div>
             </div>

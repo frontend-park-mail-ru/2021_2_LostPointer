@@ -1,11 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;500;600;700;800&display=swap');
 
 * {
     user-select: none;
     margin: 0;
 }
 
-body, html {
+body,
+html {
     height: 100%;
     overflow: hidden;
 }
@@ -14,7 +15,8 @@ body {
     background-color: #000000;
 }
 
-.app {
+.app,
+.sidebar {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -23,7 +25,7 @@ body {
 .sidebar {
     background-color: transparent;
     width: 50px;
-    padding: 1.389vw 1.042vw;
+    padding:20px 15px;
 }
 
 .content {
@@ -31,7 +33,7 @@ body {
     height: 90%;
 }
 
-.logo {
+.sidebar__logo {
     cursor: pointer;
     margin: 20px 8px 25px 8px;
 }
@@ -47,58 +49,56 @@ body {
 
 .player {
     display: flex;
-    height: 10vh;
+    height: 80px;
     width: 100%;
     background-color: #212121;
 }
 
-.content__top-bar {
+.content__topbar {
     justify-content: space-between;
     display: flex;
     width: 100%;
-    /*height: 7%;*/
-    margin: 1.736vw 0.694vw;
+    margin: 25px 10px;
 }
 
-.content__top-bar__search {
+.topbar__search {
     background-color: #191919;
     width: 77%;
-    height: 4.514vw;
-    border-radius: 6.944vw;
+    height: 65px;
+    border-radius: 910px;
 }
 
-.content__top-bar__icons {
+.topbar-icons {
     background-color: #191919;
-    border-radius: 6.944vw;
+    border-radius: 910px;
     padding: 6px 0;
     margin-left: 6%;
-    width: 5.903vw;
-    height: 2.083vw;
-    margin-top: 0.833vw;
+    width: 85px;
+    height: 30px;
+    margin-top: 12px;
 }
 
-.content__top-bar__icons__img {
+.topbar-icon {
     cursor: pointer;
-    height: 2.083vw;
-    padding-left: 0.625vw;
+    height: 30px;
+    padding-left: 9px;
 }
 
-.content__top-bar__profile {
+.topbar-profile {
     cursor: pointer;
-    margin-right: 2.778vw;
-    margin-top: 0.139vw;
-    padding: 0.556vw 0.556vw;
-    height: 3.125vw;
+    margin-right: 40px;
+    margin-top: 2px;
+    padding: 8.01px 8.01px;
+    height: 45px;
 }
 
-.listen-now__top-albums__album {
+.top-album {
     width: 250px;
     height: 380px;
     border-radius: 25px;
     margin: 0 16px 0 0;
     object-fit: cover;
     cursor: pointer;
-    /*background-image: linear-gradient(black, white);*/  /* Как сделать фильтр для картинки? */
 }
 
 .content__main {
@@ -117,179 +117,185 @@ body {
     display: flex;
 }
 
-.main-content__friend-activity {
+.friend-activity {
     display: none;
 }
 
 @media screen and (min-width: 1420px) {
-    .main-content__friend-activity {
+    .friend-activity {
         font-family: 'Montserrat', sans-serif;
         font-weight: 700;
         color: white;
         display: flex;
         flex-direction: column;
-        margin: 0.694vw 1.389vw 0 0.694vw;
+        margin: 10px 20px 0 0;
         background-color: #191919;
         width: 100%;
-        height: 73.5vh;
-        border-radius: 1.389vw;
+        height: 661.5px;
+        border-radius: 20px;
     }
 }
 
 
-.main-content__friend-activity__header {
-    padding: 0.694vw 0.694vw;
+.friend-activity__header {
+    display: flex;
+    padding: 10px 10px;
 }
 
-.main-content__friend-activity__text {
+.friend-activity__header-text {
     display: inline-block;
     width: 70%;
-    padding: 1.389vw 1.042vw;
-    font-size: 1.250vw;
+    padding: 20px 15px;
+    font-size: 18px;
 }
 
-.main-content__friend-activity__img {
-    padding-top: 0.694vw;
+.friend-activity__header-img {
     display: inline-flex;
-    height: 1.389vw;
-
+    height: 20px;
+    margin: auto 0 auto 0;
 }
 
 .listen-now__suggested-content {
-    margin: 50px 0 0 1.042vw;
+    margin: 50px 0 0 15px;
     display: flex;
-    height: 30vh;
+    height: 270px;
 }
 
 .listen-now {
-    padding: 0.694vw;
+    padding: 10px;
 }
 
-.listen-now__suggested-content__playlists {
+.suggested-playlists {
     display: flex;
     flex-direction: column;
-    width: 20vw;
+    width: 288px;
     margin-right: 16px;
 }
 
-.listen-now__suggested-content__playlists__header, .listen-now__suggested-content__tracks__header, .listen-now__suggested-content__artists__header {
+.suggested-playlists__header,
+.suggested-tracks__header,
+.suggested-artists__header {
     color: white;
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     width: max-content;
 }
 
-.listen-now__suggested-content__playlists__container {
+.suggested-playlists__container {
     padding: 12px 0 0 0;
     width: 100%;
     height: 100%;
 }
 
-.listen-now__suggested-content__tracks__container {
-    margin: 12px 0 0 0;
+.suggested-tracks-container {
+    margin: 12px 0 12px 0;
+    padding-top: 1px;
     width: 100%;
     height: 100%;
-    background-color: #191919;
-    border-radius: 0.694vw;
+    background-color: rgb(13, 13, 13);
+    border-radius: 15px;
+    padding-bottom: 1px;
+    border: 1px rgb(44, 44, 44) solid;
 }
 
-.listen-now__suggested-content__playlists__item {
+.suggested-playlist {
     cursor: pointer;
     background-color: #191919;
     width: 100%;
     height: 65px;
-    border-radius: 0.694vw;
-    margin-bottom: 0.694vw;
+    border-radius: 10px;
+    margin-bottom: 10px;
     display: flex;
 }
 
-.listen-now__suggested-content__tracks {
+.suggested-tracks {
     margin-right: 16px;
-    width: 30vw;
+    width: 500px;
+    height: fit-content;
 }
-.listen-now__suggested-content__artists__container {
+.suggested-artists__container {
     padding: 12px 0 0 0;
-    width: 20vw;
-    height: 20vw;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-
 }
 
-.listen-now__suggested-content__artists {
-    width: 20vw;
+.suggested-artists {
+    width: 215px;
 }
 
-.listen-now__suggested-content__artists__artist {
+.suggested-artist {
     background-color: white;
-    width: 9.4vw;
-    height: 9.4vw;
+    width: 105px;
+    height: 105px;
     object-fit: cover;
     cursor: pointer;
 }
 
-.listen-now__suggested-content__artists__artist:nth-child(1) {
-    border-radius: 1.389vw 0.694vw 0.694vw 0.694vw;
+.suggested-artist:nth-child(1) {
+    border-radius: 20px 10px 10px 10px;
 }
 
-.listen-now__suggested-content__artists__artist:nth-child(2) {
-    border-radius: 0.694vw 1.389vw 0.694vw 0.694vw;
+.suggested-artist:nth-child(2) {
+    border-radius: 10px 20px 10px 10px;
 }
 
-.listen-now__suggested-content__artists__artist:nth-child(3) {
-    border-radius: 0.694vw 0.694vw 0.694vw 1.389vw;
+.suggested-artist:nth-child(3) {
+    border-radius: 10px 10px 10px 20px;
 }
 
-.listen-now__suggested-content__artists__artist:nth-child(4) {
-    border-radius: 0.694vw 0.694vw 1.389vw 0.694vw;
+.suggested-artist:nth-child(4) {
+    border-radius: 10px 10px 20px 10px;
 }
 
 .player-artwork {
     background-color: white;
-    height: 8vh;
-    width: 8vh;
-    margin: 1vh 0 auto 1vw;
-    border-radius: 0.694vw;
+    height: 60px;
+    width: 60px;
+    margin: auto 0 auto 15px;
+    border-radius: 10px;
     cursor: pointer;
 }
 
 .player-controls {
-    margin: 0 3vw 0 8vw;
-    width: 8vw;
+    margin: 0 45px 0 115px;
+    width: 115px;
     cursor: pointer;
 }
 
 .player-seekbar {
     background-color: grey;
-    margin: auto 0 auto 1vw;
-    height: 0.7vh;
+    margin: auto 0 auto 15px;
+    height: 6px;
     width: 30%;
-    border-radius: 0.694vw;
+    border-radius: 10px;
     cursor: pointer;
 }
 
 .player-time {
     color: white;
-    font-size: 1.2vw;
-    margin: auto 0 auto 1vw;
+    font-size: 17px;
+    margin: auto 0 auto 15px;
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
 }
 
+.shuffle,
+.repeat {
+    width: 30px;
+}
+
 .shuffle {
-    margin-left: 3.125vw;
-    margin-right: 0.694vw;
+    margin-left: 45px;
+    margin-right: 10px;
     cursor: pointer;
 }
 
 .player-volume {
-    margin-left: 7.5vw;
+    margin-left: 100px;
     width: 8%;
     cursor: pointer;
 }
 
 .player-volume-icon {
-    margin: auto 0 auto 1vw;
+    margin: auto 0 auto 15px;
     cursor: pointer;
 }
 
@@ -300,7 +306,7 @@ body {
 .now-playing {
     font-family: 'Montserrat', sans-serif;
     color: white;
-    margin: auto 0 auto 1vw;
+    margin: auto 0 auto 15px;
 }
 
 .track-name {
@@ -311,18 +317,121 @@ body {
     font-weight: 400;
 }
 
-.listen-now__suggested-content__playlists__item img {
+.suggested-playlist-artwork {
     height: 100%;
     width: auto;
     border-radius: inherit;
 }
 
-.listen-now__suggested-content__playlists__item div {
-    margin: auto 0 auto 0.8vw;
+.suggested-playlist-name {
+    margin: auto 0 auto 10px;
     font-family: 'Montserrat', sans-serif;
     color: white;
     font-weight: 400;
-    overflow: hidden;
-    white-space: nowrap;
     box-shadow: inset ;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+}
+
+.friend {
+    display: flex;
+    height: 60px;
+    font-size: 14px;
+}
+
+.friend-avatar {
+    margin: auto 10px auto 20px;
+    object-fit: cover;
+    width:50px;
+    height:50px;
+    border-radius: 50%;
+}
+
+.friend-info-container {
+    display: flex;
+    flex-direction: column;
+    margin: auto 0 auto 0;
+    width: 100%;
+}
+
+.listening-to {
+    font-weight: 400;
+}
+
+.more-friends {
+    margin: auto 20px 15px 20px;
+    background-color: rgb(56, 56, 56);
+    width: auto;
+    height: 10%;
+    border-radius: 20px;
+    display: flex;
+    cursor: pointer;
+}
+
+.view-all-text {
+    display: inline-block;
+    margin: auto;
+    width: fit-content;
+    font-weight: 400;
+}
+
+.suggested-track {
+    display: flex;
+    width: 100%;
+    height: 60px;
+    margin: 25px;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    overflow:hidden;
+
+}
+
+.suggested-track-play {
+    height: 70%;
+    cursor: pointer;
+    margin: auto 25px auto 0;
+}
+
+.suggested-track__artwork {
+    border-radius: 15px;
+}
+
+.suggested-track__name-container {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.suggested-track__name,
+.suggested-track__artist {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex:1;
+    vertical-align: bottom;
+    width: 290px;
+}
+
+.suggested-track__artist {
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.suggested-track__artist:hover {
+    text-decoration: underline;
+}
+
+.suggested-track-fav {
+    height: 13px;
+    margin: auto 10px auto 13px;
+    cursor: pointer;
+}
+
+.suggested-track__ellipsis {
+    display: flex;
+    border: 1px rgb(65, 66, 63) solid;
+    border-radius: 50px;
+    width: 75px;
+    height: fit-content;
 }
