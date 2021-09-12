@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@350&display=swap');
+
+* {
+    user-select: none;
+    margin: 0;
+}
+
+body, html {
+    height: 100%;
+}
+
+body {
+    background-color: #1A1919;
+}
+
+.app {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+}
+
+.auth-page__placeholder {
+    width: 50%;
+    height: 100%;
+}
+
+.auth_page__placeholder-photo {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.auth-page__content {
+    width: 450px;
+    margin-left: 120px;
+}
+
+.auth-page__logo {
+    display: flex;
+}
+
+.auth-page__logo-image {
+    width: 272px;
+    display: inline-block;
+}
+
+.auth-page__title {
+    font-family: Montserrat;
+    color: aliceblue;
+    font-size: 45px;
+    font-weight: 400;
+    margin-top: 20px;
+}
+
+.auth-page__description {
+    font-family: Montserrat;
+    color: aliceblue;
+    font-size: 21px;
+    font-weight: 400;
+    margin-top: 15px;
+    line-height: 30px;
+}
+
+.auth-form {
+    margin-top: 30px;
+}
+
+.auth-form__input {
+    width: 380px;
+    height: 50px;
+    border-radius: 10px;
+    border: 2px solid #3D3D3D;
+    background-color: #3D3D3D;
+    color: #FFFFFF;
+    font-family: Montserrat;
+    font-size: 16px;
+    padding-left: 10px;
+    margin-bottom: 30px;
+}
+
+.auth-form__input:focus {
+    outline: none;
+    border-color: #ff4d5b;
+}
+
+.auth-form__submit {
+    width: 200px;
+    height: 45px;
+    border-radius: 25px;
+    border: none;
+    font-family: Montserrat;
+    font-weight: 200;
+    color: #FFFFFF;
+    font-size: 22px;
+    background: #ff4d5b;
+    cursor: pointer;
+    -webkit-transition: All 0.2s ease;
+    -moz-transition: All 0.2s ease;
+    -o-transition: All 0.2s ease;
+    -ms-transition: All 0.2s ease;
+    transition: All 0.2s ease;
+}
+
+.auth-form__submit:hover {
+    background: #992e39;
+}
+
+.auth-form__submit:active {
+    background: #571d22;
+}

@@ -1,0 +1,20 @@
+{
+  "name": "2021_2_lostpointer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "node ./server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frontend-park-mail-ru/2021_2_LostPointer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frontend-park-mail-ru/2021_2_LostPointer/issues"
+  },
+  "homepage": "https://github.com/frontend-park-mail-ru/2021_2_LostPointer#readme"
+}
