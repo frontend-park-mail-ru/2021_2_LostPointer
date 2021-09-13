@@ -19,18 +19,25 @@ body {
 .sidebar {
     display: flex;
     flex-direction: column;
+}
+
+.app {
+    height: 100%;
+}
+
+.sidebar {
     height: 100%;
 }
 
 .sidebar {
     background-color: transparent;
     width: 50px;
-    padding:20px 15px;
+    margin:20px 15px;
 }
 
 .app__content {
     display: flex;
-    height: 90%;
+    height: calc(100% - 80px);
 }
 
 .sidebar__logo {
@@ -97,15 +104,15 @@ body {
     width: 250px;
     height: 380px;
     border-radius: 25px;
-    margin: 0 16px 0 0;
     object-fit: cover;
     cursor: pointer;
 }
 
 .main-layout__content {
     display: flex;
-    overflow: scroll;
+    overflow-y: scroll;
     height: 100%;
+    justify-content: space-around;
 }
 
 .main-layout {
@@ -116,6 +123,7 @@ body {
 
 .listen-now__top-albums {
     display: flex;
+    justify-content: space-between;
 }
 
 .friend-activity {
@@ -163,7 +171,7 @@ body {
 }
 
 .listen-now {
-    padding: 10px;
+    margin: 10px 10px 0;
 }
 
 .suggested-playlists {
@@ -429,10 +437,27 @@ body {
     cursor: pointer;
 }
 
+.track-list-item-play {
+    cursor: pointer;
+}
+
 .track-list-item__ellipsis {
     display: flex;
     border: 1px rgb(65, 66, 63) solid;
     border-radius: 50px;
     width: 75px;
     height: fit-content;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: black;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #191919;
+    border-radius: 20px;
 }
