@@ -28,7 +28,7 @@ body {
     padding:20px 15px;
 }
 
-.content {
+.app__content {
     display: flex;
     height: 90%;
 }
@@ -101,7 +101,7 @@ body {
     cursor: pointer;
 }
 
-.content {
+.main-layout__content {
     display: flex;
     overflow: scroll;
 }
