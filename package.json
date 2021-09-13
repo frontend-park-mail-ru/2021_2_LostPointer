@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "node ./server/index.js"
+    "server": "node ./server/index.js",
+    "eslint": "eslint server/",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,11 @@
   "bugs": {
     "url": "https://github.com/frontend-park-mail-ru/2021_2_LostPointer/issues"
   },
-  "homepage": "https://github.com/frontend-park-mail-ru/2021_2_LostPointer#readme"
+  "homepage": "https://github.com/frontend-park-mail-ru/2021_2_LostPointer#readme",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.2",
+    "husky": "^7.0.2"
+  }
 }
