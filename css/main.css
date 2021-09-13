@@ -54,7 +54,7 @@ body {
     background-color: #212121;
 }
 
-.content__topbar {
+.topbar {
     justify-content: space-between;
     display: flex;
     width: 100%;
@@ -101,7 +101,7 @@ body {
     cursor: pointer;
 }
 
-.content__main {
+.content {
     display: flex;
     overflow: scroll;
 }
@@ -208,7 +208,7 @@ body {
     display: flex;
 }
 
-.suggested-tracks {
+.track-list {
     margin-right: 16px;
     width: 500px;
     height: fit-content;
@@ -376,7 +376,7 @@ body {
     font-weight: 400;
 }
 
-.suggested-track {
+.track-list-item {
     display: flex;
     width: 100%;
     height: 60px;
@@ -393,18 +393,18 @@ body {
     margin: auto 25px auto 0;
 }
 
-.suggested-track__artwork {
+.track-list-item__artwork {
     border-radius: 15px;
 }
 
-.suggested-track__name-container {
+.track-list-item__name-container {
     padding: 10px;
     display: flex;
     flex-direction: column;
 }
 
-.suggested-track__name,
-.suggested-track__artist {
+.track-list-item__name,
+.track-list-item__artist {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -413,22 +413,22 @@ body {
     width: 290px;
 }
 
-.suggested-track__artist {
+.track-list-item__artist {
     font-weight: 600;
     cursor: pointer;
 }
 
-.suggested-track__artist:hover {
+.track-list-item__artist:hover {
     text-decoration: underline;
 }
 
-.suggested-track-fav {
+.track-list-item-fav {
     height: 13px;
     margin: auto 10px auto 13px;
     cursor: pointer;
 }
 
-.suggested-track__ellipsis {
+.track-list-item__ellipsis {
     display: flex;
     border: 1px rgb(65, 66, 63) solid;
     border-radius: 50px;
