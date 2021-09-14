@@ -80,6 +80,10 @@ body {
     margin-bottom: 30px;
 }
 
+.auth-form__input:invalid {
+    background-color: #571d22;
+}
+
 .auth-form__input:focus {
     outline: none;
     border-color: #ff4d5b;
