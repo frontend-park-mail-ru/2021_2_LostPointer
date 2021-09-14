@@ -1,7 +1,6 @@
-import Signup from './views/Signup.js';
-import Signin from './views/Signin.js';
-
-const pathToRegex = (path) => new RegExp(`^${path.replace(/\//g, '\\/').replace(/:\w+/g, '(.+)')}$`);
+import SigninView from '../views/signup/signin.js';
+import SignupView from '../views/signup/signup.js';
+import pathToRegex from '../regex.js';
 
 const getParams = (match) => {
   const values = match.result.slice(1);
@@ -10,11 +9,11 @@ const getParams = (match) => {
   return Object.fromEntries(keys.map((key, i) => [key, values[i]]));
 };
 
-const router = async () => {
+const router = () => {
   const routes = [
-    { path: '/', view: Signin },
-    { path: '/signin', view: Signin },
-    { path: '/signup', view: Signup },
+    { path: '/', view: SigninView },
+    { path: '/signin', view: SigninView },
+    { path: '/signup', view: SignupView },
   ];
 
   const potentialMatches = routes.map((route) => ({
@@ -36,19 +35,4 @@ const router = async () => {
   document.querySelector('#app').innerHTML = view.html;
 };
 
-const navigateTo = (url) => {
-  window.history.pushState(null, null, url);
-  router();
-};
-
-window.addEventListener('popstate', router);
-
-document.addEventListener('DOMContentLoaded', () => {
-  document.body.addEventListener('click', (e) => {
-    if (e.target.matches('[data-link]')) {
-      e.preventDefault();
-      navigateTo(e.target.href);
-    }
-  });
-  router();
-});
+export default router;

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "server": "node server.js",
-    "eslint": "eslint ./ src/static/js/",
+    "eslint": "eslint ./ src/views/",
     "prepare": "husky install"
   },
   "repository": {

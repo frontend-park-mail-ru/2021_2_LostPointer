@@ -6,10 +6,10 @@ const port = process.env.PORT || 3000;
 
 const path = require('path');
 
-app.use('/static', express.static(path.resolve(__dirname, 'src/static')));
+app.use('/static', express.static(path.resolve(__dirname, 'src/')));
 
 app.get('/*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'src/index.html'));
+  res.sendFile(path.resolve(__dirname, 'index.html'));
 });
 
 app.listen(port, host, () => console.log(`Listening on http://${host}:${port}`));
