@@ -1,18 +1,25 @@
-<!DOCTYPE html>
+import AbstractView from './AbstractView.js';
+
+export default class extends AbstractView {
+  constructor(params) {
+    super(params);
+    this.setTitle('Sign in');
+    this.html = `
+            <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Sign in</title>
-  <link rel="stylesheet" href="css/signup.css">
+  <link rel="stylesheet" href="/static/css/signup.css">
 </head>
 <body>
 <div class="app">
   <div class="auth-page__placeholder">
-    <img class="auth_page__placeholder-photo" src="img/woman_headphones_2.png">
+    <img class="auth_page__placeholder-photo" src="/static/img/woman_headphones_2.png">
   </div>
   <div class="auth-page__content">
     <div class="auth-page__logo">
-      <img class="auth-page__logo-image" src="img/Logo.png">
+      <img class="auth-page__logo-image" src="/static/img/Logo.png">
     </div>
     <div class="auth-page__title">
       Sign in
@@ -29,3 +36,7 @@
 </div>
 </body>
 </html>
+
+        `;
+  }
+}
