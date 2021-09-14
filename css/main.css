@@ -71,33 +71,34 @@ body {
 
 .topbar__search {
     background-color: #191919;
-    width: 77%;
+    width: 75%;
     height: 65px;
-    border-radius: 910px;
+    border-radius: 50px;
 }
 
 .topbar-icons {
     background-color: #191919;
-    border-radius: 910px;
-    padding: 6px 0;
-    margin-left: 6%;
+    border-radius: 50px;
+    padding: 5px 10px;
     width: 85px;
-    height: 30px;
-    margin-top: 12px;
+    height: 40px;
+    margin: auto;
 }
 
 .topbar-icon {
     cursor: pointer;
     height: 30px;
     padding-left: 9px;
+    padding-top: 5px;
 }
 
 .topbar-profile {
     cursor: pointer;
     margin-right: 40px;
     margin-top: 2px;
-    padding: 8.01px 8.01px;
+    padding: 8px 8px;
     height: 45px;
+
 }
 
 .top-album {
@@ -161,24 +162,25 @@ body {
 .friend-activity__header-img {
     display: inline-flex;
     height: 20px;
-    margin: auto 0 auto 0;
+    margin: auto 0;
 }
 
 .listen-now__suggested-content {
-    margin: 50px 0 0 15px;
+    margin: 50px 0 0 0;
     display: flex;
     justify-content: space-between;
 }
 
 .listen-now {
+    width: 1050px;
     margin: 10px 10px 0;
 }
 
 .suggested-playlists {
     display: flex;
     flex-direction: column;
+    align-content: space-between;
     width: 288px;
-    margin-right: 16px;
 }
 
 .suggested-playlists__header,
@@ -191,6 +193,9 @@ body {
 }
 
 .suggested-playlists__container {
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
     padding: 12px 0 0 0;
     width: 100%;
     height: 100%;
@@ -198,12 +203,10 @@ body {
 
 .suggested-tracks-container {
     margin: 12px 0 12px 0;
-    padding-top: 1px;
     width: 100%;
     height: 100%;
     background-color: rgb(13, 13, 13);
     border-radius: 15px;
-    padding-bottom: 1px;
     border: 1px rgb(44, 44, 44) solid;
 }
 
@@ -218,7 +221,6 @@ body {
 }
 
 .track-list {
-    margin-right: 16px;
     width: 500px;
     height: fit-content;
 }
@@ -269,7 +271,7 @@ body {
     cursor: pointer;
 }
 
-.player-seekbar {
+.player__seekbar {
     background-color: grey;
     margin: auto 0 auto 15px;
     height: 6px;
@@ -278,7 +280,7 @@ body {
     cursor: pointer;
 }
 
-.player-time {
+.player__time {
     color: white;
     font-size: 17px;
     margin: auto 0 auto 15px;
@@ -303,7 +305,7 @@ body {
     cursor: pointer;
 }
 
-.player-volume-icon {
+.player__volume-icon {
     margin: auto 0 auto 15px;
     cursor: pointer;
 }
@@ -417,7 +419,7 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    flex:1;
+    flex: 1;
     vertical-align: bottom;
     width: 290px;
 }
