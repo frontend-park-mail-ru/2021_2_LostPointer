@@ -1,4 +1,7 @@
-const form = document.getElementsByTagName('form')[0];
+// eslint-disable-next-line import/named
+import { addEmailListener, addPasswordListener, ajax } from './signin';
+
+const form = document.getElementById('auth-form');
 const name = document.getElementById('name');
 const email = document.getElementById('email');
 const password = document.getElementById('password');
@@ -14,27 +17,8 @@ name.addEventListener('input', () => {
   }
 });
 
-email.addEventListener('input', () => {
-  if (!email.value) {
-    email.setCustomValidity('You need to enter an e-mail address.');
-  } else if (email.validity.typeMismatch) {
-    email.setCustomValidity('Entered value needs to be an e-mail address.');
-  } else if (email.validity.patternMismatch) {
-    email.setCustomValidity('Entered value needs to be an e-mail address.');
-  } else {
-    email.setCustomValidity('');
-  }
-});
-
-password.addEventListener('input', () => {
-  if (!password.value) {
-    password.setCustomValidity('You need to enter a password.');
-  } else if (password.validity.patternMismatch) {
-    password.setCustomValidity('Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.');
-  } else {
-    password.setCustomValidity('');
-  }
-});
+addEmailListener(email);
+addPasswordListener(password);
 
 confirmPassword.addEventListener('input', () => {
   if (confirmPassword.value !== password.value) {
@@ -45,29 +29,42 @@ confirmPassword.addEventListener('input', () => {
 });
 
 form.addEventListener('submit', (event) => {
+  event.preventDefault();
   if (
-    !name.value
-    || !email.value
-    || !password.value
-    || !confirmPassword.value
-    || !name.validity.valid
-    || !email.validity.valid
-    || !password.validity.valid
-    || !confirmPassword.validity.valid
+    name.value
+    && email.value
+    && password.value
+    && confirmPassword.value
+    && name.validity.valid
+    && email.validity.valid
+    && password.validity.valid
+    && confirmPassword.validity.valid
   ) {
-    if (!name.value) {
-      name.setCustomValidity('You need to enter a name.');
-      name.reportValidity();
-    } else if (!email.value) {
-      email.setCustomValidity('You need to enter an e-mail address.');
-      email.reportValidity();
-    } else if (!password.value) {
-      password.setCustomValidity('You need to enter a password.');
-      password.reportValidity();
-    } else if (!confirmPassword.value) {
-      confirmPassword.setCustomValidity('You need to confirm a password.');
-      confirmPassword.reportValidity();
-    }
-    event.preventDefault();
+    ajax(
+      'POST',
+      '/signup',
+      {
+        email: email.value.trim(),
+        password: password.value.trim(),
+        name: name.value.trim(),
+      },
+      (status) => {
+        if (status === 200) {
+          // перенаправляем на страницу профиля или логина
+        }
+      },
+    );
+  } else if (!name.value) {
+    name.setCustomValidity('You need to enter a name.');
+    name.reportValidity();
+  } else if (!email.value) {
+    email.setCustomValidity('You need to enter an e-mail address.');
+    email.reportValidity();
+  } else if (!password.value) {
+    password.setCustomValidity('You need to enter a password.');
+    password.reportValidity();
+  } else if (!confirmPassword.value) {
+    confirmPassword.setCustomValidity('You need to confirm a password.');
+    confirmPassword.reportValidity();
   }
 });
