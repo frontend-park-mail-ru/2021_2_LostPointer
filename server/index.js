@@ -1,21 +1,9 @@
-const http = require('http')
-const fs = require('fs')
+const express = require('express');
 
-const host = 'localhost';
-const port = process.env.PORT || 8080;
+const app = express();
+const host = process.env.HOST || '127.0.0.1';
+const port = process.env.PORT || 3000;
 
-const requestListener = (request, response) => {
-    const path = request.url === '/' ? '/index.html' : request.url;
-    fs.readFile(`.${path}`, (err, data) => {
-        if (err) {
-            data = "404"
-        }
-        response.write(data);
-        response.end();
-    });
-};
+app.use(express.static('.'));
 
-const server = http.createServer(requestListener);
-server.listen(port, host, () => {
-    console.log(`listening at http://${host}:${port}}`)
-})
+app.listen(port, host, () => console.log(`Listening on http://${host}:${port}`));
