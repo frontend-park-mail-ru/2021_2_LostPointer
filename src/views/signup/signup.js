@@ -3,11 +3,11 @@ class SignupView {
     this.title = 'Signup';
     this.html = `
     <div class="auth-page__placeholder">
-        <img class="auth_page__placeholder-photo" src="/static/static/img/woman_headphones_1.jpeg">
+        <img class="auth_page__placeholder-photo" src="/src/static/img/woman_headphones_1.jpeg">
     </div>
     <div class="auth-page__content">
         <div class="auth-page__logo">
-            <img class="auth-page__logo-image" src="/static/static/img/Logo.png">
+            <img class="auth-page__logo-image" src="/src/static/img/Logo.png">
         </div>
         <div class="auth-page__title">
             Sign up

@@ -1,3 +1,4 @@
-const pathToRegex = (path) => new RegExp(`^${path.replace(/\//g, '\\/').replace(/:\w+/g, '(.+)')}$`);
+const slash = /\//g;
+const arg = /:\w+/g;
 
-export default pathToRegex;
+export { slash, arg };

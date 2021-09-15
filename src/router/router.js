@@ -1,6 +1,8 @@
 import SigninView from '../views/signup/signin.js';
 import SignupView from '../views/signup/signup.js';
-import pathToRegex from '../regex.js';
+import { slash, arg } from '../regex.js';
+
+const pathToRegex = (path) => new RegExp(`^${path.replace(slash, '\\/').replace(arg, '(.+)')}$`);
 
 const getParams = (match) => {
   const values = match.result.slice(1);
