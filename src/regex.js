@@ -1,4 +1,5 @@
-const slash = /\//g;
-const arg = /:\w+/g;
+const PATH_SLASH = /\//g;
+const PATH_ARG = /:\w+/g;
+const PATH_ARG_CG = /:(\w+)/g;
 
-export { slash, arg };
+export { PATH_SLASH, PATH_ARG, PATH_ARG_CG };
