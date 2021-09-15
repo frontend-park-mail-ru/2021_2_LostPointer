@@ -56,6 +56,8 @@ body {
 
 .player {
     display: flex;
+    align-items: center;
+    justify-content: space-around;
     margin-top: auto;
     height: 80px;
     width: 100%;
@@ -98,7 +100,6 @@ body {
     margin-top: 2px;
     padding: 8px 8px;
     height: 45px;
-
 }
 
 .top-album {
@@ -260,20 +261,17 @@ body {
     background-color: white;
     height: 60px;
     width: 60px;
-    margin: auto 0 auto 15px;
     border-radius: 10px;
     cursor: pointer;
 }
 
 .player-controls {
-    margin: 0 45px 0 115px;
     width: 115px;
     cursor: pointer;
 }
 
 .player__seekbar {
     background-color: grey;
-    margin: auto 0 auto 15px;
     height: 6px;
     width: 30%;
     border-radius: 10px;
@@ -283,7 +281,6 @@ body {
 .player__time {
     color: white;
     font-size: 17px;
-    margin: auto 0 auto 15px;
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
 }
@@ -294,19 +291,15 @@ body {
 }
 
 .shuffle {
-    margin-left: 45px;
-    margin-right: 10px;
     cursor: pointer;
 }
 
 .player-volume {
-    margin-left: 100px;
     width: 8%;
     cursor: pointer;
 }
 
 .player__volume-icon {
-    margin: auto 0 auto 15px;
     cursor: pointer;
 }
 
@@ -317,7 +310,6 @@ body {
 .now-playing {
     font-family: 'Montserrat', sans-serif;
     color: white;
-    margin: auto 0 auto 15px;
 }
 
 .track-name {
@@ -395,7 +387,6 @@ body {
     font-family: 'Montserrat', sans-serif;
     color: white;
     overflow:hidden;
-
 }
 
 .suggested-track-play {
