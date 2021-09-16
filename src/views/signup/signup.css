@@ -45,6 +45,7 @@ body {
 }
 
 .auth-page__logo-image {
+    cursor: pointer;
     width: 272px;
     display: inline-block;
 }

@@ -20,6 +20,7 @@ class SigninView {
       <input class="auth-form__input" type="text" id="email" placeholder="Email">
       <input class="auth-form__input" type="text" id="password" placeholder="Password">
       <button class="auth-form__submit" type="submit">Sign in</button>
+      <button class="auth-form__submit" type="submit" data-link href="/signup">Sign up</button>
     </form>
   </div>
   </div>

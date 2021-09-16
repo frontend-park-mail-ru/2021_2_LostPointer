@@ -22,6 +22,7 @@ class SignupView {
             <input class="auth-form__input" type="text" id="password" placeholder="Password">
             <input class="auth-form__input" type="text" id="confirm_password" placeholder="Confirm password">
             <button class="auth-form__submit" type="submit">Sign up</button>
+            <button class="auth-form__submit" type="submit" data-link href="/signin">Sign in</button>
         </form>
     </div>
     </div>

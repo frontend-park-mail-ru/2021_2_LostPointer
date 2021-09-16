@@ -35,7 +35,7 @@ const router = () => {
   const ViewClass = matches.route.view;
   const view = new ViewClass(getParams(matches));
 
-  document.querySelector('#app').innerHTML = view.html;
+  document.querySelector('.app').innerHTML = view.html;
 };
 
 export default router;
