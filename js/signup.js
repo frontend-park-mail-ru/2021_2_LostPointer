@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/named
-import { addEmailListener, addPasswordListener, ajax } from './signin';
+import { addEmailListener, addPasswordListener, ajax } from './auth-utils';
 
 const form = document.getElementById('auth-form');
 const name = document.getElementById('name');
