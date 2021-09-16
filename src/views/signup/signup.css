@@ -6,6 +6,10 @@
     margin: 0;
 }
 
+.app {
+    height: 100%;
+}
+
 body, html {
     height: 100%;
 }
@@ -14,10 +18,9 @@ body {
     background-color: #1A1919;
 }
 
-.app {
+.login-ui {
     display: flex;
     height: 100%;
-    width: 100%;
     align-items: center;
 }
 

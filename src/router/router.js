@@ -1,5 +1,6 @@
 import SigninView from '../views/signup/signin.js';
 import SignupView from '../views/signup/signup.js';
+import DashboardView from '../views/dashboard/dashboard.js';
 import { PATH_ARG, PATH_SLASH, PATH_ARG_CG } from '../regex.js';
 
 const pathToRegex = (path) => new RegExp(`^${path.replace(PATH_SLASH, '\\/').replace(PATH_ARG, '(.+)')}$`);
@@ -13,7 +14,7 @@ const getParams = (match) => {
 
 const router = () => {
   const routes = [
-    { path: '/', view: SigninView },
+    { path: '/', view: DashboardView },
     { path: '/signin', view: SigninView },
     { path: '/signup', view: SignupView },
   ];
