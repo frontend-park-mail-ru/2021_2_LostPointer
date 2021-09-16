@@ -1,21 +1,13 @@
-export function ajax(method, url, body = null, callback) {
-  const xhr = new XMLHttpRequest();
-  xhr.open(method, url, true);
-  xhr.withCredentials = true;
-
-  xhr.addEventListener('readystatechange', () => {
-    if (xhr.readyState !== XMLHttpRequest.DONE) return;
-
-    callback(xhr.status, xhr.responseText);
+export async function ajax(method, url, body = null) {
+  // eslint-disable-next-line no-return-await
+  return await fetch('/article/fetch/post/user', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify(body),
+    credentials: 'same-origin',
   });
-
-  if (body) {
-    xhr.setRequestHeader('Content-type', 'application/json; charset=utf8');
-    xhr.send(JSON.stringify(body));
-    return;
-  }
-
-  xhr.send();
 }
 
 export function addEmailListener(email) {

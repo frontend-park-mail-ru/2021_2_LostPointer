@@ -18,17 +18,16 @@ form.addEventListener('submit', (event) => {
   ) {
     ajax(
       'POST',
-      '/login',
+      '/signin',
       {
         email: email.value.trim(),
         password: password.value.trim(),
       },
-      (status) => {
-        if (status === 200) {
-          // перенаправляем на страницу профиля
-        }
-      },
-    );
+    ).then((response) => {
+      if (response.status === 200) {
+        // перенаправляем на страницу профиля
+      }
+    });
   } else if (!email.value) {
     email.setCustomValidity('You need to enter an e-mail address.');
     email.reportValidity();

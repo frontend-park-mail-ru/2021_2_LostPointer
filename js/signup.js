@@ -48,12 +48,11 @@ form.addEventListener('submit', (event) => {
         password: password.value.trim(),
         name: name.value.trim(),
       },
-      (status) => {
-        if (status === 200) {
-          // перенаправляем на страницу профиля или логина
-        }
-      },
-    );
+    ).then((response) => {
+      if (response.status === 200) {
+        // перенаправляем на страницу профиля или авторизации
+      }
+    });
   } else if (!name.value) {
     name.setCustomValidity('You need to enter a name.');
     name.reportValidity();
