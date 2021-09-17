@@ -1,18 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Sign up</title>
-    <link rel="stylesheet" href="css/signup.css">
-</head>
-<body>
-<div class="app">
+class SignupView {
+  constructor() {
+    this.title = 'Signup';
+    this.html = `
+<div class="login-ui">
     <div class="auth-page__placeholder">
-        <img class="auth_page__placeholder-photo" src="img/woman_headphones_1.jpeg">
+        <img class="auth_page__placeholder-photo" src="/src/static/img/woman_headphones_1.jpeg">
     </div>
     <div class="auth-page__content">
         <div class="auth-page__logo">
-            <img class="auth-page__logo-image" src="img/Logo.png">
+            <img class="auth-page__logo-image" data-link href="/" src="/src/static/img/Logo.png">
         </div>
         <div class="auth-page__title">
             Sign up
@@ -26,8 +22,12 @@
             <input class="auth-form__input" type="text" id="password" placeholder="Password">
             <input class="auth-form__input" type="text" id="confirm_password" placeholder="Confirm password">
             <button class="auth-form__submit" type="submit">Sign up</button>
+            <button class="auth-form__submit" type="submit" data-link href="/signin">Sign in</button>
         </form>
     </div>
-</div>
-</body>
-</html>
+    </div>
+        `;
+  }
+}
+
+export default SignupView;
