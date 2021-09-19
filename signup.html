@@ -21,14 +21,39 @@
             Let’s get all your required setup information and get started
         </div>
         <form class="auth-form" action="#">
-            <input class="auth-form__input" type="text" id="name" minlength="5" placeholder="Name">
-            <input class="auth-form__input" type="email" id="email" pattern=".+@.+\..+" placeholder="Email">
-            <input class="auth-form__input" type="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Password">
-            <input class="auth-form__input" type="password" id="confirm_password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Confirm password">
+            <label for="name">
+                <input class="auth-form__input" type="text" id="name" placeholder="Name">
+                <ul class="auth-form__input-requirements">
+                    <li>At least 5 characters long</li>
+                    <li>Must only contain letters and numbers (no special characters)</li>
+                </ul>
+            </label>
+            <label for="email">
+                <input class="auth-form__input" type="text" id="email" placeholder="Email">
+                <ul class="auth-form__input-requirements">
+                    <li>Valid Email address</li>
+                </ul>
+            </label>
+            <label for="password">
+            <input class="auth-form__input" type="password" id="password" placeholder="Password">
+                <ul class="auth-form__input-requirements">
+                    <li>At least 8 characters long (and less than 100 characters)</li>
+                    <li>Contains at least 1 number</li>
+                    <li>Contains at least 1 lowercase letter</li>
+                    <li>Contains at least 1 uppercase letter</li>
+                    <li>Contains a special character (e.g. @ !)</li>
+                </ul>
+            </label>
+            <label for="confirm_password">
+                <input class="auth-form__input" type="password" id="confirm_password" placeholder="Confirm password">
+                <ul class="auth-form__input-requirements">
+                    <li>Passwords matching</li>
+                </ul>
+            </label>
             <button class="auth-form__submit" type="submit">Sign up</button>
         </form>
     </div>
 </div>
 </body>
-<script src="js/signup.js"></script>
+<script type="module" src="js/signup.js"></script>
 </html>

@@ -1,39 +1,33 @@
 import {
-  ajax, checkEmail, checkPassword,
-} from './auth-utils';
+  CustomValidation,
+  emailValidityChecks,
+  startListeners,
+// eslint-disable-next-line import/extensions
+} from './validation.js';
 
-const form = document.getElementById('auth-form');
-const email = document.getElementById('email');
-const password = document.getElementById('password');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
 
-email.addEventListener('input', (event) => {
-  event.preventDefault();
-  checkEmail(email);
-});
+const inputs = document.querySelectorAll('.auth-form__input');
+const submit = document.querySelector('.auth-form__submit');
 
-password.addEventListener('input', (event) => {
-  event.preventDefault();
-  checkPassword(password);
-});
-
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  if (
-    !checkEmail(email)
-    || !checkPassword(password)
-  ) {
-    return;
-  }
-  ajax(
-    'POST',
-    '/signin',
-    {
-      email: email.value.trim(),
-      password: password.value.trim(),
+const passwordValidityChecks = [
+  {
+    isInvalid(input) {
+      // eslint-disable-next-line no-bitwise
+      return input.value.length < 8 | input.value.length > 100;
     },
-  ).then((response) => {
-    if (response.status === 200) {
-      // перенаправляем на страницу профиля
-    }
-  });
+    invalidityMessage: 'Password required',
+    element: document.querySelector('label[for="password"] .auth-form__input-requirements li:nth-child(1)'),
+  },
+];
+
+emailInput.CustomValidation = new CustomValidation();
+emailInput.CustomValidation.validityChecks = emailValidityChecks;
+
+passwordInput.CustomValidation = new CustomValidation();
+passwordInput.CustomValidation.validityChecks = passwordValidityChecks;
+
+startListeners(inputs, submit, () => {
+  console.log('send request');
 });

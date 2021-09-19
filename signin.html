@@ -21,12 +21,22 @@
       Let’s get all required data and sign in
     </div>
     <form class="auth-form" id="auth-form" action="#">
-      <input class="auth-form__input" type="email" id="email" pattern=".+@.+\..+" placeholder="Email">
-      <input class="auth-form__input" type="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Password">
+      <label for="email">
+        <input class="auth-form__input" type="text" id="email" placeholder="Email">
+        <ul class="auth-form__input-requirements">
+          <li>Email required</li>
+        </ul>
+      </label>
+      <label for="password">
+        <input class="auth-form__input" type="password" id="password" placeholder="Password">
+        <ul class="auth-form__input-requirements">
+          <li>Password required</li>
+        </ul>
+      </label>
       <button class="auth-form__submit" type="submit">Sign in</button>
     </form>
   </div>
 </div>
 </body>
-<script src="js/signin.js"></script>
+<script type="module" src="js/signin.js"></script>
 </html>

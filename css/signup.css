@@ -77,16 +77,49 @@ body {
     font-family: Montserrat;
     font-size: 16px;
     padding-left: 10px;
-    margin-bottom: 30px;
-}
-
-.auth-form__input:invalid {
-    background-color: #571d22;
+    margin-up: 30px;
 }
 
 .auth-form__input:focus {
     outline: none;
     border-color: #ff4d5b;
+}
+
+.auth-form__input-requirements {
+    font-family: Montserrat;
+    font-size: 10px;
+    text-align: left;
+    list-style: disc;
+    list-style-position: inside;
+    max-width: 400px;
+    margin: 10px auto;
+    color: rgb(150,150,150);
+}
+
+.auth-form__input-requirements li.invalid {
+    color: #ff4d5b;
+}
+.auth-form__input-requirements li.valid {
+    color: #2ecc71;
+}
+
+.auth-form__input-requirements li.valid:after {
+    display: inline-block;
+    padding-left: 10px;
+    content: "\2713";
+}
+
+input:not([type="submit"]) + .auth-form__input-requirements {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 1s ease-out;
+}
+
+input:not([type="submit"]):hover + .auth-form__input-requirements,
+input:not([type="submit"]):focus + .auth-form__input-requirements,
+input:not([type="submit"]):active + .auth-form__input-requirements {
+    max-height: 1000px; /* any large number (bigger then the .input-requirements list) */
+    transition: max-height 1s ease-in;
 }
 
 .auth-form__submit {

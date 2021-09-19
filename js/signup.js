@@ -1,54 +1,97 @@
 import {
-  ajax, checkConfirmPassword, checkEmail, checkName, checkPassword,
-} from './auth-utils';
+  CustomValidation,
+  emailValidityChecks,
+  startListeners,
+// eslint-disable-next-line import/extensions
+} from './validation.js';
 
-const form = document.getElementById('auth-form');
-const name = document.getElementById('name');
-const email = document.getElementById('email');
-const password = document.getElementById('password');
-const confirmPassword = document.getElementById('confirm_password');
+const nameInput = document.getElementById('name');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const confirmPasswordInput = document.getElementById('confirm_password');
 
-name.addEventListener('input', (event) => {
-  event.preventDefault();
-  checkName(name);
-});
+const inputs = document.querySelectorAll('.auth-form__input');
+const submit = document.querySelector('.auth-form__submit');
 
-email.addEventListener('input', (event) => {
-  event.preventDefault();
-  checkEmail(email);
-});
-
-password.addEventListener('input', (event) => {
-  event.preventDefault();
-  checkPassword(password);
-});
-
-confirmPassword.addEventListener('input', (event) => {
-  event.preventDefault();
-  checkConfirmPassword();
-});
-
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  if (
-    !checkName(name)
-    || !checkEmail(email)
-    || !checkPassword(password)
-    || !checkConfirmPassword()
-  ) {
-    return;
-  }
-  ajax(
-    'POST',
-    '/signup',
-    {
-      email: email.value.trim(),
-      password: password.value.trim(),
-      name: name.value.trim(),
+const nameValidityChecks = [
+  {
+    isInvalid(input) {
+      return input.value.length < 5;
     },
-  ).then((response) => {
-    if (response.status === 200) {
-      // перенаправляем на страницу профиля или авторизации
-    }
-  });
+    invalidityMessage: 'This input needs to be at least 5 characters',
+    element: document.querySelector('label[for="name"] .auth-form__input-requirements li:nth-child(1)'),
+  },
+  {
+    isInvalid(input) {
+      const illegalCharacters = input.value.match(/[^a-zA-Z0-9]/g);
+      return !input.value || !!illegalCharacters;
+    },
+    invalidityMessage: 'Only letters and numbers are allowed',
+    element: document.querySelector('label[for="name"] .auth-form__input-requirements li:nth-child(2)'),
+  },
+];
+
+const passwordValidityChecks = [
+  {
+    isInvalid(input) {
+      // eslint-disable-next-line no-bitwise
+      return input.value.length < 8 | input.value.length > 100;
+    },
+    invalidityMessage: 'This input needs to be between 8 and 100 characters',
+    element: document.querySelector('label[for="password"] .auth-form__input-requirements li:nth-child(1)'),
+  },
+  {
+    isInvalid(input) {
+      return !input.value.match(/[0-9]/g);
+    },
+    invalidityMessage: 'At least 1 number is required',
+    element: document.querySelector('label[for="password"] .auth-form__input-requirements li:nth-child(2)'),
+  },
+  {
+    isInvalid(input) {
+      return !input.value.match(/[a-z]/g);
+    },
+    invalidityMessage: 'At least 1 lowercase letter is required',
+    element: document.querySelector('label[for="password"] .auth-form__input-requirements li:nth-child(3)'),
+  },
+  {
+    isInvalid(input) {
+      return !input.value.match(/[A-Z]/g);
+    },
+    invalidityMessage: 'At least 1 uppercase letter is required',
+    element: document.querySelector('label[for="password"] .auth-form__input-requirements li:nth-child(4)'),
+  },
+  {
+    isInvalid(input) {
+      return !input.value.match(/[\!\@\#\$\%\^\&\*]/g);
+    },
+    invalidityMessage: 'You need one of the required special characters',
+    element: document.querySelector('label[for="password"] .auth-form__input-requirements li:nth-child(5)'),
+  },
+];
+
+const confirmPasswordValidityChecks = [
+  {
+    isInvalid() {
+      return !confirmPasswordInput.value || confirmPasswordInput.value !== passwordInput.value;
+    },
+    invalidityMessage: 'This password needs to match the first one',
+    element: document.querySelector('label[for="confirm_password"] .auth-form__input-requirements li:nth-child(1)'),
+  },
+];
+
+nameInput.CustomValidation = new CustomValidation();
+nameInput.CustomValidation.validityChecks = nameValidityChecks;
+
+emailInput.CustomValidation = new CustomValidation();
+emailInput.CustomValidation.validityChecks = emailValidityChecks;
+
+passwordInput.CustomValidation = new CustomValidation();
+passwordInput.CustomValidation.validityChecks = passwordValidityChecks;
+
+confirmPasswordInput.CustomValidation = new CustomValidation();
+confirmPasswordInput.CustomValidation.validityChecks = confirmPasswordValidityChecks;
+
+startListeners(inputs, submit, () => {
+  console.log('send request');
 });
