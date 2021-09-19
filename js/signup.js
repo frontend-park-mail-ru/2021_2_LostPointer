@@ -1,5 +1,5 @@
 import {
-  addEmailListener, addPasswordListener, ajax, checkValidity,
+  ajax, checkConfirmPassword, checkEmail, checkName, checkPassword,
 } from './auth-utils';
 
 const form = document.getElementById('auth-form');
@@ -8,34 +8,33 @@ const email = document.getElementById('email');
 const password = document.getElementById('password');
 const confirmPassword = document.getElementById('confirm_password');
 
-name.addEventListener('input', () => {
-  if (!name.value) {
-    name.setCustomValidity('You need to enter a name.');
-  } else if (name.validity.tooShort) {
-    name.setCustomValidity('Must contain at least 5 or more characters.');
-  } else {
-    name.setCustomValidity('');
-  }
+name.addEventListener('input', (event) => {
+  event.preventDefault();
+  checkName(name);
 });
 
-addEmailListener(email);
-addPasswordListener(password);
+email.addEventListener('input', (event) => {
+  event.preventDefault();
+  checkEmail(email);
+});
 
-confirmPassword.addEventListener('input', () => {
-  if (confirmPassword.value !== password.value) {
-    confirmPassword.setCustomValidity('You need to confirm a password.');
-  } else {
-    confirmPassword.setCustomValidity('');
-  }
+password.addEventListener('input', (event) => {
+  event.preventDefault();
+  checkPassword(password);
+});
+
+confirmPassword.addEventListener('input', (event) => {
+  event.preventDefault();
+  checkConfirmPassword();
 });
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   if (
-    !checkValidity(name, 'You need to enter a name.')
-    || !checkValidity(email, 'You need to enter an e-mail address.')
-    || !checkValidity(password, 'You need to enter a password.')
-    || !checkValidity(confirmPassword, 'You need to confirm a password.')
+    !checkName(name)
+    || !checkEmail(email)
+    || !checkPassword(password)
+    || !checkConfirmPassword()
   ) {
     return;
   }
