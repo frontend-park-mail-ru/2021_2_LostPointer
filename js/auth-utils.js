@@ -35,3 +35,12 @@ export function addPasswordListener(password) {
     }
   });
 }
+
+export function checkValidity(element, error) {
+  if (!element.value || !element.validity.valid) {
+    element.setCustomValidity(error);
+    element.reportValidity();
+    return false;
+  }
+  return true;
+}

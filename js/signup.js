@@ -1,5 +1,6 @@
-// eslint-disable-next-line import/named
-import { addEmailListener, addPasswordListener, ajax } from './auth-utils';
+import {
+  addEmailListener, addPasswordListener, ajax, checkValidity,
+} from './auth-utils';
 
 const form = document.getElementById('auth-form');
 const name = document.getElementById('name');
@@ -31,39 +32,24 @@ confirmPassword.addEventListener('input', () => {
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   if (
-    name.value
-    && email.value
-    && password.value
-    && confirmPassword.value
-    && name.validity.valid
-    && email.validity.valid
-    && password.validity.valid
-    && confirmPassword.validity.valid
+    !checkValidity(name, 'You need to enter a name.')
+    || !checkValidity(email, 'You need to enter an e-mail address.')
+    || !checkValidity(password, 'You need to enter a password.')
+    || !checkValidity(confirmPassword, 'You need to confirm a password.')
   ) {
-    ajax(
-      'POST',
-      '/signup',
-      {
-        email: email.value.trim(),
-        password: password.value.trim(),
-        name: name.value.trim(),
-      },
-    ).then((response) => {
-      if (response.status === 200) {
-        // перенаправляем на страницу профиля или авторизации
-      }
-    });
-  } else if (!name.value) {
-    name.setCustomValidity('You need to enter a name.');
-    name.reportValidity();
-  } else if (!email.value) {
-    email.setCustomValidity('You need to enter an e-mail address.');
-    email.reportValidity();
-  } else if (!password.value) {
-    password.setCustomValidity('You need to enter a password.');
-    password.reportValidity();
-  } else if (!confirmPassword.value) {
-    confirmPassword.setCustomValidity('You need to confirm a password.');
-    confirmPassword.reportValidity();
+    return;
   }
+  ajax(
+    'POST',
+    '/signup',
+    {
+      email: email.value.trim(),
+      password: password.value.trim(),
+      name: name.value.trim(),
+    },
+  ).then((response) => {
+    if (response.status === 200) {
+      // перенаправляем на страницу профиля или авторизации
+    }
+  });
 });
