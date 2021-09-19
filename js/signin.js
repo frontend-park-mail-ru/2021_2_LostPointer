@@ -10,6 +10,7 @@ const passwordInput = document.getElementById('password');
 
 const inputs = document.querySelectorAll('.auth-form__input');
 const submit = document.querySelector('.auth-form__submit');
+const failMsg = document.querySelector('.auth-form__fail_msg');
 
 const passwordValidityChecks = [
   {
@@ -29,5 +30,28 @@ passwordInput.CustomValidation = new CustomValidation();
 passwordInput.CustomValidation.validityChecks = passwordValidityChecks;
 
 startListeners(inputs, submit, () => {
-  console.log('send request');
+  fetch('/signin', {
+    method: 'POST',
+    mode: 'same-origin',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify({
+      email: emailInput.value.trim(),
+      password: passwordInput.value.trim(),
+    }),
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        failMsg.classList.add('visible');
+      }
+      // срендерить следующую страницу
+    })
+    .catch(() => {
+      failMsg.classList.add('visible');
+    });
 });

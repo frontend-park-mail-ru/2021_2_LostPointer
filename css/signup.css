@@ -122,6 +122,22 @@ input:not([type="submit"]):active + .auth-form__input-requirements {
     transition: max-height 1s ease-in;
 }
 
+.auth-form__fail_msg {
+    display: none;
+    font-family: Montserrat;
+    font-size: 10px;
+    text-align: left;
+    list-style: disc;
+    list-style-position: inside;
+    max-width: 400px;
+    margin: 10px auto;
+    color: #ff4d5b;
+}
+
+.auth-form__fail_msg.visible {
+    display: block;
+}
+
 .auth-form__submit {
     width: 200px;
     height: 45px;

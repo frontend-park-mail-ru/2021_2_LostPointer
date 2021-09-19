@@ -12,6 +12,7 @@ const confirmPasswordInput = document.getElementById('confirm_password');
 
 const inputs = document.querySelectorAll('.auth-form__input');
 const submit = document.querySelector('.auth-form__submit');
+const failMsg = document.querySelector('.auth-form__fail_msg');
 
 const nameValidityChecks = [
   {
@@ -93,5 +94,29 @@ confirmPasswordInput.CustomValidation = new CustomValidation();
 confirmPasswordInput.CustomValidation.validityChecks = confirmPasswordValidityChecks;
 
 startListeners(inputs, submit, () => {
-  console.log('send request');
+  fetch('/signup', {
+    method: 'POST',
+    mode: 'same-origin',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify({
+      name: nameInput.value.trim(),
+      email: emailInput.value.trim(),
+      password: passwordInput.value.trim(),
+    }),
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        failMsg.classList.add('visible');
+      }
+      // срендерить следующую страницу
+    })
+    .catch(() => {
+      failMsg.classList.add('visible');
+    });
 });
