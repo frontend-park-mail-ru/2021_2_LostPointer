@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "node ./server/index.js",
-    "eslint": "eslint server/",
+    "server": "node server.js",
+    "eslint": "eslint ./ src/",
     "prepare": "husky install"
   },
   "repository": {
