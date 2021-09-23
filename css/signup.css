@@ -118,7 +118,7 @@ input:not([type="submit"]) + .auth-form__input-requirements {
 input:not([type="submit"]):hover + .auth-form__input-requirements,
 input:not([type="submit"]):focus + .auth-form__input-requirements,
 input:not([type="submit"]):active + .auth-form__input-requirements {
-    max-height: 1000px; /* any large number (bigger then the .input-requirements list) */
+    max-height: 1000px; /* Рандомное очень большое число, чтобы список развернулся весь */
     transition: max-height 1.5s ease-in;
 }
 
