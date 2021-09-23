@@ -1,26 +1,25 @@
-export function CustomValidation() {
-  this.invalidities = [];
-  this.validityChecks = [];
-}
-
-CustomValidation.prototype = {
-  invalidities: [],
-  validityChecks: [],
+export class CustomValidation {
+  constructor() {
+    this.invalidities = [];
+    this.validityChecks = [];
+  }
 
   addInvalidity(message) {
     this.invalidities.push(message);
-  },
+  }
+
   getInvalidities() {
     return this.invalidities.join('. \n');
-  },
+  }
+
   checkValidity(input) {
-    for (let i = 0; i < this.validityChecks.length; i += 1) {
-      const isInvalid = this.validityChecks[i].isInvalid(input);
+    this.validityChecks.forEach((value) => {
+      const isInvalid = value.isInvalid(input);
       if (isInvalid) {
-        this.addInvalidity(this.validityChecks[i].invalidityMessage);
+        this.addInvalidity(value.invalidityMessage);
       }
 
-      const requirementElement = this.validityChecks[i].element;
+      const requirementElement = value.element;
       if (requirementElement) {
         if (isInvalid) {
           requirementElement.classList.add('invalid');
@@ -30,9 +29,9 @@ CustomValidation.prototype = {
           requirementElement.classList.add('valid');
         }
       }
-    }
-  },
-};
+    });
+  }
+}
 
 export const emailValidityChecks = [
   {
@@ -60,16 +59,17 @@ export function checkInput(input) {
 }
 
 export function startListeners(inputs, submit, callback) {
-  for (let i = 0; i < inputs.length; i += 1) {
-    inputs[i].addEventListener('keyup', (event) => {
+  inputs.forEach((input) => {
+    input.addEventListener('keyup', (event) => {
       event.preventDefault();
-      checkInput(inputs[i]);
+      checkInput(input);
     });
-  }
+  });
 
   submit.addEventListener('click', (event) => {
     event.preventDefault();
     let isValid = true;
+    // обратный цикл, чтобы последней зарепортилась самый верхний input
     for (let i = inputs.length - 1; i >= 0; i -= 1) {
       if (!checkInput(inputs[i])) {
         isValid = false;
