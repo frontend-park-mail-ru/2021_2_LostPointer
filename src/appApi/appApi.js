@@ -23,37 +23,41 @@ export class AppApi {
   }
 
   post(url, requestBody, contentType) {
+    // eslint-disable-next-line no-underscore-dangle
     return this._fetchRequest(url, AppApiMethods.POST, requestBody, contentType);
   }
 
   put(url, requestBody, contentType) {
+    // eslint-disable-next-line no-underscore-dangle
     return this._fetchRequest(url, AppApiMethods.PUT, requestBody, contentType);
   }
 
   get(url) {
+    // eslint-disable-next-line no-underscore-dangle
     return this._fetchRequest(url, AppApiMethods.GET);
   }
 
   delete(url) {
+    // eslint-disable-next-line no-underscore-dangle
     return this._fetchRequest(url, AppApiMethods.DELETE);
   }
 
-  _fetchRequest(url, method, requestBody = '', contentType = ContentType.JSON) {
+  // eslint-disable-next-line no-underscore-dangle,class-methods-use-this
+  _fetchRequest(url, requestMethod, requestBody = '', contentType = ContentType.JSON) {
     const myHeaders = new Headers();
-    if ((AppApiMethods.POST === method) || (AppApiMethods.PUT === method)) {
+    if ((AppApiMethods.POST === requestMethod) || (AppApiMethods.PUT === requestMethod)) {
       myHeaders.append('Content-Type', contentType);
     }
 
     return fetch(url, {
-      method: method,
+      method: requestMethod,
       mode: 'cross-origin',
       credentials: 'same-origin',
       headers: myHeaders,
       body: requestBody,
     })
-      .then((response) => response.json());
-    /* .catch((error) => {
-        console.log(error) гуглил насчет json() как я понял он в любом случае вернет объект
-      }); */
+      .then((response) => response.json())
+      // eslint-disable-next-line no-console
+      .catch((error) => console.log(error));
   }
 }
