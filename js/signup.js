@@ -63,6 +63,7 @@ const passwordValidityChecks = [
   },
   {
     isInvalid(input) {
+      // eslint-disable-next-line no-useless-escape
       return !input.value.match(/[\!\@\#\$\%\^\&\*]/g);
     },
     invalidityMessage: 'You need one of the required special characters',
