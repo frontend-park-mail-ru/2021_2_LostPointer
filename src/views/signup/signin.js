@@ -88,8 +88,9 @@ class SigninView {
           .then((response) => {
             if (response.status !== 200) {
               failMsg.classList.add('visible');
+            } else {
+              // срендерить следующую страницу
             }
-            // срендерить следующую страницу
           })
           .catch(() => {
             failMsg.classList.add('visible');
