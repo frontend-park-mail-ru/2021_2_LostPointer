@@ -56,9 +56,9 @@ class SigninView {
         {
           isInvalid(input) {
             // eslint-disable-next-line no-bitwise
-            return input.value.length < 8 | input.value.length > 100;
+            return input.value.length < 8;
           },
-          invalidityMessage: 'Password required',
+          invalidityMessage: 'This input needs to be at least 5 characters',
           element: document.querySelector('label[for="password"] .auth-form__input-requirements li:nth-child(1)'),
         },
       ];

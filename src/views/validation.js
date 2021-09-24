@@ -69,7 +69,7 @@ export function startListeners(inputs, submit, callback) {
   submit.addEventListener('click', (event) => {
     event.preventDefault();
     let isValid = true;
-    // обратный цикл, чтобы последней зарепортилась самый верхний input
+    // обратный цикл, чтобы последним зарепортился самый верхний input
     for (let i = inputs.length - 1; i >= 0; i -= 1) {
       if (!checkInput(inputs[i])) {
         isValid = false;
