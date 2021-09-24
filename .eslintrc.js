@@ -11,6 +11,9 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    'no-console': 'off',
+    'class-methods-use-this': 'off',
+    'no-underscore-dangle': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',
@@ -20,6 +23,5 @@ module.exports = {
       },
     ],
   },
-  settings: {
-  },
+  settings: {},
 };
