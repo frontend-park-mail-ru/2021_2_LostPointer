@@ -202,6 +202,7 @@ class DashboardView {
         <img class="player__volume-icon" src="/src/static/img/volume.svg">
     </div>
 `;
+    this.script = () => {};
   }
 }
 

@@ -1,6 +1,5 @@
 import {
   CustomValidation,
-  emailValidityChecks,
   startListeners,
 // eslint-disable-next-line import/extensions
 } from '../validation.js';
@@ -56,7 +55,7 @@ class SignupView {
             <div class="auth-form__fail_msg">
                 Registration failed
             </div>
-            <button class="auth-form__submit" type="submit">Sign up</button>
+            <button class="auth-form__submit" data-link href="/signin" type="submit">Sign up</button>
         </form>
     </div>
     <script type="module" src="js/signup.js"></script>
@@ -87,6 +86,17 @@ class SignupView {
           },
           invalidityMessage: 'Only letters and numbers are allowed',
           element: document.querySelector('label[for="name"] .auth-form__input-requirements li:nth-child(2)'),
+        },
+      ];
+
+      const emailValidityChecks = [
+        {
+          isInvalid(input) {
+            const legalEmail = input.value.match(/[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/g);
+            return !legalEmail;
+          },
+          invalidityMessage: 'Invalid email address',
+          element: document.querySelector('label[for="email"] .auth-form__input-requirements li:nth-child(1)'),
         },
       ];
 
@@ -152,7 +162,7 @@ class SignupView {
       confirmPasswordInput.CustomValidation = new CustomValidation();
       confirmPasswordInput.CustomValidation.validityChecks = confirmPasswordValidityChecks;
 
-      startListeners(inputs, submit, () => {
+      startListeners(inputs, submit, failMsg, () => {
         fetch('/signup', {
           method: 'POST',
           mode: 'same-origin',
@@ -170,15 +180,13 @@ class SignupView {
           }),
         })
           .then((response) => {
-            if (response.status !== 200) {
-              failMsg.classList.add('visible');
-            } else {
-              // срендерить следующую страницу
+            if (response.status === 200) {
+              return Promise.resolve(response);
             }
+            return Promise.reject(new Error(response.statusText));
           })
-          .catch(() => {
-            failMsg.classList.add('visible');
-          });
+          .then(() => true)
+          .catch(() => false);
       });
     };
   }

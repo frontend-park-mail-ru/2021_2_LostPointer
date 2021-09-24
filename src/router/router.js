@@ -36,9 +36,6 @@ const router = () => {
   const view = new ViewClass(getParams(matches));
 
   document.querySelector('.app').innerHTML = view.html;
-  // FIXME
-  // сомневаюсь, что так правильно делать, а еще надо при переключении экранов подчищать
-  // все eventListener'ы, а то будет утечка
   view.script();
 };
 

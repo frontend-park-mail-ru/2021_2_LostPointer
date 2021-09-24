@@ -33,17 +33,6 @@ export class CustomValidation {
   }
 }
 
-export const emailValidityChecks = [
-  {
-    isInvalid(input) {
-      const legalEmail = input.value.match(/[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/g);
-      return !legalEmail;
-    },
-    invalidityMessage: 'Invalid email address',
-    element: document.querySelector('label[for="email"] .auth-form__input-requirements li:nth-child(1)'),
-  },
-];
-
 export function checkInput(input) {
   // eslint-disable-next-line no-param-reassign
   input.CustomValidation.invalidities = [];
@@ -58,7 +47,7 @@ export function checkInput(input) {
   return !!(input.CustomValidation.invalidities.length === 0 && input.value !== '');
 }
 
-export function startListeners(inputs, submit, callback) {
+export function startListeners(inputs, submit, failMsg, callback) {
   inputs.forEach((input) => {
     input.addEventListener('keyup', (event) => {
       event.preventDefault();
@@ -79,8 +68,12 @@ export function startListeners(inputs, submit, callback) {
       }
     }
     if (!isValid) {
+      event.stopPropagation();
       return;
     }
-    callback();
+    if (!callback()) {
+      event.stopPropagation();
+      failMsg.classList.add('visible');
+    }
   });
 }

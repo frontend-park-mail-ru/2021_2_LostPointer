@@ -1,6 +1,5 @@
 import {
   CustomValidation,
-  emailValidityChecks,
   startListeners,
 // eslint-disable-next-line import/extensions
 } from '../validation.js';
@@ -39,7 +38,7 @@ class SigninView {
       <div class="auth-form__fail_msg">
         Authentication failed
       </div>
-      <button class="auth-form__submit" type="submit">Sign in</button>
+      <button class="auth-form__submit" data-link href="/" type="submit">Sign in</button>
     </form>
   </div>
 </div>
@@ -51,6 +50,17 @@ class SigninView {
       const inputs = document.querySelectorAll('.auth-form__input');
       const submit = document.querySelector('.auth-form__submit');
       const failMsg = document.querySelector('.auth-form__fail_msg');
+
+      const emailValidityChecks = [
+        {
+          isInvalid(input) {
+            const legalEmail = input.value.match(/[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/g);
+            return !legalEmail;
+          },
+          invalidityMessage: 'Invalid email address',
+          element: document.querySelector('label[for="email"] .auth-form__input-requirements li:nth-child(1)'),
+        },
+      ];
 
       const passwordValidityChecks = [
         {
@@ -69,7 +79,7 @@ class SigninView {
       passwordInput.CustomValidation = new CustomValidation();
       passwordInput.CustomValidation.validityChecks = passwordValidityChecks;
 
-      startListeners(inputs, submit, () => {
+      startListeners(inputs, submit, failMsg, () => {
         fetch('/signin', {
           method: 'POST',
           mode: 'same-origin',
@@ -86,15 +96,13 @@ class SigninView {
           }),
         })
           .then((response) => {
-            if (response.status !== 200) {
-              failMsg.classList.add('visible');
-            } else {
-              // срендерить следующую страницу
+            if (response.status === 200) {
+              return Promise.resolve(response);
             }
+            return Promise.reject(new Error(response.statusText));
           })
-          .catch(() => {
-            failMsg.classList.add('visible');
-          });
+          .then(() => true)
+          .catch(() => false);
       });
     };
   }
