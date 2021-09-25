@@ -85,7 +85,6 @@ export const confirmPasswordValidityChecks = [
         || confirmPasswordInput.value !== passwordInput.value;
     },
     invalidityMessage: 'This password needs to match the first one',
-    // TODO обращаться к элементу не через документ, а через компонент input
     element: document.querySelector('label[for="confirm_password"] .auth-form__input-requirements li:nth-child(1)'),
   },
 ];

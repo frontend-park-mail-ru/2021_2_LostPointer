@@ -64,21 +64,22 @@ export function startListeners(inputs, form, failMsg, callback) {
   // TODO останавливать распространение при фейле валидации
   form.addEventListener('submit', (event) => {
     event.preventDefault();
+
     let isValid = true;
-    // обратный цикл, чтобы последним зарепортился самый верхний input
-    // TODO reverse (reduceRight)
-    for (let i = inputs.length - 1; i >= 0; i -= 1) {
-      if (!checkInput(inputs[i])) {
+    inputs.reverse().forEach((item) => {
+      if (!checkInput(item)) {
         isValid = false;
       }
-      if (!inputs[i].validity.valid) {
-        inputs[i].reportValidity();
+      if (!item.validity.valid) {
+        item.reportValidity();
       }
-    }
+    }).reverse();
+
     if (!isValid) {
       event.stopPropagation();
       return;
     }
+
     if (!callback()) {
       event.stopPropagation();
       failMsg.classList.add('visible');
