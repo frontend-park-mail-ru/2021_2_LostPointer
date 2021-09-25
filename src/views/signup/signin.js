@@ -43,74 +43,74 @@ class SigninView {
   </div>
 </div>
         `;
+  }
 
-    // TODO переделать в метод
-    this.script = () => {
-      // TODO изменить на name-поля (прогуглить name-поля)
-      const emailInput = document.getElementById('email');
-      const passwordInput = document.getElementById('password');
+  // eslint-disable-next-line class-methods-use-this
+  script() {
+    // TODO изменить на name-поля (прогуглить name-поля)
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
 
-      // TODO input'ы через форму
-      const inputs = document.querySelectorAll('.auth-form__input');
-      const form = document.querySelector('.auth-form');
-      const failMsg = document.querySelector('.auth-form__fail_msg');
+    // TODO input'ы через форму
+    const inputs = document.querySelectorAll('.auth-form__input');
+    const form = document.querySelector('.auth-form');
+    const failMsg = document.querySelector('.auth-form__fail_msg');
 
-      // TODO вынести в utils
-      const emailValidityChecks = [
-        {
-          isInvalid(input) {
-            const legalEmail = input.value.match(/[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/g);
-            return !legalEmail;
-          },
-          invalidityMessage: 'Invalid email address',
-          element: document.querySelector('label[for="email"] .auth-form__input-requirements li:nth-child(1)'),
+    // TODO вынести в utils
+    const emailValidityChecks = [
+      {
+        isInvalid(input) {
+          const legalEmail = input.value.match(/[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/g);
+          return !legalEmail;
         },
-      ];
+        invalidityMessage: 'Invalid email address',
+        element: document.querySelector('label[for="email"] .auth-form__input-requirements li:nth-child(1)'),
+      },
+    ];
 
-      const passwordValidityChecks = [
-        {
-          isInvalid(input) {
-            // eslint-disable-next-line no-bitwise
-            return input.value.length < 8;
-          },
-          invalidityMessage: 'This input needs to be at least 5 characters',
-          element: document.querySelector('label[for="password"] .auth-form__input-requirements li:nth-child(1)'),
+    const passwordValidityChecks = [
+      {
+        isInvalid(input) {
+          // eslint-disable-next-line no-bitwise
+          return input.value.length < 8;
         },
-      ];
+        invalidityMessage: 'This input needs to be at least 5 characters',
+        element: document.querySelector('label[for="password"] .auth-form__input-requirements li:nth-child(1)'),
+      },
+    ];
 
-      // TODO засунуть check в ctor
-      emailInput.CustomValidation = new CustomValidation();
-      emailInput.CustomValidation.validityChecks = emailValidityChecks;
+    // TODO засунуть check в ctor
+    emailInput.CustomValidation = new CustomValidation();
+    emailInput.CustomValidation.validityChecks = emailValidityChecks;
 
-      passwordInput.CustomValidation = new CustomValidation();
-      passwordInput.CustomValidation.validityChecks = passwordValidityChecks;
+    passwordInput.CustomValidation = new CustomValidation();
+    passwordInput.CustomValidation.validityChecks = passwordValidityChecks;
 
-      startListeners(inputs, form, failMsg, () => {
-        fetch('/signin', {
-          method: 'POST',
-          mode: 'same-origin',
-          cache: 'no-cache',
-          credentials: 'same-origin',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          redirect: 'follow',
-          referrerPolicy: 'no-referrer',
-          body: JSON.stringify({
-            email: emailInput.value.trim(),
-            password: passwordInput.value.trim(),
-          }),
+    startListeners(inputs, form, failMsg, () => {
+      fetch('/signin', {
+        method: 'POST',
+        mode: 'same-origin',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify({
+          email: emailInput.value.trim(),
+          password: passwordInput.value.trim(),
+        }),
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            return Promise.resolve(response);
+          }
+          return Promise.reject(new Error(response.statusText));
         })
-          .then((response) => {
-            if (response.status === 200) {
-              return Promise.resolve(response);
-            }
-            return Promise.reject(new Error(response.statusText));
-          })
-          .then(() => true)
-          .catch(() => false);
-      });
-    };
+        .then(() => true)
+        .catch(() => false);
+    });
   }
 }
 
