@@ -12,6 +12,10 @@ export class CustomValidation {
     return this.invalidities.join('. \n');
   }
 
+  clearInvalidities() {
+    this.invalidities = [];
+  }
+
   checkValidity(input) {
     this.validityChecks.forEach((value) => {
       const isInvalid = value.isInvalid(input);
@@ -34,9 +38,7 @@ export class CustomValidation {
 }
 
 export function checkInput(input) {
-  // TODO обращаться к методу
-  // eslint-disable-next-line no-param-reassign
-  input.CustomValidation.invalidities = [];
+  input.CustomValidation.clearInvalidities();
   input.CustomValidation.checkValidity(input);
 
   // TODO разобраться с input.value
