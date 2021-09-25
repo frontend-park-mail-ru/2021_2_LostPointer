@@ -34,10 +34,12 @@ export class CustomValidation {
 }
 
 export function checkInput(input) {
+  // TODO обращаться к методу
   // eslint-disable-next-line no-param-reassign
   input.CustomValidation.invalidities = [];
   input.CustomValidation.checkValidity(input);
 
+  // TODO разобраться с input.value
   if (input.CustomValidation.invalidities.length === 0 && input.value !== '') {
     input.setCustomValidity('');
   } else {
@@ -47,18 +49,22 @@ export function checkInput(input) {
   return !!(input.CustomValidation.invalidities.length === 0 && input.value !== '');
 }
 
-export function startListeners(inputs, submit, failMsg, callback) {
+// TODO callback to request или перенести в signin/signup
+export function startListeners(inputs, form, failMsg, callback) {
   inputs.forEach((input) => {
+    // TODO поменять keyup на change
     input.addEventListener('keyup', (event) => {
       event.preventDefault();
       checkInput(input);
     });
   });
 
-  submit.addEventListener('click', (event) => {
+  // TODO останавливать распространение при фейле валидации
+  form.addEventListener('submit', (event) => {
     event.preventDefault();
     let isValid = true;
     // обратный цикл, чтобы последним зарепортился самый верхний input
+    // TODO reverse (reduceRight)
     for (let i = inputs.length - 1; i >= 0; i -= 1) {
       if (!checkInput(inputs[i])) {
         isValid = false;

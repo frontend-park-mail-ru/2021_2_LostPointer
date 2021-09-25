@@ -38,19 +38,24 @@ class SigninView {
       <div class="auth-form__fail_msg">
         Authentication failed
       </div>
-      <button class="auth-form__submit" data-link href="/" type="submit">Sign in</button>
+      <button class="auth-form__submit" type="submit">Sign in</button>
     </form>
   </div>
 </div>
         `;
+
+    // TODO переделать в метод
     this.script = () => {
+      // TODO изменить на name-поля (прогуглить name-поля)
       const emailInput = document.getElementById('email');
       const passwordInput = document.getElementById('password');
 
+      // TODO input'ы через форму
       const inputs = document.querySelectorAll('.auth-form__input');
-      const submit = document.querySelector('.auth-form__submit');
+      const form = document.querySelector('.auth-form');
       const failMsg = document.querySelector('.auth-form__fail_msg');
 
+      // TODO вынести в utils
       const emailValidityChecks = [
         {
           isInvalid(input) {
@@ -73,13 +78,14 @@ class SigninView {
         },
       ];
 
+      // TODO засунуть check в ctor
       emailInput.CustomValidation = new CustomValidation();
       emailInput.CustomValidation.validityChecks = emailValidityChecks;
 
       passwordInput.CustomValidation = new CustomValidation();
       passwordInput.CustomValidation.validityChecks = passwordValidityChecks;
 
-      startListeners(inputs, submit, failMsg, () => {
+      startListeners(inputs, form, failMsg, () => {
         fetch('/signin', {
           method: 'POST',
           mode: 'same-origin',

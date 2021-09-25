@@ -68,7 +68,7 @@ class SignupView {
       const confirmPasswordInput = document.getElementById('confirm_password');
 
       const inputs = document.querySelectorAll('.auth-form__input');
-      const submit = document.querySelector('.auth-form__submit');
+      const form = document.querySelector('.auth-form');
       const failMsg = document.querySelector('.auth-form__fail_msg');
 
       const nameValidityChecks = [
@@ -146,6 +146,7 @@ class SignupView {
               || confirmPasswordInput.value !== passwordInput.value;
           },
           invalidityMessage: 'This password needs to match the first one',
+          // TODO обращаться к элементу не через документ, а через компонент input
           element: document.querySelector('label[for="confirm_password"] .auth-form__input-requirements li:nth-child(1)'),
         },
       ];
@@ -162,7 +163,7 @@ class SignupView {
       confirmPasswordInput.CustomValidation = new CustomValidation();
       confirmPasswordInput.CustomValidation.validityChecks = confirmPasswordValidityChecks;
 
-      startListeners(inputs, submit, failMsg, () => {
+      startListeners(inputs, form, failMsg, () => {
         fetch('/signup', {
           method: 'POST',
           mode: 'same-origin',
