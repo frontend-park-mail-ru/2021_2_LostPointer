@@ -52,7 +52,10 @@ export function checkInput(input) {
 }
 
 // TODO callback to request или перенести в signin/signup
-export function startListeners(inputs, form, failMsg, callback) {
+export function startListeners(form, callback) {
+  const inputs = document.querySelectorAll('.auth-form__input');
+  const failMsg = form.querySelector('.auth-form__fail_msg');
+
   inputs.forEach((input) => {
     // TODO поменять keyup на change
     input.addEventListener('keyup', (event) => {

@@ -50,18 +50,14 @@ class SigninView {
 
   // eslint-disable-next-line class-methods-use-this
   script() {
-    const emailInput = document.querySelector('input[name="email"]');
-    const passwordInput = document.querySelector('input[name="password"]');
-
-    // TODO input'ы через форму
-    const inputs = document.querySelectorAll('.auth-form__input');
     const form = document.querySelector('.auth-form');
-    const failMsg = document.querySelector('.auth-form__fail_msg');
+    const emailInput = form.querySelector('.auth-form__input[name="email"]');
+    const passwordInput = form.querySelector('.auth-form__input[name="password"]');
 
     emailInput.CustomValidation = new CustomValidation(emailValidityChecks);
     passwordInput.CustomValidation = new CustomValidation(simplePasswordValidityChecks);
 
-    startListeners(inputs, form, failMsg, () => {
+    startListeners(form, () => {
       fetch('/signin', {
         method: 'POST',
         mode: 'same-origin',

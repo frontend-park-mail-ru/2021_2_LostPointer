@@ -70,21 +70,18 @@ class SignupView {
 
   // eslint-disable-next-line class-methods-use-this
   script() {
-    const nameInput = document.querySelector('input[name="name"]');
-    const emailInput = document.querySelector('input[name="email"]');
-    const passwordInput = document.querySelector('input[name="password"]');
-    const confirmPasswordInput = document.querySelector('input[name="confirm_password"]');
-
-    const inputs = document.querySelectorAll('.auth-form__input');
     const form = document.querySelector('.auth-form');
-    const failMsg = document.querySelector('.auth-form__fail_msg');
+    const nameInput = form.querySelector('input[name="name"]');
+    const emailInput = form.querySelector('input[name="email"]');
+    const passwordInput = form.querySelector('input[name="password"]');
+    const confirmPasswordInput = form.querySelector('input[name="confirm_password"]');
 
     nameInput.CustomValidation = new CustomValidation(nameValidityChecks);
     emailInput.CustomValidation = new CustomValidation(emailValidityChecks);
     passwordInput.CustomValidation = new CustomValidation(passwordValidityChecks);
     confirmPasswordInput.CustomValidation = new CustomValidation(confirmPasswordValidityChecks);
 
-    startListeners(inputs, form, failMsg, () => {
+    startListeners(form, () => {
       fetch('/signup', {
         method: 'POST',
         mode: 'same-origin',
