@@ -1,8 +1,11 @@
 import {
   CustomValidation,
   startListeners,
-// eslint-disable-next-line import/extensions
 } from '../validation.js';
+import {
+  emailValidityChecks,
+  simplePasswordValidityChecks,
+} from '../validityChecks.js';
 
 class SigninView {
   constructor() {
@@ -47,41 +50,16 @@ class SigninView {
 
   // eslint-disable-next-line class-methods-use-this
   script() {
-    // TODO изменить на name-поля (прогуглить name-поля)
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
+    const emailInput = document.querySelector('input[name="email"]');
+    const passwordInput = document.querySelector('input[name="password"]');
 
     // TODO input'ы через форму
     const inputs = document.querySelectorAll('.auth-form__input');
     const form = document.querySelector('.auth-form');
     const failMsg = document.querySelector('.auth-form__fail_msg');
 
-    // TODO вынести в utils
-    const emailValidityChecks = [
-      {
-        isInvalid(input) {
-          const legalEmail = input.value.match(/[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/g);
-          return !legalEmail;
-        },
-        invalidityMessage: 'Invalid email address',
-        element: document.querySelector('label[for="email"] .auth-form__input-requirements li:nth-child(1)'),
-      },
-    ];
-
-    const passwordValidityChecks = [
-      {
-        isInvalid(input) {
-          // eslint-disable-next-line no-bitwise
-          return input.value.length < 8;
-        },
-        invalidityMessage: 'This input needs to be at least 5 characters',
-        element: document.querySelector('label[for="password"] .auth-form__input-requirements li:nth-child(1)'),
-      },
-    ];
-
     emailInput.CustomValidation = new CustomValidation(emailValidityChecks);
-
-    passwordInput.CustomValidation = new CustomValidation(passwordValidityChecks);
+    passwordInput.CustomValidation = new CustomValidation(simplePasswordValidityChecks);
 
     startListeners(inputs, form, failMsg, () => {
       fetch('/signin', {
