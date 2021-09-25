@@ -17,23 +17,28 @@ export class CustomValidation {
   }
 
   checkValidity(input) {
-    this.validityChecks.forEach((value) => {
-      const isInvalid = value.isInvalid(input);
-      if (isInvalid) {
-        this.addInvalidity(value.invalidityMessage);
-      }
-
-      const requirementElement = value.element;
-      if (requirementElement) {
+    const messageElements = input.nextElementSibling.querySelectorAll('li');
+    this.validityChecks.map((item, idx) => ({
+      check: item,
+      element: messageElements[idx],
+    }))
+      .forEach(({ check, element }) => {
+        const isInvalid = check.isInvalid(input);
         if (isInvalid) {
-          requirementElement.classList.add('invalid');
-          requirementElement.classList.remove('valid');
-        } else {
-          requirementElement.classList.remove('invalid');
-          requirementElement.classList.add('valid');
+          this.addInvalidity(check.invalidityMessage);
         }
-      }
-    });
+
+        const requirementElement = element;
+        if (requirementElement) {
+          if (isInvalid) {
+            requirementElement.classList.add('invalid');
+            requirementElement.classList.remove('valid');
+          } else {
+            requirementElement.classList.remove('invalid');
+            requirementElement.classList.add('valid');
+          }
+        }
+      });
   }
 }
 

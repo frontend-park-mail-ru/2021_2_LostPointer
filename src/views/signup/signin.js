@@ -27,13 +27,13 @@ class SigninView {
     </div>
     <form class="auth-form" id="auth-form" action="#">
       <label for="email">
-        <input class="auth-form__input" type="text" id="email" placeholder="Email">
+        <input class="auth-form__input" type="text" id="email" name="email" placeholder="Email">
         <ul class="auth-form__input-requirements">
           <li>Email required</li>
         </ul>
       </label>
       <label for="password">
-        <input class="auth-form__input" type="password" id="password" placeholder="Password">
+        <input class="auth-form__input" type="password" id="password" name="password" placeholder="Password">
         <ul class="auth-form__input-requirements">
           <li>Password required</li>
         </ul>
