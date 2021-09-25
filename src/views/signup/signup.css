@@ -18,7 +18,7 @@ body {
     background-color: #1A1919;
 }
 
-.login-ui {
+.auth-page {
     display: flex;
     height: 100%;
     align-items: center;

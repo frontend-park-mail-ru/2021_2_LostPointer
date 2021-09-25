@@ -2,7 +2,7 @@ class SignupView {
   constructor() {
     this.title = 'Signup';
     this.html = `
-<div class="login-ui">
+<div class="auth-page">
     <div class="auth-page__placeholder">
         <img class="auth_page__placeholder-photo" src="/src/static/img/woman_headphones_1.jpeg">
     </div>
