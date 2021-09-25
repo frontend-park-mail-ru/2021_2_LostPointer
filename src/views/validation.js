@@ -57,8 +57,7 @@ export function startListeners(form, callback) {
   const failMsg = form.querySelector('.auth-form__fail_msg');
 
   inputs.forEach((input) => {
-    // TODO поменять keyup на change
-    input.addEventListener('keyup', (event) => {
+    input.addEventListener('input', (event) => {
       event.preventDefault();
       checkInput(input);
     });
