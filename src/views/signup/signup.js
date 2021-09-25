@@ -60,7 +60,7 @@ class SignupView {
             <div class="auth-form__fail_msg">
                 Registration failed
             </div>
-            <button class="auth-form__submit" data-link href="/signin" type="submit">Sign up</button>
+            <button class="auth-form__submit" type="submit">Sign up</button>
         </form>
     </div>
     <script type="module" src="js/signup.js"></script>

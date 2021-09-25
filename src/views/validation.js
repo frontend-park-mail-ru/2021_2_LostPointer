@@ -46,14 +46,13 @@ export function checkInput(input) {
   input.CustomValidation.clearInvalidities();
   input.CustomValidation.checkValidity(input);
 
-  // TODO разобраться с input.value
-  if (input.CustomValidation.invalidities.length === 0 && input.value !== '') {
+  if (input.CustomValidation.invalidities.length === 0) {
     input.setCustomValidity('');
   } else {
     const message = input.CustomValidation.getInvalidities();
     input.setCustomValidity(message);
   }
-  return !!(input.CustomValidation.invalidities.length === 0 && input.value !== '');
+  return input.CustomValidation.invalidities.length === 0;
 }
 
 // TODO callback to request или перенести в signin/signup
