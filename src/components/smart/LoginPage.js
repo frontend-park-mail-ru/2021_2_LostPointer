@@ -14,7 +14,6 @@ class LoginPage {
         `${className}__placeholder`,
         'photo',
         '/src/static/img/woman_headphones_2.png',
-        '/',
       ),
       new DivComponent(
         `${className}__content`,
@@ -30,30 +29,31 @@ class LoginPage {
             'Sign in',
           ),
           new TextComponent(
-            `${className}auth-page__description`,
+            `${className}__description`,
             'Let’s get all required data and sign in',
           ),
           new AuthFormComponent(
             'auth-form',
+            'auth-form',
             [
               new InputComponent(
-                `${className}__input`,
+                'auth-form__input',
                 'email',
                 'text',
                 'Email',
               ),
               new InputComponent(
-                `${className}__input`,
+                'auth-form__input',
                 'password',
                 'text',
                 'Password',
               ),
               new ButtonComponent(
-                `${className}__submit`,
+                'auth-form__submit',
                 'Sign in',
               ),
               new ButtonComponent(
-                `${className}__submit`,
+                'auth-form__submit',
                 'Sign up',
                 '/signup',
               ),

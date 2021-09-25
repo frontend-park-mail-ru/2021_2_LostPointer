@@ -1,7 +1,8 @@
 class AuthFormComponent {
-  constructor(className, content) {
+  constructor(className, id, content) {
     this.el = document.createElement('form');
     this.el.classList.add(className);
+    this.el.id = id;
     this.el.setAttribute('action', '#');
     this.content = content;
     this.content.forEach((item) => {

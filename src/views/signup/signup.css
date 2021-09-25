@@ -29,7 +29,7 @@ body {
     height: 100%;
 }
 
-.auth_page__placeholder-photo {
+.auth-page__placeholder-photo {
     height: 100%;
     width: 100%;
     object-fit: cover;
