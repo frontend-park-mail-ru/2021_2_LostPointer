@@ -1,41 +1,30 @@
-const defaultBackendURL = 'defaultURL';
+// eslint-disable-next-line import/extensions
+import { ContentType, AppApiMethods } from './appApiUtils';
 
-export const ContentType = {
-  JSON: 'application/json',
-  IMG: {
-    IMG_JPEG: 'image/jpeg',
-    IMG_PNG: 'image/png',
-    IMG_SVG: 'image/svg+xml',
-  },
-  FORM: 'multipart/form-data',
-};
+const defaultBackendURL = 'http://lostpointer.site';
 
-export const AppApiMethods = {
-  POST: 'POST',
-  PUT: 'PUT',
-  GET: 'GET',
-  DELETE: 'DELETE',
-};
-
+// eslint-disable-next-line import/prefer-default-export
 export class AppApi {
   AppApi(backendURL = defaultBackendURL) {
     this.backendURL = backendURL;
   }
 
   post(url, requestBody, contentType) {
-    return this._fetchRequest(url, AppApiMethods.POST, requestBody, contentType);
+    return this._fetchRequest(defaultBackendURL + url,
+      AppApiMethods.POST, requestBody, contentType);
   }
 
   put(url, requestBody, contentType) {
-    return this._fetchRequest(url, AppApiMethods.PUT, requestBody, contentType);
+    return this._fetchRequest(defaultBackendURL + url,
+      AppApiMethods.PUT, requestBody, contentType);
   }
 
   get(url) {
-    return this._fetchRequest(url, AppApiMethods.GET);
+    return this._fetchRequest(defaultBackendURL + url, AppApiMethods.GET);
   }
 
   delete(url) {
-    return this._fetchRequest(url, AppApiMethods.DELETE);
+    return this._fetchRequest(defaultBackendURL + url, AppApiMethods.DELETE);
   }
 
   _fetchRequest(url, requestMethod, requestBody = '', contentType = ContentType.JSON) {
@@ -51,7 +40,10 @@ export class AppApi {
       headers: myHeaders,
       body: requestBody,
     })
-      .then((response) => response.json())
-      .catch((error) => console.log(error));
+      .then((response) => ({
+        Status: response.status,
+        Body: response.json,
+      }))
+      .catch((error) => error);
   }
 }
