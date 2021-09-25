@@ -1,7 +1,7 @@
 export class CustomValidation {
-  constructor() {
+  constructor(validityChecks) {
     this.invalidities = [];
-    this.validityChecks = [];
+    this.validityChecks = validityChecks;
   }
 
   addInvalidity(message) {

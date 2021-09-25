@@ -79,12 +79,9 @@ class SigninView {
       },
     ];
 
-    // TODO засунуть check в ctor
-    emailInput.CustomValidation = new CustomValidation();
-    emailInput.CustomValidation.validityChecks = emailValidityChecks;
+    emailInput.CustomValidation = new CustomValidation(emailValidityChecks);
 
-    passwordInput.CustomValidation = new CustomValidation();
-    passwordInput.CustomValidation.validityChecks = passwordValidityChecks;
+    passwordInput.CustomValidation = new CustomValidation(passwordValidityChecks);
 
     startListeners(inputs, form, failMsg, () => {
       fetch('/signin', {

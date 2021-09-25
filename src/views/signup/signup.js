@@ -154,17 +154,13 @@ class SignupView {
       },
     ];
 
-    nameInput.CustomValidation = new CustomValidation();
-    nameInput.CustomValidation.validityChecks = nameValidityChecks;
+    nameInput.CustomValidation = new CustomValidation(nameValidityChecks);
 
-    emailInput.CustomValidation = new CustomValidation();
-    emailInput.CustomValidation.validityChecks = emailValidityChecks;
+    emailInput.CustomValidation = new CustomValidation(emailValidityChecks);
 
-    passwordInput.CustomValidation = new CustomValidation();
-    passwordInput.CustomValidation.validityChecks = passwordValidityChecks;
+    passwordInput.CustomValidation = new CustomValidation(passwordValidityChecks);
 
-    confirmPasswordInput.CustomValidation = new CustomValidation();
-    confirmPasswordInput.CustomValidation.validityChecks = confirmPasswordValidityChecks;
+    confirmPasswordInput.CustomValidation = new CustomValidation(confirmPasswordValidityChecks);
 
     startListeners(inputs, form, failMsg, () => {
       fetch('/signup', {
