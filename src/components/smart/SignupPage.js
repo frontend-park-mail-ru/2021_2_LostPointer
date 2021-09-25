@@ -5,7 +5,7 @@ import AuthFormComponent from '../dummy/AuthFormComponent.js';
 import InputComponent from '../dummy/InputComponent.js';
 import ButtonComponent from '../dummy/ButtonComponent.js';
 
-class LoginPage {
+class SignupPage {
   constructor(className) {
     this.el = document.createElement('div');
     this.el.classList.add(className);
@@ -13,7 +13,7 @@ class LoginPage {
       new ImgComponent(
         `${className}__placeholder`,
         'photo',
-        '/src/static/img/woman_headphones_2.png',
+        '/src/static/img/woman_headphones_1.jpeg',
       ),
       new DivComponent(
         `${className}__content`,
@@ -26,16 +26,22 @@ class LoginPage {
           ),
           new TextComponent(
             `${className}__title`,
-            'Sign in',
+            'Sign up',
           ),
           new TextComponent(
             `${className}__description`,
-            'Let’s get all required data and sign in',
+            'Let’s get all your required setup information and get started',
           ),
           new AuthFormComponent(
             'auth-form',
             'auth-form',
             [
+              new InputComponent(
+                'auth-form__input',
+                'name',
+                'text',
+                'Name',
+              ),
               new InputComponent(
                 'auth-form__input',
                 'email',
@@ -47,6 +53,12 @@ class LoginPage {
                 'password',
                 'text',
                 'Password',
+              ),
+              new InputComponent(
+                'auth-form__input',
+                'confirm_password',
+                'text',
+                'Confirm password',
               ),
               new ButtonComponent(
                 'auth-form__submit',
@@ -72,4 +84,4 @@ class LoginPage {
   }
 }
 
-export default LoginPage;
+export default SignupPage;

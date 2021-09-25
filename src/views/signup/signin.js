@@ -1,9 +1,9 @@
-import LoginPage from '../../components/smart/LoginPage.js';
+import SigninPage from '../../components/smart/SigninPage.js';
 
 class SigninView {
   constructor() {
     this.title = 'Sign in';
-    this.content = new LoginPage('auth-page');
+    this.content = new SigninPage('auth-page');
     this.html = this.content.render();
   }
 }
