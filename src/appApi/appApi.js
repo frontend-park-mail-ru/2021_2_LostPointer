@@ -1,10 +1,8 @@
-// eslint-disable-next-line import/extensions
 import { ContentType, AppApiMethods } from './appApiUtils';
 
 const defaultBackendURL = 'http://lostpointer.site';
 
-// eslint-disable-next-line import/prefer-default-export
-export class AppApi {
+export default class AppApi {
   AppApi(backendURL = defaultBackendURL) {
     this.backendURL = backendURL;
   }
