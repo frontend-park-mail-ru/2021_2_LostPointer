@@ -1,6 +1,7 @@
 import {
+  addInputsEventListeners,
+  addSubmitEventListener,
   CustomValidation,
-  startListeners,
 } from '../validation.js';
 import {
   confirmPasswordValidityChecks,
@@ -81,7 +82,11 @@ class SignupView {
     passwordInput.CustomValidation = new CustomValidation(passwordValidityChecks);
     confirmPasswordInput.CustomValidation = new CustomValidation(confirmPasswordValidityChecks);
 
-    startListeners(form, () => {
+    addInputsEventListeners(form);
+    addSubmitEventListener(form);
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
       fetch('/signup', {
         method: 'POST',
         mode: 'same-origin',
@@ -104,8 +109,13 @@ class SignupView {
           }
           return Promise.reject(new Error(response.statusText));
         })
-        .then(() => true)
-        .catch(() => false);
+        .then(() => {
+          // TODO перейти на страницу логина
+        })
+        .catch(() => {
+          const failMsg = form.querySelector('.auth-form__fail_msg');
+          failMsg.classList.add('visible');
+        });
     });
   }
 }

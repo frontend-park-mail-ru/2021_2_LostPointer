@@ -1,6 +1,7 @@
 import {
+  addInputsEventListeners,
+  addSubmitEventListener,
   CustomValidation,
-  startListeners,
 } from '../validation.js';
 import {
   emailValidityChecks,
@@ -57,7 +58,11 @@ class SigninView {
     emailInput.CustomValidation = new CustomValidation(emailValidityChecks);
     passwordInput.CustomValidation = new CustomValidation(simplePasswordValidityChecks);
 
-    startListeners(form, () => {
+    addInputsEventListeners(form);
+    addSubmitEventListener(form);
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
       fetch('/signin', {
         method: 'POST',
         mode: 'same-origin',
@@ -79,8 +84,13 @@ class SigninView {
           }
           return Promise.reject(new Error(response.statusText));
         })
-        .then(() => true)
-        .catch(() => false);
+        .then(() => {
+          // TODO перейти на страницу дашборда
+        })
+        .catch(() => {
+          const failMsg = form.querySelector('.auth-form__fail_msg');
+          failMsg.classList.add('visible');
+        });
     });
   }
 }

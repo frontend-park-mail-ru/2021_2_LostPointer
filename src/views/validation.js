@@ -55,10 +55,8 @@ export function checkInput(input) {
   return input.CustomValidation.invalidities.length === 0;
 }
 
-// TODO callback to request или перенести в signin/signup
-export function startListeners(form, callback) {
-  const inputs = document.querySelectorAll('.auth-form__input');
-  const failMsg = form.querySelector('.auth-form__fail_msg');
+export function addInputsEventListeners(form) {
+  const inputs = form.querySelectorAll('.auth-form__input');
 
   inputs.forEach((input) => {
     input.addEventListener('input', (event) => {
@@ -66,29 +64,27 @@ export function startListeners(form, callback) {
       checkInput(input);
     });
   });
+}
 
-  // TODO останавливать распространение при фейле валидации
+export function addSubmitEventListener(form) {
+  const inputs = form.querySelectorAll('.auth-form__input');
+  const inputsArray = Array.from(inputs).reverse();
+
   form.addEventListener('submit', (event) => {
     event.preventDefault();
 
     let isValid = true;
-    inputs.reverse().forEach((item) => {
+    inputsArray.forEach((item) => {
       if (!checkInput(item)) {
         isValid = false;
       }
       if (!item.validity.valid) {
         item.reportValidity();
       }
-    }).reverse();
+    });
 
     if (!isValid) {
-      event.stopPropagation();
-      return;
-    }
-
-    if (!callback()) {
-      event.stopPropagation();
-      failMsg.classList.add('visible');
+      event.stopImmediatePropagation();
     }
   });
 }

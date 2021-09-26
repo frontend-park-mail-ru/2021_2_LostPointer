@@ -27,7 +27,7 @@ export const emailValidityChecks = [
 export const simplePasswordValidityChecks = [
   {
     isInvalid(input) {
-      return input.value.length === '';
+      return input.value === '';
     },
     invalidityMessage: 'Password required',
   },
