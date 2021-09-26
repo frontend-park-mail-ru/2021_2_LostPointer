@@ -85,7 +85,8 @@ class SigninView {
           return Promise.reject(new Error(response.statusText));
         })
         .then(() => {
-          // TODO перейти на страницу дашборда
+          window.history.pushState(null, null, '/');
+          window.history.forward();
         })
         .catch(() => {
           const failMsg = form.querySelector('.auth-form__fail_msg');

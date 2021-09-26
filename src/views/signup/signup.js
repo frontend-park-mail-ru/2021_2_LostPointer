@@ -110,7 +110,8 @@ class SignupView {
           return Promise.reject(new Error(response.statusText));
         })
         .then(() => {
-          // TODO перейти на страницу логина
+          window.history.pushState(null, null, '/signin');
+          window.history.forward();
         })
         .catch(() => {
           const failMsg = form.querySelector('.auth-form__fail_msg');
