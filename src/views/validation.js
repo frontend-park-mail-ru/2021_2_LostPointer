@@ -66,25 +66,20 @@ export function addInputsEventListeners(form) {
   });
 }
 
-export function addSubmitEventListener(form) {
-  const inputs = form.querySelectorAll('.auth-form__input');
-  const inputsArray = Array.from(inputs).reverse();
-
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    let isValid = true;
-    inputsArray.forEach((item) => {
-      if (!checkInput(item)) {
-        isValid = false;
-      }
-      if (!item.validity.valid) {
-        item.reportValidity();
-      }
-    });
-
-    if (!isValid) {
-      event.stopImmediatePropagation();
+export function submitFormEvent(event) {
+  event.preventDefault();
+  const inputsArray = Array.from(document.querySelectorAll('.auth-form__input')).reverse();
+  let isValid = true;
+  inputsArray.forEach((item) => {
+    if (!checkInput(item)) {
+      isValid = false;
+    }
+    if (!item.validity.valid) {
+      item.reportValidity();
     }
   });
+
+  if (!isValid) {
+    event.stopImmediatePropagation();
+  }
 }

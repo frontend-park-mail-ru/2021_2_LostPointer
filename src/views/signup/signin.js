@@ -1,6 +1,6 @@
 import {
   addInputsEventListeners,
-  addSubmitEventListener,
+  submitFormEvent,
   CustomValidation,
 } from '../validation.js';
 import {
@@ -59,8 +59,7 @@ class SigninView {
     passwordInput.CustomValidation = new CustomValidation(simplePasswordValidityChecks);
 
     addInputsEventListeners(form);
-    addSubmitEventListener(form);
-
+    form.addEventListener('submit', submitFormEvent);
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       fetch('/signin', {
