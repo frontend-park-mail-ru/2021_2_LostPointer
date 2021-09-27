@@ -70,21 +70,21 @@ class SignupView {
   }
 
   render() {
-    this.form = document.querySelector('.auth-form');
-    this.nameInput = this.form.querySelector('input[name="name"]');
-    this.emailInput = this.form.querySelector('input[name="email"]');
-    this.passwordInput = this.form.querySelector('input[name="password"]');
-    this.confirmPasswordInput = this.form.querySelector('input[name="confirm_password"]');
+    const form = document.querySelector('.auth-form');
+    const nameInput = form.querySelector('input[name="name"]');
+    const emailInput = form.querySelector('input[name="email"]');
+    const passwordInput = form.querySelector('input[name="password"]');
+    const confirmPasswordInput = form.querySelector('input[name="confirm_password"]');
 
-    this.nameInput.CustomValidation = new CustomValidation(nameValidityChecks);
-    this.emailInput.CustomValidation = new CustomValidation(emailValidityChecks);
-    this.passwordInput.CustomValidation = new CustomValidation(passwordValidityChecks);
-    this.confirmPasswordInput.CustomValidation = new CustomValidation(
+    nameInput.CustomValidation = new CustomValidation(nameValidityChecks);
+    emailInput.CustomValidation = new CustomValidation(emailValidityChecks);
+    passwordInput.CustomValidation = new CustomValidation(passwordValidityChecks);
+    confirmPasswordInput.CustomValidation = new CustomValidation(
       confirmPasswordValidityChecks,
     );
 
-    addInputsEventListeners(this.form);
-    this.form.addEventListener('submit', this.submitSignupForm);
+    addInputsEventListeners(form);
+    form.addEventListener('submit', this.submitSignupForm);
   }
 
   submitSignupForm(event) {
@@ -92,6 +92,9 @@ class SignupView {
     if (!isValidForm()) {
       return;
     }
+    const nameInput = event.target.querySelector('input[name="name"]');
+    const emailInput = event.target.querySelector('input[name="email"]');
+    const passwordInput = event.target.querySelector('input[name="password"]');
     fetch('/signup', {
       method: 'POST',
       mode: 'same-origin',
@@ -103,9 +106,9 @@ class SignupView {
       redirect: 'follow',
       referrerPolicy: 'no-referrer',
       body: JSON.stringify({
-        name: this.nameInput.value.trim(),
-        email: this.emailInput.value.trim(),
-        password: this.passwordInput.value.trim(),
+        name: nameInput.value.trim(),
+        email: emailInput.value.trim(),
+        password: passwordInput.value.trim(),
       }),
     })
       .then((response) => {
@@ -119,7 +122,7 @@ class SignupView {
         window.history.forward();
       })
       .catch(() => {
-        const failMsg = this.form.querySelector('.auth-form__fail_msg');
+        const failMsg = event.target.querySelector('.auth-form__fail_msg');
         failMsg.classList.add('visible');
       });
   }

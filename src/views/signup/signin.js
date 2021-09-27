@@ -50,15 +50,15 @@ class SigninView {
   }
 
   render() {
-    this.form = document.querySelector('.auth-form');
-    this.emailInput = this.form.querySelector('.auth-form__input[name="email"]');
-    this.passwordInput = this.form.querySelector('.auth-form__input[name="password"]');
+    const form = document.querySelector('.auth-form');
+    const emailInput = form.querySelector('.auth-form__input[name="email"]');
+    const passwordInput = form.querySelector('.auth-form__input[name="password"]');
 
-    this.emailInput.CustomValidation = new CustomValidation(emailValidityChecks);
-    this.passwordInput.CustomValidation = new CustomValidation(simplePasswordValidityChecks);
+    emailInput.CustomValidation = new CustomValidation(emailValidityChecks);
+    passwordInput.CustomValidation = new CustomValidation(simplePasswordValidityChecks);
 
-    addInputsEventListeners(this.form);
-    this.form.addEventListener('submit', this.submitSigninForm);
+    addInputsEventListeners(form);
+    form.addEventListener('submit', this.submitSigninForm);
   }
 
   submitSigninForm(event) {
@@ -66,6 +66,8 @@ class SigninView {
     if (!isValidForm()) {
       return;
     }
+    const emailInput = event.target.querySelector('.auth-form__input[name="email"]');
+    const passwordInput = event.target.querySelector('.auth-form__input[name="password"]');
     fetch('/signin', {
       method: 'POST',
       mode: 'same-origin',
@@ -77,8 +79,8 @@ class SigninView {
       redirect: 'follow',
       referrerPolicy: 'no-referrer',
       body: JSON.stringify({
-        email: this.emailInput.value.trim(),
-        password: this.passwordInput.value.trim(),
+        email: emailInput.value.trim(),
+        password: passwordInput.value.trim(),
       }),
     })
       .then((response) => {
@@ -92,7 +94,7 @@ class SigninView {
         window.history.forward();
       })
       .catch(() => {
-        const failMsg = this.form.querySelector('.auth-form__fail_msg');
+        const failMsg = event.target.querySelector('.auth-form__fail_msg');
         failMsg.classList.add('visible');
       });
   }
