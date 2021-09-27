@@ -116,15 +116,19 @@ class SignupView {
         if (response.status === 200) {
           return Promise.resolve(response);
         }
+        response.json().then((data) => {
+          const failMsg = event.target.querySelector('.auth-form__fail_msg');
+          failMsg.innerText = data.msg;
+          failMsg.classList.add('visible');
+        });
         return Promise.reject(new Error(response.statusText));
       })
       .then(() => {
         window.history.pushState(null, null, '/signin');
         window.history.forward();
       })
-      .catch(() => {
-        const failMsg = event.target.querySelector('.auth-form__fail_msg');
-        failMsg.classList.add('visible');
+      .catch((error) => {
+        console.log(error.message);
       });
   }
 }
