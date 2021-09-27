@@ -15,9 +15,9 @@ app.post('/signin', (req, res) => {
   res.sendStatus(200);
 });
 app.post('/signup', (req, res) => {
-  res.status(400);
-  res.json({ msg: 'Email already exists' });
-  // res.sendStatus(200);
+  // res.status(400);
+  // res.json({ msg: 'Email already exists' });
+  res.sendStatus(200);
 });
 
 app.listen(port, host, () => console.log(`Listening on http://${host}:${port}`));

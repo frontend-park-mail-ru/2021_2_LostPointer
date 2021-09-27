@@ -91,8 +91,8 @@ class SigninView {
         return Promise.reject(new Error(response.statusText));
       })
       .then(() => {
-        window.history.pushState(null, null, '/');
-        window.history.forward();
+        window.history.replaceState(null, null, '/');
+        window.history.go(0);
       })
       .catch(() => {
         const failMsg = event.target.querySelector('.auth-form__fail_msg');

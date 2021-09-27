@@ -124,8 +124,8 @@ class SignupView {
         return Promise.reject(new Error(response.statusText));
       })
       .then(() => {
-        window.history.pushState(null, null, '/signin');
-        window.history.forward();
+        window.history.replaceState(null, null, '/signin');
+        window.history.go(0);
       })
       .catch((error) => {
         console.log(error.message);
