@@ -20,4 +20,5 @@ app.post('/signup', (req, res) => {
   res.sendStatus(200);
 });
 
+// eslint-disable-next-line no-console
 app.listen(port, host, () => console.log(`Listening on http://${host}:${port}`));

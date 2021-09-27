@@ -265,8 +265,17 @@ body {
 }
 
 .player-controls {
-    width: 115px;
+    display: flex;
+}
+
+.player-skip-right,
+.player-skip-left,
+.player-play {
     cursor: pointer;
+}
+
+.player-skip-right {
+    transform: rotate(180deg);
 }
 
 .player__seekbar {
