@@ -61,6 +61,7 @@ class SigninView {
     form.addEventListener('submit', this.submitSigninForm);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   submitSigninForm(event) {
     event.preventDefault();
     if (!isValidForm()) {
