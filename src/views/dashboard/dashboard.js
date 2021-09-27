@@ -202,25 +202,25 @@ class DashboardView {
         <img class="player__volume-icon" src="/src/static/img/volume.svg">
     </div>
 `;
-    this.script = () => {
-      fetch('/auth', {
+  }
+  script() {
+    fetch('/auth', {
         method: 'GET',
         mode: 'same-origin',
         cache: 'no-cache',
         credentials: 'same-origin',
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
-      })
+        })
         .then((response) => {
-          if (response.status === 200) {
+            if (response.status === 200) {
             return Promise.resolve(response);
-          }
-          return Promise.reject(new Error(response.statusText));
+            }
+            return Promise.reject(new Error(response.statusText));
         })
         .catch(() => {
-          // navigateTo('/signin');
+            // navigateTo('/signin');
         });
-    };
   }
 }
 
