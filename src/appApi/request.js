@@ -1,8 +1,8 @@
-import { ContentType, RequestMethods } from './requestUtils';
+import { ContentType, RequestMethods } from './requestUtils.js';
 
 const defaultBackendDomain = 'http://lostpointer.site';
 
-class Request {
+export class Request {
   constructor(domain = defaultBackendDomain) {
     this.backendDomain = domain;
   }
@@ -33,18 +33,16 @@ class Request {
 
     return fetch(url, {
       method: requestMethod,
-      mode: 'cross-origin',
+      mode: 'same-origin',
       credentials: 'same-origin',
       headers: myHeaders,
       body: requestBody,
     })
-      .then((response) => {
-        response.json()
-          .then((body) => ({
-            Status: response.status,
-            Body: body,
-          }));
-      })
+      .then((response) => response.json()
+        .then((body) => ({
+          Status: response.status,
+          Body: body,
+        })))
       // eslint-disable-next-line no-console
       .catch((error) => console.log(error));
   }

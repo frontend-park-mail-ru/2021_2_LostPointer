@@ -9,6 +9,9 @@ import {
   nameValidityChecks,
   passwordValidityChecks,
 } from '../validityChecks.js';
+import {
+  Request as FetchRequest,
+} from '../../appApi/request.js';
 
 class SignupView {
   constructor() {
@@ -96,40 +99,28 @@ class SignupView {
     const nameInput = event.target.querySelector('input[name="name"]');
     const emailInput = event.target.querySelector('input[name="email"]');
     const passwordInput = event.target.querySelector('input[name="password"]');
-    fetch('/signup', {
-      method: 'POST',
-      mode: 'same-origin',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      body: JSON.stringify({
+
+    const req = new FetchRequest();
+    req.post(
+      '/signup',
+      JSON.stringify({
         name: nameInput.value.trim(),
         email: emailInput.value.trim(),
         password: passwordInput.value.trim(),
       }),
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return Promise.resolve(response);
-        }
-        response.json().then((data) => {
+    )
+      .then(({ Status, Body }) => {
+        if (Status === 200) {
+          window.history.replaceState(null, null, '/signin');
+          window.history.go(0);
+        } else {
           const failMsg = event.target.querySelector('.auth-form__fail_msg');
-          failMsg.innerText = data.msg;
+          failMsg.innerText = Body.msg;
           failMsg.classList.add('visible');
-        });
-        return Promise.reject(new Error(response.statusText));
+        }
       })
-      .then(() => {
-        window.history.replaceState(null, null, '/signin');
-        window.history.go(0);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+      // eslint-disable-next-line no-console
+      .catch((error) => { console.log(error.msg); });
   }
 }
 

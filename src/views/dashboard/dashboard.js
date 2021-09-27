@@ -1,3 +1,5 @@
+import { Request as FetchRequest } from '../../appApi/request.js';
+
 class DashboardView {
   constructor() {
     this.title = 'Sign in';
@@ -210,24 +212,18 @@ class DashboardView {
 
   // eslint-disable-next-line class-methods-use-this
   render() {
-    fetch('/auth', {
-      method: 'GET',
-      mode: 'same-origin',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return Promise.resolve(response);
+    const req = new FetchRequest();
+    req.get(
+      '/auth',
+    )
+      .then(({ Status }) => {
+        if (Status !== 200) {
+          window.history.replaceState(null, null, '/signin');
+          window.history.go(0);
         }
-        return Promise.reject(new Error(response.statusText));
       })
-      .catch(() => {
-        window.history.pushState(null, null, '/signin');
-        window.history.forward();
-      });
+      // eslint-disable-next-line no-console
+      .catch((error) => { console.log(error.msg); });
   }
 }
 

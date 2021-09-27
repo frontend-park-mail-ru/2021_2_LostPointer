@@ -7,6 +7,9 @@ import {
   emailValidityChecks,
   simplePasswordValidityChecks,
 } from '../validityChecks.js';
+import {
+  Request as FetchRequest,
+} from '../../appApi/request.js';
 
 class SigninView {
   constructor() {
@@ -69,35 +72,26 @@ class SigninView {
     }
     const emailInput = event.target.querySelector('.auth-form__input[name="email"]');
     const passwordInput = event.target.querySelector('.auth-form__input[name="password"]');
-    fetch('/signin', {
-      method: 'POST',
-      mode: 'same-origin',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      body: JSON.stringify({
+
+    const req = new FetchRequest();
+    req.post(
+      '/signin',
+      JSON.stringify({
         email: emailInput.value.trim(),
         password: passwordInput.value.trim(),
       }),
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return Promise.resolve(response);
+    )
+      .then(({ Status }) => {
+        if (Status === 200) {
+          window.history.replaceState(null, null, '/');
+          window.history.go(0);
+        } else {
+          const failMsg = event.target.querySelector('.auth-form__fail_msg');
+          failMsg.classList.add('visible');
         }
-        return Promise.reject(new Error(response.statusText));
       })
-      .then(() => {
-        window.history.replaceState(null, null, '/');
-        window.history.go(0);
-      })
-      .catch(() => {
-        const failMsg = event.target.querySelector('.auth-form__fail_msg');
-        failMsg.classList.add('visible');
-      });
+      // eslint-disable-next-line no-console
+      .catch((error) => { console.log(error.msg); });
   }
 }
 
