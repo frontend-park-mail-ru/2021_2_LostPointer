@@ -87,7 +87,7 @@ class SignupView {
 
   submitSignupForm(event) {
     event.preventDefault();
-    if (!isValidForm) {
+    if (!isValidForm()) {
       return;
     }
     fetch('/signup', {
