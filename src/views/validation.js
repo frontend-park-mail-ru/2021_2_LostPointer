@@ -66,7 +66,7 @@ export function addInputsEventListeners(form) {
   });
 }
 
-export function isValidForm(event) {
+export function isValidForm() {
   const inputsArray = Array.from(document.querySelectorAll('.auth-form__input')).reverse();
   let isValid = true;
   inputsArray.forEach((item) => {

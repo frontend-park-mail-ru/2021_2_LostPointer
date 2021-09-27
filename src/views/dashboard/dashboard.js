@@ -204,25 +204,26 @@ class DashboardView {
 `;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   render() {
     fetch('/auth', {
-        method: 'GET',
-        mode: 'same-origin',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-        })
-        .then((response) => {
-            if (response.status === 200) {
-            return Promise.resolve(response);
-            }
-            return Promise.reject(new Error(response.statusText));
-        })
-        .catch(() => {
-            window.history.pushState(null, null, '/signin');
-            window.history.forward();
-        });
+      method: 'GET',
+      mode: 'same-origin',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return Promise.resolve(response);
+        }
+        return Promise.reject(new Error(response.statusText));
+      })
+      .catch(() => {
+        window.history.pushState(null, null, '/signin');
+        window.history.forward();
+      });
   }
 }
 

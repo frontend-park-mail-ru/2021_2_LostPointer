@@ -50,15 +50,15 @@ class SigninView {
   }
 
   render() {
-    const form = document.querySelector('.auth-form');
-    const emailInput = form.querySelector('.auth-form__input[name="email"]');
-    const passwordInput = form.querySelector('.auth-form__input[name="password"]');
+    this.form = document.querySelector('.auth-form');
+    this.emailInput = this.form.querySelector('.auth-form__input[name="email"]');
+    this.passwordInput = this.form.querySelector('.auth-form__input[name="password"]');
 
-    emailInput.CustomValidation = new CustomValidation(emailValidityChecks);
-    passwordInput.CustomValidation = new CustomValidation(simplePasswordValidityChecks);
+    this.emailInput.CustomValidation = new CustomValidation(emailValidityChecks);
+    this.passwordInput.CustomValidation = new CustomValidation(simplePasswordValidityChecks);
 
-    addInputsEventListeners(form);
-    form.addEventListener('submit', submitSigninForm)
+    addInputsEventListeners(this.form);
+    this.form.addEventListener('submit', this.submitSigninForm);
   }
 
   submitSigninForm(event) {
@@ -77,8 +77,8 @@ class SigninView {
       redirect: 'follow',
       referrerPolicy: 'no-referrer',
       body: JSON.stringify({
-        email: emailInput.value.trim(),
-        password: passwordInput.value.trim(),
+        email: this.emailInput.value.trim(),
+        password: this.passwordInput.value.trim(),
       }),
     })
       .then((response) => {
@@ -92,7 +92,7 @@ class SigninView {
         window.history.forward();
       })
       .catch(() => {
-        const failMsg = form.querySelector('.auth-form__fail_msg');
+        const failMsg = this.form.querySelector('.auth-form__fail_msg');
         failMsg.classList.add('visible');
       });
   }
