@@ -203,7 +203,8 @@ class DashboardView {
     </div>
 `;
   }
-  script() {
+
+  render() {
     fetch('/auth', {
         method: 'GET',
         mode: 'same-origin',
@@ -219,7 +220,8 @@ class DashboardView {
             return Promise.reject(new Error(response.statusText));
         })
         .catch(() => {
-            // navigateTo('/signin');
+            window.history.pushState(null, null, '/signin');
+            window.history.forward();
         });
   }
 }

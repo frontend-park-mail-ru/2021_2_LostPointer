@@ -49,8 +49,7 @@ class SigninView {
         `;
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  script() {
+  render() {
     const form = document.querySelector('.auth-form');
     const emailInput = form.querySelector('.auth-form__input[name="email"]');
     const passwordInput = form.querySelector('.auth-form__input[name="password"]');
@@ -59,41 +58,43 @@ class SigninView {
     passwordInput.CustomValidation = new CustomValidation(simplePasswordValidityChecks);
 
     addInputsEventListeners(form);
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      if (!isValidForm) {
-        return;
-      }
-      fetch('/signin', {
-        method: 'POST',
-        mode: 'same-origin',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-        body: JSON.stringify({
-          email: emailInput.value.trim(),
-          password: passwordInput.value.trim(),
-        }),
+    form.addEventListener('submit', submitSigninForm)
+  }
+
+  submitSigninForm(event) {
+    event.preventDefault();
+    if (!isValidForm) {
+      return;
+    }
+    fetch('/signin', {
+      method: 'POST',
+      mode: 'same-origin',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({
+        email: emailInput.value.trim(),
+        password: passwordInput.value.trim(),
+      }),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return Promise.resolve(response);
+        }
+        return Promise.reject(new Error(response.statusText));
       })
-        .then((response) => {
-          if (response.status === 200) {
-            return Promise.resolve(response);
-          }
-          return Promise.reject(new Error(response.statusText));
-        })
-        .then(() => {
-          window.history.pushState(null, null, '/');
-          window.history.forward();
-        })
-        .catch(() => {
-          const failMsg = form.querySelector('.auth-form__fail_msg');
-          failMsg.classList.add('visible');
-        });
-    });
+      .then(() => {
+        window.history.pushState(null, null, '/');
+        window.history.forward();
+      })
+      .catch(() => {
+        const failMsg = form.querySelector('.auth-form__fail_msg');
+        failMsg.classList.add('visible');
+      });
   }
 }
 

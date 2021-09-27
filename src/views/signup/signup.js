@@ -69,8 +69,7 @@ class SignupView {
         `;
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  script() {
+  render() {
     const form = document.querySelector('.auth-form');
     const nameInput = form.querySelector('input[name="name"]');
     const emailInput = form.querySelector('input[name="email"]');
@@ -83,42 +82,44 @@ class SignupView {
     confirmPasswordInput.CustomValidation = new CustomValidation(confirmPasswordValidityChecks);
 
     addInputsEventListeners(form);
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      if (!isValidForm) {
-        return;
-      }
-      fetch('/signup', {
-        method: 'POST',
-        mode: 'same-origin',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-        body: JSON.stringify({
-          name: nameInput.value.trim(),
-          email: emailInput.value.trim(),
-          password: passwordInput.value.trim(),
-        }),
+    form.addEventListener('submit', this.submitSignupForm);
+  }
+
+  submitSignupForm(event) {
+    event.preventDefault();
+    if (!isValidForm) {
+      return;
+    }
+    fetch('/signup', {
+      method: 'POST',
+      mode: 'same-origin',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({
+        name: nameInput.value.trim(),
+        email: emailInput.value.trim(),
+        password: passwordInput.value.trim(),
+      }),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return Promise.resolve(response);
+        }
+        return Promise.reject(new Error(response.statusText));
       })
-        .then((response) => {
-          if (response.status === 200) {
-            return Promise.resolve(response);
-          }
-          return Promise.reject(new Error(response.statusText));
-        })
-        .then(() => {
-          window.history.pushState(null, null, '/signin');
-          window.history.forward();
-        })
-        .catch(() => {
-          const failMsg = form.querySelector('.auth-form__fail_msg');
-          failMsg.classList.add('visible');
-        });
-    });
+      .then(() => {
+        window.history.pushState(null, null, '/signin');
+        window.history.forward();
+      })
+      .catch(() => {
+        const failMsg = form.querySelector('.auth-form__fail_msg');
+        failMsg.classList.add('visible');
+      });
   }
 }
 
