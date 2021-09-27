@@ -63,7 +63,7 @@ class SigninView {
 
   submitSigninForm(event) {
     event.preventDefault();
-    if (!isValidForm) {
+    if (!isValidForm()) {
       return;
     }
     fetch('/signin', {
