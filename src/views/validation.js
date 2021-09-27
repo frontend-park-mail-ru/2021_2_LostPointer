@@ -66,7 +66,7 @@ export function addInputsEventListeners(form) {
   });
 }
 
-export function submitFormEvent(event) {
+export function isValidForm(event) {
   event.preventDefault();
   const inputsArray = Array.from(document.querySelectorAll('.auth-form__input')).reverse();
   let isValid = true;
@@ -78,8 +78,5 @@ export function submitFormEvent(event) {
       item.reportValidity();
     }
   });
-
-  if (!isValid) {
-    event.stopImmediatePropagation();
-  }
+  return isValid;
 }

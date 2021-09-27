@@ -1,6 +1,6 @@
 import {
   addInputsEventListeners,
-  submitFormEvent,
+  isValidForm,
   CustomValidation,
 } from '../validation.js';
 import {
@@ -59,9 +59,11 @@ class SigninView {
     passwordInput.CustomValidation = new CustomValidation(simplePasswordValidityChecks);
 
     addInputsEventListeners(form);
-    form.addEventListener('submit', submitFormEvent);
     form.addEventListener('submit', (event) => {
       event.preventDefault();
+      if (!isValidForm) {
+        return;
+      }
       fetch('/signin', {
         method: 'POST',
         mode: 'same-origin',
