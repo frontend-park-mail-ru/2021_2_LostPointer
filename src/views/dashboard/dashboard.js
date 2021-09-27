@@ -192,11 +192,7 @@ class DashboardView {
             <div class="track-name">Megalovania</div>
             <div class="artist-name">Toby Fox</div>
         </div>
-        <div class="player-controls">
-        <img src="/src/static/img/skip.svg" class="player-skip-left">
-        <img src="/src/static/img/play.svg" class="player-play">
-        <img src="/src/static/img/skip.svg" class="player-skip-right">
-        </div>
+        <img src="/src/static/img/player-controls.svg" class="player-controls">
         <div class="player__time">0:00</div>
         <div class="player__seekbar"></div>
         <div class="player__time">03:30</div>
