@@ -3,7 +3,9 @@ import { ContentType, AppApiMethods, createURL } from './appApiUtils';
 const defaultBackendDomain = 'http://lostpointer.site';
 
 export class AppApi {
-  backendDomain = defaultBackendDomain;
+  constructor(domain = defaultBackendDomain) {
+    this.backendDomain = domain;
+  }
 
   post(path, requestBody, contentType) {
     return this._fetchRequest(createURL(this.backendDomain, path),
