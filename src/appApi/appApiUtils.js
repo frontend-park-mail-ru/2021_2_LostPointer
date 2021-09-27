@@ -14,3 +14,7 @@ export const AppApiMethods = {
   GET: 'GET',
   DELETE: 'DELETE',
 };
+
+export function createURL(domain, path) {
+  return domain + path;
+}

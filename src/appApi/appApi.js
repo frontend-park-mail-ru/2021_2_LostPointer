@@ -1,28 +1,26 @@
-import { ContentType, AppApiMethods } from './appApiUtils';
+import { ContentType, AppApiMethods, createURL } from './appApiUtils';
 
-const defaultBackendURL = 'http://lostpointer.site';
+const defaultBackendDomain = 'http://lostpointer.site';
 
-export default class AppApi {
-  AppApi(backendURL = defaultBackendURL) {
-    this.backendURL = backendURL;
-  }
+export class AppApi {
+  backendDomain = defaultBackendDomain;
 
-  post(url, requestBody, contentType) {
-    return this._fetchRequest(defaultBackendURL + url,
+  post(path, requestBody, contentType) {
+    return this._fetchRequest(createURL(this.backendDomain, path),
       AppApiMethods.POST, requestBody, contentType);
   }
 
-  put(url, requestBody, contentType) {
-    return this._fetchRequest(defaultBackendURL + url,
+  put(path, requestBody, contentType) {
+    return this._fetchRequest(createURL(this.backendDomain, path),
       AppApiMethods.PUT, requestBody, contentType);
   }
 
-  get(url) {
-    return this._fetchRequest(defaultBackendURL + url, AppApiMethods.GET);
+  get(path) {
+    return this._fetchRequest(createURL(this.backendDomain, path), AppApiMethods.GET);
   }
 
-  delete(url) {
-    return this._fetchRequest(defaultBackendURL + url, AppApiMethods.DELETE);
+  delete(path) {
+    return this._fetchRequest(createURL(this.backendDomain, path), AppApiMethods.DELETE);
   }
 
   _fetchRequest(url, requestMethod, requestBody = '', contentType = ContentType.JSON) {
@@ -38,10 +36,15 @@ export default class AppApi {
       headers: myHeaders,
       body: requestBody,
     })
-      .then((response) => ({
-        Status: response.status,
-        Body: response.json,
-      }))
-      .catch((error) => error);
+      .then(async (response) => {
+        const { status } = response;
+        const body = await response.json();
+        return {
+          Status: status,
+          Body: body,
+        };
+      })
+      // eslint-disable-next-line no-console
+      .catch((error) => console.log(error));
   }
 }
