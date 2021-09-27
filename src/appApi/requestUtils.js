@@ -8,13 +8,9 @@ export const ContentType = {
   FORM: 'multipart/form-data',
 };
 
-export const AppApiMethods = {
+export const RequestMethods = {
   POST: 'POST',
   PUT: 'PUT',
   GET: 'GET',
   DELETE: 'DELETE',
 };
-
-export function createURL(domain, path) {
-  return domain + path;
-}
