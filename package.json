@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/frontend-park-mail-ru/2021_2_LostPointer#readme",
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.24.2",
