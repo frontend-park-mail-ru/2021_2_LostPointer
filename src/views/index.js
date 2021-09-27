@@ -1,6 +1,7 @@
 import router from '../router/router.js';
 
 const navigateTo = (url) => {
+  // eslint-disable-next-line no-console
   console.log(url);
   window.history.pushState(null, null, url);
   router();
