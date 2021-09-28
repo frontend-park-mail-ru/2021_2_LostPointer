@@ -7,10 +7,11 @@ export class Component {
   }
 
   render() {
-    this.el = document.querySelector(`div.${this.selector}`);
-    if (this.el) {
-      this.el.innerHTML = this.compileTemplate(this.template, this.data);
+    this.el = document.querySelector(`.${this.selector}`);
+    if (!this.el) {
+      return;
     }
+    this.el.innerHTML = this.compileTemplate(this.template, this.data);
     if (this.components) {
       this.components.forEach((c) => (c.render()));
     }
