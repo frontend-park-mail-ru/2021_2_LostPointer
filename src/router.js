@@ -1,7 +1,7 @@
 // import SigninView from '../views/signup/signin.js';
 // import SignupView from '../views/signup/signup.js';
 // import DashboardView from '../views/dashboard/dashboard.js';
-import { PATH_ARG, PATH_SLASH } from '../regex.js';
+import { PATH_ARG, PATH_SLASH } from './regex.js';
 
 const pathToRegex = (path) => new RegExp(`^${path.replace(PATH_SLASH, '\\/').replace(PATH_ARG, '(.+)')}$`);
 
