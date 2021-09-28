@@ -12,4 +12,5 @@ app.get('/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'index.html'));
 });
 
+// eslint-disable-next-line no-console
 app.listen(port, host, () => console.log(`Listening on http://${host}:${port}`));
