@@ -6,11 +6,24 @@ class AppTopAlbums extends FWComponent {
 export const appTopAlbums = new AppTopAlbums({
   selector: 'listen-now__top-albums',
   template: `
-  <span class="topbar__search"></span>
-  <span class="topbar-icons">
-    <img class="topbar-icon" src="/src/static/img/notifications-none.svg">
-    <img class="topbar-icon" src="/src/static/img/settings.svg">
-    </span>
-  <img class="topbar-profile" href="/signin" data-link src="/src/static/img/ava.png">
+{{# each albums}}
+  <img class="top-album" src="/src/static/img/{{ img }}"/>
+{{/each}}
   `,
+  data: {
+    albums: [
+      {
+        img: 'id.jpeg',
+      },
+      {
+        img: 'albina.jpeg',
+      },
+      {
+        img: 'starboy.jpg',
+      },
+      {
+        img: 'yur.jpg',
+      },
+    ],
+  },
 });

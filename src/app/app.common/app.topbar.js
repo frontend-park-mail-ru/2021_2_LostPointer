@@ -11,6 +11,9 @@ export const appTopbar = new AppTopbar({
     <img class="topbar-icon" src="/src/static/img/notifications-none.svg">
     <img class="topbar-icon" src="/src/static/img/settings.svg">
     </span>
-  <img class="topbar-profile" href="/signin" data-link src="/src/static/img/ava.png">
+  <img class="topbar-profile" href="/signin" data-link src="/src/static/img/{{ avatar_img }}">
   `,
+  data: {
+    avatar_img: 'ava.png',
+  },
 });

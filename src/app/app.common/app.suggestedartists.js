@@ -8,10 +8,25 @@ export const appSuggestedArtists = new AppSuggestedArtists({
   template: `
   <div class="suggested-artists__header">Top Artists</div>
   <div class="suggested-artists__container">
-      <img class="suggested-artist" src="/src/static/img/starboy.jpg">
-      <img class="suggested-artist" src="/src/static/img/albina.jpeg">
-      <img class="suggested-artist"  src="/src/static/img/yur.jpg">
-      <img class="suggested-artist" src="/src/static/img/id.jpeg">
+  {{# each artists}}
+      <img class="suggested-artist" src="{{ img }}">
+  {{/each}}
   </div>
   `,
+  data: {
+    artists: [
+      {
+        img: '/src/static/img/starboy.jpg',
+      },
+      {
+        img: '/src/static/img/albina.jpeg',
+      },
+      {
+        img: '/src/static/img/yur.jpg',
+      },
+      {
+        img: '/src/static/img/id.jpeg',
+      },
+    ],
+  },
 });
