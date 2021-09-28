@@ -16,11 +16,11 @@ app.get('/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'index.html'));
 });
 app.post('/signin', (req, res) => {
-  res.status(200);
+  res.status(400);
   res.json({ msg: 'success' });
 });
 app.post('/signup', (req, res) => {
-  res.status(200);
+  res.status(400);
   res.json({ msg: 'Email already exists' });
 });
 

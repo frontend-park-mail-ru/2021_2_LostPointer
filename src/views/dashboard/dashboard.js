@@ -218,7 +218,7 @@ class DashboardView {
       .then(({ status }) => {
         if (status !== 200) {
           const button = document.querySelector('.topbar-profile');
-          button.href = '/signin';
+          button.setAttribute('href', '/signin');
           button.src = '/src/static/img/enter.png';
         }
       })
