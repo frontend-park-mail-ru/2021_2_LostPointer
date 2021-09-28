@@ -108,7 +108,7 @@ class SignupView {
     )
       .then(({ status, body }) => {
         if (status === 200) {
-          window.history.replaceState(null, null, '/signin');
+          window.history.replaceState(null, null, '/');
           window.history.go(0);
         } else {
           const failMsg = event.target.querySelector('.auth-form__fail_msg');

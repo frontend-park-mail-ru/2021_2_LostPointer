@@ -19,7 +19,7 @@ class DashboardView {
                   <img class="topbar-icon" src="/src/static/img/notifications-none.svg">
                   <img class="topbar-icon" src="/src/static/img/settings.svg">
                   </span>
-                <img class="topbar-profile" href="/signin" data-link src="/src/static/img/ava.png">
+                <img class="topbar-profile" href="/" data-link src="/src/static/img/ava.png">
             </div>
             <div class="main-layout__content">
                 <div class="listen-now">
@@ -217,8 +217,9 @@ class DashboardView {
     )
       .then(({ status }) => {
         if (status !== 200) {
-          window.history.replaceState(null, null, '/signin');
-          window.history.go(0);
+          const button = document.querySelector('.topbar-profile');
+          button.href = '/signin';
+          button.src = '/src/static/img/enter.png';
         }
       })
       // eslint-disable-next-line no-console

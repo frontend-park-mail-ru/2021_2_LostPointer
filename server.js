@@ -9,7 +9,7 @@ const path = require('path');
 app.use('/src', express.static('src'));
 
 app.get('/auth', (req, res) => {
-  res.status(200);
+  res.status(400);
   res.json({ msg: 'authenticated' });
 });
 app.get('/*', (req, res) => {
