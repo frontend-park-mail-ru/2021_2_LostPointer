@@ -1,11 +1,10 @@
 import { FWComponent } from '../../framework/index.js';
 
 class AppTrackList extends FWComponent {
-}
-
-export const appTrackList = new AppTrackList({
-  selector: 'track-list',
-  template: `
+  constructor(props) {
+    super(props);
+    this.selector = 'track-list';
+    this.template = `
   <div class="suggested-tracks__header">Tracks of the Week</div>
   <div class="suggested-tracks-container">
       {{# each tracks}}
@@ -22,34 +21,37 @@ export const appTrackList = new AppTrackList({
           </div>
       {{/each}}
   </div>
-  `,
-  data: {
-    tracks: [
-      {
-        img: 'saptded.webp',
-        name: 'Песня про кабанчик и стаканчик и прочие приколы',
-        artist: 'Saptded',
-      },
-      {
-        img: 'saptded.webp',
-        name: 'Песня про кабанчик и стаканчик и прочие приколы',
-        artist: 'Saptded',
-      },
-      {
-        img: 'saptded.webp',
-        name: 'Песня про кабанчик и стаканчик и прочие приколы',
-        artist: 'Saptded',
-      },
-      {
-        img: 'saptded.webp',
-        name: 'Песня про кабанчик и стаканчик и прочие приколы',
-        artist: 'Saptded',
-      },
-      {
-        img: 'saptded.webp',
-        name: 'Песня про кабанчик и стаканчик и прочие приколы',
-        artist: 'Saptded',
-      },
-    ],
-  },
-});
+  `;
+    this.data = {
+      tracks: [
+        {
+          img: 'saptded.webp',
+          name: 'Песня про кабанчик и стаканчик и прочие приколы',
+          artist: 'Saptded',
+        },
+        {
+          img: 'saptded.webp',
+          name: 'Песня про кабанчик и стаканчик и прочие приколы',
+          artist: 'Saptded',
+        },
+        {
+          img: 'saptded.webp',
+          name: 'Песня про кабанчик и стаканчик и прочие приколы',
+          artist: 'Saptded',
+        },
+        {
+          img: 'saptded.webp',
+          name: 'Песня про кабанчик и стаканчик и прочие приколы',
+          artist: 'Saptded',
+        },
+        {
+          img: 'saptded.webp',
+          name: 'Песня про кабанчик и стаканчик и прочие приколы',
+          artist: 'Saptded',
+        },
+      ],
+    };
+  }
+}
+
+export const appTrackList = new AppTrackList();

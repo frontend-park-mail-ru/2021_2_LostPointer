@@ -1,11 +1,10 @@
 import { FWComponent } from '../../framework/index.js';
 
 class AppSuggestedPlaylists extends FWComponent {
-}
-
-export const appSuggestedPlaylists = new AppSuggestedPlaylists({
-  selector: 'suggested-playlists',
-  template: `
+  constructor(props) {
+    super(props);
+    this.selector = 'suggested-playlists';
+    this.template = `
   <div class="suggested-playlists__header">Your Playlists</div>
   <div class="suggested-playlists__container">
       {{# each playlists}}
@@ -15,21 +14,24 @@ export const appSuggestedPlaylists = new AppSuggestedPlaylists({
           </div>
       {{/each}}
   </div>
-  `,
-  data: {
-    playlists: [
-      {
-        img: 'yur.jpg',
-        name: 'Jail Mix',
-      },
-      {
-        img: 'albina.jpeg',
-        name: 'Resine Working Mix Extended',
-      },
-      {
-        img: 'starboy.jpg',
-        name: 'Workout Mix 2',
-      },
-    ],
-  },
-});
+  `;
+    this.data = {
+      playlists: [
+        {
+          img: 'yur.jpg',
+          name: 'Jail Mix',
+        },
+        {
+          img: 'albina.jpeg',
+          name: 'Resine Working Mix Extended',
+        },
+        {
+          img: 'starboy.jpg',
+          name: 'Workout Mix 2',
+        },
+      ],
+    };
+  }
+}
+
+export const appSuggestedPlaylists = new AppSuggestedPlaylists();

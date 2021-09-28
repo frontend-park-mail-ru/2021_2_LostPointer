@@ -1,9 +1,6 @@
 import { FWComponent } from '../../framework/index.js';
 
-class AuthInput extends FWComponent {
-}
-
-export const nameInput = new AuthInput({
+export const nameInput = new FWComponent({
   data: {
     id: 'name',
     type: 'text',
@@ -20,7 +17,7 @@ export const nameInput = new AuthInput({
   },
 });
 
-export const emailInput = new AuthInput({
+export const emailInput = new FWComponent({
   data: {
     id: 'email',
     type: 'text',
@@ -34,7 +31,7 @@ export const emailInput = new AuthInput({
   },
 });
 
-export const simplePasswordInput = new AuthInput({
+export const simplePasswordInput = new FWComponent({
   data: {
     id: 'password',
     type: 'password',
@@ -48,7 +45,7 @@ export const simplePasswordInput = new AuthInput({
   },
 });
 
-export const passwordInput = new AuthInput({
+export const passwordInput = new FWComponent({
   data: {
     id: 'password',
     type: 'password',
@@ -74,7 +71,7 @@ export const passwordInput = new AuthInput({
   },
 });
 
-export const confirmPasswordInput = new AuthInput({
+export const confirmPasswordInput = new FWComponent({
   data: {
     id: 'confirm_password',
     type: 'password',

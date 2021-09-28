@@ -1,15 +1,10 @@
 import { FWComponent } from '../../framework/index.js';
-import {
-  confirmPasswordInput,
-  emailInput,
-  nameInput,
-  passwordInput,
-  simplePasswordInput,
-} from './auth.input.js';
+import { emailInput, simplePasswordInput } from './auth.input.js';
 
-class AuthForm extends FWComponent {
+class SigninAuthForm extends FWComponent {
   constructor(config) {
     super(config);
+    this.selector = 'auth-form';
     this.template = `
     {{# each inputs}}
         <label for="{{ data.id }}">
@@ -26,31 +21,15 @@ class AuthForm extends FWComponent {
     </div>
     <button class="auth-form__submit" type="submit">{{ button_msg }}</button>
     `;
+    this.data = {
+      fail_msg: 'Authentication failed',
+      button_msg: 'Sign in',
+      inputs: [
+        emailInput,
+        simplePasswordInput,
+      ],
+    };
   }
 }
 
-export const signupForm = new AuthForm({
-  selector: 'auth-form',
-  data: {
-    fail_msg: 'Registration failed',
-    button_msg: 'Sign up',
-    inputs: [
-      nameInput,
-      emailInput,
-      passwordInput,
-      confirmPasswordInput,
-    ],
-  },
-});
-
-export const signinForm = new AuthForm({
-  selector: 'auth-form',
-  data: {
-    fail_msg: 'Authentication failed',
-    button_msg: 'Sign in',
-    inputs: [
-      emailInput,
-      simplePasswordInput,
-    ],
-  },
-});
+export const signinForm = new SigninAuthForm();

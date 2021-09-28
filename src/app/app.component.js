@@ -9,21 +9,20 @@ import { appSuggestedArtists } from './app.common/app.suggestedartists.js';
 import { appFriendActivity } from './app.common/app.friendactivity.js';
 
 class AppComponent extends FWComponent {
-}
-
-export const appComponent = new AppComponent({
-  selector: 'app',
-  components: [
-    appSidebar,
-    appPlayer,
-    appTopbar,
-    appTopAlbums,
-    appSuggestedPlaylists,
-    appTrackList,
-    appSuggestedArtists,
-    appFriendActivity,
-  ],
-  template: `
+  constructor(props) {
+    super(props);
+    this.selector = 'app';
+    this.components = [
+      appSidebar,
+      appPlayer,
+      appTopbar,
+      appTopAlbums,
+      appSuggestedPlaylists,
+      appTrackList,
+      appSuggestedArtists,
+      appFriendActivity,
+    ];
+    this.template = `
 <div class="app__content">
     <div class="sidebar"></div>
     <div class="main-layout">
@@ -42,5 +41,8 @@ export const appComponent = new AppComponent({
     </div>
 </div>
 <div class="player"></div>
-  `,
-});
+  `;
+  }
+}
+
+export const appComponent = new AppComponent();

@@ -1,11 +1,10 @@
 import { FWComponent } from '../../framework/index.js';
 
 class AppFriendActivity extends FWComponent {
-}
-
-export const appFriendActivity = new AppFriendActivity({
-  selector: 'friend-activity',
-  template: `
+  constructor(config) {
+    super(config);
+    this.selector = 'friend-activity';
+    this.template = `
   <div class="friend-activity__header">
       <span class="friend-activity__header-text">Friends Activity</span>
       <img class="friend-activity__header-img" src="/src/static/img/more_friends.svg" alt="">
@@ -24,49 +23,52 @@ export const appFriendActivity = new AppFriendActivity({
   <div class="more-friends">
       <div class="view-all-text">View All</div>
   </div>
-  `,
-  data: {
-    friends: [
-      {
-        img: 'saptded.webp',
-        nickname: 'Saptded',
-        listening_to: 'ТЁЛКА-дрейн',
-      },
-      {
-        img: 'saptded.webp',
-        nickname: 'Saptded',
-        listening_to: 'ТЁЛКА-дрейн',
-      },
-      {
-        img: 'saptded.webp',
-        nickname: 'Saptded',
-        listening_to: 'ТЁЛКА-дрейн',
-      },
-      {
-        img: 'saptded.webp',
-        nickname: 'Saptded',
-        listening_to: 'ТЁЛКА-дрейн',
-      },
-      {
-        img: 'saptded.webp',
-        nickname: 'Saptded',
-        listening_to: 'ТЁЛКА-дрейн',
-      },
-      {
-        img: 'saptded.webp',
-        nickname: 'Saptded',
-        listening_to: 'ТЁЛКА-дрейн',
-      },
-      {
-        img: 'saptded.webp',
-        nickname: 'Saptded',
-        listening_to: 'ТЁЛКА-дрейн',
-      },
-      {
-        img: 'vershov.webp',
-        nickname: 'VErshovBMSTU',
-        listening_to: 'Чёрные Глаза',
-      },
-    ],
-  },
-});
+  `;
+    this.data = {
+      friends: [
+        {
+          img: 'saptded.webp',
+          nickname: 'Saptded',
+          listening_to: 'ТЁЛКА-дрейн',
+        },
+        {
+          img: 'saptded.webp',
+          nickname: 'Saptded',
+          listening_to: 'ТЁЛКА-дрейн',
+        },
+        {
+          img: 'saptded.webp',
+          nickname: 'Saptded',
+          listening_to: 'ТЁЛКА-дрейн',
+        },
+        {
+          img: 'saptded.webp',
+          nickname: 'Saptded',
+          listening_to: 'ТЁЛКА-дрейн',
+        },
+        {
+          img: 'saptded.webp',
+          nickname: 'Saptded',
+          listening_to: 'ТЁЛКА-дрейн',
+        },
+        {
+          img: 'saptded.webp',
+          nickname: 'Saptded',
+          listening_to: 'ТЁЛКА-дрейн',
+        },
+        {
+          img: 'saptded.webp',
+          nickname: 'Saptded',
+          listening_to: 'ТЁЛКА-дрейн',
+        },
+        {
+          img: 'vershov.webp',
+          nickname: 'VErshovBMSTU',
+          listening_to: 'Чёрные Глаза',
+        },
+      ],
+    };
+  }
+}
+
+export const appFriendActivity = new AppFriendActivity();

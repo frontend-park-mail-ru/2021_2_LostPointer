@@ -1,11 +1,10 @@
 import { FWComponent } from '../../framework/index.js';
 
 class AppPlayer extends FWComponent {
-}
-
-export const appPlayer = new AppPlayer({
-  selector: 'player',
-  template: `
+  constructor(props) {
+    super(props);
+    this.selector = 'player';
+    this.template = `
   <img class="player-artwork" src="/src/static/img/{{ img }}"/>
     <div class="now-playing">
         <div class="track-name">{{ track_name }}</div>
@@ -23,12 +22,15 @@ export const appPlayer = new AppPlayer({
     <img class="repeat" src="/src/static/img/repeat.svg">
     <div class="player__seekbar player-volume"></div>
     <img class="player__volume-icon" src="/src/static/img/volume.svg">
-  `,
-  data: {
-    img: 'albina.jpeg',
-    track_name: 'Megalovania',
-    artist_name: 'Toby Fox',
-    current_time: '00:00',
-    total_time: '03:30',
-  },
-});
+  `;
+    this.data = {
+      img: 'albina.jpeg',
+      track_name: 'Megalovania',
+      artist_name: 'Toby Fox',
+      current_time: '00:00',
+      total_time: '03:30',
+    };
+  }
+}
+
+export const appPlayer = new AppPlayer();

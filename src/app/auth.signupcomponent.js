@@ -1,9 +1,13 @@
 import { FWComponent } from '../framework/index.js';
-import { signinForm, signupForm } from './auth.common/auth.form.js';
+import { signupForm } from './auth.common/auth.signupform.js';
 
-class AuthComponent extends FWComponent {
+class SignupComponent extends FWComponent {
   constructor(config) {
     super(config);
+    this.selector = 'app';
+    this.components = [
+      signupForm,
+    ];
     this.template = `
     <div class="login-ui">
         <div class="auth-page__placeholder">
@@ -23,29 +27,12 @@ class AuthComponent extends FWComponent {
         </div>
     </div>
     `;
+    this.data = {
+      placeholder_img: 'woman_headphones_1.jpeg',
+      title: 'Sign up',
+      description: 'Let’s get all your required setup information and get started',
+    };
   }
 }
 
-export const signinComponent = new AuthComponent({
-  selector: 'app',
-  components: [
-    signupForm,
-  ],
-  data: {
-    placeholder_img: 'woman_headphones_2.png',
-    title: 'Sign in',
-    description: 'Let’s get all required data and sign in',
-  },
-});
-
-export const signupComponent = new AuthComponent({
-  selector: 'app',
-  components: [
-    signinForm,
-  ],
-  data: {
-    placeholder_img: 'woman_headphones_1.jpeg',
-    title: 'Sign up',
-    description: 'Let’s get all your required setup information and get started',
-  },
-});
+export const signupComponent = new SignupComponent();
