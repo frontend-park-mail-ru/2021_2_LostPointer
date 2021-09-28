@@ -1,4 +1,4 @@
-import request from '../../appApi/request.js';
+import Request from '../../appApi/request.js';
 
 class DashboardView {
   constructor() {
@@ -212,11 +212,11 @@ class DashboardView {
 
   // eslint-disable-next-line class-methods-use-this
   render() {
-    request.get(
+    Request.get(
       '/auth',
     )
-      .then(({ Status }) => {
-        if (Status !== 200) {
+      .then(({ status }) => {
+        if (status !== 200) {
           window.history.replaceState(null, null, '/signin');
           window.history.go(0);
         }

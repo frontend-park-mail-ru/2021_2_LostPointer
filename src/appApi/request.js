@@ -39,9 +39,9 @@ class Request {
       body: requestBody,
     })
       .then((response) => response.json()
-        .then((body) => ({
-          Status: response.status,
-          Body: body,
+        .then((responseBody) => ({
+          status: response.status,
+          body: responseBody,
         })))
       // eslint-disable-next-line no-console
       .catch((error) => console.log(error));

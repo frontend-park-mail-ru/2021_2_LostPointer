@@ -9,7 +9,7 @@ import {
   nameValidityChecks,
   passwordValidityChecks,
 } from '../validityChecks.js';
-import request from '../../appApi/request.js';
+import Request from '../../appApi/request.js';
 
 class SignupView {
   constructor() {
@@ -98,7 +98,7 @@ class SignupView {
     const emailInput = event.target.querySelector('input[name="email"]');
     const passwordInput = event.target.querySelector('input[name="password"]');
 
-    request.post(
+    Request.post(
       '/signup',
       JSON.stringify({
         name: nameInput.value.trim(),
@@ -106,13 +106,13 @@ class SignupView {
         password: passwordInput.value.trim(),
       }),
     )
-      .then(({ Status, Body }) => {
-        if (Status === 200) {
+      .then(({ status, body }) => {
+        if (status === 200) {
           window.history.replaceState(null, null, '/signin');
           window.history.go(0);
         } else {
           const failMsg = event.target.querySelector('.auth-form__fail_msg');
-          failMsg.innerText = Body.msg;
+          failMsg.innerText = body.msg;
           failMsg.classList.add('visible');
         }
       })

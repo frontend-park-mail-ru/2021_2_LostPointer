@@ -7,7 +7,7 @@ import {
   emailValidityChecks,
   simplePasswordValidityChecks,
 } from '../validityChecks.js';
-import request from '../../appApi/request.js';
+import Request from '../../appApi/request.js';
 
 class SigninView {
   constructor() {
@@ -71,15 +71,15 @@ class SigninView {
     const emailInput = event.target.querySelector('.auth-form__input[name="email"]');
     const passwordInput = event.target.querySelector('.auth-form__input[name="password"]');
 
-    request.post(
+    Request.post(
       '/signin',
       JSON.stringify({
         email: emailInput.value.trim(),
         password: passwordInput.value.trim(),
       }),
     )
-      .then(({ Status }) => {
-        if (Status === 200) {
+      .then(({ status }) => {
+        if (status === 200) {
           window.history.replaceState(null, null, '/');
           window.history.go(0);
         } else {
