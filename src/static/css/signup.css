@@ -18,7 +18,7 @@ body {
     background-color: #1A1919;
 }
 
-.auth-page {
+.login-ui {
     display: flex;
     height: 100%;
     align-items: center;
@@ -29,14 +29,14 @@ body {
     height: 100%;
 }
 
-.auth-page__placeholder-photo {
+.auth_page__placeholder-photo {
     height: 100%;
     width: 100%;
     object-fit: cover;
 }
 
 .auth-page__content {
-    width: 450px;
+    width: 700px;
     margin-left: 120px;
 }
 
@@ -65,6 +65,7 @@ body {
     font-weight: 400;
     margin-top: 15px;
     line-height: 30px;
+    width: 350px;
 }
 
 .auth-form {
@@ -72,7 +73,7 @@ body {
 }
 
 .auth-form__input {
-    width: 380px;
+    width: 350px;
     height: 50px;
     border-radius: 10px;
     border: 2px solid #3D3D3D;
@@ -81,7 +82,7 @@ body {
     font-family: Montserrat;
     font-size: 16px;
     padding-left: 10px;
-    margin-bottom: 30px;
+    margin: 10px auto;
 }
 
 .auth-form__input:focus {
@@ -89,11 +90,64 @@ body {
     border-color: #ff4d5b;
 }
 
+.auth-form__input-requirements {
+    display: inline-block;
+    font-family: Montserrat;
+    font-size: 16px;
+    padding-left: 10px;
+    text-align: left;
+    list-style: disc;
+    list-style-position: inside;
+    max-width: 320px;
+    color: #969696;
+}
+
+.auth-form__input-requirements li.invalid {
+    color: #ff4d5b;
+}
+.auth-form__input-requirements li.valid {
+    color: #2ecc71;
+}
+
+.auth-form__input-requirements li.valid:after {
+    display: inline-block;
+}
+
+input:not([type="submit"]) + .auth-form__input-requirements {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 1.5s ease-out;
+}
+
+input:not([type="submit"]):hover + .auth-form__input-requirements,
+input:not([type="submit"]):focus + .auth-form__input-requirements,
+input:not([type="submit"]):active + .auth-form__input-requirements {
+    max-height: 1000px; /* Рандомное очень большое число, чтобы список развернулся весь */
+    transition: max-height 1.5s ease-in;
+}
+
+.auth-form__fail_msg {
+    display: none;
+    font-family: Montserrat;
+    font-size: 16px;
+    text-align: left;
+    list-style: disc;
+    list-style-position: inside;
+    max-width: 350px;
+    margin: 10px auto;
+    color: #ff4d5b;
+}
+
+.auth-form__fail_msg.visible {
+    display: block;
+}
+
 .auth-form__submit {
     width: 200px;
     height: 45px;
     border-radius: 25px;
     border: none;
+    margin: 10px auto;
     font-family: Montserrat;
     font-weight: 200;
     color: #FFFFFF;

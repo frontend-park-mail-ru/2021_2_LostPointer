@@ -1,12 +1,12 @@
 import { FWComponent } from '../framework/index.js';
-import { appSidebar } from './common/app.sidebar.js';
-import { appPlayer } from './common/app.player.js';
-import { appTopbar } from './common/app.topbar.js';
-import { appTopAlbums } from './common/app.topalbums.js';
-import { appSuggestedPlaylists } from './common/app.suggestedplaylists.js';
-import { appTrackList } from './common/app.tracklist.js';
-import { appSuggestedArtists } from './common/app.suggestedartists.js';
-import { appFriendActivity } from './common/app.friendactivity.js';
+import { appSidebar } from './app.common/app.sidebar.js';
+import { appPlayer } from './app.common/app.player.js';
+import { appTopbar } from './app.common/app.topbar.js';
+import { appTopAlbums } from './app.common/app.topalbums.js';
+import { appSuggestedPlaylists } from './app.common/app.suggestedplaylists.js';
+import { appTrackList } from './app.common/app.tracklist.js';
+import { appSuggestedArtists } from './app.common/app.suggestedartists.js';
+import { appFriendActivity } from './app.common/app.friendactivity.js';
 
 class AppComponent extends FWComponent {
 }
