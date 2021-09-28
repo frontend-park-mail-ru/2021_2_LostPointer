@@ -28,14 +28,13 @@ export class CustomValidation {
           this.addInvalidity(check.invalidityMessage);
         }
 
-        const requirementElement = element;
-        if (requirementElement) {
+        if (element) {
           if (isInvalid) {
-            requirementElement.classList.add('invalid');
-            requirementElement.classList.remove('valid');
+            element.classList.add('invalid');
+            element.classList.remove('valid');
           } else {
-            requirementElement.classList.remove('invalid');
-            requirementElement.classList.add('valid');
+            element.classList.remove('invalid');
+            element.classList.add('valid');
           }
         }
       });
