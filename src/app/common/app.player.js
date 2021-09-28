@@ -1,9 +1,9 @@
 import { FWComponent } from '../../framework/index.js';
 
-class AppSidebar extends FWComponent {
+class AppPlayer extends FWComponent {
 }
 
-export const appPlayer = new AppSidebar({
+export const appPlayer = new AppPlayer({
   selector: 'player',
   template: `
   <img class="player-artwork" src="/src/static/img/albina.jpeg"/>
