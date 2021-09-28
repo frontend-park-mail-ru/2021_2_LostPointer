@@ -2,7 +2,7 @@ import { ContentType, RequestMethods } from './requestUtils.js';
 
 const defaultBackendDomain = 'http://lostpointer.site';
 
-export class Request {
+class Request {
   constructor(domain = defaultBackendDomain) {
     this.backendDomain = domain;
   }

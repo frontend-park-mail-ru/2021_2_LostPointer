@@ -9,9 +9,7 @@ import {
   nameValidityChecks,
   passwordValidityChecks,
 } from '../validityChecks.js';
-import {
-  Request as FetchRequest,
-} from '../../appApi/request.js';
+import request from '../../appApi/request.js';
 
 class SignupView {
   constructor() {
@@ -100,8 +98,7 @@ class SignupView {
     const emailInput = event.target.querySelector('input[name="email"]');
     const passwordInput = event.target.querySelector('input[name="password"]');
 
-    const req = new FetchRequest();
-    req.post(
+    request.post(
       '/signup',
       JSON.stringify({
         name: nameInput.value.trim(),

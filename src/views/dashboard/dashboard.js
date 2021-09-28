@@ -1,4 +1,4 @@
-import { Request as FetchRequest } from '../../appApi/request.js';
+import request from '../../appApi/request.js';
 
 class DashboardView {
   constructor() {
@@ -212,8 +212,7 @@ class DashboardView {
 
   // eslint-disable-next-line class-methods-use-this
   render() {
-    const req = new FetchRequest();
-    req.get(
+    request.get(
       '/auth',
     )
       .then(({ Status }) => {

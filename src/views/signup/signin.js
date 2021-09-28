@@ -7,9 +7,7 @@ import {
   emailValidityChecks,
   simplePasswordValidityChecks,
 } from '../validityChecks.js';
-import {
-  Request as FetchRequest,
-} from '../../appApi/request.js';
+import request from '../../appApi/request.js';
 
 class SigninView {
   constructor() {
@@ -73,8 +71,7 @@ class SigninView {
     const emailInput = event.target.querySelector('.auth-form__input[name="email"]');
     const passwordInput = event.target.querySelector('.auth-form__input[name="password"]');
 
-    const req = new FetchRequest();
-    req.post(
+    request.post(
       '/signin',
       JSON.stringify({
         email: emailInput.value.trim(),
