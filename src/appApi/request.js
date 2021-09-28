@@ -1,6 +1,6 @@
 import { ContentType, RequestMethods } from './requestUtils.js';
 
-const defaultBackendDomain = 'http://lostpointer.site';
+const defaultBackendDomain = 'http://127.0.0.1:3000';
 
 class Request {
   constructor(domain = defaultBackendDomain) {
@@ -25,7 +25,7 @@ class Request {
     return this._fetchRequest(this._createURL(this.backendDomain, path), RequestMethods.DELETE);
   }
 
-  _fetchRequest(url, requestMethod, requestBody = '', contentType = ContentType.JSON) {
+  _fetchRequest(url, requestMethod, requestBody = null, contentType = ContentType.JSON) {
     const myHeaders = new Headers();
     if ((RequestMethods.POST === requestMethod) || (RequestMethods.PUT === requestMethod)) {
       myHeaders.append('Content-Type', contentType);

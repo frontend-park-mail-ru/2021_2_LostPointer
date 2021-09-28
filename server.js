@@ -8,12 +8,12 @@ const path = require('path');
 
 app.use('/src', express.static('src'));
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'index.html'));
-});
-app.post('/auth', (req, res) => {
+app.get('/auth', (req, res) => {
   res.status(200);
   res.json({ msg: 'authenticated' });
+});
+app.get('/*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'index.html'));
 });
 app.post('/signin', (req, res) => {
   res.status(200);
