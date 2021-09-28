@@ -1,4 +1,8 @@
-import router from '../router/router.js';
+import { bootstrap } from './framework/index.js';
+import { appModule } from './app/app.module.js';
+import router from './router/router.js';
+
+bootstrap(appModule);
 
 const navigateTo = (url) => {
   // eslint-disable-next-line no-console
