@@ -1,26 +1,24 @@
-import router from '../../router.js';
-import { appRoutes } from '../../app/app.routes.js';
+import {
+  router,
+  navigateTo,
+} from './router.js';
 
 class App {
-  constructor() {
-    this.routes = appRoutes;
-  }
-
   start() {
-    if (this.routes) {
-      this.initRoutes();
-    }
+    this.initRoutes();
   }
 
   initRoutes() {
-    window.addEventListener('popstate', this.renderRoute.bind(this));
-    this.renderRoute();
-  }
-
-  renderRoute() {
-    const component = router(this.routes);
-    document.querySelector('.app').innerHTML = `<div class="${component.selector}"></div>`;
-    component.render();
+    window.addEventListener('popstate', router);
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.addEventListener('click', (e) => {
+        if (e.target.matches('[data-link]')) {
+          e.preventDefault();
+          navigateTo(e.target.getAttribute('href'));
+        }
+      });
+      router();
+    });
   }
 }
 
