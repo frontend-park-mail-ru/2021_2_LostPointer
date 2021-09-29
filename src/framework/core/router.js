@@ -15,8 +15,8 @@ const getParams = (match) => {
 export const router = () => {
   const routes = [
     { path: '/', view: AppComponent },
-    { path: '/signin', view: SignupComponent },
-    { path: '/signup', view: SigninComponent },
+    { path: '/signin', view: SigninComponent },
+    { path: '/signup', view: SignupComponent },
   ];
 
   const potentialMatches = routes.map((route) => ({
@@ -35,13 +35,7 @@ export const router = () => {
 
   const ViewClass = matches.route.view;
   const view = new ViewClass(getParams(matches));
-  if (view.data === undefined) {
-    document.querySelector('.app').innerHTML = view.template;
-  } else {
-    // eslint-disable-next-line no-undef
-    const template = Handlebars.compile(view.template);
-    document.querySelector('.app').innerHTML = template(view.data);
-  }
+  document.querySelector('.app').innerHTML = view.render();
 };
 
 export const navigateTo = (url) => {

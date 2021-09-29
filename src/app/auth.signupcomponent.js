@@ -21,7 +21,8 @@ export class SignupComponent extends Component {
             <div class="auth-page__description">
                 {{ description }}
             </div>
-            {{ signup_form }}
+            {{#render form }}
+            {{/render}}
         </div>
     </div>
     `;
@@ -29,7 +30,7 @@ export class SignupComponent extends Component {
       placeholder_img: 'woman_headphones_1.jpeg',
       title: 'Sign up',
       description: 'Let’s get all your required setup information and get started',
-      signup_form: signupForm,
+      form: signupForm,
     };
   }
 }

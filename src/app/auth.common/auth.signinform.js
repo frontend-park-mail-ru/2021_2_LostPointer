@@ -9,7 +9,8 @@ class SigninAuthForm extends Component {
     this.template = `
     <form class="auth-form" id="auth-form" action="#">
         {{# each inputs}}
-            
+            {{# render this}}
+            {{/render}}
         {{/each}}
         <div class="auth-form__fail_msg">
             {{ fail_msg }}

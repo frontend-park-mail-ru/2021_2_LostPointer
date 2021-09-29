@@ -21,7 +21,8 @@ export class SigninComponent extends Component {
             <div class="auth-page__description">
                 {{ description }}
             </div>
-            {{ signin_form }}
+            {{#render form }}
+            {{/render}}
         </div>
     </div>
     `;
@@ -29,7 +30,7 @@ export class SigninComponent extends Component {
       placeholder_img: 'woman_headphones_2.png',
       title: 'Sign in',
       description: 'Let’s get all required data and sign in',
-      signin_form: signinForm,
+      form: signinForm,
     };
   }
 }
