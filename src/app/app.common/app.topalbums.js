@@ -3,11 +3,12 @@ import { Component } from '../../framework/core/component.js';
 class AppTopAlbums extends Component {
   constructor(props) {
     super(props);
-    this.selector = 'listen-now__top-albums';
     this.template = `
-{{# each albums}}
-  <img class="top-album" src="/src/static/img/{{ img }}"/>
-{{/each}}
+    <div class="listen-now__top-albums">
+        {{# each albums}}
+            <img class="top-album" src="/src/static/img/{{ img }}"/>
+        {{/each}}
+    </div>
   `;
     this.data = {
       albums: [

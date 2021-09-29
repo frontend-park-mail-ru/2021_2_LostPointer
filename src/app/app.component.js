@@ -11,36 +11,35 @@ import { appFriendActivity } from './app.common/app.friendactivity.js';
 export class AppComponent extends Component {
   constructor(props) {
     super(props);
-    this.selector = 'app';
-    this.components = [
-      appSidebar,
-      appPlayer,
-      appTopbar,
-      appTopAlbums,
-      appSuggestedPlaylists,
-      appTrackList,
-      appSuggestedArtists,
-      appFriendActivity,
-    ];
     this.template = `
 <div class="app__content">
-    <div class="sidebar"></div>
+    {{#render sidebar}}{{/render}}
     <div class="main-layout">
-        <div class="topbar"></div>
+        {{#render topbar}}{{/render}}
         <div class="main-layout__content">
             <div class="listen-now">
-                <div class="listen-now__top-albums"></div>
+                {{#render top_albums}}{{/render}}
                 <div class="listen-now__suggested-content">
-                    <div class="suggested-playlists"></div>
-                    <div class="track-list"></div>
-                    <div class="suggested-artists"></div>
+                    {{#render suggested_playlists}}{{/render}}
+                    {{#render track_list}}{{/render}}
+                    {{#render suggested_artists}}{{/render}}
                 </div>
             </div>
-            <div class="friend-activity"></div>
+            {{#render friend_activity}}{{/render}}
         </div>
     </div>
 </div>
-<div class="player"></div>
+{{#render player}}{{/render}}
   `;
+    this.data = {
+      sidebar: appSidebar,
+      topbar: appTopbar,
+      top_albums: appTopAlbums,
+      suggested_playlists: appSuggestedPlaylists,
+      track_list: appTrackList,
+      suggested_artists: appSuggestedArtists,
+      friend_activity: appFriendActivity,
+      player: appPlayer,
+    };
   }
 }

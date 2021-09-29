@@ -3,14 +3,15 @@ import { Component } from '../../framework/core/component.js';
 class AppSuggestedArtists extends Component {
   constructor(props) {
     super(props);
-    this.selector = 'suggested-artists';
     this.template = `
-      <div class="suggested-artists__header">Top Artists</div>
-      <div class="suggested-artists__container">
-      {{# each artists}}
-          <img class="suggested-artist" src="{{ img }}">
-      {{/each}}
-      </div>
+    <div class="suggested-artists">
+        <div class="suggested-artists__header">Top Artists</div>
+        <div class="suggested-artists__container">
+        {{# each artists}}
+            <img class="suggested-artist" src="{{ img }}">
+        {{/each}}
+        </div>
+    </div>
     `;
     this.data = {
       artists: [

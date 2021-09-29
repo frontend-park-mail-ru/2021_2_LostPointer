@@ -4,8 +4,6 @@ import { signupForm } from './auth.common/auth.signupform.js';
 export class SignupComponent extends Component {
   constructor(config) {
     super(config);
-    this.selector = 'app';
-    // TODO рендерить signup_form
     this.template = `
     <div class="login-ui">
         <div class="auth-page__placeholder">
@@ -21,8 +19,7 @@ export class SignupComponent extends Component {
             <div class="auth-page__description">
                 {{ description }}
             </div>
-            {{#render form }}
-            {{/render}}
+            {{#render form }}{{/render}}
         </div>
     </div>
     `;

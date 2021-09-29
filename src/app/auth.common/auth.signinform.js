@@ -4,13 +4,10 @@ import { emailInput, simplePasswordInput } from './auth.input.js';
 class SigninAuthForm extends Component {
   constructor(config) {
     super(config);
-    this.selector = 'auth-form';
-    // TODO рендерить input'ы
     this.template = `
     <form class="auth-form" id="auth-form" action="#">
         {{# each inputs}}
-            {{# render this}}
-            {{/render}}
+            {{# render this}}{{/render}}
         {{/each}}
         <div class="auth-form__fail_msg">
             {{ fail_msg }}

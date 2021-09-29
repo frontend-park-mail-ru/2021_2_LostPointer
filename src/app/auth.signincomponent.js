@@ -4,7 +4,6 @@ import { signinForm } from './auth.common/auth.signinform.js';
 export class SigninComponent extends Component {
   constructor(config) {
     super(config);
-    this.selector = 'app';
     // TODO рендерить signin_form
     this.template = `
     <div class="login-ui">
@@ -21,8 +20,7 @@ export class SigninComponent extends Component {
             <div class="auth-page__description">
                 {{ description }}
             </div>
-            {{#render form }}
-            {{/render}}
+            {{#render form }}{{/render}}
         </div>
     </div>
     `;
