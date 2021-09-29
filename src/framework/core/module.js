@@ -6,7 +6,9 @@ export class Module {
   }
 
   start() {
-    if (this.routes) this.initRoutes();
+    if (this.routes) {
+      this.initRoutes();
+    }
   }
 
   initRoutes() {
