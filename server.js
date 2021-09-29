@@ -8,8 +8,20 @@ const path = require('path');
 
 app.use('/src', express.static('src'));
 
+app.get('/auth', (req, res) => {
+  res.status(400);
+  res.json({ msg: 'authenticated' });
+});
 app.get('/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'index.html'));
+});
+app.post('/signin', (req, res) => {
+  res.status(400);
+  res.json({ msg: 'success' });
+});
+app.post('/signup', (req, res) => {
+  res.status(400);
+  res.json({ msg: 'Email already exists' });
 });
 
 // eslint-disable-next-line no-console
