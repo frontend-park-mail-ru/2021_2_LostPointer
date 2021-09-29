@@ -19,10 +19,6 @@ export class Module {
   renderRoute() {
     const component = router(this.routes);
     document.querySelector('.app').innerHTML = `<div class="${component.selector}"></div>`;
-    this.renderComponent(component);
-  }
-
-  renderComponent(c) {
-    c.render();
+    component.render();
   }
 }
