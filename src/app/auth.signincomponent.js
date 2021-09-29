@@ -3,6 +3,8 @@ import { signinForm } from './auth.common/auth.signinform.js';
 import Request from '../framework/appApi/request.js';
 import { addInputsEventListeners, CustomValidation, isValidForm } from '../framework/validation/validation.js';
 import { emailValidityChecks, simplePasswordValidityChecks } from '../framework/validation/validityChecks.js';
+// eslint-disable-next-line import/no-cycle
+import { navigateTo } from '../framework/core/router.js';
 
 export class SigninComponent extends Component {
   constructor(config) {
@@ -58,16 +60,15 @@ export class SigninComponent extends Component {
     const passwordInput = event.target.querySelector('#password');
 
     Request.post(
-      '/signin',
+      '/api/v1/user/signin',
       JSON.stringify({
-        email: emailInput.value.trim(),
+        username: emailInput.value.trim(),
         password: passwordInput.value.trim(),
       }),
     )
       .then(({ status }) => {
         if (status === 200) {
-          window.history.replaceState(null, null, '/');
-          window.history.go(0);
+          navigateTo('/');
         } else {
           const failMsg = event.target.querySelector('.auth-form__fail_msg');
           failMsg.classList.add('visible');

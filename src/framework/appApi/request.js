@@ -1,6 +1,6 @@
 import { ContentType, RequestMethods } from './requestUtils.js';
 
-const defaultBackendDomain = 'http://127.0.0.1:3000';
+const defaultBackendDomain = 'http://127.0.0.1:3030';
 
 class Request {
   constructor(domain = defaultBackendDomain) {
@@ -33,8 +33,8 @@ class Request {
 
     return fetch(url, {
       method: requestMethod,
-      mode: 'same-origin',
-      credentials: 'same-origin',
+      mode: 'cors',
+      credentials: 'include',
       headers: myHeaders,
       body: requestBody,
     })

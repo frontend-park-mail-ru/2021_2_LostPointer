@@ -3,13 +3,6 @@ import { Component } from '../../framework/core/component.js';
 class AppTopAlbums extends Component {
   constructor(props) {
     super(props);
-    this.template = `
-    <div class="listen-now__top-albums">
-        {{# each albums}}
-            <img class="top-album" src="/src/static/img/{{ img }}"/>
-        {{/each}}
-    </div>
-  `;
     this.data = {
       albums: [
         {
@@ -26,6 +19,7 @@ class AppTopAlbums extends Component {
         },
       ],
     };
+    this.template = Handlebars.templates['topalbums.hbs'](this.data);
   }
 }
 

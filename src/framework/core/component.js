@@ -5,6 +5,8 @@ export class Component {
     }
   }
 
+  fetchData() {}
+
   getHtml() {
     if (this.data === undefined) {
       return this.template;
@@ -15,6 +17,9 @@ export class Component {
   }
 
   render() {
+    // this.fetchData().then(() => {
     document.querySelector('.app').innerHTML = this.getHtml();
+    // });
+    console.log(this.fetchData());
   }
 }

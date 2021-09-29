@@ -1,6 +1,8 @@
 import { PATH_ARG, PATH_SLASH, PATH_ARG_CG } from './regex.js';
 import { AppComponent } from '../../app/app.component.js';
+// eslint-disable-next-line import/no-cycle
 import { SignupComponent } from '../../app/auth.signupcomponent.js';
+// eslint-disable-next-line import/no-cycle
 import { SigninComponent } from '../../app/auth.signincomponent.js';
 
 const pathToRegex = (path) => new RegExp(`^${path.replace(PATH_SLASH, '\\/').replace(PATH_ARG, '(.+)')}$`);
@@ -34,6 +36,7 @@ export const router = () => {
   }
 
   const ViewClass = matches.route.view;
+  console.log(matches.route.view);
   const view = new ViewClass(getParams(matches));
   view.render();
 };

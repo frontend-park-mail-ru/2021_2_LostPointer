@@ -8,6 +8,8 @@ import {
   passwordValidityChecks,
 } from '../framework/validation/validityChecks.js';
 import Request from '../framework/appApi/request.js';
+// eslint-disable-next-line import/no-cycle
+import { navigateTo } from '../framework/core/router.js';
 
 export class SignupComponent extends Component {
   constructor(config) {
@@ -65,22 +67,21 @@ export class SignupComponent extends Component {
     if (!isValidForm()) {
       return;
     }
-    const nameInput = event.target.querySelector('#name');
+    // const nameInput = event.target.querySelector('#name');
     const emailInput = event.target.querySelector('#email');
     const passwordInput = event.target.querySelector('#password');
 
     Request.post(
-      '/signup',
+      '/api/v1/user/signup',
       JSON.stringify({
-        name: nameInput.value.trim(),
-        email: emailInput.value.trim(),
+        // Name: nameInput.value.trim(),
+        username: emailInput.value.trim(),
         password: passwordInput.value.trim(),
       }),
     )
       .then(({ status, body }) => {
-        if (status === 200) {
-          window.history.replaceState(null, null, '/');
-          window.history.go(0);
+        if (status === 201) {
+          navigateTo('/');
         } else {
           const failMsg = event.target.querySelector('.auth-form__fail_msg');
           failMsg.innerText = body.msg;

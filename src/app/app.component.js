@@ -21,12 +21,12 @@ export class AppComponent extends Component {
             <div class="listen-now">
                 {{#render top_albums}}{{/render}}
                 <div class="listen-now__suggested-content">
-                    {{#render suggested_playlists}}{{/render}}
+<!--                    {{#render suggested_playlists}}{{/render}}-->
                     {{#render track_list}}{{/render}}
                     {{#render suggested_artists}}{{/render}}
                 </div>
             </div>
-            {{#render friend_activity}}{{/render}}
+<!--            {{#render friend_activity}}{{/render}}-->
         </div>
     </div>
 </div>
@@ -47,7 +47,7 @@ export class AppComponent extends Component {
   render() {
     super.render();
     Request.get(
-      '/auth',
+      '/api/v1/auth',
     )
       .then(({ status }) => {
         if (status !== 200) {
