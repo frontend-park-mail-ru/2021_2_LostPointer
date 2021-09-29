@@ -5,9 +5,7 @@ class SigninComponent extends Component {
   constructor(config) {
     super(config);
     this.selector = 'app';
-    this.components = [
-      signinForm,
-    ];
+    // TODO рендерить signin_form
     this.template = `
     <div class="login-ui">
         <div class="auth-page__placeholder">
@@ -23,7 +21,7 @@ class SigninComponent extends Component {
             <div class="auth-page__description">
                 {{ description }}
             </div>
-            <form class="auth-form" id="auth-form" action="#"></form>
+            {{ signin_form }}
         </div>
     </div>
     `;
@@ -31,6 +29,7 @@ class SigninComponent extends Component {
       placeholder_img: 'woman_headphones_2.png',
       title: 'Sign in',
       description: 'Let’s get all required data and sign in',
+      signin_form: signinForm,
     };
   }
 }

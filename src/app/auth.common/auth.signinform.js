@@ -5,14 +5,17 @@ class SigninAuthForm extends Component {
   constructor(config) {
     super(config);
     this.selector = 'auth-form';
+    // TODO рендерить input'ы
     this.template = `
-    {{# each inputs}}
-        // TODO здесь рендерить input'ы
-    {{/each}}
-    <div class="auth-form__fail_msg">
-        {{ fail_msg }}
-    </div>
-    <button class="auth-form__submit" type="submit">{{ button_msg }}</button>
+    <form class="auth-form" id="auth-form" action="#">
+        {{# each inputs}}
+            
+        {{/each}}
+        <div class="auth-form__fail_msg">
+            {{ fail_msg }}
+        </div>
+        <button class="auth-form__submit" type="submit">{{ button_msg }}</button>
+    </form>
     `;
     this.data = {
       fail_msg: 'Authentication failed',
