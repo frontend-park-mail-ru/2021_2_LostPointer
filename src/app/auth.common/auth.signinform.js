@@ -7,14 +7,7 @@ class SigninAuthForm extends Component {
     this.selector = 'auth-form';
     this.template = `
     {{# each inputs}}
-        <label for="{{ data.id }}">
-          <input class="auth-form__input" type="{{ data.type }}" id="{{ data.id }}" placeholder="{{ data.placeholder }}">
-          <ul class="auth-form__input-requirements">
-              {{# each data.input_requirements}}
-                  <li>{{ msg }}</li>
-              {{/each}}
-          </ul>
-      </label>
+        // TODO здесь рендерить input'ы
     {{/each}}
     <div class="auth-form__fail_msg">
         {{ fail_msg }}
