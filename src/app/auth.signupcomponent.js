@@ -1,7 +1,7 @@
 import { Component } from '../framework/core/component.js';
 import { signupForm } from './auth.common/auth.signupform.js';
 
-class SignupComponent extends Component {
+export class SignupComponent extends Component {
   constructor(config) {
     super(config);
     this.selector = 'app';
@@ -33,5 +33,3 @@ class SignupComponent extends Component {
     };
   }
 }
-
-export const signupComponent = new SignupComponent();

@@ -1,7 +1,7 @@
 import { PATH_ARG, PATH_SLASH, PATH_ARG_CG } from './regex.js';
-import { appComponent } from '../../app/app.component.js';
-import { signupComponent } from '../../app/auth.signupcomponent.js';
-import { signinComponent } from '../../app/auth.signincomponent.js';
+import { AppComponent } from '../../app/app.component.js';
+import { SignupComponent } from '../../app/auth.signupcomponent.js';
+import { SigninComponent } from '../../app/auth.signincomponent.js';
 
 const pathToRegex = (path) => new RegExp(`^${path.replace(PATH_SLASH, '\\/').replace(PATH_ARG, '(.+)')}$`);
 
@@ -14,9 +14,9 @@ const getParams = (match) => {
 
 export const router = () => {
   const routes = [
-    { path: '/', view: appComponent },
-    { path: '/signin', view: signinComponent },
-    { path: '/signup', view: signupComponent },
+    { path: '/', view: AppComponent },
+    { path: '/signin', view: SignupComponent },
+    { path: '/signup', view: SigninComponent },
   ];
 
   const potentialMatches = routes.map((route) => ({
@@ -35,8 +35,13 @@ export const router = () => {
 
   const ViewClass = matches.route.view;
   const view = new ViewClass(getParams(matches));
-
-  document.querySelector('.app').innerHTML = view.html;
+  if (view.data === undefined) {
+    document.querySelector('.app').innerHTML = view.template;
+  } else {
+    // eslint-disable-next-line no-undef
+    const template = Handlebars.compile(view.template);
+    document.querySelector('.app').innerHTML = template(view.data);
+  }
 };
 
 export const navigateTo = (url) => {

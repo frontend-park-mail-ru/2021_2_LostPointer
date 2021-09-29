@@ -8,7 +8,7 @@ import { appTrackList } from './app.common/app.tracklist.js';
 import { appSuggestedArtists } from './app.common/app.suggestedartists.js';
 import { appFriendActivity } from './app.common/app.friendactivity.js';
 
-class AppComponent extends Component {
+export class AppComponent extends Component {
   constructor(props) {
     super(props);
     this.selector = 'app';
@@ -44,5 +44,3 @@ class AppComponent extends Component {
   `;
   }
 }
-
-export const appComponent = new AppComponent();
