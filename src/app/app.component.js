@@ -7,6 +7,7 @@ import { appSuggestedPlaylists } from './app.common/app.suggestedplaylists.js';
 import { appTrackList } from './app.common/app.tracklist.js';
 import { appSuggestedArtists } from './app.common/app.suggestedartists.js';
 import { appFriendActivity } from './app.common/app.friendactivity.js';
+import Request from '../framework/appApi/request.js';
 
 export class AppComponent extends Component {
   constructor(props) {
@@ -41,5 +42,21 @@ export class AppComponent extends Component {
       friend_activity: appFriendActivity,
       player: appPlayer,
     };
+  }
+
+  render() {
+    super.render();
+    Request.get(
+      '/auth',
+    )
+      .then(({ status }) => {
+        if (status !== 200) {
+          const button = document.querySelector('.topbar-profile');
+          button.setAttribute('href', '/signin');
+          button.src = '/src/static/img/enter.png';
+        }
+      })
+      // eslint-disable-next-line no-console
+      .catch((error) => { console.log(error.msg); });
   }
 }

@@ -35,7 +35,7 @@ export const router = () => {
 
   const ViewClass = matches.route.view;
   const view = new ViewClass(getParams(matches));
-  document.querySelector('.app').innerHTML = view.render();
+  view.render();
 };
 
 export const navigateTo = (url) => {
