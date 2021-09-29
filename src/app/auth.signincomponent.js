@@ -39,8 +39,8 @@ export class SigninComponent extends Component {
     super.render();
 
     const form = document.querySelector('.auth-form');
-    const emailInput = form.querySelector('.auth-form__input[name="email"]');
-    const passwordInput = form.querySelector('.auth-form__input[name="password"]');
+    const emailInput = form.querySelector('#email');
+    const passwordInput = form.querySelector('#password');
 
     emailInput.CustomValidation = new CustomValidation(emailValidityChecks);
     passwordInput.CustomValidation = new CustomValidation(simplePasswordValidityChecks);
@@ -54,8 +54,8 @@ export class SigninComponent extends Component {
     if (!isValidForm()) {
       return;
     }
-    const emailInput = event.target.querySelector('.auth-form__input[name="email"]');
-    const passwordInput = event.target.querySelector('.auth-form__input[name="password"]');
+    const emailInput = event.target.querySelector('#email');
+    const passwordInput = event.target.querySelector('#password');
 
     Request.post(
       '/signin',

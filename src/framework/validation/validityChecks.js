@@ -70,8 +70,8 @@ export const passwordValidityChecks = [
 export const confirmPasswordValidityChecks = [
   {
     isInvalid() {
-      const passwordInput = document.querySelector('.auth-form__input[name="password"]');
-      const confirmPasswordInput = document.querySelector('.auth-form__input[name="confirm_password"]');
+      const passwordInput = document.querySelector('#password');
+      const confirmPasswordInput = document.querySelector('#confirm_password');
       return !confirmPasswordInput.value
         || confirmPasswordInput.value !== passwordInput.value;
     },

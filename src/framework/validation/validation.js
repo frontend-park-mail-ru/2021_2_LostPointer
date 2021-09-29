@@ -17,27 +17,12 @@ export class CustomValidation {
   }
 
   checkValidity(input) {
-    const messageElements = input.nextElementSibling.querySelectorAll('li');
-    this.validityChecks.map((item, idx) => ({
-      check: item,
-      element: messageElements[idx],
-    }))
-      .forEach(({ check, element }) => {
-        const isInvalid = check.isInvalid(input);
-        if (isInvalid) {
-          this.addInvalidity(check.invalidityMessage);
-        }
-
-        if (element) {
-          if (isInvalid) {
-            element.classList.add('invalid');
-            element.classList.remove('valid');
-          } else {
-            element.classList.remove('invalid');
-            element.classList.add('valid');
-          }
-        }
-      });
+    this.validityChecks.forEach((check) => {
+      const isInvalid = check.isInvalid(input);
+      if (isInvalid) {
+        this.addInvalidity(check.invalidityMessage);
+      }
+    });
   }
 }
 
