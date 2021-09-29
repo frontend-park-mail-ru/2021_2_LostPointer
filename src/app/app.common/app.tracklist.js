@@ -1,6 +1,6 @@
-import { FWComponent } from '../../framework/index.js';
+import { Component } from '../../framework/core/component.js';
 
-class AppTrackList extends FWComponent {
+class AppTrackList extends Component {
   constructor(props) {
     super(props);
     this.selector = 'track-list';

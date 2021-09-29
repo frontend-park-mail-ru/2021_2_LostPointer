@@ -1,4 +1,4 @@
-import { FWComponent } from '../framework/index.js';
+import { Component } from '../framework/core/component.js';
 import { appSidebar } from './app.common/app.sidebar.js';
 import { appPlayer } from './app.common/app.player.js';
 import { appTopbar } from './app.common/app.topbar.js';
@@ -8,7 +8,7 @@ import { appTrackList } from './app.common/app.tracklist.js';
 import { appSuggestedArtists } from './app.common/app.suggestedartists.js';
 import { appFriendActivity } from './app.common/app.friendactivity.js';
 
-class AppComponent extends FWComponent {
+class AppComponent extends Component {
   constructor(props) {
     super(props);
     this.selector = 'app';

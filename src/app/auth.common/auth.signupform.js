@@ -1,4 +1,4 @@
-import { FWComponent } from '../../framework/index.js';
+import { Component } from '../../framework/core/component.js';
 import {
   confirmPasswordInput,
   emailInput,
@@ -6,7 +6,7 @@ import {
   passwordInput,
 } from './auth.input.js';
 
-class SignupAuthForm extends FWComponent {
+class SignupAuthForm extends Component {
   constructor(config) {
     super(config);
     this.selector = 'auth-form';

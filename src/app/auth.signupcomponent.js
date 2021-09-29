@@ -1,7 +1,7 @@
-import { FWComponent } from '../framework/index.js';
+import { Component } from '../framework/core/component.js';
 import { signupForm } from './auth.common/auth.signupform.js';
 
-class SignupComponent extends FWComponent {
+class SignupComponent extends Component {
   constructor(config) {
     super(config);
     this.selector = 'app';

@@ -1,6 +1,6 @@
-import { FWComponent } from '../../framework/index.js';
+import { Component } from '../../framework/core/component.js';
 
-export const nameInput = new FWComponent({
+export const nameInput = new Component({
   data: {
     id: 'name',
     type: 'text',
@@ -17,7 +17,7 @@ export const nameInput = new FWComponent({
   },
 });
 
-export const emailInput = new FWComponent({
+export const emailInput = new Component({
   data: {
     id: 'email',
     type: 'text',
@@ -31,7 +31,7 @@ export const emailInput = new FWComponent({
   },
 });
 
-export const simplePasswordInput = new FWComponent({
+export const simplePasswordInput = new Component({
   data: {
     id: 'password',
     type: 'password',
@@ -45,7 +45,7 @@ export const simplePasswordInput = new FWComponent({
   },
 });
 
-export const passwordInput = new FWComponent({
+export const passwordInput = new Component({
   data: {
     id: 'password',
     type: 'password',
@@ -71,7 +71,7 @@ export const passwordInput = new FWComponent({
   },
 });
 
-export const confirmPasswordInput = new FWComponent({
+export const confirmPasswordInput = new Component({
   data: {
     id: 'confirm_password',
     type: 'password',

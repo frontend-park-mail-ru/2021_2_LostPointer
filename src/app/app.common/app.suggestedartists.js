@@ -1,6 +1,6 @@
-import { FWComponent } from '../../framework/index.js';
+import { Component } from '../../framework/core/component.js';
 
-class AppSuggestedArtists extends FWComponent {
+class AppSuggestedArtists extends Component {
   constructor(props) {
     super(props);
     this.selector = 'suggested-artists';

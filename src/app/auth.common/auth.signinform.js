@@ -1,7 +1,7 @@
-import { FWComponent } from '../../framework/index.js';
+import { Component } from '../../framework/core/component.js';
 import { emailInput, simplePasswordInput } from './auth.input.js';
 
-class SigninAuthForm extends FWComponent {
+class SigninAuthForm extends Component {
   constructor(config) {
     super(config);
     this.selector = 'auth-form';

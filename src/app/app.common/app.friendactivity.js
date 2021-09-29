@@ -1,6 +1,6 @@
-import { FWComponent } from '../../framework/index.js';
+import { Component } from '../../framework/core/component.js';
 
-class AppFriendActivity extends FWComponent {
+class AppFriendActivity extends Component {
   constructor(config) {
     super(config);
     this.selector = 'friend-activity';

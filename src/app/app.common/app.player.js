@@ -1,6 +1,6 @@
-import { FWComponent } from '../../framework/index.js';
+import { Component } from '../../framework/core/component.js';
 
-class AppPlayer extends FWComponent {
+class AppPlayer extends Component {
   constructor(props) {
     super(props);
     this.selector = 'player';

@@ -1,6 +1,6 @@
-import { FWComponent } from '../../framework/index.js';
+import { Component } from '../../framework/core/component.js';
 
-class AppSidebar extends FWComponent {
+class AppSidebar extends Component {
   constructor(props) {
     super(props);
     this.selector = 'sidebar';

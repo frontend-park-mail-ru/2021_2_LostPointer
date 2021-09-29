@@ -1,7 +1,7 @@
-import { FWModule } from '../framework/index.js';
+import { Module } from '../framework/core/module.js';
 import { appRoutes } from './app.routes.js';
 
-class AppModule extends FWModule {
+class AppModule extends Module {
 }
 
 export const appModule = new AppModule({
