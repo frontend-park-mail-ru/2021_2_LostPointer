@@ -1,3 +1,3 @@
-import { appModule } from './app/app.module.js';
+import startApp from './framework/core/app.js';
 
-appModule.start();
+startApp();

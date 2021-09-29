@@ -1,8 +1,9 @@
 import router from '../../router.js';
+import { appRoutes } from '../../app/app.routes.js';
 
-export class Module {
-  constructor(config) {
-    this.routes = config.routes;
+class App {
+  constructor() {
+    this.routes = appRoutes;
   }
 
   start() {
@@ -22,3 +23,11 @@ export class Module {
     component.render();
   }
 }
+
+const app = new App();
+
+function startApp() {
+  app.start();
+}
+
+export default startApp;
