@@ -4,7 +4,6 @@ export const nameInput = new Component({
   data: {
     id: 'name',
     type: 'text',
-    name: 'name',
     placeholder: 'Name',
     input_requirements: [
       {
@@ -21,7 +20,6 @@ export const emailInput = new Component({
   data: {
     id: 'email',
     type: 'text',
-    name: 'email',
     placeholder: 'Email',
     input_requirements: [
       {
@@ -35,7 +33,6 @@ export const simplePasswordInput = new Component({
   data: {
     id: 'password',
     type: 'password',
-    name: 'password',
     placeholder: 'Password',
     input_requirements: [
       {
@@ -49,7 +46,6 @@ export const passwordInput = new Component({
   data: {
     id: 'password',
     type: 'password',
-    name: 'password',
     placeholder: 'Password',
     input_requirements: [
       {
@@ -75,7 +71,6 @@ export const confirmPasswordInput = new Component({
   data: {
     id: 'confirm_password',
     type: 'password',
-    name: 'confirm_password',
     placeholder: 'Confirm password',
     input_requirements: [
       {

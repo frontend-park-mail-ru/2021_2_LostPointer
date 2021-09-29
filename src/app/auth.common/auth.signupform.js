@@ -13,7 +13,7 @@ class SignupAuthForm extends Component {
     this.template = `
     {{# each inputs}}
         <label for="{{ data.id }}">
-          <input class="auth-form__input" type="{{ data.type }}" id="{{ data.id }}" name="{{ data.name }}" placeholder="{{ data.placeholder }}">
+          <input class="auth-form__input" type="{{ data.type }}" id="{{ data.id }}" placeholder="{{ data.placeholder }}">
           <ul class="auth-form__input-requirements">
               {{# each data.input_requirements}}
                   <li>{{ msg }}</li>
