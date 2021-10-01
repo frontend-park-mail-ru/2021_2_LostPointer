@@ -10,4 +10,4 @@ class AppTopbar extends Component {
   }
 }
 
-export const appTopbar = new AppTopbar();
+export { AppTopbar };

@@ -7,44 +7,14 @@ class AppFriendActivity extends Component {
     this.data = {
       friends: [
         {
-          img: 'saptded.webp',
-          nickname: 'Saptded',
-          listening_to: 'ТЁЛКА-дрейн',
+          img: 'bc17edcb-4dc4-46cf-9ae9-412cb6bd6955.jpeg',
+          nickname: 'Frank Sinatra',
+          listening_to: 'Strangers in the Night',
         },
         {
-          img: 'saptded.webp',
-          nickname: 'Saptded',
-          listening_to: 'ТЁЛКА-дрейн',
-        },
-        {
-          img: 'saptded.webp',
-          nickname: 'Saptded',
-          listening_to: 'ТЁЛКА-дрейн',
-        },
-        {
-          img: 'saptded.webp',
-          nickname: 'Saptded',
-          listening_to: 'ТЁЛКА-дрейн',
-        },
-        {
-          img: 'saptded.webp',
-          nickname: 'Saptded',
-          listening_to: 'ТЁЛКА-дрейн',
-        },
-        {
-          img: 'saptded.webp',
-          nickname: 'Saptded',
-          listening_to: 'ТЁЛКА-дрейн',
-        },
-        {
-          img: 'saptded.webp',
-          nickname: 'Saptded',
-          listening_to: 'ТЁЛКА-дрейн',
-        },
-        {
-          img: 'vershov.webp',
-          nickname: 'VErshovBMSTU',
-          listening_to: 'Чёрные Глаза',
+          img: 'e4596b4e-b908-4b33-a788-d68477bc996c.jpeg',
+          nickname: 'Земфира',
+          listening_to: 'Трафик',
         },
       ],
     };
@@ -53,4 +23,4 @@ class AppFriendActivity extends Component {
   }
 }
 
-export const appFriendActivity = new AppFriendActivity();
+export { AppFriendActivity };

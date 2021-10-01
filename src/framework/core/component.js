@@ -17,9 +17,6 @@ export class Component {
   }
 
   render() {
-    // this.fetchData().then(() => {
     document.querySelector('.app').innerHTML = this.getHtml();
-    // });
-    console.log(this.fetchData());
   }
 }

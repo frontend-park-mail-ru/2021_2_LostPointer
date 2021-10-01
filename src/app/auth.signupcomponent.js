@@ -1,6 +1,8 @@
 import { Component } from '../framework/core/component.js';
-import { signupForm } from './auth.common/auth.signupform.js';
+import { SignupAuthForm } from './auth.common/auth.signupform.js';
 import { addInputsEventListeners, CustomValidation, isValidForm } from '../framework/validation/validation.js';
+// eslint-disable-next-line import/no-cycle
+import { navigateTo } from '../framework/core/router.js';
 import {
   confirmPasswordValidityChecks,
   emailValidityChecks,
@@ -8,8 +10,6 @@ import {
   passwordValidityChecks,
 } from '../framework/validation/validityChecks.js';
 import Request from '../framework/appApi/request.js';
-// eslint-disable-next-line import/no-cycle
-import { navigateTo } from '../framework/core/router.js';
 
 export class SignupComponent extends Component {
   constructor(config) {
@@ -37,7 +37,7 @@ export class SignupComponent extends Component {
       placeholder_img: 'woman_headphones_1.jpeg',
       title: 'Sign up',
       description: 'Let’s get all your required setup information and get started',
-      form: signupForm,
+      form: new SignupAuthForm(),
     };
   }
 
@@ -61,26 +61,26 @@ export class SignupComponent extends Component {
     form.addEventListener('submit', this.submitSignupForm);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   submitSignupForm(event) {
     event.preventDefault();
     if (!isValidForm()) {
       return;
     }
-    // const nameInput = event.target.querySelector('#name');
+    const nameInput = event.target.querySelector('#name');
     const emailInput = event.target.querySelector('#email');
     const passwordInput = event.target.querySelector('#password');
 
     Request.post(
-      '/api/v1/user/signup',
+      '/user/signup',
       JSON.stringify({
-        // Name: nameInput.value.trim(),
+        name: nameInput.value.trim(),
         username: emailInput.value.trim(),
         password: passwordInput.value.trim(),
       }),
     )
       .then(({ status, body }) => {
         if (status === 201) {
+          // TODO Переделать navigateTo
           navigateTo('/');
         } else {
           const failMsg = event.target.querySelector('.auth-form__fail_msg');
@@ -88,7 +88,6 @@ export class SignupComponent extends Component {
           failMsg.classList.add('visible');
         }
       })
-      // eslint-disable-next-line no-console
       .catch((error) => { console.log(error.msg); });
   }
 }

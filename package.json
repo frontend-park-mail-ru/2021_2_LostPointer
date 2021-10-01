@@ -6,7 +6,10 @@
   "scripts": {
     "server": "node server.js",
     "eslint": "eslint ./ src/",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "compile": "for f in $(find . -name '*.hbs'); do handlebars $f -f \"$f.precompiled.js\"; done",
+    "remove": "for f in $(find . -name '*.precompiled.js'); do rm $f; done",
+    "circular": "madge --circular src/"
   },
   "repository": {
     "type": "git",
@@ -26,6 +29,8 @@
     "husky": "^7.0.2"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "handlebars": "^4.7.7",
+    "madge": "^5.0.1"
   }
 }

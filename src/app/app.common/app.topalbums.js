@@ -6,16 +6,16 @@ class AppTopAlbums extends Component {
     this.data = {
       albums: [
         {
-          img: 'id.jpeg',
+          img: 'c80c6cdd-b976-471b-9eb2-72610e4d61b5.jpeg',
         },
         {
-          img: 'albina.jpeg',
+          img: 'd8d42756-b89f-41f2-8dc9-2c5d3405e20e.jpeg',
         },
         {
-          img: 'starboy.jpg',
+          img: 'bc17edcb-4dc4-46cf-9ae9-412cb6bd6955.jpeg',
         },
         {
-          img: 'yur.jpg',
+          img: 'a5c1ab2f-00e0-4b7b-a780-852653f0eed9.jpeg',
         },
       ],
     };
@@ -23,4 +23,4 @@ class AppTopAlbums extends Component {
   }
 }
 
-export const appTopAlbums = new AppTopAlbums();
+export { AppTopAlbums };

@@ -11,6 +11,8 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    'no-console': 'off',
+    'no-undef': 'off',
     'import/prefer-default-export': 'off',
     'class-methods-use-this': 'off',
     'no-underscore-dangle': 'off',

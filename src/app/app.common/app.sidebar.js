@@ -8,4 +8,4 @@ class AppSidebar extends Component {
   }
 }
 
-export const appSidebar = new AppSidebar();
+export { AppSidebar };

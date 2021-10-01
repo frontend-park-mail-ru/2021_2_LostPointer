@@ -1,5 +1,5 @@
 import { Component } from '../framework/core/component.js';
-import { signinForm } from './auth.common/auth.signinform.js';
+import { SigninAuthForm } from './auth.common/auth.signinform.js';
 import Request from '../framework/appApi/request.js';
 import { addInputsEventListeners, CustomValidation, isValidForm } from '../framework/validation/validation.js';
 import { emailValidityChecks, simplePasswordValidityChecks } from '../framework/validation/validityChecks.js';
@@ -33,7 +33,7 @@ export class SigninComponent extends Component {
       placeholder_img: 'woman_headphones_2.png',
       title: 'Sign in',
       description: 'Let’s get all required data and sign in',
-      form: signinForm,
+      form: new SigninAuthForm(),
     };
   }
 
@@ -60,21 +60,22 @@ export class SigninComponent extends Component {
     const passwordInput = event.target.querySelector('#password');
 
     Request.post(
-      '/api/v1/user/signin',
+      '/user/signin',
       JSON.stringify({
         username: emailInput.value.trim(),
         password: passwordInput.value.trim(),
       }),
     )
       .then(({ status }) => {
+        console.log(status);
         if (status === 200) {
+          // TODO заменить navitageTo
           navigateTo('/');
         } else {
           const failMsg = event.target.querySelector('.auth-form__fail_msg');
           failMsg.classList.add('visible');
         }
       })
-      // eslint-disable-next-line no-console
-      .catch((error) => { console.log(error.msg); });
+      .catch((error) => console.log(error.msg));
   }
 }

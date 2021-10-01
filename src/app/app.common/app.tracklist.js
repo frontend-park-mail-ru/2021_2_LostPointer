@@ -36,4 +36,4 @@ class AppTrackList extends Component {
   }
 }
 
-export const appTrackList = new AppTrackList();
+export { AppTrackList };

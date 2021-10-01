@@ -23,4 +23,4 @@ class AppSuggestedPlaylists extends Component {
   }
 }
 
-export const appSuggestedPlaylists = new AppSuggestedPlaylists();
+export { AppSuggestedPlaylists };

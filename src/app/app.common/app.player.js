@@ -14,4 +14,4 @@ class AppPlayer extends Component {
   }
 }
 
-export const appPlayer = new AppPlayer();
+export { AppPlayer };

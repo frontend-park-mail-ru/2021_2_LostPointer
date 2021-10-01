@@ -13,6 +13,7 @@ class SigninAuthForm extends Component {
             {{ fail_msg }}
         </div>
         <button class="auth-form__submit" type="submit">{{ button_msg }}</button>
+        <button class="auth-form__submit" data-link href="/signup" type="submit">Sign up</button>
     </form>
     `;
     this.data = {
@@ -26,4 +27,4 @@ class SigninAuthForm extends Component {
   }
 }
 
-export const signinForm = new SigninAuthForm();
+export { SigninAuthForm };

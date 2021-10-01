@@ -36,7 +36,6 @@ export const router = () => {
   }
 
   const ViewClass = matches.route.view;
-  console.log(matches.route.view);
   const view = new ViewClass(getParams(matches));
   view.render();
 };

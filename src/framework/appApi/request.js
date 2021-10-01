@@ -1,6 +1,6 @@
 import { ContentType, RequestMethods } from './requestUtils.js';
 
-const defaultBackendDomain = 'http://127.0.0.1:3030';
+const defaultBackendDomain = '/api/v1';
 
 class Request {
   constructor(domain = defaultBackendDomain) {
@@ -43,7 +43,6 @@ class Request {
           status: response.status,
           body: responseBody,
         })))
-      // eslint-disable-next-line no-console
       .catch((error) => console.log(error));
   }
 

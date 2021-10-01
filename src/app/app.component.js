@@ -1,12 +1,12 @@
 import { Component } from '../framework/core/component.js';
-import { appSidebar } from './app.common/app.sidebar.js';
-import { appPlayer } from './app.common/app.player.js';
-import { appTopbar } from './app.common/app.topbar.js';
-import { appTopAlbums } from './app.common/app.topalbums.js';
-import { appSuggestedPlaylists } from './app.common/app.suggestedplaylists.js';
-import { appTrackList } from './app.common/app.tracklist.js';
-import { appSuggestedArtists } from './app.common/app.suggestedartists.js';
-import { appFriendActivity } from './app.common/app.friendactivity.js';
+import { AppSidebar } from './app.common/app.sidebar.js';
+import { AppPlayer } from './app.common/app.player.js';
+import { AppTopbar } from './app.common/app.topbar.js';
+import { AppTopAlbums } from './app.common/app.topalbums.js';
+import { AppSuggestedPlaylists } from './app.common/app.suggestedplaylists.js';
+import { AppTrackList } from './app.common/app.tracklist.js';
+import { AppSuggestedArtists } from './app.common/app.suggestedartists.js';
+import { AppFriendActivity } from './app.common/app.friendactivity.js';
 import Request from '../framework/appApi/request.js';
 
 export class AppComponent extends Component {
@@ -33,30 +33,33 @@ export class AppComponent extends Component {
 {{#render player}}{{/render}}
   `;
     this.data = {
-      sidebar: appSidebar,
-      topbar: appTopbar,
-      top_albums: appTopAlbums,
-      suggested_playlists: appSuggestedPlaylists,
-      track_list: appTrackList,
-      suggested_artists: appSuggestedArtists,
-      friend_activity: appFriendActivity,
-      player: appPlayer,
+      sidebar: new AppSidebar(),
+      topbar: new AppTopbar(),
+      top_albums: new AppTopAlbums(),
+      suggested_playlists: new AppSuggestedPlaylists(),
+      track_list: new AppTrackList(),
+      suggested_artists: new AppSuggestedArtists(),
+      friend_activity: new AppFriendActivity(),
+      player: new AppPlayer(),
     };
   }
 
   render() {
     super.render();
     Request.get(
-      '/api/v1/auth',
+      '/auth',
     )
       .then(({ status }) => {
         if (status !== 200) {
           const button = document.querySelector('.topbar-profile');
           button.setAttribute('href', '/signin');
           button.src = '/src/static/img/enter.png';
+        } else {
+          const button = document.querySelector('.topbar-profile');
+          button.setAttribute('href', '/user/logout');
+          button.src = '/src/static/img/ava.png';
         }
       })
-      // eslint-disable-next-line no-console
-      .catch((error) => { console.log(error.msg); });
+      .catch((error) => console.error(error.msg));
   }
 }
