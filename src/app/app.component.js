@@ -13,38 +13,52 @@ export class AppComponent extends Component {
   constructor(props) {
     super(props);
     this.template = `
-<div class="app__content">
-    {{#render sidebar}}{{/render}}
-    <div class="main-layout">
-        {{#render topbar}}{{/render}}
-        <div class="main-layout__content">
-            <div class="listen-now">
-                {{#render top_albums}}{{/render}}
-                <div class="listen-now__suggested-content">
-<!--                    {{#render suggested_playlists}}{{/render}}-->
-                    {{#render track_list}}{{/render}}
-                    {{#render suggested_artists}}{{/render}}
+        <div class="app__content">
+            {{#render sidebar}}{{/render}}
+            <div class="main-layout">
+                {{#render topbar}}{{/render}}
+                <div class="main-layout__content">
+                    <div class="listen-now">
+                        {{#render top_albums}}{{/render}}
+                        <div class="listen-now__suggested-content">
+                            {{#render suggested_playlists}}{{/render}}
+                            {{#render track_list}}{{/render}}
+                            {{#render suggested_artists}}{{/render}}
+                        </div>
+                    </div>
+                    {{#render friend_activity}}{{/render}}
                 </div>
             </div>
-<!--            {{#render friend_activity}}{{/render}}-->
         </div>
-    </div>
-</div>
-{{#render player}}{{/render}}
-  `;
+        {{#render player}}{{/render}}
+    `;
     this.data = {
       sidebar: new AppSidebar(),
       topbar: new AppTopbar(),
-      top_albums: new AppTopAlbums(),
       suggested_playlists: new AppSuggestedPlaylists(),
       track_list: new AppTrackList(),
-      suggested_artists: new AppSuggestedArtists(),
       friend_activity: new AppFriendActivity(),
       player: new AppPlayer(),
     };
   }
 
+  didMount() {
+    Request.get('/home').then((response) => {
+      const albums = response.body.albums.map((e) => ({ img: e.artWork }));
+
+      this.data.top_albums = new AppTopAlbums({ albums });
+      this.data.suggested_artists = new AppSuggestedArtists({ artists: albums });
+      this.data.top_albums.render();
+      this.data.suggested_artists.render();
+      this.isLoaded = true;
+      this.render();
+    });
+  }
+
   render() {
+    if (!this.isLoaded) {
+      this.didMount();
+    }
     super.render();
     Request.get(
       '/auth',

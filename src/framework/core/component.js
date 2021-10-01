@@ -1,11 +1,10 @@
 export class Component {
   constructor(props) {
+    this.isLoaded = false;
     if (props) {
-      this.data = props.data;
+      this.data = props;
     }
   }
-
-  fetchData() {}
 
   getHtml() {
     if (this.data === undefined) {
