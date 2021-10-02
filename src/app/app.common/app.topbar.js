@@ -5,6 +5,7 @@ class AppTopbar extends Component {
     super(props);
     this.data = {
       avatar_img: 'ava.png',
+      auth_img: 'logout.png',
     };
     this.template = Handlebars.templates['topbar.hbs'](this.data);
   }

@@ -29,6 +29,10 @@ body {
     height: 100%;
 }
 
+.invisible {
+    display: none;
+}
+
 .sidebar {
     background-color: transparent;
     width: 50px;
@@ -94,7 +98,7 @@ body {
     padding-top: 5px;
 }
 
-.topbar-profile {
+.topbar-profile, .topbar-auth {
     cursor: pointer;
     margin-right: 40px;
     margin-top: 2px;

@@ -27,7 +27,8 @@ class Request {
 
   _fetchRequest(url, requestMethod, requestBody = null, contentType = ContentType.JSON) {
     const myHeaders = new Headers();
-    if ((RequestMethods.POST === requestMethod) || (RequestMethods.PUT === requestMethod)) {
+    if (!!requestBody && ((RequestMethods.POST === requestMethod)
+      || (RequestMethods.PUT === requestMethod))) {
       myHeaders.append('Content-Type', contentType);
     }
 

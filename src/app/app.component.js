@@ -8,6 +8,8 @@ import { AppTrackList } from './app.common/app.tracklist.js';
 import { AppSuggestedArtists } from './app.common/app.suggestedartists.js';
 import { AppFriendActivity } from './app.common/app.friendactivity.js';
 import Request from '../framework/appApi/request.js';
+// eslint-disable-next-line import/no-cycle
+import { navigateTo } from '../framework/core/router.js';
 
 export class AppComponent extends Component {
   constructor(props) {
@@ -55,23 +57,45 @@ export class AppComponent extends Component {
     });
   }
 
+  sendLogout() {
+    Request.post('/user/logout')
+      .then(({ status }) => {
+        console.log(status);
+        if (status === 200) {
+          navigateTo('/signin');
+          console.log('navigating');
+        }
+      })
+      .catch((error) => console.log(error.msg));
+  }
+
   render() {
     if (!this.isLoaded) {
       this.didMount();
+    } else {
+      super.render();
     }
-    super.render();
+
     Request.get(
       '/auth',
     )
       .then(({ status }) => {
         if (status !== 200) {
-          const button = document.querySelector('.topbar-profile');
+          const button = document.querySelector('.topbar-auth');
+          button.removeEventListener('click', this.sendLogout);
+          button.setAttribute('data-link', '');
           button.setAttribute('href', '/signin');
-          button.src = '/src/static/img/enter.png';
+          button.src = '/src/static/img/login.png';
+
+          document.querySelector('.topbar-profile').classList.add('invisible');
         } else {
-          const button = document.querySelector('.topbar-profile');
-          button.setAttribute('href', '/user/logout');
-          button.src = '/src/static/img/ava.png';
+          const button = document.querySelector('.topbar-auth');
+          button.addEventListener('click', this.sendLogout);
+          button.removeAttribute('data-link');
+          button.setAttribute('href', '');
+          button.src = '/src/static/img/logout.png';
+
+          document.querySelector('.topbar-profile').classList.remove('invisible');
         }
       })
       .catch((error) => console.error(error.msg));
