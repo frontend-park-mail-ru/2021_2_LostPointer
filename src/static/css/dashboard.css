@@ -372,6 +372,10 @@ body {
 }
 
 .listening-to {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 90%;
+    overflow: hidden;
     font-weight: 400;
 }
 

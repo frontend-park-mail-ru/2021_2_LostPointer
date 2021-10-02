@@ -1,5 +1,4 @@
 import { Component } from '../../framework/core/component.js';
-// import Request from '../../framework/appApi/request.js';
 
 class AppFriendActivity extends Component {
   constructor(config) {

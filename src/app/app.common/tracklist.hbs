@@ -2,17 +2,7 @@
     <div class="suggested-tracks__header">Tracks of the Week</div>
     <div class="suggested-tracks-container">
         {{# each tracks}}
-            <div class="track-list-item">
-                <img class="track-list-item__artwork" src="/src/static/img/{{ img }}">
-                <div class="track-list-item__name-container">
-                    <div class="track-list-item__name">{{ name }}</div>
-                    <div class="track-list-item__artist">{{ artist }}</div>
-                </div>
-                <div class="track-list-item__ellipsis">
-                    <img class="track-list-item-fav" src="/src/static/img/favorite.svg">
-                    <img class="track-list-item-play" src="/src/static/img/play-outline.svg">
-                </div>
-            </div>
+            {{# render track }}{{/render}}
         {{/each}}
     </div>
 </div>

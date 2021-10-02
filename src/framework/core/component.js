@@ -2,7 +2,7 @@ export class Component {
   constructor(props) {
     this.isLoaded = false;
     if (props) {
-      this.data = props;
+      this.data = { ...props };
     }
   }
 

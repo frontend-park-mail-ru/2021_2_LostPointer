@@ -1,6 +1,6 @@
 import { Component } from '../framework/core/component.js';
 import { AppSidebar } from './app.common/app.sidebar.js';
-import { AppPlayer } from './app.common/app.player.js';
+import { PlayerComponent } from './app.common/playerComponent.js';
 import { AppTopbar } from './app.common/app.topbar.js';
 import { AppTopAlbums } from './app.common/app.topalbums.js';
 import { AppSuggestedPlaylists } from './app.common/app.suggestedplaylists.js';
@@ -38,9 +38,8 @@ export class AppComponent extends Component {
       sidebar: new AppSidebar(),
       topbar: new AppTopbar(),
       suggested_playlists: new AppSuggestedPlaylists(),
-      track_list: new AppTrackList(),
       friend_activity: new AppFriendActivity(),
-      player: new AppPlayer(),
+      player: new PlayerComponent(),
     };
   }
 
@@ -50,8 +49,10 @@ export class AppComponent extends Component {
 
       this.data.top_albums = new AppTopAlbums({ albums });
       this.data.suggested_artists = new AppSuggestedArtists({ artists: albums });
+      this.data.track_list = new AppTrackList({ tracks: response.body.tracks });
       this.data.top_albums.render();
       this.data.suggested_artists.render();
+      this.data.track_list.render();
       this.isLoaded = true;
       this.render();
     });
