@@ -12,14 +12,22 @@ class SignupAuthForm extends Component {
         <div class="auth-form__fail_msg">
             {{ fail_msg }}
         </div>
-        <button class="auth-form__submit" type="submit">{{ button_msg }}</button>
-        <button class="auth-form__submit" data-link href="/signin" type="submit">Sign in</button>
-    </form>
-    <div class="auth-form__invalidities"></div>
+        
+        <div class="auth-form__buttons">
+            <button class="auth-form__submit" type="submit">{{ button_signup_msg }}</button>
+            <div class="auth-form__redirect">
+                <p>{{ p_redirect_msg }}</p>
+                <a data-link href="/signin" style="color: #FFFFFF">{{ a_redirect_msg }}</a>
+            </div>
+        </div>       
+     </form>
+     <div class="auth-form__invalidities"></div>
     `;
     this.data = {
       fail_msg: 'Registration failed',
-      button_msg: 'Sign up',
+      button_signup_msg: 'Sign up',
+      p_redirect_msg: 'Already registered?',
+      a_redirect_msg: 'Sign in',
       inputs: [
         new InputFormComponent({
           name: 'name',

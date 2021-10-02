@@ -158,8 +158,22 @@ body {
     display: block;
 }
 
-.auth-form__submit {
+.auth-form__buttons {
+    display: flex;
+    align-items: center;
+    width: 365px;
+}
+
+.auth-form__redirect {
     width: 200px;
+    font-family: Montserrat;
+    font-size: 15px;
+    color: #FFFFFF;
+    text-align: right;
+}
+
+.auth-form__submit {
+    width: 170px;
     height: 45px;
     border-radius: 25px;
     border: none;
@@ -176,6 +190,8 @@ body {
     -ms-transition: All 0.2s ease;
     transition: All 0.2s ease;
 }
+
+
 
 .auth-form__submit:hover {
     background: #992e39;
