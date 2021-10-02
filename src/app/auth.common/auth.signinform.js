@@ -12,13 +12,20 @@ class SigninAuthForm extends Component {
         <div class="auth-form__fail_msg">
             {{ fail_msg }}
         </div>
-        <button class="auth-form__submit" type="submit">{{ button_msg }}</button>
-        <button class="auth-form__submit" data-link href="/signup" type="submit">Sign up</button>
+        <div class="auth-form__buttons">
+            <button class="auth-form__submit" type="submit">{{ button_signin_msg }}</button>
+            <div class="auth-form__redirect">
+                <p>{{ p_redirect_msg }}</p>
+                <a data-link href="/signup" style="color: #FFFFFF">{{ a_redirect_msg }}</a>
+            </div>
+        </div>
     </form>
     `;
     this.data = {
       fail_msg: 'Authentication failed',
-      button_msg: 'Sign in',
+      button_signin_msg: 'Sign in',
+      p_redirect_msg: 'Don\'t have an account?',
+      a_redirect_msg: 'Sign up',
       inputs: [
         emailInput,
         simplePasswordInput,
