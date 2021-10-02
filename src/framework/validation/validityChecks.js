@@ -1,80 +1,78 @@
+class ValidityCheck {
+  constructor(invalidityMessage, isInvalid) {
+    this.invalidityMessage = invalidityMessage;
+    this.isInvalid = isInvalid;
+    this.element = null;
+  }
+
+  setElement(element) {
+    this.element = element;
+  }
+}
+
 export const nameValidityChecks = [
-  {
-    isInvalid(input) {
-      return input.value.length < 5;
-    },
-    invalidityMessage: 'This input needs to be at least 5 characters',
-  },
-  {
-    isInvalid(input) {
+  new ValidityCheck(
+    'Name needs to be at least 5 characters',
+    (input) => input.value.length < 5,
+  ),
+  new ValidityCheck(
+    'Name allows only letters and numbers',
+    (input) => {
       const illegalCharacters = input.value.match(/[^a-zA-Z0-9]/g);
       return !input.value || !!illegalCharacters;
     },
-    invalidityMessage: 'Only letters and numbers are allowed',
-  },
+  ),
 ];
 
 export const emailValidityChecks = [
-  {
-    isInvalid(input) {
+  new ValidityCheck(
+    'Invalid email address',
+    (input) => {
       const legalEmail = input.value.match(/[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/g);
       return !legalEmail;
     },
-    invalidityMessage: 'Invalid email address',
-  },
+  ),
 ];
 
 export const simplePasswordValidityChecks = [
-  {
-    isInvalid(input) {
-      return input.value === '';
-    },
-    invalidityMessage: 'Password required',
-  },
+  new ValidityCheck(
+    'Password required',
+    (input) => input.value === '',
+  ),
 ];
 
 export const passwordValidityChecks = [
-  {
-    isInvalid(input) {
-      return input.value.length < 8;
-    },
-    invalidityMessage: 'This input needs to be greater then 8 characters',
-  },
-  {
-    isInvalid(input) {
-      return !input.value.match(/[0-9]/g);
-    },
-    invalidityMessage: 'At least 1 number is required',
-  },
-  {
-    isInvalid(input) {
-      return !input.value.match(/[a-z]/g);
-    },
-    invalidityMessage: 'At least 1 lowercase letter is required',
-  },
-  {
-    isInvalid(input) {
-      return !input.value.match(/[A-Z]/g);
-    },
-    invalidityMessage: 'At least 1 uppercase letter is required',
-  },
-  {
-    isInvalid(input) {
-      // eslint-disable-next-line no-useless-escape
-      return !input.value.match(/[\!\@\#\$\%\^\&\*]/g);
-    },
-    invalidityMessage: 'You need one of the required special characters',
-  },
+  new ValidityCheck(
+    'Password needs to be greater then 8 characters',
+    (input) => input.value.length < 8,
+  ),
+  new ValidityCheck(
+    'Password requires at least 1 number',
+    (input) => !input.value.match(/[0-9]/g),
+  ),
+  new ValidityCheck(
+    'Password requires at least 1 lowercase letter',
+    (input) => !input.value.match(/[a-z]/g),
+  ),
+  new ValidityCheck(
+    'Password requires at least 1 uppercase letter',
+    (input) => !input.value.match(/[A-Z]/g),
+  ),
+  new ValidityCheck(
+    'Password must contain one of the required special characters',
+    // eslint-disable-next-line no-useless-escape
+    (input) => !input.value.match(/[\@\ \!\"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\?\[\\\]\^\_]/g),
+  ),
 ];
 
 export const confirmPasswordValidityChecks = [
-  {
-    isInvalid() {
+  new ValidityCheck(
+    'Password confirmation needs to match the password',
+    () => {
       const passwordInput = document.querySelector('input[name="password"]');
       const confirmPasswordInput = document.querySelector('input[name="confirm_password"]');
       return !confirmPasswordInput.value
         || confirmPasswordInput.value !== passwordInput.value;
     },
-    invalidityMessage: 'This password needs to match the first one',
-  },
+  ),
 ];

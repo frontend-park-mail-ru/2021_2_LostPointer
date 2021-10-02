@@ -36,7 +36,7 @@ body {
 }
 
 .auth-page__content {
-    width: 400px;
+    width: 700px;
     margin-left: 120px;
 }
 
@@ -69,11 +69,14 @@ body {
 }
 
 .auth-form {
+    width: 350px;
+    display: inline-block;
+    float: left;
     margin-top: 30px;
 }
 
 .auth-form__input {
-    width: 350px;
+    width: 320px;
     height: 50px;
     border-radius: 10px;
     border: 2px solid #3D3D3D;
@@ -90,40 +93,53 @@ body {
     border-color: #ff4d5b;
 }
 
-.auth-form__input-requirements {
+/*.auth-form__input-requirements {*/
+/*    display: inline-block;*/
+/*    font-family: Montserrat;*/
+/*    font-size: 16px;*/
+/*    padding-left: 10px;*/
+/*    text-align: left;*/
+/*    list-style: disc;*/
+/*    list-style-position: inside;*/
+/*    max-width: 320px;*/
+/*    color: #969696;*/
+/*}*/
+
+/*.auth-form__input-requirements li.valid:after {*/
+/*    display: inline-block;*/
+/*}*/
+
+/*input:not([type="submit"]) + .auth-form__input-requirements {*/
+/*    overflow: hidden;*/
+/*    max-height: 0;*/
+/*    transition: max-height 1.5s ease-out;*/
+/*}*/
+
+/*input:not([type="submit"]):hover + .auth-form__input-requirements,*/
+/*input:not([type="submit"]):focus + .auth-form__input-requirements,*/
+/*input:not([type="submit"]):active + .auth-form__input-requirements {*/
+/*    max-height: 1000px; !* Рандомное очень большое число, чтобы список развернулся весь *!*/
+/*    transition: max-height 1.5s ease-in;*/
+/*}*/
+
+.auth-form__invalidities {
     display: inline-block;
+    float: left;
     font-family: Montserrat;
     font-size: 16px;
-    padding-left: 10px;
     text-align: left;
     list-style: disc;
     list-style-position: inside;
     max-width: 320px;
+    margin: 40px 10px 10px;
     color: #969696;
 }
 
-.auth-form__input-requirements li.invalid {
+.auth-form__invalidities div.invalid {
     color: #ff4d5b;
 }
-.auth-form__input-requirements li.valid {
+.auth-form__invalidities div.valid {
     color: #2ecc71;
-}
-
-.auth-form__input-requirements li.valid:after {
-    display: inline-block;
-}
-
-input:not([type="submit"]) + .auth-form__input-requirements {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 1.5s ease-out;
-}
-
-input:not([type="submit"]):hover + .auth-form__input-requirements,
-input:not([type="submit"]):focus + .auth-form__input-requirements,
-input:not([type="submit"]):active + .auth-form__input-requirements {
-    max-height: 1000px; /* Рандомное очень большое число, чтобы список развернулся весь */
-    transition: max-height 1.5s ease-in;
 }
 
 .auth-form__fail_msg {
@@ -134,7 +150,7 @@ input:not([type="submit"]):active + .auth-form__input-requirements {
     list-style: disc;
     list-style-position: inside;
     max-width: 350px;
-    margin: 10px auto;
+    margin: 10px 10px;
     color: #ff4d5b;
 }
 

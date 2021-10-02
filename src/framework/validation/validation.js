@@ -1,7 +1,16 @@
 export class CustomValidation {
-  constructor(validityChecks) {
+  constructor(validityChecks, invaliditiesDiv = null) {
     this.invalidities = [];
     this.validityChecks = validityChecks;
+
+    if (invaliditiesDiv) {
+      this.validityChecks.forEach((check) => {
+        const invalidity = document.createElement('div');
+        invalidity.innerText = check.invalidityMessage;
+        check.setElement(invalidity);
+        invaliditiesDiv.appendChild(invalidity);
+      });
+    }
   }
 
   addInvalidity(message) {
@@ -20,7 +29,12 @@ export class CustomValidation {
     this.validityChecks.forEach((check) => {
       const isInvalid = check.isInvalid(input);
       if (isInvalid) {
+        check.element.classList.remove('valid');
+        check.element.classList.add('invalid');
         this.addInvalidity(check.invalidityMessage);
+      } else {
+        check.element.classList.remove('invalid');
+        check.element.classList.add('valid');
       }
     });
   }

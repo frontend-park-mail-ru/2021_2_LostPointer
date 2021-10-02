@@ -14,7 +14,8 @@ class SignupAuthForm extends Component {
         </div>
         <button class="auth-form__submit" type="submit">{{ button_msg }}</button>
         <button class="auth-form__submit" data-link href="/signin" type="submit">Sign in</button>
-     </form>
+    </form>
+    <div class="auth-form__invalidities"></div>
     `;
     this.data = {
       fail_msg: 'Registration failed',

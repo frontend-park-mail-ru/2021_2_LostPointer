@@ -49,12 +49,13 @@ export class SignupComponent extends Component {
     const emailInput = form.querySelector('input[name="email"]');
     const passwordInput = form.querySelector('input[name="password"]');
     const confirmPasswordInput = form.querySelector('input[name="confirm_password"]');
+    const invalidities = document.querySelector('.auth-form__invalidities');
 
-    nameInput.CustomValidation = new CustomValidation(nameValidityChecks);
-    emailInput.CustomValidation = new CustomValidation(emailValidityChecks);
-    passwordInput.CustomValidation = new CustomValidation(passwordValidityChecks);
+    nameInput.CustomValidation = new CustomValidation(nameValidityChecks, invalidities);
+    emailInput.CustomValidation = new CustomValidation(emailValidityChecks, invalidities);
+    passwordInput.CustomValidation = new CustomValidation(passwordValidityChecks, invalidities);
     confirmPasswordInput.CustomValidation = new CustomValidation(
-      confirmPasswordValidityChecks,
+      confirmPasswordValidityChecks, invalidities,
     );
 
     addInputsEventListeners(form);

@@ -43,9 +43,12 @@ export class SigninComponent extends Component {
     const form = document.querySelector('.auth-form');
     const emailInput = form.querySelector('input[name="email"]');
     const passwordInput = form.querySelector('input[name="password"]');
+    const invalidities = document.querySelector('.auth-form__invalidities');
 
-    emailInput.CustomValidation = new CustomValidation(emailValidityChecks);
-    passwordInput.CustomValidation = new CustomValidation(simplePasswordValidityChecks);
+    emailInput.CustomValidation = new CustomValidation(emailValidityChecks, invalidities);
+    passwordInput.CustomValidation = new CustomValidation(
+      simplePasswordValidityChecks, invalidities,
+    );
 
     addInputsEventListeners(form);
     form.addEventListener('submit', this.submitSigninForm);
