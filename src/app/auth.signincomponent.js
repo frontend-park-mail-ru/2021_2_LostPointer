@@ -62,20 +62,26 @@ export class SigninComponent extends Component {
     Request.post(
       '/user/signin',
       JSON.stringify({
-        username: emailInput.value.trim(),
+        email: emailInput.value.trim(),
         password: passwordInput.value.trim(),
       }),
     )
-      .then(({ status }) => {
+      .then(({ status, body }) => {
         console.log(status);
         if (status === 200) {
           // TODO заменить navitageTo
           navigateTo('/');
         } else {
           const failMsg = event.target.querySelector('.auth-form__fail_msg');
+          failMsg.innerText = body.message;
           failMsg.classList.add('visible');
         }
       })
-      .catch((error) => console.log(error.msg));
+      .catch((error) => {
+        const failMsg = event.target.querySelector('.auth-form__fail_msg');
+        failMsg.innerText = 'Authentication failed';
+        failMsg.classList.add('visible');
+        console.log(error.msg);
+      });
   }
 }

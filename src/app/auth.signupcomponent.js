@@ -74,7 +74,7 @@ export class SignupComponent extends Component {
       '/user/signup',
       JSON.stringify({
         name: nameInput.value.trim(),
-        username: emailInput.value.trim(),
+        email: emailInput.value.trim(),
         password: passwordInput.value.trim(),
       }),
     )
@@ -88,6 +88,11 @@ export class SignupComponent extends Component {
           failMsg.classList.add('visible');
         }
       })
-      .catch((error) => { console.log(error.msg); });
+      .catch((error) => {
+        const failMsg = event.target.querySelector('.auth-form__fail_msg');
+        failMsg.innerText = 'Registration failed';
+        failMsg.classList.add('visible');
+        console.log(error.msg);
+      });
   }
 }
