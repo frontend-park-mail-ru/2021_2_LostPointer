@@ -45,10 +45,10 @@ export class SignupComponent extends Component {
     super.render();
 
     const form = document.querySelector('.auth-form');
-    const nameInput = form.querySelector('#name');
-    const emailInput = form.querySelector('#email');
-    const passwordInput = form.querySelector('#password');
-    const confirmPasswordInput = form.querySelector('#confirm_password');
+    const nameInput = form.querySelector('input[name="name"]');
+    const emailInput = form.querySelector('input[name="email"]');
+    const passwordInput = form.querySelector('input[name="password"]');
+    const confirmPasswordInput = form.querySelector('input[name="confirm_password"]');
 
     nameInput.CustomValidation = new CustomValidation(nameValidityChecks);
     emailInput.CustomValidation = new CustomValidation(emailValidityChecks);
@@ -66,9 +66,9 @@ export class SignupComponent extends Component {
     if (!isValidForm()) {
       return;
     }
-    const nameInput = event.target.querySelector('#name');
-    const emailInput = event.target.querySelector('#email');
-    const passwordInput = event.target.querySelector('#password');
+    const nameInput = event.target.querySelector('input[name="name"]');
+    const emailInput = event.target.querySelector('input[name="email"]');
+    const passwordInput = event.target.querySelector('input[name="password"]');
 
     Request.post(
       '/user/signup',
@@ -84,7 +84,7 @@ export class SignupComponent extends Component {
           navigateTo('/');
         } else {
           const failMsg = event.target.querySelector('.auth-form__fail_msg');
-          failMsg.innerText = body.msg;
+          failMsg.innerText = body.message;
           failMsg.classList.add('visible');
         }
       })

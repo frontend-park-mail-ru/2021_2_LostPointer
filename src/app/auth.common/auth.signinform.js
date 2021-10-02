@@ -1,5 +1,5 @@
 import { Component } from '../../framework/core/component.js';
-import { emailInput, simplePasswordInput } from './auth.input.js';
+import { InputFormComponent } from './auth.input.js';
 
 class SigninAuthForm extends Component {
   constructor(config) {
@@ -20,8 +20,16 @@ class SigninAuthForm extends Component {
       fail_msg: 'Authentication failed',
       button_msg: 'Sign in',
       inputs: [
-        emailInput,
-        simplePasswordInput,
+        new InputFormComponent({
+          name: 'email',
+          type: 'email',
+          placeholder: 'Email',
+        }),
+        new InputFormComponent({
+          name: 'password',
+          type: 'password',
+          placeholder: 'Password',
+        }),
       ],
     };
   }

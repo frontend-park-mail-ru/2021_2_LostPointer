@@ -1,10 +1,5 @@
 import { Component } from '../../framework/core/component.js';
-import {
-  confirmPasswordInput,
-  emailInput,
-  nameInput,
-  passwordInput,
-} from './auth.input.js';
+import { InputFormComponent } from './auth.input.js';
 
 class SignupAuthForm extends Component {
   constructor(config) {
@@ -25,10 +20,26 @@ class SignupAuthForm extends Component {
       fail_msg: 'Registration failed',
       button_msg: 'Sign up',
       inputs: [
-        nameInput,
-        emailInput,
-        passwordInput,
-        confirmPasswordInput,
+        new InputFormComponent({
+          name: 'name',
+          type: 'text',
+          placeholder: 'Name',
+        }),
+        new InputFormComponent({
+          name: 'email',
+          type: 'email',
+          placeholder: 'Email',
+        }),
+        new InputFormComponent({
+          name: 'password',
+          type: 'password',
+          placeholder: 'Password',
+        }),
+        new InputFormComponent({
+          name: 'confirm_password',
+          type: 'password',
+          placeholder: 'Confirm password',
+        }),
       ],
     };
   }
