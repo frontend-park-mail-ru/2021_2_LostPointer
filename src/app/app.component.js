@@ -92,7 +92,7 @@ export class AppComponent extends Component {
           const button = document.querySelector('.topbar-auth');
           button.addEventListener('click', this.sendLogout);
           button.removeAttribute('data-link');
-          button.setAttribute('href', '');
+          button.removeAttribute('href');
           button.src = '/src/static/img/logout.png';
 
           document.querySelector('.topbar-profile').classList.remove('invisible');
