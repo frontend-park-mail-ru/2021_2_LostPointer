@@ -1,0 +1,11 @@
+<form class="auth-form" id="auth-form" action="#">
+    {{# each inputs}}
+        {{# render this}}{{/render}}
+    {{/each}}
+    <div class="auth-form__fail_msg">
+        {{ fail_msg }}
+    </div>
+    <button class="auth-form__submit" type="submit">{{ button_msg }}</button>
+    <button class="auth-form__submit" data-link href="/signup" type="submit">Sign up</button>
+</form>
+<div class="auth-form__invalidities"></div>

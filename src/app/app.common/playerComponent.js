@@ -1,6 +1,6 @@
 import { Component } from '../../framework/core/component.js';
 
-class AppPlayer extends Component {
+class PlayerComponent extends Component {
   constructor(props) {
     super(props);
     this.data = {
@@ -14,4 +14,4 @@ class AppPlayer extends Component {
   }
 }
 
-export { AppPlayer };
+export { PlayerComponent };
