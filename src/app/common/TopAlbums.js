@@ -1,6 +1,6 @@
 import { Component } from '../../framework/core/component.js';
 
-class AppTopAlbums extends Component {
+class TopAlbums extends Component {
   constructor(props) {
     super(props);
     this.template = Handlebars.templates['topalbums.hbs'](this.data);
@@ -11,4 +11,4 @@ class AppTopAlbums extends Component {
   }
 }
 
-export { AppTopAlbums };
+export { TopAlbums };

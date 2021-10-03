@@ -1,7 +1,7 @@
 import { Component } from '../../framework/core/component.js';
-import { Track } from './track.js';
+import { Track } from './Track.js';
 
-class AppTrackList extends Component {
+class TrackList extends Component {
   constructor(props) {
     super(props);
     this.data.tracks = props.tracks.map((e) => ({ track: new Track(e) }));
@@ -9,4 +9,4 @@ class AppTrackList extends Component {
   }
 }
 
-export { AppTrackList };
+export { TrackList };

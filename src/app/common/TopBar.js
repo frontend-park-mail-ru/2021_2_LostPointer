@@ -1,6 +1,6 @@
 import { Component } from '../../framework/core/component.js';
 
-class AppTopbar extends Component {
+class TopBar extends Component {
   constructor(props) {
     super(props);
     this.data = {
@@ -11,4 +11,4 @@ class AppTopbar extends Component {
   }
 }
 
-export { AppTopbar };
+export { TopBar };

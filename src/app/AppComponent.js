@@ -1,12 +1,12 @@
 import { Component } from '../framework/core/component.js';
-import { AppSidebar } from './app.common/app.sidebar.js';
-import { PlayerComponent } from './app.common/playerComponent.js';
-import { AppTopbar } from './app.common/app.topbar.js';
-import { AppTopAlbums } from './app.common/app.topalbums.js';
-import { AppSuggestedPlaylists } from './app.common/app.suggestedplaylists.js';
-import { AppTrackList } from './app.common/app.tracklist.js';
-import { AppSuggestedArtists } from './app.common/app.suggestedartists.js';
-import { AppFriendActivity } from './app.common/app.friendactivity.js';
+import { Sidebar } from './common/Sidebar.js';
+import { PlayerComponent } from './common/PlayerComponent.js';
+import { TopBar } from './common/TopBar.js';
+import { TopAlbums } from './common/TopAlbums.js';
+import { SuggestedPlaylists } from './common/SuggestedPlaylists.js';
+import { TrackList } from './common/TrackList.js';
+import { SuggestedArtists } from './common/SuggestedArtists.js';
+import { FriendActivity } from './common/FriendActivity.js';
 import Request from '../framework/appApi/request.js';
 // eslint-disable-next-line import/no-cycle
 import { navigateTo } from '../framework/core/router.js';
@@ -35,10 +35,9 @@ export class AppComponent extends Component {
         {{#render player}}{{/render}}
     `;
     this.data = {
-      sidebar: new AppSidebar(),
-      topbar: new AppTopbar(),
-      suggested_playlists: new AppSuggestedPlaylists(),
-      friend_activity: new AppFriendActivity(),
+      sidebar: new Sidebar(),
+      topbar: new TopBar(),
+      friend_activity: new FriendActivity(),
       player: new PlayerComponent(),
     };
   }
@@ -47,9 +46,26 @@ export class AppComponent extends Component {
     Request.get('/home').then((response) => {
       const albums = response.body.albums.map((e) => ({ img: e.artWork }));
 
-      this.data.top_albums = new AppTopAlbums({ albums });
-      this.data.suggested_artists = new AppSuggestedArtists({ artists: albums });
-      this.data.track_list = new AppTrackList({ tracks: response.body.tracks });
+      this.data.top_albums = new TopAlbums({ albums });
+      this.data.suggested_artists = new SuggestedArtists({ artists: albums });
+      this.data.track_list = new TrackList({ tracks: response.body.tracks });
+      this.data.suggested_playlists = new SuggestedPlaylists({
+        playlists: [
+          {
+            cover: 'yur.jpg',
+            title: 'Jail Mix',
+          },
+          {
+            cover: 'albina.jpeg',
+            title: 'Resine Working Mix Extended',
+          },
+          {
+            cover: 'starboy.jpg',
+            title: 'Workout Mix 2',
+          },
+        ],
+      });
+
       this.data.top_albums.render();
       this.data.suggested_artists.render();
       this.data.track_list.render();

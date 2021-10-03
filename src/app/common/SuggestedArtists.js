@@ -1,6 +1,6 @@
 import { Component } from '../../framework/core/component.js';
 
-class AppSuggestedArtists extends Component {
+class SuggestedArtists extends Component {
   constructor(props) {
     super(props);
     // eslint-no-undef
@@ -8,4 +8,4 @@ class AppSuggestedArtists extends Component {
   }
 }
 
-export { AppSuggestedArtists };
+export { SuggestedArtists };

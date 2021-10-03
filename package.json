@@ -7,8 +7,8 @@
     "server": "node server.js",
     "eslint": "eslint ./ src/",
     "prepare": "husky install",
-    "compile": "for f in $(find . -name '*.hbs'); do handlebars $f -f \"$f.precompiled.js\"; done",
-    "remove": "for f in $(find . -name '*.precompiled.js'); do rm $f; done",
+    "compile": "handlebars src/app/templates/* -f src/static/js/templates.precompiled.js",
+    "remove": "rm src/static/js/templates.precompiled.js",
     "circular": "madge --circular src/"
   },
   "repository": {

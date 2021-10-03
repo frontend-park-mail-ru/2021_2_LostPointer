@@ -1,5 +1,5 @@
 import { Component } from '../../framework/core/component.js';
-import { InputFormComponent } from './auth.input.js';
+import { InputFormComponent } from './InputFormComponent.js';
 
 class SignupAuthForm extends Component {
   constructor(config) {
@@ -30,7 +30,7 @@ class SignupAuthForm extends Component {
         }),
       ],
     };
-    this.template = Handlebars.templates['auth.signupform.hbs'](this.data);
+    this.template = Handlebars.templates['signupform.hbs'](this.data);
   }
 }
 

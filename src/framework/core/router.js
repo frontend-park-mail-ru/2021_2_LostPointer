@@ -1,10 +1,10 @@
 import { PATH_ARG, PATH_SLASH, PATH_ARG_CG } from './regex.js';
 // eslint-disable-next-line import/no-cycle
-import { AppComponent } from '../../app/app.component.js';
+import { AppComponent } from '../../app/AppComponent.js';
 // eslint-disable-next-line import/no-cycle
-import { SignupComponent } from '../../app/auth.signupcomponent.js';
+import { SignupComponent } from '../../app/SignupComponent.js';
 // eslint-disable-next-line import/no-cycle
-import { SigninComponent } from '../../app/auth.signincomponent.js';
+import { SigninComponent } from '../../app/SigninComponent.js';
 
 const pathToRegex = (path) => new RegExp(`^${path.replace(PATH_SLASH, '\\/').replace(PATH_ARG, '(.+)')}$`);
 

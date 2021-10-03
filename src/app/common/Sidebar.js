@@ -1,6 +1,6 @@
 import { Component } from '../../framework/core/component.js';
 
-class AppSidebar extends Component {
+class Sidebar extends Component {
   constructor(props) {
     super(props);
     // eslint-no-undef
@@ -8,4 +8,4 @@ class AppSidebar extends Component {
   }
 }
 
-export { AppSidebar };
+export { Sidebar };

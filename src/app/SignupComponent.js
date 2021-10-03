@@ -1,59 +1,69 @@
 import { Component } from '../framework/core/component.js';
-import { SigninAuthForm } from './auth.common/auth.signinform.js';
-import Request from '../framework/appApi/request.js';
+import { SignupAuthForm } from './auth/SignupAuthForm.js';
 import { addInputsEventListeners, CustomValidation, isValidForm } from '../framework/validation/validation.js';
-import { emailValidityChecks, simplePasswordValidityChecks } from '../framework/validation/validityChecks.js';
 // eslint-disable-next-line import/no-cycle
 import { navigateTo } from '../framework/core/router.js';
+import {
+  confirmPasswordValidityChecks,
+  emailValidityChecks,
+  nameValidityChecks,
+  passwordValidityChecks,
+} from '../framework/validation/validityChecks.js';
+import Request from '../framework/appApi/request.js';
 
-export class SigninComponent extends Component {
+export class SignupComponent extends Component {
   constructor(config) {
     super(config);
-    // TODO рендерить signin_form
     this.data = {
-      placeholder_img: 'woman_headphones_2.png',
-      title: 'Sign in',
-      description: 'Let’s get all required data and sign in',
-      form: new SigninAuthForm(),
+      placeholder_img: 'woman_headphones_1.jpeg',
+      title: 'Sign up',
+      description: 'Let’s get all your required setup information and get started',
+      form: new SignupAuthForm(),
     };
-    this.template = Handlebars.templates['signincomponent.hbs'](this.data);
+    this.template = Handlebars.templates['signupcomponent.hbs'](this.data);
   }
 
   render() {
     super.render();
 
     const form = document.querySelector('.auth-form');
+    const nameInput = form.querySelector('input[name="name"]');
     const emailInput = form.querySelector('input[name="email"]');
     const passwordInput = form.querySelector('input[name="password"]');
+    const confirmPasswordInput = form.querySelector('input[name="confirm_password"]');
     const invalidities = document.querySelector('.auth-form__invalidities');
 
+    nameInput.CustomValidation = new CustomValidation(nameValidityChecks, invalidities);
     emailInput.CustomValidation = new CustomValidation(emailValidityChecks, invalidities);
-    passwordInput.CustomValidation = new CustomValidation(
-      simplePasswordValidityChecks, invalidities,
+    passwordInput.CustomValidation = new CustomValidation(passwordValidityChecks, invalidities);
+    confirmPasswordInput.CustomValidation = new CustomValidation(
+      confirmPasswordValidityChecks, invalidities,
     );
 
     addInputsEventListeners(form);
-    form.addEventListener('submit', this.submitSigninForm);
+    form.addEventListener('submit', this.submitSignupForm);
   }
 
-  submitSigninForm(event) {
+  submitSignupForm(event) {
     event.preventDefault();
     if (!isValidForm()) {
       return;
     }
+    const nameInput = event.target.querySelector('input[name="name"]');
     const emailInput = event.target.querySelector('input[name="email"]');
     const passwordInput = event.target.querySelector('input[name="password"]');
 
     Request.post(
-      '/user/signin',
+      '/user/signup',
       JSON.stringify({
+        name: nameInput.value.trim(),
         email: emailInput.value.trim(),
         password: passwordInput.value.trim(),
       }),
     )
       .then(({ status, body }) => {
-        console.log(status);
-        if (status === 200) {
+        if (status === 201) {
+          // TODO Переделать navigateTo
           navigateTo('/');
         } else {
           const failMsg = event.target.querySelector('.auth-form__fail_msg');
@@ -63,7 +73,7 @@ export class SigninComponent extends Component {
       })
       .catch((error) => {
         const failMsg = event.target.querySelector('.auth-form__fail_msg');
-        failMsg.innerText = 'Authentication failed';
+        failMsg.innerText = 'Registration failed';
         failMsg.classList.add('visible');
         console.log(error.msg);
       });
