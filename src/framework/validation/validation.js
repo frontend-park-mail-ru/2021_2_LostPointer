@@ -3,23 +3,10 @@ export class CustomValidation {
     this.invalidities = [];
     this.invalidityDiv = invaliditiesDiv;
     this.validityChecks = validityChecks;
-
-    // if (invaliditiesDiv) {
-    //   this.validityChecks.forEach((check) => {
-    //     const invalidity = document.createElement('div');
-    //     invalidity.innerText = check.invalidityMessage;
-    //     check.setElement(invalidity);
-    //     invaliditiesDiv.appendChild(invalidity);
-    //   });
-    // }
   }
 
   addInvalidity(message) {
     this.invalidities.push(message);
-  }
-
-  getInvalidities() {
-    return this.invalidities.join('. \n');
   }
 
   clearInvalidities() {
@@ -31,17 +18,6 @@ export class CustomValidation {
       const isInvalid = check.isInvalid(input);
       if (isInvalid) {
         this.addInvalidity(check.invalidityMessage);
-        // const invalidity = document.createElement('div');
-        // invalidity.innerHTML = check.invalidityMessage;
-        // check.setElement(invalidity);
-        // check.element.classList.add('invalid');
-        // this.invalidityDiv.appendChild(invalidity);
-        // check.element.classList.remove('valid');
-        // this.addInvalidity(check.invalidityMessage);
-      } else {
-
-        // check.element.classList.remove('invalid');
-        // check.element.classList.add('valid');
       }
     });
   }
@@ -64,12 +40,10 @@ export function checkInput(input) {
   input.CustomValidation.clearInvalidities();
   input.CustomValidation.checkValidity(input);
 
-  const invaliditiesHtmlCollecton = document.getElementsByClassName('auth-form__invalidities');
-  const invaliditiesList = Array.from(invaliditiesHtmlCollecton);
-
+  const invaliditiesArray = document.querySelectorAll('.auth-form__invalidities');
   if (input.value.length !== 0) {
     input.CustomValidation.invalidities.forEach((message) => {
-      const hasMessage = findInvalidMessage(invaliditiesList, message);
+      const hasMessage = findInvalidMessage(invaliditiesArray, message);
       if (!hasMessage) {
         const invalidity = document.createElement('div');
         invalidity.innerHTML = message;
@@ -78,18 +52,28 @@ export function checkInput(input) {
       }
     });
 
-    let amountDeletedDivs = 0;
+    let amountOfDeletedDivs = 0;
     const invaliditiesListNew = document.querySelector('.auth-form__invalidities');
     const invalidsArray = invaliditiesListNew.innerText.split('\n');
     const innerElements = invaliditiesListNew.getElementsByTagName('div');
     for (let i = 0; i < invalidsArray.length; i += 1) {
-      const pos = input.CustomValidation.invalidities.indexOf(invalidsArray[i]);
-      if (pos === -1) {
-        innerElements[i - amountDeletedDivs].remove();
-        amountDeletedDivs += 1;
+      const res = input.CustomValidation.invalidities.indexOf(invalidsArray[i]);
+      if (res === -1 && innerElements.length !== 0) {
+        let flag = false;
+        const pos = i - amountOfDeletedDivs;
+        input.CustomValidation.validityChecks.forEach((msg) => {
+          if (msg.invalidityMessage === innerElements[pos].innerText) {
+            flag = true;
+          }
+        });
+        if (flag) {
+          innerElements[pos].remove();
+          amountOfDeletedDivs += 1;
+        }
       }
     }
   }
+
   return input.CustomValidation.invalidities.length === 0;
 }
 
