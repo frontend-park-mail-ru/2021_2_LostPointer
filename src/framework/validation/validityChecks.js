@@ -43,7 +43,7 @@ export const simplePasswordValidityChecks = [
 
 export const passwordValidityChecks = [
   new ValidityCheck(
-    'Password needs to be greater then 8 characters',
+    'Password needs to be greater than 8 characters',
     (input) => input.value.length < 8,
   ),
   new ValidityCheck(

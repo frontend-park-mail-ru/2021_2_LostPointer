@@ -6,7 +6,9 @@ class SigninAuthForm extends Component {
     super(config);
     this.data = {
       fail_msg: 'Authentication failed',
-      button_msg: 'Sign in',
+      button_signin_msg: 'Sign in',
+      p_redirect_msg: 'Don\'t have an account?',
+      a_redirect_msg: 'Sign up',
       inputs: [
         new InputFormComponent({
           name: 'email',

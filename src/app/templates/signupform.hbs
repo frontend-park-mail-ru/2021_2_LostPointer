@@ -5,7 +5,12 @@
     <div class="auth-form__fail_msg">
         {{ fail_msg }}
     </div>
-    <button class="auth-form__submit" type="submit">{{ button_msg }}</button>
-    <button class="auth-form__submit" data-link href="/signup" type="submit">Sign up</button>
+    <div class="auth-form__buttons">
+        <button class="auth-form__submit" type="submit">{{ button_signup_msg }}</button>
+        <div class="auth-form__redirect">
+            <p>{{ p_redirect_msg }}</p>
+            <a data-link href="/signin" class="redirect-msg">{{ a_redirect_msg }}</a>
+        </div>
+    </div>
 </form>
 <div class="auth-form__invalidities"></div>

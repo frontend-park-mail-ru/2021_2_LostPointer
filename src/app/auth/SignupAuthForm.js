@@ -6,7 +6,9 @@ class SignupAuthForm extends Component {
     super(config);
     this.data = {
       fail_msg: 'Registration failed',
-      button_msg: 'Sign up',
+      button_signup_msg: 'Sign up',
+      p_redirect_msg: 'Already registered?',
+      a_redirect_msg: 'Sign in',
       inputs: [
         new InputFormComponent({
           name: 'name',
