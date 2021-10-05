@@ -75,7 +75,7 @@ export class SignupComponent extends Component {
         const failMsg = event.target.querySelector('.auth-form__fail_msg');
         failMsg.innerText = 'Registration failed';
         failMsg.classList.add('visible');
-        console.log(error.msg);
+        console.error(error.msg);
       });
   }
 }

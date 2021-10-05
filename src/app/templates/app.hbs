@@ -1,0 +1,18 @@
+<div class="app__content">
+    {{#render sidebar}}{{/render}}
+    <div class="main-layout">
+        {{#render topbar}}{{/render}}
+        <div class="main-layout__content">
+            <div class="listen-now">
+                {{#render top_albums}}{{/render}}
+                <div class="listen-now__suggested-content">
+                    {{#render suggested_playlists}}{{/render}}
+                    {{#render track_list}}{{/render}}
+                    {{#render suggested_artists}}{{/render}}
+                </div>
+            </div>
+            {{#render friend_activity}}{{/render}}
+        </div>
+    </div>
+</div>
+{{#render player}}{{/render}}

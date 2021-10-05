@@ -52,7 +52,6 @@ export class SigninComponent extends Component {
       }),
     )
       .then(({ status, body }) => {
-        console.log(status);
         if (status === 200) {
           navigateTo('/');
         } else {
