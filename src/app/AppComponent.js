@@ -58,24 +58,6 @@ export class AppComponent extends Component {
       this.template = Handlebars.templates['app.hbs'](this.data);
       this.render();
     });
-  }
-
-  sendLogout() {
-    Request.post('/user/logout')
-      .then(({ status }) => {
-        if (status === 200) {
-          navigateTo('/signin');
-        }
-      })
-      .catch((error) => console.log(error.msg));
-  }
-
-  render() {
-    if (!this.isLoaded) {
-      this.didMount();
-    } else {
-      super.render();
-    }
 
     Request.get(
       '/auth',
@@ -100,5 +82,23 @@ export class AppComponent extends Component {
         }
       })
       .catch((error) => console.error(error.msg));
+  }
+
+  sendLogout() {
+    Request.post('/user/logout')
+      .then(({ status }) => {
+        if (status === 200) {
+          navigateTo('/signin');
+        }
+      })
+      .catch((error) => console.log(error.msg));
+  }
+
+  render() {
+    if (!this.isLoaded) {
+      this.didMount();
+    } else {
+      super.render();
+    }
   }
 }
