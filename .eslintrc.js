@@ -25,5 +25,6 @@ module.exports = {
       },
     ],
   },
+  ignorePatterns: ['src/static/js/templates.precompiled.js'],
   settings: {},
 };
