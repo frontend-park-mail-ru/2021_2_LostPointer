@@ -42,6 +42,7 @@ body {
     cursor: pointer;
     width: 272px;
     display: inline-block;
+    margin-left: 10px;
 }
 
 .auth-page__title {
@@ -50,6 +51,7 @@ body {
     font-size: 45px;
     font-weight: 400;
     margin-top: 20px;
+    text-align: center;
 }
 
 .auth-page__description {
@@ -60,6 +62,7 @@ body {
     margin-top: 15px;
     line-height: 30px;
     width: 350px;
+    text-align: center;
 }
 
 .auth-form {
@@ -70,7 +73,7 @@ body {
 }
 
 .auth-form__input {
-    width: 320px;
+    width: 335px;
     height: 50px;
     border-radius: 10px;
     border: 2px solid #3D3D3D;
@@ -114,7 +117,7 @@ body {
     display: none;
     font-family: Montserrat;
     font-size: 16px;
-    text-align: left;
+    text-align: center;
     list-style: disc inside;
     max-width: 350px;
     margin: 10px 10px;
@@ -132,43 +135,37 @@ body {
 
 .auth-form__buttons {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    width: 330px;
 }
 
 .auth-form__redirect {
-    width: 200px;
+    white-space: nowrap;
     font-family: Montserrat;
     font-size: 15px;
     color: #FFFFFF;
     text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .auth-form__submit {
-    width: 170px;
+    transition: 0.5s;
+    width: 300px;
     height: 45px;
-    border-radius: 25px;
-    border: none;
+    border-radius: 10px;
     margin: 10px auto;
     font-family: Montserrat;
     font-weight: 200;
     color: #FFFFFF;
     font-size: 22px;
-    background: #ff4d5b;
     cursor: pointer;
-    -webkit-transition: All 0.2s ease;
-    -moz-transition: All 0.2s ease;
-    -o-transition: All 0.2s ease;
-    -ms-transition: All 0.2s ease;
-    transition: All 0.2s ease;
 }
 
 .auth-form__submit:hover {
-    background: #992e39;
-}
+    transition: 0.5s ease-in-out;
 
-.auth-form__submit:active {
-    background: #571d22;
 }
 
 .auth-form__data {
