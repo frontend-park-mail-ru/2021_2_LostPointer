@@ -88,7 +88,8 @@ body {
 }
 
 .auth-form__invalidities {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     float: left;
     font-family: Montserrat;
     font-size: 16px;
@@ -97,13 +98,16 @@ body {
     max-width: 320px;
     margin: 290px 10px 10px;
     color: #969696;
+    height: 265px;
 }
 
 .auth-form__invalidities div.invalid {
     color: #ff4d5b;
+    margin-bottom: 15px;
 }
 .auth-form__invalidities div.valid {
     color: #2ecc71;
+    margin-bottom: 15px;
 }
 
 .auth-form__fail_msg {
@@ -168,6 +172,6 @@ body {
 }
 
 .auth-form__data {
+    width: 50%;
     display: flex;
-    justify-content: center;
 }
