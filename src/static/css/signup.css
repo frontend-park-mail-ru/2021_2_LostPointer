@@ -1,11 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@350&display=swap');
 
-* {
-    user-select: none;
-    margin: 0;
-}
-
 .app {
     height: 100%;
 }
@@ -36,8 +31,7 @@ body {
 }
 
 .auth-page__content {
-    width: 700px;
-    margin-left: 120px;
+    margin-left: 60px;
 }
 
 .auth-page__logo {
@@ -99,10 +93,9 @@ body {
     font-family: Montserrat;
     font-size: 16px;
     text-align: left;
-    list-style: disc;
-    list-style-position: inside;
+    list-style: disc inside;
     max-width: 320px;
-    margin: 40px 10px 10px;
+    margin: 290px 10px 10px;
     color: #969696;
 }
 
@@ -118,8 +111,7 @@ body {
     font-family: Montserrat;
     font-size: 16px;
     text-align: left;
-    list-style: disc;
-    list-style-position: inside;
+    list-style: disc inside;
     max-width: 350px;
     margin: 10px 10px;
     color: #ff4d5b;
@@ -173,4 +165,9 @@ body {
 
 .auth-form__submit:active {
     background: #571d22;
+}
+
+.auth-form__data {
+    display: flex;
+    justify-content: center;
 }
