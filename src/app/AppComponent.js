@@ -57,31 +57,32 @@ export class AppComponent extends Component {
       this.isLoaded = true;
       this.template = Handlebars.templates['app.hbs'](this.data);
       this.render();
-    });
 
-    Request.get(
-      '/auth',
-    )
-      .then(({ status }) => {
-        if (status !== 200) {
-          const button = document.querySelector('.topbar-auth');
-          button.removeEventListener('click', this.sendLogout);
-          button.setAttribute('data-link', '');
-          button.setAttribute('href', '/signin');
-          button.src = '/src/static/img/login.png';
+      Request.get(
+        '/auth',
+      )
+        .then(({ status }) => {
+          if (status !== 200) {
+            const button = document.querySelector('.topbar-auth');
+            button.removeEventListener('click', this.sendLogout);
+            button.setAttribute('data-link', '');
+            button.setAttribute('href', '/signin');
+            button.src = '/src/static/img/login.png';
 
-          document.querySelector('.topbar-profile').classList.add('invisible');
-        } else {
-          const button = document.querySelector('.topbar-auth');
-          button.addEventListener('click', this.sendLogout);
-          button.removeAttribute('data-link');
-          button.removeAttribute('href');
-          button.src = '/src/static/img/logout.png';
+            document.querySelector('.topbar-profile').classList.add('invisible');
+          } else {
+            const button = document.querySelector('.topbar-auth');
+            button.addEventListener('click', this.sendLogout);
+            button.removeAttribute('data-link');
+            button.removeAttribute('href');
+            button.src = '/src/static/img/logout.png';
 
-          document.querySelector('.topbar-profile').classList.remove('invisible');
-        }
-      })
-      .catch((error) => console.error(error.msg));
+            document.querySelector('.topbar-profile').classList.remove('invisible');
+          }
+        })
+        .catch((error) => console.log(error.msg));
+    })
+      .catch((error) => console.log(error.msg));
   }
 
   sendLogout() {
