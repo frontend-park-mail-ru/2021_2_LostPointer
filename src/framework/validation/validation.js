@@ -107,16 +107,12 @@ export function isValidForm(amountOfInputs, errorsField) {
     }
   });
 
+  const invalidity = document.querySelector('.auth-form__fail_msg');
   if (emptyFields === amountOfInputs) {
-    const invalidity = document.createElement('div');
     invalidity.innerHTML = 'Please, fill out the form';
-    invalidity.className = 'invalid';
     errorsField.appendChild(invalidity);
   } else if (emptyFields < amountOfInputs && emptyFields !== 0) {
-    const invalidity = document.createElement('div');
     invalidity.innerHTML = 'Please, fill in the remaining fields';
-    invalidity.className = 'invalid';
-    errorsField.appendChild(invalidity);
   }
 
   return isValid && emptyFields === 0;
