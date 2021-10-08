@@ -42,7 +42,7 @@ export class AppComponent extends Component {
 
       this.data = {
         top_albums: new TopAlbums({ albums }),
-        suggested_artists: new SuggestedArtists({ artists: albums }),
+        suggested_artists: new SuggestedArtists({ artists: response.body.artists }),
         track_list: new TrackList({ tracks: response.body.tracks }),
         suggested_playlists: new SuggestedPlaylists({ playlists: predefinedPlaylists }),
         sidebar: new Sidebar(),
