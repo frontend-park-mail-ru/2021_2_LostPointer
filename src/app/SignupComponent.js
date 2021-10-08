@@ -49,7 +49,7 @@ export class SignupComponent extends Component {
     const errorsField = document.querySelector('.auth-form__fail_msg');
     errorsField.innerHTML = '&nbsp;';
 
-    if (!isValidForm(4, errorsField)) {
+    if (!isValidForm(4)) {
       errorsField.classList.add('visible');
       return;
     }

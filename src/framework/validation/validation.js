@@ -90,7 +90,7 @@ export function addInputsEventListeners(form) {
   });
 }
 
-export function isValidForm(amountOfInputs, errorsField) {
+export function isValidForm(amountOfInputs) {
   const inputsArray = Array.from(document.querySelectorAll('.auth-form__input'))
     .reverse();
   let isValid = true;
@@ -110,7 +110,6 @@ export function isValidForm(amountOfInputs, errorsField) {
   const invalidity = document.querySelector('.auth-form__fail_msg');
   if (emptyFields === amountOfInputs) {
     invalidity.innerHTML = 'Please, fill out the form';
-    errorsField.appendChild(invalidity);
   } else if (emptyFields < amountOfInputs && emptyFields !== 0) {
     invalidity.innerHTML = 'Please, fill in the remaining fields';
   }
