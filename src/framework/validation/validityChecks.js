@@ -71,8 +71,11 @@ export const confirmPasswordValidityChecks = [
     () => {
       const passwordInput = document.querySelector('input[name="password"]');
       const confirmPasswordInput = document.querySelector('input[name="confirm_password"]');
-      return !confirmPasswordInput.value
-        || confirmPasswordInput.value !== passwordInput.value;
+      const isEmpty = confirmPasswordInput.value === '';
+      if (isEmpty) {
+        return false;
+      }
+      return confirmPasswordInput.value !== passwordInput.value;
     },
   ),
 ];
