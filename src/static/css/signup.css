@@ -87,7 +87,7 @@ body {
 
 .auth-form__input:focus {
     outline: none;
-    border-color: #ff4d5b;
+    border-color: #CD0138;
 }
 
 .auth-form__invalidities {
