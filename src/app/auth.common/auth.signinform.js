@@ -30,7 +30,7 @@ class SigninAuthForm extends Component {
       inputs: [
         new InputFormComponent({
           name: 'email',
-          type: 'email',
+          type: 'text',
           placeholder: 'Email',
         }),
         new InputFormComponent({

@@ -56,7 +56,11 @@ export class SigninComponent extends Component {
 
   submitSigninForm(event) {
     event.preventDefault();
-    if (!isValidForm()) {
+    const errorsField = document.querySelector('.auth-form__fail_msg');
+    errorsField.innerHTML = '';
+
+    if (!isValidForm(2, errorsField)) {
+      errorsField.classList.add('visible');
       return;
     }
     const emailInput = event.target.querySelector('input[name="email"]');

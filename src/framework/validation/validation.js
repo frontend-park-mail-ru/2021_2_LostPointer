@@ -51,28 +51,28 @@ export function checkInput(input) {
         input.CustomValidation.invalidityDiv.appendChild(invalidity);
       }
     });
-
-    let amountOfDeletedDivs = 0;
-    const invaliditiesListNew = document.querySelector('.auth-form__invalidities');
-    const invalidsArray = invaliditiesListNew.innerText.split('\n');
-    const innerElements = invaliditiesListNew.getElementsByTagName('div');
-    for (let i = 0; i < invalidsArray.length; i += 1) {
-      const res = input.CustomValidation.invalidities.indexOf(invalidsArray[i]);
-      if (res === -1 && innerElements.length !== 0) {
-        let flag = false;
-        const pos = i - amountOfDeletedDivs;
-        input.CustomValidation.validityChecks.forEach((msg) => {
-          if (msg.invalidityMessage === innerElements[pos].innerText) {
-            flag = true;
-          }
-        });
-        if (flag) {
-          innerElements[pos].remove();
-          amountOfDeletedDivs += 1;
+  }
+  let amountOfDeletedDivs = 0;
+  const invaliditiesListNew = document.querySelector('.auth-form__invalidities');
+  const invalidsArray = invaliditiesListNew.innerText.split('\n');
+  const innerElements = invaliditiesListNew.getElementsByTagName('div');
+  for (let i = 0; i < invalidsArray.length; i += 1) {
+    const res = input.CustomValidation.invalidities.indexOf(invalidsArray[i]);
+    if (res === -1 && innerElements.length !== 0) {
+      let flag = false;
+      const pos = i - amountOfDeletedDivs;
+      input.CustomValidation.validityChecks.forEach((msg) => {
+        if (msg.invalidityMessage === innerElements[pos].innerText) {
+          flag = true;
         }
+      });
+      if (flag) {
+        innerElements[pos].remove();
+        amountOfDeletedDivs += 1;
       }
     }
   }
+
   const isEmpty = input.value === '';
   const isValid = input.CustomValidation.invalidities.length === 0;
 
@@ -105,9 +105,6 @@ export function isValidForm(amountOfInputs, errorsField) {
     if (isEmpty) {
       emptyFields += 1;
     }
-    // if (!item.validity.valid) {
-    //   item.reportValidity();
-    // }
   });
 
   if (emptyFields === amountOfInputs) {
@@ -115,7 +112,7 @@ export function isValidForm(amountOfInputs, errorsField) {
     invalidity.innerHTML = 'Please, fill out the form';
     invalidity.className = 'invalid';
     errorsField.appendChild(invalidity);
-  } else if (emptyFields < amountOfInputs) {
+  } else if (emptyFields < amountOfInputs && emptyFields !== 0) {
     const invalidity = document.createElement('div');
     invalidity.innerHTML = 'Please, fill in the remaining fields';
     invalidity.className = 'invalid';
