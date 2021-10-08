@@ -119,5 +119,5 @@ export function isValidForm(amountOfInputs, errorsField) {
     errorsField.appendChild(invalidity);
   }
 
-  return isValid;
+  return isValid && emptyFields === 0;
 }
