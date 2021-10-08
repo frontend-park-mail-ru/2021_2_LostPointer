@@ -11,7 +11,7 @@ class SigninAuthForm extends Component {
       inputs: [
         new InputFormComponent({
           name: 'email',
-          type: 'text',
+          type: 'email',
           placeholder: 'Email',
         }),
         new InputFormComponent({
