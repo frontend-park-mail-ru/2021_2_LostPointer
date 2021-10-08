@@ -24,7 +24,7 @@ class SignupAuthForm extends Component {
      <div class="auth-form__invalidities"></div>
     `;
     this.data = {
-      fail_msg: 'Registration failed',
+      // fail_msg: 'Registration failed',
       button_signup_msg: 'Sign up',
       p_redirect_msg: 'Already registered?',
       a_redirect_msg: 'Sign in',

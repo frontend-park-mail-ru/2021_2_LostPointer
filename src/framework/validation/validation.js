@@ -73,8 +73,10 @@ export function checkInput(input) {
       }
     }
   }
+  const isEmpty = input.value === '';
+  const isValid = input.CustomValidation.invalidities.length === 0;
 
-  return input.CustomValidation.invalidities.length === 0;
+  return [isValid, isEmpty];
 }
 
 export function addInputsEventListeners(form) {
@@ -88,17 +90,37 @@ export function addInputsEventListeners(form) {
   });
 }
 
-export function isValidForm() {
+export function isValidForm(amountOfInputs, errorsField) {
   const inputsArray = Array.from(document.querySelectorAll('.auth-form__input'))
     .reverse();
   let isValid = true;
+  let emptyFields = 0;
   inputsArray.forEach((item) => {
-    if (!checkInput(item)) {
+    let isEmpty = false;
+    let isValidTmp = false;
+    [isValidTmp, isEmpty] = checkInput(item);
+    if (!isValidTmp) {
       isValid = false;
     }
-    if (!item.validity.valid) {
-      item.reportValidity();
+    if (isEmpty) {
+      emptyFields += 1;
     }
+    // if (!item.validity.valid) {
+    //   item.reportValidity();
+    // }
   });
+
+  if (emptyFields === amountOfInputs) {
+    const invalidity = document.createElement('div');
+    invalidity.innerHTML = 'Please, fill out the form';
+    invalidity.className = 'invalid';
+    errorsField.appendChild(invalidity);
+  } else if (emptyFields < amountOfInputs) {
+    const invalidity = document.createElement('div');
+    invalidity.innerHTML = 'Please, fill in the remaining fields';
+    invalidity.className = 'invalid';
+    errorsField.appendChild(invalidity);
+  }
+
   return isValid;
 }
