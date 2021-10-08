@@ -39,7 +39,7 @@ export class SigninComponent extends Component {
   submitSigninForm(event) {
     event.preventDefault();
     const errorsField = document.querySelector('.auth-form__fail_msg');
-    errorsField.innerHTML = '';
+    errorsField.innerHTML = '&nbsp;';
 
     if (!isValidForm(2, errorsField)) {
       errorsField.classList.add('visible');
