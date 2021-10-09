@@ -53,14 +53,14 @@ export class SignupComponent extends Component {
       errorsField.classList.add('visible');
       return;
     }
-    const nameInput = event.target.querySelector('input[name="name"]');
+    const nicknameInput = event.target.querySelector('input[name="nickname"]');
     const emailInput = event.target.querySelector('input[name="email"]');
     const passwordInput = event.target.querySelector('input[name="password"]');
 
     Request.post(
       '/user/signup',
       JSON.stringify({
-        name: nameInput.value.trim(),
+        name: nicknameInput.value.trim(),
         email: emailInput.value.trim(),
         password: passwordInput.value.trim(),
       }),
