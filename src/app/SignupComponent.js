@@ -27,13 +27,13 @@ export class SignupComponent extends Component {
     super.render();
 
     const form = document.querySelector('.auth-form');
-    const nameInput = form.querySelector('input[name="name"]');
+    const nicknameInput = form.querySelector('input[name="nickname"]');
     const emailInput = form.querySelector('input[name="email"]');
     const passwordInput = form.querySelector('input[name="password"]');
     const confirmPasswordInput = form.querySelector('input[name="confirm_password"]');
     const invalidities = document.querySelector('.auth-form__invalidities');
 
-    nameInput.CustomValidation = new CustomValidation(nameValidityChecks, invalidities);
+    nicknameInput.CustomValidation = new CustomValidation(nameValidityChecks, invalidities);
     emailInput.CustomValidation = new CustomValidation(emailValidityChecks, invalidities);
     passwordInput.CustomValidation = new CustomValidation(passwordValidityChecks, invalidities);
     confirmPasswordInput.CustomValidation = new CustomValidation(

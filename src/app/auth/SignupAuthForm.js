@@ -12,7 +12,7 @@ class SignupAuthForm extends Component {
         new InputFormComponent({
           name: 'nickname',
           type: 'text',
-          placeholder: 'Name',
+          placeholder: 'Nickname',
         }),
         new InputFormComponent({
           name: 'email',
