@@ -60,7 +60,7 @@ export class SignupComponent extends Component {
     Request.post(
       '/user/signup',
       JSON.stringify({
-        name: nicknameInput.value.trim(),
+        nickname: nicknameInput.value.trim(),
         email: emailInput.value.trim(),
         password: passwordInput.value.trim(),
       }),
