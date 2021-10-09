@@ -10,7 +10,7 @@ class SignupAuthForm extends Component {
       a_redirect_msg: 'Sign in',
       inputs: [
         new InputFormComponent({
-          name: 'name',
+          name: 'nickname',
           type: 'text',
           placeholder: 'Name',
         }),
