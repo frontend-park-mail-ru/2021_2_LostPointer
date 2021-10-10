@@ -1,7 +1,10 @@
-import SigninView from '../views/signup/signin.js';
-import SignupView from '../views/signup/signup.js';
-import DashboardView from '../views/dashboard/dashboard.js';
-import { PATH_ARG, PATH_SLASH, PATH_ARG_CG } from '../regex.js';
+import { PATH_ARG, PATH_SLASH, PATH_ARG_CG } from './regex.js';
+// eslint-disable-next-line import/no-cycle
+import { AppComponent } from '../../app/AppComponent.js';
+// eslint-disable-next-line import/no-cycle
+import { SignupComponent } from '../../app/SignupComponent.js';
+// eslint-disable-next-line import/no-cycle
+import { SigninComponent } from '../../app/SigninComponent.js';
 
 const pathToRegex = (path) => new RegExp(`^${path.replace(PATH_SLASH, '\\/').replace(PATH_ARG, '(.+)')}$`);
 
@@ -12,11 +15,11 @@ const getParams = (match) => {
   return Object.fromEntries(keys.map((key, i) => [key, values[i]]));
 };
 
-const router = () => {
+export const router = () => {
   const routes = [
-    { path: '/', view: DashboardView },
-    { path: '/signin', view: SigninView },
-    { path: '/signup', view: SignupView },
+    { path: '/', view: AppComponent },
+    { path: '/signin', view: SigninComponent },
+    { path: '/signup', view: SignupComponent },
   ];
 
   const potentialMatches = routes.map((route) => ({
@@ -32,11 +35,13 @@ const router = () => {
       result: [window.location.pathname],
     };
   }
+
   const ViewClass = matches.route.view;
   const view = new ViewClass(getParams(matches));
-
-  document.querySelector('.app').innerHTML = view.html;
   view.render();
 };
 
-export default router;
+export const navigateTo = (url) => {
+  window.history.pushState(null, null, url);
+  router();
+};

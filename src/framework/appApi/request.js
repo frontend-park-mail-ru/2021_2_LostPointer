@@ -1,6 +1,6 @@
 import { ContentType, RequestMethods } from './requestUtils.js';
 
-const defaultBackendDomain = 'http://127.0.0.1:3000';
+const defaultBackendDomain = '/api/v1';
 
 class Request {
   constructor(domain = defaultBackendDomain) {
@@ -27,14 +27,15 @@ class Request {
 
   _fetchRequest(url, requestMethod, requestBody = null, contentType = ContentType.JSON) {
     const myHeaders = new Headers();
-    if ((RequestMethods.POST === requestMethod) || (RequestMethods.PUT === requestMethod)) {
+    if (!!requestBody && ((RequestMethods.POST === requestMethod)
+      || (RequestMethods.PUT === requestMethod))) {
       myHeaders.append('Content-Type', contentType);
     }
 
     return fetch(url, {
       method: requestMethod,
-      mode: 'same-origin',
-      credentials: 'same-origin',
+      mode: 'cors',
+      credentials: 'include',
       headers: myHeaders,
       body: requestBody,
     })
@@ -43,7 +44,6 @@ class Request {
           status: response.status,
           body: responseBody,
         })))
-      // eslint-disable-next-line no-console
       .catch((error) => console.log(error));
   }
 

@@ -1,11 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@350&display=swap');
 
-* {
-    user-select: none;
-    margin: 0;
-}
-
 .app {
     height: 100%;
 }
@@ -36,8 +31,7 @@ body {
 }
 
 .auth-page__content {
-    width: 700px;
-    margin-left: 120px;
+    margin-left: 60px;
 }
 
 .auth-page__logo {
@@ -48,6 +42,7 @@ body {
     cursor: pointer;
     width: 272px;
     display: inline-block;
+    margin-left: 10px;
 }
 
 .auth-page__title {
@@ -56,6 +51,7 @@ body {
     font-size: 45px;
     font-weight: 400;
     margin-top: 20px;
+    text-align: center;
 }
 
 .auth-page__description {
@@ -66,14 +62,18 @@ body {
     margin-top: 15px;
     line-height: 30px;
     width: 350px;
+    text-align: center;
 }
 
 .auth-form {
+    width: 350px;
+    display: inline-block;
+    float: left;
     margin-top: 30px;
 }
 
 .auth-form__input {
-    width: 350px;
+    width: 335px;
     height: 50px;
     border-radius: 10px;
     border: 2px solid #3D3D3D;
@@ -87,84 +87,89 @@ body {
 
 .auth-form__input:focus {
     outline: none;
-    border-color: #ff4d5b;
+    border-color: #CD0138;
 }
 
-.auth-form__input-requirements {
-    display: inline-block;
+.auth-form__invalidities {
+    display: flex;
+    flex-direction: column;
+    float: left;
     font-family: Montserrat;
     font-size: 16px;
-    padding-left: 10px;
     text-align: left;
-    list-style: disc;
-    list-style-position: inside;
+    list-style: disc inside;
     max-width: 320px;
+    margin: 290px 10px 10px;
     color: #969696;
+    height: 265px;
 }
 
-.auth-form__input-requirements li.invalid {
+.auth-form__invalidities div.invalid {
     color: #ff4d5b;
+    margin-bottom: 15px;
 }
-.auth-form__input-requirements li.valid {
+.auth-form__invalidities div.valid {
     color: #2ecc71;
-}
-
-.auth-form__input-requirements li.valid:after {
-    display: inline-block;
-}
-
-input:not([type="submit"]) + .auth-form__input-requirements {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 1.5s ease-out;
-}
-
-input:not([type="submit"]):hover + .auth-form__input-requirements,
-input:not([type="submit"]):focus + .auth-form__input-requirements,
-input:not([type="submit"]):active + .auth-form__input-requirements {
-    max-height: 1000px; /* Рандомное очень большое число, чтобы список развернулся весь */
-    transition: max-height 1.5s ease-in;
+    margin-bottom: 15px;
 }
 
 .auth-form__fail_msg {
-    display: none;
+    visibility: hidden;
     font-family: Montserrat;
     font-size: 16px;
-    text-align: left;
-    list-style: disc;
-    list-style-position: inside;
+    text-align: center;
+    list-style: disc inside;
     max-width: 350px;
-    margin: 10px auto;
+    margin: 10px 10px;
     color: #ff4d5b;
-}
-
-.auth-form__fail_msg.visible {
     display: block;
 }
 
+.auth-form__fail_msg.visible {
+    visibility: visible;
+}
+
+.redirect-msg {
+    color: #FFFFFF;
+}
+
+
+.auth-form__buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auth-form__redirect {
+    white-space: nowrap;
+    font-family: Montserrat;
+    font-size: 15px;
+    color: #FFFFFF;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .auth-form__submit {
-    width: 200px;
+    transition: 0.5s;
+    width: 300px;
     height: 45px;
-    border-radius: 25px;
-    border: none;
+    border-radius: 10px;
     margin: 10px auto;
     font-family: Montserrat;
     font-weight: 200;
     color: #FFFFFF;
     font-size: 22px;
-    background: #ff4d5b;
     cursor: pointer;
-    -webkit-transition: All 0.2s ease;
-    -moz-transition: All 0.2s ease;
-    -o-transition: All 0.2s ease;
-    -ms-transition: All 0.2s ease;
-    transition: All 0.2s ease;
 }
 
 .auth-form__submit:hover {
-    background: #992e39;
+    transition: 0.5s ease-in-out;
+
 }
 
-.auth-form__submit:active {
-    background: #571d22;
+.auth-form__data {
+    width: 50%;
+    display: flex;
 }

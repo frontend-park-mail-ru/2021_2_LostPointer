@@ -6,7 +6,10 @@
   "scripts": {
     "server": "node server.js",
     "eslint": "eslint ./ src/",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "compile": "handlebars src/app/templates/* -f src/static/js/templates.precompiled.js",
+    "remove": "rm src/static/js/templates.precompiled.js",
+    "circular": "madge --circular src/"
   },
   "repository": {
     "type": "git",
@@ -26,6 +29,8 @@
     "husky": "^7.0.2"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "handlebars": "^4.7.7",
+    "madge": "^5.0.1"
   }
 }
