@@ -6,7 +6,7 @@ class Profile extends Component {
   constructor(config) {
     super(config);
     this.data = {
-      title: 'Edit profile',
+      title: 'Profile settings',
       inputs: [
         new ProfileInputComponent({
           label: 'Name',
@@ -15,6 +15,7 @@ class Profile extends Component {
             name: 'name',
             type: 'text',
             placeholder: 'Name',
+            value: 'DeStRoYeR777',
           }),
         }),
         new ProfileInputComponent({
@@ -24,36 +25,34 @@ class Profile extends Component {
             name: 'email',
             type: 'email',
             placeholder: 'Email',
+            value: 'tritopora@mail.ru',
           }),
         }),
+      ],
+      password_inputs: [
         new ProfileInputComponent({
-          label: 'Date of birth',
-          input: new InputFormComponent({
-            class: 'profile-form__input',
-            name: 'date_of_birth',
-            type: 'date',
-          }),
-        }),
-        new ProfileInputComponent({
-          label: 'Change Password',
+          label: 'Old password',
           input: new InputFormComponent({
             class: 'profile-form__input',
             name: 'old_password',
             type: 'password',
-            placeholder: 'Old password',
           }),
         }),
-        new InputFormComponent({
-          class: 'profile-form__input',
-          name: 'password',
-          type: 'password',
-          placeholder: 'New password',
+        new ProfileInputComponent({
+          label: 'New password',
+          input: new InputFormComponent({
+            class: 'profile-form__input',
+            name: 'password',
+            type: 'password',
+          }),
         }),
-        new InputFormComponent({
-          class: 'profile-form__input',
-          name: 'confirm_password',
-          type: 'password',
-          placeholder: 'Confirm password',
+        new ProfileInputComponent({
+          label: 'Confirm password',
+          input: new InputFormComponent({
+            class: 'profile-form__input',
+            name: 'confirm_password',
+            type: 'password',
+          }),
         }),
       ],
     };
