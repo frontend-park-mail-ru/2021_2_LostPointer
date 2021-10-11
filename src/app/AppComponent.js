@@ -17,8 +17,8 @@ export class AppComponent extends Component {
     this.authHandler = (e) => {
       if (e.target.className === 'topbar-auth' && e.target.dataset.action === 'logout') {
         logout().then(() => {
-          that.data.topbar.data.authenticated = false;
-          that.data.topbar.update();
+          this.data.topbar.data.authenticated = false;
+          this.data.topbar.update();
         });
       }
     };
@@ -31,9 +31,7 @@ export class AppComponent extends Component {
           this.data.player.toggle();
           return;
         }
-
         e.target.dataset.playing = 'true';
-
         this.data.player.setTrack({
           url: `https://lostpointer.site/src/static/tracks/${e.target.dataset.url}`,
           cover: `/src/static/img/artworks/${e.target.dataset.cover}.webp`,
@@ -48,8 +46,7 @@ export class AppComponent extends Component {
     Request.get(
       '/auth',
     )
-      .then(({ status }) => { this.authenticated = status === 200; })
-      .catch((error) => console.log(error.msg));
+      .then(({ status }) => { this.authenticated = status === 200; });
 
     Request.get('/home').then((response) => {
       const albums = response.body.albums.map((e) => ({ img: e.artWork }));
@@ -88,12 +85,10 @@ export class AppComponent extends Component {
       this.template = Handlebars.templates['app.hbs'](this.data);
       this.render();
       document.addEventListener('click', this.authHandler);
-    })
-      .catch((error) => console.log(error.msg));
+    });
   }
 
   unmount() {
-    this.player.unmount();
     document.removeEventListener('click', this.authHandler);
     document.removeEventListener('click', this.playButtonHandler);
   }
@@ -105,34 +100,10 @@ export class AppComponent extends Component {
       super.render();
     }
 
-    if (this.data.player) {
+    if (this.data && this.data.player) {
       this.data.player.unmount();
       this.data.player.setup();
     }
-
-    Request.get(
-      '/auth',
-    )
-      .then(({ status }) => {
-        if (status !== 200) {
-          const button = document.querySelector('.topbar-auth');
-          button.removeEventListener('click', this.sendLogout);
-          button.setAttribute('data-link', '');
-          button.setAttribute('href', '/signin');
-          button.src = '/src/static/img/login.png';
-
-          document.querySelector('.topbar-profile').classList.add('invisible');
-        } else {
-          const button = document.querySelector('.topbar-auth');
-          button.addEventListener('click', this.sendLogout);
-          button.removeAttribute('data-link');
-          button.removeAttribute('href');
-          button.src = '/src/static/img/logout.png';
-
-          document.querySelector('.topbar-profile').classList.remove('invisible');
-        }
-      })
-      .catch((error) => console.error(error));
     document.addEventListener('click', this.playButtonHandler);
   }
 }
