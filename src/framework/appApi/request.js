@@ -44,7 +44,7 @@ class Request {
           status: response.status,
           body: responseBody,
         })))
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
   }
 
   _createURL(domain, path) {

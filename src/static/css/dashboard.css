@@ -313,6 +313,7 @@ body {
 .shuffle,
 .repeat {
     width: 30px;
+    opacity: 50%;
 }
 
 .shuffle {
@@ -486,4 +487,8 @@ body {
 ::-webkit-scrollbar-thumb {
     background-color: grey;
     border-radius: 20px;
+}
+
+.enabled {
+    opacity: 100%;
 }

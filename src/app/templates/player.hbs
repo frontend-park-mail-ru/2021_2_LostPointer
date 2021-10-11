@@ -6,7 +6,11 @@
     </div>
     <div class="player-controls">
         <img src="/src/static/img/skip.svg" class="player-skip-left">
-        <img src="/src/static/img/play.svg" class="player-play">
+        {{# if playing}}
+            <img src="/src/static/img/pause.svg" class="player-play">
+        {{ else }}
+            <img src="/src/static/img/play.svg" class="player-play">
+        {{/if}}
         <img src="/src/static/img/skip.svg" class="player-skip-right">
     </div>
     <div class="player__time" id="player-time-current"> {{ current_time }} </div>

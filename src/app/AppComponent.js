@@ -22,10 +22,18 @@ export class AppComponent extends Component {
         });
       }
     };
-    this.playHandler = (e) => {
+    this.playButtonHandler = (e) => {
       if (e.target.className === 'track-list-item-play') {
         e.stopPropagation();
         e.preventDefault();
+        if (e.target.dataset.playing === 'true') {
+          e.target.dataset.playing = 'false';
+          this.data.player.toggle();
+          return;
+        }
+
+        e.target.dataset.playing = 'true';
+
         this.data.player.setTrack({
           url: `https://lostpointer.site/src/static/tracks/${e.target.dataset.url}`,
           cover: `/src/static/img/artworks/${e.target.dataset.cover}.webp`,
@@ -85,9 +93,9 @@ export class AppComponent extends Component {
   }
 
   unmount() {
-    console.log('unmount');
+    this.player.unmount();
     document.removeEventListener('click', this.authHandler);
-    document.removeEventListener('click', this.playHandler);
+    document.removeEventListener('click', this.playButtonHandler);
   }
 
   render() {
@@ -98,6 +106,7 @@ export class AppComponent extends Component {
     }
 
     if (this.data.player) {
+      this.data.player.unmount();
       this.data.player.setup();
     }
 
@@ -123,7 +132,7 @@ export class AppComponent extends Component {
           document.querySelector('.topbar-profile').classList.remove('invisible');
         }
       })
-      .catch((error) => console.error(error.msg));
-    document.addEventListener('click', this.playHandler);
+      .catch((error) => console.error(error));
+    document.addEventListener('click', this.playButtonHandler);
   }
 }
