@@ -23,22 +23,26 @@ class PlayerComponent extends Component {
     this.playing = false;
     this.player.pause();
     this.player.src = track.url;
-    this.data.cover = track.cover;
-    this.data.track = track.title;
-    this.data.artist = track.artist;
-    this.data.current_time = '0:00';
+
     const totalSeconds = (this.player.duration % 60) | 0;
     const zero = totalSeconds < 10 ? '0' : '';
-    this.data.total_time = `${this.player.duration / 60}:${zero}${totalSeconds}`;
+
+    this.data = {
+      cover: track.cover,
+      track: track.title,
+      artist: track.artist,
+      current_time: '0:00',
+      total_time: `${this.player.duration / 60}:${zero}${totalSeconds}`,
+    };
+
+    this.player.play();
   }
 
   setup() {
     const seekbar = document.querySelector('.player__seekbar');
     this.seekbarCurrent = document.querySelector('.seekbar-current');
     this.seekbarPos = seekbar.getBoundingClientRect();
-    window.addEventListener('resize', () => {
-      this.seekbarPos = seekbar.getBoundingClientRect();
-    });
+    window.addEventListener('resize', () => { this.seekbarPos = seekbar.getBoundingClientRect(); });
     document.querySelector('.player__seekbar').addEventListener('click', (e) => {
       this.seek(e.x);
     });
