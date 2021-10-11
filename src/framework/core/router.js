@@ -1,5 +1,4 @@
 import { PATH_ARG, PATH_SLASH, PATH_ARG_CG } from './regex.js';
-// eslint-disable-next-line import/no-cycle
 import { AppComponent } from '../../app/AppComponent.js';
 // eslint-disable-next-line import/no-cycle
 import { SignupComponent } from '../../app/SignupComponent.js';
@@ -14,6 +13,8 @@ const getParams = (match) => {
 
   return Object.fromEntries(keys.map((key, i) => [key, values[i]]));
 };
+
+let currentView = null;
 
 export const router = () => {
   const routes = [
@@ -39,6 +40,10 @@ export const router = () => {
   const ViewClass = matches.route.view;
   const view = new ViewClass(getParams(matches));
   view.render();
+  if (currentView) {
+    currentView.unmount();
+  }
+  currentView = view;
 };
 
 export const navigateTo = (url) => {

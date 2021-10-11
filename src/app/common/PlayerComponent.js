@@ -4,7 +4,10 @@ class PlayerComponent extends Component {
   constructor(props) {
     super(props);
     this.player = new Audio();
-    this.data = {};
+    this.data = {
+      cover: '/src/static/img/artworks/no_artwork.webp',
+      playButton: document.querySelector('.player-play'),
+    };
     this.player.addEventListener('loadedmetadata', () => {
       this.data.current_time = '0:00';
       this.data.total_time = `${(this.player.duration / 60) | 0}:${(this.player.duration % 60) | 0}`;
@@ -35,6 +38,7 @@ class PlayerComponent extends Component {
       total_time: `${this.player.duration / 60}:${zero}${totalSeconds}`,
     };
 
+    this.playing = true;
     this.player.play();
   }
 

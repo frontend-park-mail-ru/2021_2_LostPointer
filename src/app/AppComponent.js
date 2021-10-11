@@ -14,6 +14,26 @@ export class AppComponent extends Component {
   constructor(props) {
     super(props);
     this.isLoaded = false;
+    this.authHandler = (e) => {
+      if (e.target.className === 'topbar-auth' && e.target.dataset.action === 'logout') {
+        logout().then(() => {
+          that.data.topbar.data.authenticated = false;
+          that.data.topbar.update();
+        });
+      }
+    };
+    this.playHandler = (e) => {
+      if (e.target.className === 'track-list-item-play') {
+        e.stopPropagation();
+        e.preventDefault();
+        this.data.player.setTrack({
+          url: `https://lostpointer.site/src/static/tracks/${e.target.dataset.url}`,
+          cover: `/src/static/img/artworks/${e.target.dataset.cover}.webp`,
+          title: e.target.dataset.title,
+          artist: e.target.dataset.artist,
+        });
+      }
+    };
   }
 
   didMount() {
@@ -59,17 +79,15 @@ export class AppComponent extends Component {
       this.isLoaded = true;
       this.template = Handlebars.templates['app.hbs'](this.data);
       this.render();
-      const that = this;
-      document.addEventListener('click', (e) => {
-        if (e.target.className === 'topbar-auth' && e.target.dataset.action === 'logout') {
-          logout().then(() => {
-            that.data.topbar.data.authenticated = false;
-            that.data.topbar.update();
-          });
-        }
-      });
+      document.addEventListener('click', this.authHandler);
     })
       .catch((error) => console.log(error.msg));
+  }
+
+  unmount() {
+    console.log('unmount');
+    document.removeEventListener('click', this.authHandler);
+    document.removeEventListener('click', this.playHandler);
   }
 
   render() {
@@ -106,17 +124,6 @@ export class AppComponent extends Component {
         }
       })
       .catch((error) => console.error(error.msg));
-    document.addEventListener('click', (e) => {
-      if (e.target.className === 'track-list-item-play') {
-        e.stopPropagation();
-        e.preventDefault();
-        this.data.player.setTrack({
-          url: `https://lostpointer.site/src/static/tracks/${e.target.dataset.url}`,
-          cover: `/src/static/img/artworks/${e.target.dataset.cover}.webp`,
-          title: e.target.dataset.title,
-          artist: e.target.dataset.artist,
-        });
-      }
-    });
+    document.addEventListener('click', this.playHandler);
   }
 }
