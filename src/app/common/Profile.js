@@ -1,5 +1,6 @@
 import { Component } from '../../framework/core/component.js';
 import { InputFormComponent } from '../auth/InputFormComponent.js';
+import { ProfileInputComponent } from './ProfileInputComponent.js';
 
 class Profile extends Component {
   constructor(config) {
@@ -7,29 +8,40 @@ class Profile extends Component {
     this.data = {
       title: 'Edit profile',
       inputs: [
-        new InputFormComponent({
-          class: 'profile-form__input',
-          name: 'name',
-          type: 'text',
-          placeholder: 'Name',
+        new ProfileInputComponent({
+          label: 'Name',
+          input: new InputFormComponent({
+            class: 'profile-form__input',
+            name: 'name',
+            type: 'text',
+            placeholder: 'Name',
+          }),
         }),
-        new InputFormComponent({
-          class: 'profile-form__input',
-          name: 'email',
-          type: 'email',
-          placeholder: 'Email',
+        new ProfileInputComponent({
+          label: 'Email',
+          input: new InputFormComponent({
+            class: 'profile-form__input',
+            name: 'email',
+            type: 'email',
+            placeholder: 'Email',
+          }),
         }),
-        new InputFormComponent({
-          class: 'profile-form__input',
-          name: 'date_of_birth',
-          type: 'text',
-          placeholder: 'Date of birth',
+        new ProfileInputComponent({
+          label: 'Date of birth',
+          input: new InputFormComponent({
+            class: 'profile-form__input',
+            name: 'date_of_birth',
+            type: 'date',
+          }),
         }),
-        new InputFormComponent({
-          class: 'profile-form__input',
-          name: 'old_password',
-          type: 'password',
-          placeholder: 'Old password',
+        new ProfileInputComponent({
+          label: 'Change Password',
+          input: new InputFormComponent({
+            class: 'profile-form__input',
+            name: 'old_password',
+            type: 'password',
+            placeholder: 'Old password',
+          }),
         }),
         new InputFormComponent({
           class: 'profile-form__input',

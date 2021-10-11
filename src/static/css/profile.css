@@ -9,7 +9,6 @@
     color: aliceblue;
     font-size: 45px;
     font-weight: 400;
-    margin-top: 20px;
     text-align: center;
 }
 
@@ -18,6 +17,13 @@
     display: inline-block;
     float: left;
     margin-top: 30px;
+}
+
+.profile-form__label {
+    color: #FFFFFF;
+    font-family: Montserrat;
+    font-size: 16px;
+    padding-left: 10px;
 }
 
 .profile-form__input {
@@ -31,6 +37,11 @@
     font-size: 16px;
     padding-left: 10px;
     margin: 10px auto;
+}
+
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    padding-right: 10px;
 }
 
 .profile-form__input:focus {
@@ -55,14 +66,11 @@ profile-form__fail_msg {
 }
 
 .profile-form__buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: block;
 }
 
 .profile-form__submit {
     transition: 0.5s;
-    width: 300px;
     height: 45px;
     border-radius: 10px;
     margin: 10px auto;
