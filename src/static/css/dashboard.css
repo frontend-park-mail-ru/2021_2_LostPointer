@@ -289,7 +289,8 @@ body {
     transform: rotate(180deg);
 }
 
-.player__seekbar {
+.player__seekbar,
+.seekbar-current {
     background-color: grey;
     height: 5px;
     width: 30%;
@@ -297,6 +298,11 @@ body {
     cursor: pointer;
 }
 
+.seekbar-current {
+    width: 0%;
+    display: block;
+    background-color: white;
+}
 .player__time {
     color: white;
     font-size: 17px;
@@ -329,6 +335,10 @@ body {
 .now-playing {
     font-family: 'Montserrat', sans-serif;
     color: white;
+    width: 10%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .track-name {

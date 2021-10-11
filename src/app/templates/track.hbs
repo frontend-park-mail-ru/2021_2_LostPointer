@@ -6,6 +6,11 @@
     </div>
     <div class="track-list-item__ellipsis">
         <img class="track-list-item-fav" src="/src/static/img/favorite.svg">
-        <img class="track-list-item-play" src="/src/static/img/play-outline.svg">
+        <img class="track-list-item-play"
+             data-title="{{ title }}"
+             data-artist="{{ artist }}"
+             data-cover="{{ cover }}"
+             data-url="{{ file }}"
+             src="/src/static/img/play-outline.svg">
     </div>
 </div>

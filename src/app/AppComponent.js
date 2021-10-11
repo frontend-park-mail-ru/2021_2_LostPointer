@@ -53,6 +53,9 @@ export class AppComponent extends Component {
 
       Object.values(this.data).forEach((component) => { component.render(); });
 
+      this.data.top_albums.render();
+      this.data.suggested_artists.render();
+      this.data.track_list.render();
       this.isLoaded = true;
       this.template = Handlebars.templates['app.hbs'](this.data);
       this.render();
@@ -75,5 +78,45 @@ export class AppComponent extends Component {
     } else {
       super.render();
     }
+
+    if (this.data.player) {
+      this.data.player.setup();
+    }
+
+    Request.get(
+      '/auth',
+    )
+      .then(({ status }) => {
+        if (status !== 200) {
+          const button = document.querySelector('.topbar-auth');
+          button.removeEventListener('click', this.sendLogout);
+          button.setAttribute('data-link', '');
+          button.setAttribute('href', '/signin');
+          button.src = '/src/static/img/login.png';
+
+          document.querySelector('.topbar-profile').classList.add('invisible');
+        } else {
+          const button = document.querySelector('.topbar-auth');
+          button.addEventListener('click', this.sendLogout);
+          button.removeAttribute('data-link');
+          button.removeAttribute('href');
+          button.src = '/src/static/img/logout.png';
+
+          document.querySelector('.topbar-profile').classList.remove('invisible');
+        }
+      })
+      .catch((error) => console.error(error.msg));
+    document.addEventListener('click', (e) => {
+      if (e.target.className === 'track-list-item-play') {
+        e.stopPropagation();
+        e.preventDefault();
+        this.data.player.setTrack({
+          url: `https://lostpointer.site/src/static/tracks/${e.target.dataset.url}`,
+          cover: `/src/static/img/artworks/${e.target.dataset.cover}.webp`,
+          title: e.target.dataset.title,
+          artist: e.target.dataset.artist,
+        });
+      }
+    });
   }
 }
