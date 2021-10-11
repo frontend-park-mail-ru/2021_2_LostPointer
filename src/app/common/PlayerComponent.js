@@ -19,18 +19,22 @@ class PlayerComponent extends Component {
     this.buttonsHandler = (e) => {
       if (e.target.classList.contains('repeat')) {
         this.player.loop = !e.target.classList.contains('enabled');
-        // eslint-disable-next-line no-unused-expressions
         this.player.loop ? e.target.classList.add('enabled') : e.target.classList.remove('enabled');
+        window.localStorage.setItem('playerLooped', `${this.player.loop}`);
       } else if (e.target.classList.contains('shuffle')) {
-        this.player.shuffle = e.target.classList.contains('enabled');
+        this.player.shuffle = e.target.classList.contains('enabled'); // TODO
+      } else if (e.target.classList.contains('mute')) {
+        this.player.muted = !this.player.muted;
+        this.player.muted ? e.target.classList.add('enabled') : e.target.classList.remove('enabled');
+        window.localStorage.setItem('playerMuted', `${this.player.muted}`);
+        e.target.src = `/src/static/img/${this.player.muted ? 'muted.svg' : 'volume.svg'}`;
       }
-      console.log(this.player.loop);
     };
     this.playHandler = () => { document.querySelector('.player-play').src = '/src/static/img/pause.svg'; };
     this.pauseHandler = () => { document.querySelector('.player-play').src = '/src/static/img/play.svg'; };
-    this.seekbarHandler = (e) => { this.seek(e.x); };
+    this.seekbarHandler = (e) => this.seek(e.x);
+    this.volumeHandler = (e) => this.volume(e.x);
     this.playButtonHandler = () => {
-      // eslint-disable-next-line no-unused-expressions
       this.playing ? this.player.pause() : this.player.play();
       this.playing = !this.playing;
     };
@@ -41,7 +45,10 @@ class PlayerComponent extends Component {
       document.querySelector('#player-time-current').innerHTML = `${(this.player.currentTime / 60) | 0}:${zero}${seconds}`;
     };
     this.playing = false;
-    this.resizeListener = () => { this.seekbarPos = document.querySelector('.player__seekbar').getBoundingClientRect(); };
+    this.resizeListener = () => {
+      this.seekbarPos = document.querySelector('.player__seekbar').getBoundingClientRect();
+      this.volumePos = document.querySelector('.player-volume').getBoundingClientRect();
+    };
   }
 
   seek(xPos) {
@@ -50,14 +57,19 @@ class PlayerComponent extends Component {
     this.player.currentTime = this.player.duration * seek;
   }
 
+  volume(xPos) {
+    const vol = (xPos - this.volumePos.left) / this.volumePos.width;
+    this.currentVolume.style.width = `${vol * 100}%`;
+    this.player.volume = vol;
+    window.localStorage.setItem('playerVolume', `${vol}`);
+  }
+
   setTrack(track) {
     this.playing = false;
     this.player.pause();
     this.player.src = track.url;
-
     const totalSeconds = (this.player.duration % 60) | 0;
     const zero = totalSeconds < 10 ? '0' : '';
-
     this.data = {
       cover: track.cover,
       track: track.title,
@@ -71,20 +83,21 @@ class PlayerComponent extends Component {
   }
 
   unmount() {
-    this.removeEventListeners();
+    this.removeEventListeners(); // Вообще ничего не делает, но должно
   }
 
   toggle() {
     this.playing = !this.playing;
-    // eslint-disable-next-line no-unused-expressions
     this.playing ? this.player.pause() : this.player.play();
   }
 
   setEventListeners() {
     document.querySelector('.repeat').addEventListener('click', this.buttonsHandler);
     document.querySelector('.shuffle').addEventListener('click', this.buttonsHandler);
+    document.querySelector('.mute').addEventListener('click', this.buttonsHandler);
     window.addEventListener('resize', this.resizeListener);
     document.querySelector('.player__seekbar').addEventListener('click', this.seekbarHandler);
+    document.querySelector('.player-volume').addEventListener('click', this.volumeHandler);
     document.querySelector('.player-play').addEventListener('click', this.playButtonHandler);
     this.player.addEventListener('timeupdate', this.timeUpdateHandler);
     this.player.addEventListener('pause', this.pauseHandler);
@@ -94,6 +107,7 @@ class PlayerComponent extends Component {
   removeEventListeners() {
     document.querySelector('.repeat').removeEventListener('click', this.buttonsHandler);
     document.querySelector('.shuffle').removeEventListener('click', this.buttonsHandler);
+    document.querySelector('.mute').removeEventListener('click', this.buttonsHandler);
     window.removeEventListener('resize', this.resizeListener);
     document.querySelector('.player__seekbar').removeEventListener('click', this.seekbarHandler);
     document.querySelector('.player-play').removeEventListener('click', this.playButtonHandler);
@@ -103,9 +117,26 @@ class PlayerComponent extends Component {
   }
 
   setup() {
-    const seekbar = document.querySelector('.player__seekbar');
     this.seekbarCurrent = document.querySelector('.seekbar-current');
-    this.seekbarPos = seekbar.getBoundingClientRect();
+    this.currentVolume = document.querySelector('.volume-current');
+    this.seekbarPos = document.querySelector('.player__seekbar').getBoundingClientRect();
+    this.volumePos = document.querySelector('.player-volume').getBoundingClientRect();
+    this.mute = document.querySelector('.mute');
+    this.repeatToggle = document.querySelector('.repeat');
+
+    const vol = parseFloat(window.localStorage.getItem('playerVolume'));
+    if (!Number.isNaN(vol)) {
+      this.player.volume = vol;
+      this.currentVolume.style.width = `${vol * 100}%`;
+    }
+    this.player.muted = window.localStorage.getItem('playerMuted') === 'true';
+    if (this.player.muted) {
+      this.mute.classList.add('enabled');
+      this.mute.src = '/src/static/img/muted.svg';
+    }
+
+    this.player.loop = window.localStorage.getItem('playerLooped') === 'true';
+    this.player.loop ? this.repeatToggle.classList.add('enabled') : this.repeatToggle.classList.remove('enabled');
 
     this.setEventListeners();
   }

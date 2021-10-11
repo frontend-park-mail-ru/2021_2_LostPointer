@@ -17,6 +17,7 @@ module.exports = {
     'class-methods-use-this': 'off',
     'no-underscore-dangle': 'off',
     'no-bitwise': 'off',
+    'no-unused-expressions': 'off',
     'import/extensions': [
       'warn',
       'ignorePackages',

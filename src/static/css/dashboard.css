@@ -290,7 +290,8 @@ body {
 }
 
 .player__seekbar,
-.seekbar-current {
+.seekbar-current,
+.volume-current {
     background-color: grey;
     height: 5px;
     width: 30%;
@@ -298,11 +299,17 @@ body {
     cursor: pointer;
 }
 
-.seekbar-current {
+.seekbar-current,
+.volume-current {
     width: 0%;
     display: block;
     background-color: white;
 }
+
+.volume-current {
+    width: 50%;
+}
+
 .player__time {
     color: white;
     font-size: 17px;
@@ -325,7 +332,9 @@ body {
     cursor: pointer;
 }
 
-.player__volume-icon {
+.mute {
+    width: 23px;
+    opacity: 100%;
     cursor: pointer;
 }
 
