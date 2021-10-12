@@ -35,8 +35,8 @@ class PlayerComponent extends Component {
     this.seekbarHandler = (e) => this.seek(e.x);
     this.volumeHandler = (e) => this.volume(e.x);
     this.playButtonHandler = () => {
-      this.playing ? this.player.pause() : this.player.play();
-      this.playing = !this.playing;
+      this.data.playing ? this.player.pause() : this.player.play();
+      this.data.playing = !this.data.playing;
     };
     this.timeUpdateHandler = () => {
       const seconds = (this.player.currentTime % 60) | 0;
@@ -44,7 +44,7 @@ class PlayerComponent extends Component {
       this.seekbarCurrent.style.width = `${(this.player.currentTime / this.player.duration) * 100}%`;
       document.querySelector('#player-time-current').innerHTML = `${(this.player.currentTime / 60) | 0}:${zero}${seconds}`;
     };
-    this.playing = false;
+    this.data.playing = false;
     this.resizeListener = () => {
       this.seekbarPos = document.querySelector('.player__seekbar').getBoundingClientRect();
       this.volumePos = document.querySelector('.player-volume').getBoundingClientRect();
@@ -65,7 +65,7 @@ class PlayerComponent extends Component {
   }
 
   setTrack(track) {
-    this.playing = false;
+    this.data.playing = false;
     this.player.pause();
     this.player.src = track.url;
     const totalSeconds = (this.player.duration % 60) | 0;
@@ -78,7 +78,7 @@ class PlayerComponent extends Component {
       total_time: `${this.player.duration / 60}:${zero}${totalSeconds}`,
     };
 
-    this.playing = true;
+    this.data.playing = true;
     this.player.play();
   }
 
@@ -87,8 +87,8 @@ class PlayerComponent extends Component {
   }
 
   toggle() {
-    this.playing = !this.playing;
-    this.playing ? this.player.pause() : this.player.play();
+    this.data.playing = !this.data.playing;
+    this.data.playing ? this.player.play() : this.player.pause();
   }
 
   setEventListeners() {
@@ -108,7 +108,7 @@ class PlayerComponent extends Component {
     document.querySelector('.repeat').removeEventListener('click', this.buttonsHandler);
     document.querySelector('.shuffle').removeEventListener('click', this.buttonsHandler);
     document.querySelector('.mute').removeEventListener('click', this.buttonsHandler);
-    window.removeEventListener('resize', this.resizeListener);
+    window.removeEventListener('resize', this.resizeListener, true);
     document.querySelector('.player__seekbar').removeEventListener('click', this.seekbarHandler);
     document.querySelector('.player-play').removeEventListener('click', this.playButtonHandler);
     this.player.removeEventListener('timeupdate', this.timeUpdateHandler);

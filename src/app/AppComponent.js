@@ -22,24 +22,6 @@ export class AppComponent extends Component {
         });
       }
     };
-    this.playButtonHandler = (e) => {
-      if (e.target.className === 'track-list-item-play') {
-        e.stopPropagation();
-        e.preventDefault();
-        if (e.target.dataset.playing === 'true') {
-          e.target.dataset.playing = 'false';
-          this.data.player.toggle();
-          return;
-        }
-        e.target.dataset.playing = 'true';
-        this.data.player.setTrack({
-          url: `https://lostpointer.site/src/static/tracks/${e.target.dataset.url}`,
-          cover: `/src/static/img/artworks/${e.target.dataset.cover}.webp`,
-          title: e.target.dataset.title,
-          artist: e.target.dataset.artist,
-        });
-      }
-    };
   }
 
   didMount() {
@@ -83,8 +65,51 @@ export class AppComponent extends Component {
       this.data.track_list.render();
       this.isLoaded = true;
       this.template = Handlebars.templates['app.hbs'](this.data);
-      this.render();
+
       document.addEventListener('click', this.authHandler);
+
+      this.syncPlayButtonsHandler = (target, event) => {
+        const play = event.type === 'play';
+        // eslint-disable-next-line no-param-reassign
+        target.src = `/src/static/img/${play ? 'pause' : 'play'}-outline.svg`;
+      };
+      this.playButtonHandler = (e) => {
+        if (e.target.className === 'track-list-item-play') {
+          if (e.target === this.nowPlaying) { // Ставим на паузу/продолжаем воспр.
+            console.log(e.target);
+            this.data.player.toggle();
+            return;
+          }
+          if (this.nowPlaying) { // Переключили на другой трек
+            console.log('remove');
+            // Не работает (как обычно)
+            this.data.player.player.removeEventListener('play', this.currentHandler);
+            this.data.player.player.removeEventListener('pause', this.currentHandler);
+
+            this.nowPlaying.src = '/src/static/img/play-outline.svg';
+          }
+
+          this.nowPlaying = e.target; // Включили трек из списка
+          this.currentHandler = this.syncPlayButtonsHandler.bind(null, this.nowPlaying);
+          this.data.player.player.addEventListener('play', this.currentHandler);
+          this.data.player.player.addEventListener('pause', this.currentHandler);
+
+          e.target.src = '/src/static/img/pause-outline.svg';
+          if (e.target.dataset.playing === 'true') {
+            e.target.dataset.playing = 'false';
+            this.data.player.toggle();
+            return;
+          }
+          e.target.dataset.playing = 'true';
+          this.data.player.setTrack({
+            url: `https://lostpointer.site/src/static/tracks/${e.target.dataset.url}`,
+            cover: `/src/static/img/artworks/${e.target.dataset.cover}.webp`,
+            title: e.target.dataset.title,
+            artist: e.target.dataset.artist,
+          });
+        }
+      };
+      this.render();
     });
   }
 
