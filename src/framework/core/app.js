@@ -1,7 +1,7 @@
-import {
-  router,
-  navigateTo,
-} from './router.js';
+import router from './router.js';
+import { AppComponent } from '../../app/AppComponent.js';
+import { SigninComponent } from '../../app/SigninComponent.js';
+import { SignupComponent } from '../../app/SignupComponent.js';
 
 class App {
   start() {
@@ -9,15 +9,20 @@ class App {
   }
 
   initRoutes() {
-    window.addEventListener('popstate', router);
+    router
+      .register('/', AppComponent)
+      .register('/signin', SigninComponent)
+      .register('/signup', SignupComponent)
+      .start();
+
     document.addEventListener('DOMContentLoaded', () => {
       document.body.addEventListener('click', (e) => {
         if (e.target.matches('[data-link]')) {
           e.preventDefault();
-          navigateTo(e.target.getAttribute('href'));
+          router.go(e.target.getAttribute('href'));
         }
       });
-      router();
+      router.check();
     });
   }
 }
