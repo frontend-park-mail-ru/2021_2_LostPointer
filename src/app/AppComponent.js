@@ -76,7 +76,6 @@ export class AppComponent extends Component {
       this.playButtonHandler = (e) => {
         if (e.target.className === 'track-list-item-play') {
           if (e.target === this.nowPlaying) { // Ставим на паузу/продолжаем воспр.
-            console.log(e.target);
             this.data.player.toggle();
             return;
           }

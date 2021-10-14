@@ -4,14 +4,16 @@ class PlayerComponent extends Component {
   constructor(props) {
     super(props);
     this.player = new Audio();
-    this.data = {
-      cover: '/src/static/img/artworks/no_artwork.webp',
-      playButton: document.querySelector('.player-play'),
-    };
+    if (!this.getLastPlayed()) {
+      this.data = {
+        cover: '/src/static/img/artworks/no_artwork.webp',
+        playButton: document.querySelector('.player-play'),
+      };
+    }
     this.player.addEventListener('loadedmetadata', () => {
       this.data.current_time = '0:00';
       this.data.total_time = `${(this.player.duration / 60) | 0}:${(this.player.duration % 60) | 0}`;
-      this.data.playing = true;
+      this.data.playing = false;
       this.render();
     });
     this.player.loop = false;
@@ -64,6 +66,22 @@ class PlayerComponent extends Component {
     window.localStorage.setItem('playerVolume', `${vol}`);
   }
 
+  saveLastPlayed() {
+    window.localStorage.setItem('lastPlayedData', JSON.stringify(this.data));
+  }
+
+  getLastPlayed() {
+    const data = window.localStorage.getItem('lastPlayedData');
+    console.log([typeof data === 'string', data, JSON.parse(data)]);
+    if (data) {
+      const json = JSON.parse(data);
+      json.playing = false;
+      this.data = json;
+    }
+    this.player.src = this.data.url;
+    return typeof data === 'string';
+  }
+
   setTrack(track) {
     this.data.playing = false;
     this.player.pause();
@@ -76,10 +94,11 @@ class PlayerComponent extends Component {
       artist: track.artist,
       current_time: '0:00',
       total_time: `${this.player.duration / 60}:${zero}${totalSeconds}`,
+      url: track.url,
     };
-
     this.data.playing = true;
     this.player.play();
+    this.saveLastPlayed();
   }
 
   unmount() {

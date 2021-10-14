@@ -311,6 +311,7 @@ body {
 }
 
 .player__time {
+    width: 30px;
     color: white;
     font-size: 17px;
     font-family: 'Montserrat', sans-serif;
@@ -345,7 +346,7 @@ body {
 .now-playing {
     font-family: 'Montserrat', sans-serif;
     color: white;
-    width: 10%;
+    width: 200px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
