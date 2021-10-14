@@ -72,13 +72,12 @@ class PlayerComponent extends Component {
 
   getLastPlayed() {
     const data = window.localStorage.getItem('lastPlayedData');
-    console.log([typeof data === 'string', data, JSON.parse(data)]);
     if (data) {
       const json = JSON.parse(data);
       json.playing = false;
       this.data = json;
+      this.player.src = this.data.url;
     }
-    this.player.src = this.data.url;
     return typeof data === 'string';
   }
 
