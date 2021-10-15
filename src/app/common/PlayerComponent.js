@@ -16,6 +16,7 @@ class PlayerComponent extends Component {
       this.data.total_time = `${(this.player.duration / 60) | 0}:${(this.player.duration % 60) | 0}`;
       this.data.playing = !this.firstTime;
       this.firstTime = false;
+      this.saveLastPlayed();
       this.render();
     });
     this.player.loop = false;
@@ -141,7 +142,6 @@ class PlayerComponent extends Component {
     });
 
     this.player.play();
-    this.saveLastPlayed();
   }
 
   unmount() {
