@@ -53,6 +53,33 @@ class PlayerComponent extends Component {
       this.seekbarPos = document.querySelector('.player__seekbar').getBoundingClientRect();
       this.volumePos = document.querySelector('.player-volume').getBoundingClientRect();
     };
+    this.switchTrackHandler = (e) => {
+      let current;
+      let allowed = false;
+      if (e.action === 'nexttrack') {
+        if (this.pos < this.playlist.length - 1) {
+          this.playlist[this.pos].querySelector('.track-list-item-play').src = '/src/static/img/play-outline.svg';
+          current = this.playlist[++this.pos].querySelector('.track-list-item-play');
+          allowed = true;
+        }
+      } else if (this.pos >= 1) {
+        this.playlist[this.pos].querySelector('.track-list-item-play').src = '/src/static/img/play-outline.svg';
+        current = this.playlist[--this.pos].querySelector('.track-list-item-play');
+        allowed = true;
+      }
+      if (allowed) {
+        current.src = '/src/static/img/pause-outline.svg';
+        this.setTrack({
+          url: `https://lostpointer.site/src/static/tracks/${current.dataset.url}`,
+          cover: `/src/static/img/artworks/${current.dataset.cover}`,
+          title: current.dataset.title,
+          artist: current.dataset.artist,
+        });
+      }
+    };
+
+    navigator.mediaSession.setActionHandler('previoustrack', this.switchTrackHandler);
+    navigator.mediaSession.setActionHandler('nexttrack', this.switchTrackHandler);
   }
 
   seek(xPos) {
@@ -97,6 +124,21 @@ class PlayerComponent extends Component {
       url: track.url,
       playing: true,
     };
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: track.title,
+      artist: track.artist,
+      // album: 'Whenever You Need Somebody',
+      artwork: [
+        { src: `${track.cover}_96px.webp`, sizes: '96x96', type: 'image/webp' },
+        { src: `${track.cover}_128px.webp`, sizes: '128x128', type: 'image/webp' },
+        { src: `${track.cover}_192px.webp`, sizes: '192x192', type: 'image/webp' },
+        { src: `${track.cover}_256px.webp`, sizes: '256x256', type: 'image/webp' },
+        { src: `${track.cover}_384px.webp`, sizes: '384x384', type: 'image/webp' },
+        { src: `${track.cover}_512px.webp`, sizes: '512x512', type: 'image/webp' },
+      ],
+    });
+
     this.player.play();
     this.saveLastPlayed();
   }

@@ -86,6 +86,7 @@ export class AppComponent extends Component {
             this.nowPlaying.src = '/src/static/img/play-outline.svg';
           }
 
+          this.data.player.pos = parseInt(e.target.dataset.pos, 10);
           this.nowPlaying = e.target; // Включили трек из списка
           this.currentHandler = this.syncPlayButtonsHandler.bind(null, this.nowPlaying);
           this.data.player.player.addEventListener('play', this.currentHandler);
@@ -100,7 +101,7 @@ export class AppComponent extends Component {
           e.target.dataset.playing = 'true';
           this.data.player.setTrack({
             url: `https://lostpointer.site/src/static/tracks/${e.target.dataset.url}`,
-            cover: `/src/static/img/artworks/${e.target.dataset.cover}_128px.webp`,
+            cover: `/src/static/img/artworks/${e.target.dataset.cover}`,
             title: e.target.dataset.title,
             artist: e.target.dataset.artist,
           });
@@ -113,7 +114,7 @@ export class AppComponent extends Component {
   unmount() {
     this.data.player.unmount();
     document.removeEventListener('click', this.authHandler);
-    document.removeEventListener('click', this.playButtonHandler);
+    document.querySelector('.suggested-tracks-container').removeEventListener('click', this.playButtonHandler);
   }
 
   render() {
@@ -126,7 +127,8 @@ export class AppComponent extends Component {
     if (this.data && this.data.player) {
       this.data.player.unmount();
       this.data.player.setup();
+      this.data.player.playlist = document.querySelectorAll('.track-list-item');
     }
-    document.addEventListener('click', this.playButtonHandler);
+    document.querySelectorAll('.track-list-item-play').forEach((e) => e.addEventListener('click', this.playButtonHandler));
   }
 }
