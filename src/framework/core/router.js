@@ -30,11 +30,11 @@ export const router = () => {
     };
   }
 
-  matches.route.view.render();
   if (currentView) {
     currentView.unmount();
   }
   currentView = matches.route.view;
+  matches.route.view.render();
 };
 
 export const navigateTo = (url) => {

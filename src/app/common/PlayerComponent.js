@@ -10,10 +10,12 @@ class PlayerComponent extends Component {
         playButton: document.querySelector('.player-play'),
       };
     }
+    this.firstTime = true;
     this.player.addEventListener('loadedmetadata', () => {
       this.data.current_time = '0:00';
       this.data.total_time = `${(this.player.duration / 60) | 0}:${(this.player.duration % 60) | 0}`;
-      this.data.playing = false;
+      this.data.playing = !this.firstTime;
+      this.firstTime = false;
       this.render();
     });
     this.player.loop = false;
@@ -82,7 +84,6 @@ class PlayerComponent extends Component {
   }
 
   setTrack(track) {
-    this.data.playing = false;
     this.player.pause();
     this.player.src = track.url;
     const totalSeconds = (this.player.duration % 60) | 0;
@@ -94,14 +95,15 @@ class PlayerComponent extends Component {
       current_time: '0:00',
       total_time: `${this.player.duration / 60}:${zero}${totalSeconds}`,
       url: track.url,
+      playing: true,
     };
-    this.data.playing = true;
     this.player.play();
     this.saveLastPlayed();
   }
 
   unmount() {
     this.removeEventListeners(); // Вообще ничего не делает, но должно
+    this.player.pause();
   }
 
   toggle() {
@@ -123,13 +125,13 @@ class PlayerComponent extends Component {
   }
 
   removeEventListeners() {
+    this.player.removeEventListener('timeupdate', this.timeUpdateHandler);
     document.querySelector('.repeat').removeEventListener('click', this.buttonsHandler);
     document.querySelector('.shuffle').removeEventListener('click', this.buttonsHandler);
     document.querySelector('.mute').removeEventListener('click', this.buttonsHandler);
     window.removeEventListener('resize', this.resizeListener, true);
     document.querySelector('.player__seekbar').removeEventListener('click', this.seekbarHandler);
     document.querySelector('.player-play').removeEventListener('click', this.playButtonHandler);
-    this.player.removeEventListener('timeupdate', this.timeUpdateHandler);
     this.player.removeEventListener('pause', this.pauseHandler);
     this.player.removeEventListener('play', this.playHandler);
   }
