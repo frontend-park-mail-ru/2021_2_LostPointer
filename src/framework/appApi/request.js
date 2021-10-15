@@ -1,6 +1,6 @@
 import { ContentType, RequestMethods } from './requestUtils.js';
 
-const defaultBackendDomain = 'http://127.0.0.1:3000/api/v1';
+const defaultBackendDomain = '/api/v1';
 
 class Request {
   constructor(domain = defaultBackendDomain) {

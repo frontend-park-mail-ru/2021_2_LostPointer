@@ -21,6 +21,7 @@
 
 .profile-form__message-block {
     height: 50px;
+    padding-bottom: 10px;
 }
 
 .profile-form__message {
@@ -28,6 +29,7 @@
     font-family: Montserrat;
     font-size: 18px;
     padding-left: 10px;
+    padding-bottom: 10px;
 }
 
 .profile-form__label {
@@ -113,13 +115,14 @@ profile-form__fail_msg {
     width: 200px;
     margin-left: auto;
     margin-right: auto;
+    border-radius: 50%;
 }
 
 .profile-avatar__input-btn {
     color: #FFFFFF;
     padding-left: 10px;
     line-height: 40px;
-    width: 300px;
+    width: 100px;
     margin: 10px auto;
     display: block;
     border-radius: 10px;

@@ -4,6 +4,7 @@ import { AppComponent } from '../../app/AppComponent.js';
 import { SignupComponent } from '../../app/SignupComponent.js';
 // eslint-disable-next-line import/no-cycle
 import { SigninComponent } from '../../app/SigninComponent.js';
+// eslint-disable-next-line import/no-cycle
 import { ProfileView } from '../../app/ProfileView.js';
 
 const pathToRegex = (path) => new RegExp(`^${path.replace(PATH_SLASH, '\\/').replace(PATH_ARG, '(.+)')}$`);

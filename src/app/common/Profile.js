@@ -7,6 +7,7 @@ class Profile extends Component {
     super(config);
     this.data = {
       title: 'Profile settings',
+      avatar: config.avatar,
       inputs: [
         new ProfileInputComponent({
           label: 'Name',
@@ -15,7 +16,7 @@ class Profile extends Component {
             name: 'name',
             type: 'text',
             placeholder: 'Name',
-            value: 'DeStRoYeR777',
+            value: config.nickname,
           }),
         }),
         new ProfileInputComponent({
@@ -25,7 +26,7 @@ class Profile extends Component {
             name: 'email',
             type: 'email',
             placeholder: 'Email',
-            value: 'tritopora@mail.ru',
+            value: config.email,
           }),
         }),
       ],
