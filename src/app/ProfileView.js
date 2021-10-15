@@ -17,8 +17,7 @@ export class ProfileView extends Component {
   _logout(event) {
     if (event.target.className === 'topbar-auth' && event.target.dataset.action === 'logout') {
       logout().then(() => {
-        this.data.topbar.data.authenticated = false;
-        this.data.topbar.update();
+        navigateTo('/signin');
       });
     }
   }
