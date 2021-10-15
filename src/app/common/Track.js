@@ -7,6 +7,7 @@ class Track extends Component {
       cover: props.cover,
       title: props.title,
       artist: props.artist,
+      file: props.file,
     };
     this.template = Handlebars.templates['track.hbs'](this.data);
   }

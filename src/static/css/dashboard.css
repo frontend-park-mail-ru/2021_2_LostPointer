@@ -271,7 +271,7 @@ body {
     background-color: white;
     height: 60px;
     width: 60px;
-    border-radius: 10px;
+    border-radius: 15px;
     cursor: pointer;
 }
 
@@ -289,12 +289,25 @@ body {
     transform: rotate(180deg);
 }
 
-.player__seekbar {
+.player__seekbar,
+.seekbar-current,
+.volume-current {
     background-color: grey;
     height: 5px;
     width: 30%;
     border-radius: 10px;
     cursor: pointer;
+}
+
+.seekbar-current,
+.volume-current {
+    width: 0%;
+    display: block;
+    background-color: white;
+}
+
+.volume-current {
+    width: 50%;
 }
 
 .player__time {
@@ -307,6 +320,7 @@ body {
 .shuffle,
 .repeat {
     width: 30px;
+    opacity: 50%;
 }
 
 .shuffle {
@@ -318,7 +332,9 @@ body {
     cursor: pointer;
 }
 
-.player__volume-icon {
+.mute {
+    width: 23px;
+    opacity: 100%;
     cursor: pointer;
 }
 
@@ -329,6 +345,10 @@ body {
 .now-playing {
     font-family: 'Montserrat', sans-serif;
     color: white;
+    width: 10%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .track-name {
@@ -476,4 +496,8 @@ body {
 ::-webkit-scrollbar-thumb {
     background-color: grey;
     border-radius: 20px;
+}
+
+.enabled {
+    opacity: 100%;
 }

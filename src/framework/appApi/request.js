@@ -43,8 +43,7 @@ class Request {
         .then((responseBody) => ({
           status: response.status,
           body: responseBody,
-        })))
-      .catch((error) => console.log(error));
+        })));
   }
 
   _createURL(domain, path) {

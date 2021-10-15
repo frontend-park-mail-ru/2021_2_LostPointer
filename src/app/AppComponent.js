@@ -14,14 +14,21 @@ export class AppComponent extends Component {
   constructor(props) {
     super(props);
     this.isLoaded = false;
+    this.authHandler = (e) => {
+      if (e.target.className === 'topbar-auth' && e.target.dataset.action === 'logout') {
+        logout().then(() => {
+          this.data.topbar.data.authenticated = false;
+          this.data.topbar.update();
+        });
+      }
+    };
   }
 
   didMount() {
     Request.get(
       '/auth',
     )
-      .then(({ status }) => { this.authenticated = status === 200; })
-      .catch((error) => console.log(error.msg));
+      .then(({ status }) => { this.authenticated = status === 200; });
 
     Request.get('/home').then((response) => {
       const albums = response.body.albums.map((e) => ({ img: e.artWork }));
@@ -53,20 +60,62 @@ export class AppComponent extends Component {
 
       Object.values(this.data).forEach((component) => { component.render(); });
 
+      this.data.top_albums.render();
+      this.data.suggested_artists.render();
+      this.data.track_list.render();
       this.isLoaded = true;
       this.template = Handlebars.templates['app.hbs'](this.data);
-      this.render();
-      const that = this;
-      document.addEventListener('click', (e) => {
-        if (e.target.className === 'topbar-auth' && e.target.dataset.action === 'logout') {
-          logout().then(() => {
-            that.data.topbar.data.authenticated = false;
-            that.data.topbar.update();
+
+      document.addEventListener('click', this.authHandler);
+
+      this.syncPlayButtonsHandler = (target, event) => {
+        const play = event.type === 'play';
+        // eslint-disable-next-line no-param-reassign
+        target.src = `/src/static/img/${play ? 'pause' : 'play'}-outline.svg`;
+      };
+      this.playButtonHandler = (e) => {
+        if (e.target.className === 'track-list-item-play') {
+          if (e.target === this.nowPlaying) { // Ставим на паузу/продолжаем воспр.
+            console.log(e.target);
+            this.data.player.toggle();
+            return;
+          }
+          if (this.nowPlaying) { // Переключили на другой трек
+            console.log('remove');
+            // Не работает (как обычно)
+            this.data.player.player.removeEventListener('play', this.currentHandler);
+            this.data.player.player.removeEventListener('pause', this.currentHandler);
+
+            this.nowPlaying.src = '/src/static/img/play-outline.svg';
+          }
+
+          this.nowPlaying = e.target; // Включили трек из списка
+          this.currentHandler = this.syncPlayButtonsHandler.bind(null, this.nowPlaying);
+          this.data.player.player.addEventListener('play', this.currentHandler);
+          this.data.player.player.addEventListener('pause', this.currentHandler);
+
+          e.target.src = '/src/static/img/pause-outline.svg';
+          if (e.target.dataset.playing === 'true') {
+            e.target.dataset.playing = 'false';
+            this.data.player.toggle();
+            return;
+          }
+          e.target.dataset.playing = 'true';
+          this.data.player.setTrack({
+            url: `https://lostpointer.site/src/static/tracks/${e.target.dataset.url}`,
+            cover: `/src/static/img/artworks/${e.target.dataset.cover}.webp`,
+            title: e.target.dataset.title,
+            artist: e.target.dataset.artist,
           });
         }
-      });
-    })
-      .catch((error) => console.log(error.msg));
+      };
+      this.render();
+    });
+  }
+
+  unmount() {
+    document.removeEventListener('click', this.authHandler);
+    document.removeEventListener('click', this.playButtonHandler);
   }
 
   render() {
@@ -75,5 +124,11 @@ export class AppComponent extends Component {
     } else {
       super.render();
     }
+
+    if (this.data && this.data.player) {
+      this.data.player.unmount();
+      this.data.player.setup();
+    }
+    document.addEventListener('click', this.playButtonHandler);
   }
 }
