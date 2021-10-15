@@ -100,7 +100,7 @@ export class AppComponent extends Component {
           e.target.dataset.playing = 'true';
           this.data.player.setTrack({
             url: `https://lostpointer.site/src/static/tracks/${e.target.dataset.url}`,
-            cover: `/src/static/img/artworks/${e.target.dataset.cover}.webp`,
+            cover: `/src/static/img/artworks/${e.target.dataset.cover}_128px.webp`,
             title: e.target.dataset.title,
             artist: e.target.dataset.artist,
           });
