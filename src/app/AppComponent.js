@@ -113,6 +113,7 @@ export class AppComponent extends Component {
   }
 
   unmount() {
+    this.data.player.unmount();
     document.removeEventListener('click', this.authHandler);
     document.removeEventListener('click', this.playButtonHandler);
   }
