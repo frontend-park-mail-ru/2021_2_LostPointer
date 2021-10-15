@@ -13,10 +13,10 @@ let currentView = null;
 
 export const router = () => {
   const routes = [
-    { path: '/', view: AppComponent },
-    { path: '/profile', view: ProfileView },
-    { path: '/signin', view: SigninComponent },
-    { path: '/signup', view: SignupComponent },
+    { path: '/', view: new AppComponent() },
+    { path: '/profile', view: new ProfileView() },
+    { path: '/signin', view: new SigninComponent() },
+    { path: '/signup', view: new SignupComponent() },
   ];
 
   const potentialMatches = routes.map((route) => ({
