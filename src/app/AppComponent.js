@@ -80,11 +80,9 @@ export class AppComponent extends Component {
             return;
           }
           if (this.nowPlaying) { // Переключили на другой трек
-            console.log('remove');
-            // Не работает (как обычно)
             this.data.player.player.removeEventListener('play', this.currentHandler);
             this.data.player.player.removeEventListener('pause', this.currentHandler);
-
+            this.nowPlaying.dataset.playing = 'false';
             this.nowPlaying.src = '/src/static/img/play-outline.svg';
           }
 
