@@ -43,10 +43,7 @@ class Router {
   }
 
   start() {
-    const self = this;
-    window.addEventListener('popstate', () => {
-      self.check();
-    });
+    window.addEventListener('popstate', this.check);
     return this;
   }
 
@@ -56,12 +53,12 @@ class Router {
   }
 
   back() {
-    window.history.go(-1);
+    window.history.back();
     return this;
   }
 
   forward() {
-    window.history.go(1);
+    window.history.forward();
     return this;
   }
 }
