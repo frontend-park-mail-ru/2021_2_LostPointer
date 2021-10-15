@@ -74,6 +74,7 @@ class PlayerComponent extends Component {
           cover: `/src/static/img/artworks/${current.dataset.cover}`,
           title: current.dataset.title,
           artist: current.dataset.artist,
+          album: current.dataset.album,
         });
       }
     };
@@ -128,7 +129,7 @@ class PlayerComponent extends Component {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: track.title,
       artist: track.artist,
-      // album: 'Whenever You Need Somebody',
+      album: track.album,
       artwork: [
         { src: `${track.cover}_96px.webp`, sizes: '96x96', type: 'image/webp' },
         { src: `${track.cover}_128px.webp`, sizes: '128x128', type: 'image/webp' },

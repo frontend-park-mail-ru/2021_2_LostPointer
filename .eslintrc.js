@@ -18,6 +18,7 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'no-bitwise': 'off',
     'no-unused-expressions': 'off',
+    'no-plusplus': 'off',
     'import/extensions': [
       'warn',
       'ignorePackages',

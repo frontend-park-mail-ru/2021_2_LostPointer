@@ -104,6 +104,7 @@ export class AppComponent extends Component {
             cover: `/src/static/img/artworks/${e.target.dataset.cover}`,
             title: e.target.dataset.title,
             artist: e.target.dataset.artist,
+            album: e.target.dataset.album,
           });
         }
       };
