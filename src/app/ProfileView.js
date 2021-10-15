@@ -38,7 +38,10 @@ export class ProfileView extends Component {
             .then((response) => {
               this.data = {
                 sidebar: new Sidebar(),
-                topbar: new TopBar({ authenticated: this.authenticated }),
+                topbar: new TopBar({
+                  authenticated: this.authenticated,
+                  avatar: response.body.avatar,
+                }),
                 player: new PlayerComponent(),
                 profileform: new Profile({
                   nickname: response.body.nickname,

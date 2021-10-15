@@ -20,8 +20,18 @@ export class AppComponent extends Component {
     Request.get(
       '/auth',
     )
-      .then(({ status }) => { this.authenticated = status === 200; })
-      .catch((error) => console.log(error.msg));
+      .then(({ status }) => {
+        this.authenticated = status === 200;
+      })
+      .catch((error) => console.log(error.msg))
+      .then(() => {
+        if (this.authenticated) {
+          Request.get('/user/settings')
+            .then((response) => {
+              this.userAvatar = response.body.avatar;
+            });
+        }
+      });
 
     Request.get('/home').then((response) => {
       const albums = response.body.albums.map((e) => ({ img: e.artWork }));
@@ -46,7 +56,10 @@ export class AppComponent extends Component {
         track_list: new TrackList({ tracks: response.body.tracks }),
         suggested_playlists: new SuggestedPlaylists({ playlists: predefinedPlaylists }),
         sidebar: new Sidebar(),
-        topbar: new TopBar({ authenticated: this.authenticated }),
+        topbar: new TopBar({
+          authenticated: this.authenticated,
+          avatar: this.userAvatar,
+        }),
         friend_activity: new FriendActivity(),
         player: new PlayerComponent(),
       };
