@@ -8,6 +8,13 @@ class App {
     this.initRoutes();
   }
 
+  _dataLinkRoute(event) {
+    if (event.target.matches('[data-link]')) {
+      event.preventDefault();
+      router.go(event.target.getAttribute('href'));
+    }
+  }
+
   initRoutes() {
     router
       .register('/', AppComponent)
@@ -16,12 +23,7 @@ class App {
       .start();
 
     document.addEventListener('DOMContentLoaded', () => {
-      document.body.addEventListener('click', (e) => {
-        if (e.target.matches('[data-link]')) {
-          e.preventDefault();
-          router.go(e.target.getAttribute('href'));
-        }
-      });
+      document.body.addEventListener('click', this._dataLinkRoute);
       router.check();
     });
   }
