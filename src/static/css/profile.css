@@ -115,6 +115,7 @@ profile-form__fail_msg {
     width: 200px;
     margin-left: auto;
     margin-right: auto;
+    border-radius: 50%;
 }
 
 .profile-avatar__input-btn {

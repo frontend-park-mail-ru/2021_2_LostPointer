@@ -43,6 +43,7 @@ export class ProfileView extends Component {
                 profileform: new Profile({
                   nickname: response.body.nickname,
                   email: response.body.email,
+                  avatar: response.body.avatar,
                 }),
               };
 

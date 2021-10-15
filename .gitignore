@@ -3,4 +3,5 @@
 node_modules/
 *.hbs.precompiled.js
 src/static/img/artworks
+src/static/img/users
 src/static/js/templates.precompiled.js
