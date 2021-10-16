@@ -6,7 +6,7 @@ class PlayerComponent extends Component {
     this.player = new Audio();
     if (!this.getLastPlayed()) {
       this.data = {
-        cover: '/src/static/img/artworks/no_artwork.webp',
+        cover: '/src/static/img/artworks/no_artwork_150px.webp',
         playButton: document.querySelector('.player-play'),
       };
     }
@@ -264,7 +264,7 @@ class PlayerComponent extends Component {
     document.getElementById('artist-name').innerHTML = this.data.artist ?? '';
     document.getElementById('track-name').innerHTML = this.data.track ?? '';
     document.getElementById('player-time-total').innerHTML = this.data.total_time ?? '';
-    document.getElementById('player-artwork').src = `${this.data.cover}_128px.webp`;
+    document.getElementById('player-artwork').src = `${this.data.cover ?? '/src/static/img/artworks/no_artwork'}_128px.webp`;
   }
 }
 
