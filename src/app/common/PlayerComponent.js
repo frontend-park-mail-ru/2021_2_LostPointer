@@ -47,6 +47,8 @@ class PlayerComponent extends Component {
       this.data = json;
       this.player.currentTime = this.data.playerCurrentTime;
       this.player.src = this.data.url;
+      this.data.right_disabled = true;
+      this.data.left_disabled = true;
     }
     return typeof data === 'string';
   }
