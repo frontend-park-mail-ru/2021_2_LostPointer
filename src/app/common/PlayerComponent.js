@@ -13,12 +13,16 @@ class PlayerComponent extends Component {
     this.addHandlers();
     this.firstTime = true;
     this.player.loop = false;
-    this.renderedOnce = false;
-
+    this.addedSeekPos = false;
     this.data.playing = false;
   }
 
   seek(xPos) {
+    if (!this.addedSeekPos) {
+      this.seekbarPos = document.getElementById('player-seekbar').getBoundingClientRect();
+      this.volumePos = document.getElementById('player-volume').getBoundingClientRect();
+      this.addedSeekPos = true;
+    }
     const seek = (xPos - this.seekbarPos.left) / this.seekbarPos.width;
     this.seekbarCurrent.style.width = `${seek * 100}%`;
     this.player.currentTime = this.player.duration * seek;
@@ -41,6 +45,7 @@ class PlayerComponent extends Component {
       const json = JSON.parse(data);
       json.playing = false;
       this.data = json;
+      this.player.currentTime = this.data.playerCurrentTime;
       this.player.src = this.data.url;
     }
     return typeof data === 'string';
@@ -71,14 +76,21 @@ class PlayerComponent extends Component {
       }, []),
     });
 
-    const right = document.querySelector('.player-skip-right');
-    const left = document.querySelector('.player-skip-left');
+    const right = document.getElementById('player-skip-right');
+    const left = document.getElementById('player-skip-left');
 
     right.classList.remove('disabled');
     left.classList.remove('disabled');
 
-    this.data.right_disabled = this.pos && this.pos === this.playlist.length - 1;
+    this.data.right_disabled = this.pos === this.playlist.length - 1;
     this.data.left_disabled = this.pos === 0;
+
+    if (this.data.left_disabled) {
+      left.classList.add('disabled');
+    }
+    if (this.data.right_disabled) {
+      right.classList.add('disabled');
+    }
 
     this.player.play();
   }
@@ -138,8 +150,6 @@ class PlayerComponent extends Component {
   setup() {
     this.seekbarCurrent = document.querySelector('.seekbar-current');
     this.currentVolume = document.querySelector('.volume-current');
-    this.seekbarPos = document.querySelector('.player__seekbar').getBoundingClientRect();
-    this.volumePos = document.querySelector('.player-volume').getBoundingClientRect();
     this.mute = document.querySelector('.mute');
     this.repeatToggle = document.querySelector('.repeat');
 
@@ -169,7 +179,6 @@ class PlayerComponent extends Component {
       app.insertAdjacentHTML('beforeend', this.getHtml());
       this.setup();
     }
-    this.renderedOnce = true;
   }
 
   addHandlers() {
@@ -199,7 +208,10 @@ class PlayerComponent extends Component {
       const seconds = (this.player.currentTime % 60) | 0;
       const zero = seconds < 10 ? '0' : '';
       this.seekbarCurrent.style.width = `${(this.player.currentTime / this.player.duration) * 100}%`;
-      document.getElementById('player-time-current').innerHTML = `${(this.player.currentTime / 60) | 0}:${zero}${seconds}`;
+      this.data.current_time = `${(this.player.currentTime / 60) | 0}:${zero}${seconds}`;
+      document.getElementById('player-time-current').innerHTML = this.data.current_time;
+      this.data.playerCurrentTime = this.player.currentTime;
+      this.saveLastPlayed();
     };
     this.resizeHandler = () => {
       this.seekbarPos = document.querySelector('.player__seekbar').getBoundingClientRect();
@@ -210,11 +222,7 @@ class PlayerComponent extends Component {
     };
 
     this.arrowKeysHandler = (e) => {
-      if (e.target.className === 'player-skip-right') {
-        this.switchTrackHandler({ action: 'nexttrack' });
-      } else {
-        this.switchTrackHandler({ action: 'previoustrack' });
-      }
+      this.switchTrack(e.target.classList.contains('player-skip-right'));
     };
     this.endedHandler = () => {
       this.switchTrack(true);

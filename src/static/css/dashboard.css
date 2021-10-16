@@ -77,7 +77,7 @@ body {
 
 .topbar__search {
     background-color: #191919;
-    width: 75%;
+    width: 30%;
     height: 65px;
     border-radius: 50px;
 }
@@ -88,7 +88,7 @@ body {
     padding: 5px 10px;
     width: 85px;
     height: 40px;
-    margin: auto;
+    margin: auto 0 auto auto;
 }
 
 .topbar-icon {
