@@ -60,14 +60,10 @@ class PlayerComponent extends Component {
   setTrack(track) {
     this.player.pause();
     this.player.src = track.url;
-    const totalSeconds = (this.player.duration % 60) | 0;
-    const zero = totalSeconds < 10 ? '0' : '';
     this.data = {
       cover: track.cover,
       track: track.title,
       artist: track.artist,
-      current_time: '0:00',
-      total_time: `${this.player.duration / 60}:${zero}${totalSeconds}`,
       url: track.url,
       playing: true,
     };
@@ -113,8 +109,11 @@ class PlayerComponent extends Component {
 
   setEventListeners() {
     this.player.addEventListener('loadedmetadata', () => {
+      const totalSeconds = (this.player.duration % 60) | 0;
+      const zero = totalSeconds < 10 ? '0' : '';
+
       this.data.current_time = '0:00';
-      this.data.total_time = `${(this.player.duration / 60) | 0}:${(this.player.duration % 60) | 0}`;
+      this.data.total_time = `${(this.player.duration / 60) | 0}:${zero}${totalSeconds}`;
       this.data.playing = !this.firstTime;
       this.firstTime = false;
       this.saveLastPlayed();
