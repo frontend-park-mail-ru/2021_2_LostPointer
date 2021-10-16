@@ -24,7 +24,7 @@ class App {
 
     document.addEventListener('DOMContentLoaded', () => {
       document.body.addEventListener('click', this._dataLinkRoute);
-      router.check();
+      router.check().render();
     });
   }
 }

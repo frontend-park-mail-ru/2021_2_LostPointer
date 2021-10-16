@@ -37,9 +37,7 @@ class Router {
       };
     }
     const ViewClass = matches.route.view;
-    const view = new ViewClass(this._getParams(matches));
-    view.render();
-    return this;
+    return new ViewClass(this._getParams(matches));
   }
 
   start() {
@@ -49,17 +47,15 @@ class Router {
 
   go(path) {
     window.history.pushState(null, null, path);
-    return this.check();
+    window.history.go(0);
   }
 
   back() {
     window.history.back();
-    return this;
   }
 
   forward() {
     window.history.forward();
-    return this;
   }
 }
 
