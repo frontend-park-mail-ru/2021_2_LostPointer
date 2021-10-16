@@ -2,6 +2,7 @@ import router from './router.js';
 import { AppComponent } from '../../app/AppComponent.js';
 import { SigninComponent } from '../../app/SigninComponent.js';
 import { SignupComponent } from '../../app/SignupComponent.js';
+import routerStore from './routerStore.js';
 
 class App {
   start() {
@@ -17,9 +18,9 @@ class App {
 
   initRoutes() {
     router
-      .register('/', AppComponent)
-      .register('/signin', SigninComponent)
-      .register('/signup', SignupComponent)
+      .register(routerStore.dashboard, AppComponent)
+      .register(routerStore.signin, SigninComponent)
+      .register(routerStore.signup, SignupComponent)
       .start();
 
     document.addEventListener('DOMContentLoaded', () => {

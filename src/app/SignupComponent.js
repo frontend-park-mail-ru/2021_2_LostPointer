@@ -8,6 +8,7 @@ import {
   passwordValidityChecks,
 } from '../framework/validation/validityChecks.js';
 import Request from '../framework/appApi/request.js';
+import routerStore from '../framework/core/routerStore.js';
 
 export class SignupComponent extends Component {
   constructor(config) {
@@ -65,7 +66,7 @@ export class SignupComponent extends Component {
     )
       .then(({ status, body }) => {
         if (status === 201) {
-          router.go('/');
+          router.go(routerStore.dashboard);
         } else {
           const failMsg = event.target.querySelector('.auth-form__fail_msg');
           failMsg.innerText = body.message;
