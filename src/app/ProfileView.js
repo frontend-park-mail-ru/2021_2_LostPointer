@@ -42,11 +42,7 @@ export class ProfileView extends Component {
                   avatar: response.body.avatar,
                 }),
                 player: new PlayerComponent(),
-                profileform: new Profile({
-                  nickname: response.body.nickname,
-                  email: response.body.email,
-                  avatar: response.body.avatar,
-                }),
+                profileform: new Profile(response.body),
               };
 
               Object.values(this.data).forEach((component) => { component.render(); });
