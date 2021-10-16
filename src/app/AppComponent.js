@@ -100,7 +100,7 @@ export class AppComponent extends Component {
           }
           e.target.dataset.playing = 'true';
           this.data.player.setTrack({
-            url: `https://lostpointer.site/src/static/tracks/${e.target.dataset.url}`,
+            url: `/src/static/tracks/${e.target.dataset.url}`,
             cover: `/src/static/img/artworks/${e.target.dataset.cover}`,
             title: e.target.dataset.title,
             artist: e.target.dataset.artist,
@@ -113,9 +113,10 @@ export class AppComponent extends Component {
   }
 
   unmount() {
-    this.data.player.unmount();
+    document.querySelectorAll('.track-list-item-play').forEach((e) => e.removeEventListener('click', this.playButtonHandler));
     document.removeEventListener('click', this.authHandler);
     document.querySelector('.suggested-tracks-container').removeEventListener('click', this.playButtonHandler);
+    this.data.player.unmount();
   }
 
   render() {

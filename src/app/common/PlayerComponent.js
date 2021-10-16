@@ -10,78 +10,12 @@ class PlayerComponent extends Component {
         playButton: document.querySelector('.player-play'),
       };
     }
+    this.addHandlers();
     this.firstTime = true;
-    this.player.addEventListener('loadedmetadata', () => {
-      this.data.current_time = '0:00';
-      this.data.total_time = `${(this.player.duration / 60) | 0}:${(this.player.duration % 60) | 0}`;
-      this.data.playing = !this.firstTime;
-      this.firstTime = false;
-      this.saveLastPlayed();
-      this.render();
-    });
     this.player.loop = false;
     this.renderedOnce = false;
-    this.buttonsHandler = (e) => {
-      if (e.target.classList.contains('repeat')) {
-        this.player.loop = !e.target.classList.contains('enabled');
-        this.player.loop ? e.target.classList.add('enabled') : e.target.classList.remove('enabled');
-        window.localStorage.setItem('playerLooped', `${this.player.loop}`);
-      } else if (e.target.classList.contains('shuffle')) {
-        this.player.shuffle = e.target.classList.contains('enabled'); // TODO
-      } else if (e.target.classList.contains('mute')) {
-        this.player.muted = !this.player.muted;
-        this.player.muted ? e.target.classList.add('enabled') : e.target.classList.remove('enabled');
-        window.localStorage.setItem('playerMuted', `${this.player.muted}`);
-        e.target.src = `/src/static/img/${this.player.muted ? 'muted.svg' : 'volume.svg'}`;
-      }
-    };
-    this.playHandler = () => { document.querySelector('.player-play').src = '/src/static/img/pause.svg'; };
-    this.pauseHandler = () => { document.querySelector('.player-play').src = '/src/static/img/play.svg'; };
-    this.seekbarHandler = (e) => this.seek(e.x);
-    this.volumeHandler = (e) => this.volume(e.x);
-    this.playButtonHandler = () => {
-      this.data.playing ? this.player.pause() : this.player.play();
-      this.data.playing = !this.data.playing;
-    };
-    this.timeUpdateHandler = () => {
-      const seconds = (this.player.currentTime % 60) | 0;
-      const zero = seconds < 10 ? '0' : '';
-      this.seekbarCurrent.style.width = `${(this.player.currentTime / this.player.duration) * 100}%`;
-      document.querySelector('#player-time-current').innerHTML = `${(this.player.currentTime / 60) | 0}:${zero}${seconds}`;
-    };
-    this.data.playing = false;
-    this.resizeListener = () => {
-      this.seekbarPos = document.querySelector('.player__seekbar').getBoundingClientRect();
-      this.volumePos = document.querySelector('.player-volume').getBoundingClientRect();
-    };
-    this.switchTrackHandler = (e) => {
-      let current;
-      let allowed = false;
-      if (e.action === 'nexttrack') {
-        if (this.pos < this.playlist.length - 1) {
-          this.playlist[this.pos].querySelector('.track-list-item-play').src = '/src/static/img/play-outline.svg';
-          current = this.playlist[++this.pos].querySelector('.track-list-item-play');
-          allowed = true;
-        }
-      } else if (this.pos >= 1) {
-        this.playlist[this.pos].querySelector('.track-list-item-play').src = '/src/static/img/play-outline.svg';
-        current = this.playlist[--this.pos].querySelector('.track-list-item-play');
-        allowed = true;
-      }
-      if (allowed) {
-        current.src = '/src/static/img/pause-outline.svg';
-        this.setTrack({
-          url: `https://lostpointer.site/src/static/tracks/${current.dataset.url}`,
-          cover: `/src/static/img/artworks/${current.dataset.cover}`,
-          title: current.dataset.title,
-          artist: current.dataset.artist,
-          album: current.dataset.album,
-        });
-      }
-    };
 
-    navigator.mediaSession.setActionHandler('previoustrack', this.switchTrackHandler);
-    navigator.mediaSession.setActionHandler('nexttrack', this.switchTrackHandler);
+    this.data.playing = false;
   }
 
   seek(xPos) {
@@ -131,21 +65,26 @@ class PlayerComponent extends Component {
       title: track.title,
       artist: track.artist,
       album: track.album,
-      artwork: [
-        { src: `${track.cover}_96px.webp`, sizes: '96x96', type: 'image/webp' },
-        { src: `${track.cover}_128px.webp`, sizes: '128x128', type: 'image/webp' },
-        { src: `${track.cover}_192px.webp`, sizes: '192x192', type: 'image/webp' },
-        { src: `${track.cover}_256px.webp`, sizes: '256x256', type: 'image/webp' },
-        { src: `${track.cover}_384px.webp`, sizes: '384x384', type: 'image/webp' },
-        { src: `${track.cover}_512px.webp`, sizes: '512x512', type: 'image/webp' },
-      ],
+      artwork: [96, 128, 192, 256, 384, 512].reduce((acc, elem) => {
+        acc.push({ src: `${track.cover}_${elem}px.webp`, sizes: `${elem}x${elem}`, type: 'image/webp' });
+        return acc;
+      }, []),
     });
+
+    const right = document.querySelector('.player-skip-right');
+    const left = document.querySelector('.player-skip-left');
+
+    right.classList.remove('disabled');
+    left.classList.remove('disabled');
+
+    this.data.right_disabled = this.pos && this.pos === this.playlist.length - 1;
+    this.data.left_disabled = this.pos === 0;
 
     this.player.play();
   }
 
   unmount() {
-    this.removeEventListeners(); // Вообще ничего не делает, но должно
+    this.removeEventListeners();
     this.player.pause();
   }
 
@@ -155,16 +94,30 @@ class PlayerComponent extends Component {
   }
 
   setEventListeners() {
+    this.player.addEventListener('loadedmetadata', () => {
+      this.data.current_time = '0:00';
+      this.data.total_time = `${(this.player.duration / 60) | 0}:${(this.player.duration % 60) | 0}`;
+      this.data.playing = !this.firstTime;
+      this.firstTime = false;
+      this.saveLastPlayed();
+      this.update();
+    });
     document.querySelector('.repeat').addEventListener('click', this.buttonsHandler);
     document.querySelector('.shuffle').addEventListener('click', this.buttonsHandler);
     document.querySelector('.mute').addEventListener('click', this.buttonsHandler);
-    window.addEventListener('resize', this.resizeListener);
+    window.addEventListener('resize', this.resizeHandler);
     document.querySelector('.player__seekbar').addEventListener('click', this.seekbarHandler);
     document.querySelector('.player-volume').addEventListener('click', this.volumeHandler);
     document.querySelector('.player-play').addEventListener('click', this.playButtonHandler);
     this.player.addEventListener('timeupdate', this.timeUpdateHandler);
     this.player.addEventListener('pause', this.pauseHandler);
     this.player.addEventListener('play', this.playHandler);
+    this.player.addEventListener('ended', this.endedHandler);
+    document.querySelector('.player-skip-left').addEventListener('click', this.arrowKeysHandler);
+    document.querySelector('.player-skip-right').addEventListener('click', this.arrowKeysHandler);
+
+    navigator.mediaSession.setActionHandler('previoustrack', this.switchTrackHandler);
+    navigator.mediaSession.setActionHandler('nexttrack', this.switchTrackHandler);
   }
 
   removeEventListeners() {
@@ -177,6 +130,9 @@ class PlayerComponent extends Component {
     document.querySelector('.player-play').removeEventListener('click', this.playButtonHandler);
     this.player.removeEventListener('pause', this.pauseHandler);
     this.player.removeEventListener('play', this.playHandler);
+    this.player.removeEventListener('ended', this.endedHandler);
+    document.querySelector('.player-skip-left').removeEventListener('click', this.arrowKeysHandler);
+    document.querySelector('.player-skip-right').removeEventListener('click', this.arrowKeysHandler);
   }
 
   setup() {
@@ -205,9 +161,6 @@ class PlayerComponent extends Component {
   }
 
   render() {
-    if (this.renderedOnce) {
-      this.removeEventListeners();
-    }
     this.template = Handlebars.templates['player.hbs'](this.data);
     const player = document.querySelector('.player');
     const app = document.querySelector('.app');
@@ -217,6 +170,89 @@ class PlayerComponent extends Component {
       this.setup();
     }
     this.renderedOnce = true;
+  }
+
+  addHandlers() {
+    this.buttonsHandler = (e) => {
+      if (e.target.classList.contains('repeat')) {
+        this.player.loop = !e.target.classList.contains('enabled');
+        this.player.loop ? e.target.classList.add('enabled') : e.target.classList.remove('enabled');
+        window.localStorage.setItem('playerLooped', `${this.player.loop}`);
+      } else if (e.target.classList.contains('shuffle')) {
+        this.player.shuffle = e.target.classList.contains('enabled'); // TODO
+      } else if (e.target.classList.contains('mute')) {
+        this.player.muted = !this.player.muted;
+        this.player.muted ? e.target.classList.add('enabled') : e.target.classList.remove('enabled');
+        window.localStorage.setItem('playerMuted', `${this.player.muted}`);
+        e.target.src = `/src/static/img/${this.player.muted ? 'muted.svg' : 'volume.svg'}`;
+      }
+    };
+    this.playHandler = () => { document.querySelector('.player-play').src = '/src/static/img/pause.svg'; };
+    this.pauseHandler = () => { document.querySelector('.player-play').src = '/src/static/img/play.svg'; };
+    this.seekbarHandler = (e) => this.seek(e.x);
+    this.volumeHandler = (e) => this.volume(e.x);
+    this.playButtonHandler = () => {
+      this.data.playing ? this.player.pause() : this.player.play();
+      this.data.playing = !this.data.playing;
+    };
+    this.timeUpdateHandler = () => {
+      const seconds = (this.player.currentTime % 60) | 0;
+      const zero = seconds < 10 ? '0' : '';
+      this.seekbarCurrent.style.width = `${(this.player.currentTime / this.player.duration) * 100}%`;
+      document.getElementById('player-time-current').innerHTML = `${(this.player.currentTime / 60) | 0}:${zero}${seconds}`;
+    };
+    this.resizeHandler = () => {
+      this.seekbarPos = document.querySelector('.player__seekbar').getBoundingClientRect();
+      this.volumePos = document.querySelector('.player-volume').getBoundingClientRect();
+    };
+    this.switchTrackHandler = (e) => {
+      this.switchTrack(e.action === 'nexttrack');
+    };
+
+    this.arrowKeysHandler = (e) => {
+      if (e.target.className === 'player-skip-right') {
+        this.switchTrackHandler({ action: 'nexttrack' });
+      } else {
+        this.switchTrackHandler({ action: 'previoustrack' });
+      }
+    };
+    this.endedHandler = () => {
+      this.switchTrack(true);
+    };
+  }
+
+  switchTrack(next) {
+    let current;
+    let allowed = false;
+    if (next) {
+      if (this.pos < this.playlist.length - 1) {
+        this.playlist[this.pos].querySelector('.track-list-item-play').src = '/src/static/img/play-outline.svg';
+        current = this.playlist[++this.pos].querySelector('.track-list-item-play');
+        allowed = true;
+      }
+    } else if (this.pos >= 1) {
+      this.playlist[this.pos].querySelector('.track-list-item-play').src = '/src/static/img/play-outline.svg';
+      current = this.playlist[--this.pos].querySelector('.track-list-item-play');
+      allowed = true;
+    }
+    if (allowed) {
+      current.src = '/src/static/img/pause-outline.svg';
+      this.setTrack({
+        url: `/src/static/tracks/${current.dataset.url}`,
+        cover: `/src/static/img/artworks/${current.dataset.cover}`,
+        title: current.dataset.title,
+        artist: current.dataset.artist,
+        album: current.dataset.album,
+      });
+    }
+  }
+
+  update() {
+    document.getElementById('player-artwork').innerHTML = this.data.artwork;
+    document.getElementById('artist-name').innerHTML = this.data.artist;
+    document.getElementById('track-name').innerHTML = this.data.track;
+    document.getElementById('player-time-total').innerHTML = this.data.total_time;
+    document.getElementById('player-artwork').src = `${this.data.cover}_128px.webp`;
   }
 }
 

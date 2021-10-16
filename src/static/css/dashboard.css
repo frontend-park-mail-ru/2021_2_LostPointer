@@ -378,6 +378,11 @@ body {
     width: 75%;
 }
 
+.disabled {
+    opacity: 50%;
+    cursor: not-allowed;
+}
+
 .friend {
     display: flex;
     height: 60px;
