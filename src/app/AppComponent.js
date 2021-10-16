@@ -9,6 +9,8 @@ import { SuggestedArtists } from './common/SuggestedArtists.js';
 import { FriendActivity } from './common/FriendActivity.js';
 import Request from '../framework/appApi/request.js';
 import { logout } from './common/utils.js';
+// eslint-disable-next-line import/no-cycle
+import { navigateTo } from '../framework/core/router.js';
 
 export class AppComponent extends Component {
   constructor(props) {
@@ -17,8 +19,12 @@ export class AppComponent extends Component {
     this.authHandler = (e) => {
       if (e.target.className === 'topbar-auth' && e.target.dataset.action === 'logout') {
         logout().then(() => {
+          this.authenticated = false;
           this.data.topbar.data.authenticated = false;
           this.data.topbar.update();
+          this.data.player.pause();
+          this.data.player.data.player.src = null;
+          window.localStorage.removeItem('lastPlayedData');
         });
       }
     };
@@ -75,6 +81,10 @@ export class AppComponent extends Component {
       };
       this.playButtonHandler = (e) => {
         if (e.target.className === 'track-list-item-play') {
+          if (!this.authenticated) {
+            navigateTo('/signin');
+            return;
+          }
           if (e.target === this.nowPlaying) { // Ставим на паузу/продолжаем воспр.
             this.data.player.toggle();
             return;

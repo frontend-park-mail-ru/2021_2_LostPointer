@@ -13,15 +13,15 @@ class PlayerComponent extends Component {
     this.addHandlers();
     this.firstTime = true;
     this.player.loop = false;
-    this.addedSeekPos = false;
+    this.gotSeekPos = false;
+    this.gotVolPos = false;
     this.data.playing = false;
   }
 
   seek(xPos) {
-    if (!this.addedSeekPos) {
+    if (!this.gotSeekPos) {
       this.seekbarPos = document.getElementById('player-seekbar').getBoundingClientRect();
-      this.volumePos = document.getElementById('player-volume').getBoundingClientRect();
-      this.addedSeekPos = true;
+      this.gotSeekPos = true;
     }
     const seek = (xPos - this.seekbarPos.left) / this.seekbarPos.width;
     this.seekbarCurrent.style.width = `${seek * 100}%`;
@@ -29,6 +29,10 @@ class PlayerComponent extends Component {
   }
 
   volume(xPos) {
+    if (!this.gotVolPos) {
+      this.volumePos = document.getElementById('player-volume').getBoundingClientRect();
+      this.gotVolPos = true;
+    }
     const vol = (xPos - this.volumePos.left) / this.volumePos.width;
     this.currentVolume.style.width = `${vol * 100}%`;
     this.player.volume = vol;

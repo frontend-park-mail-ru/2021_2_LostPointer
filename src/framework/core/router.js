@@ -1,4 +1,5 @@
 import { PATH_ARG, PATH_SLASH } from './regex.js';
+// eslint-disable-next-line import/no-cycle
 import { AppComponent } from '../../app/AppComponent.js';
 // eslint-disable-next-line import/no-cycle
 import { SignupComponent } from '../../app/SignupComponent.js';
