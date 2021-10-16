@@ -1,9 +1,7 @@
-class RouterStore {
-  constructor() {
-    this.dashboard = '/';
-    this.signin = '/signin';
-    this.signup = '/signup';
-  }
-}
+const routerStore = {
+  dashboard: '/',
+  signin: '/signin',
+  signup: '/signup',
+};
 
-export default new RouterStore();
+export default routerStore;
