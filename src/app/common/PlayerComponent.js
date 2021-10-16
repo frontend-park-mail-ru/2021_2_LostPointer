@@ -261,10 +261,9 @@ class PlayerComponent extends Component {
   }
 
   update() {
-    document.getElementById('player-artwork').innerHTML = this.data.artwork;
-    document.getElementById('artist-name').innerHTML = this.data.artist;
-    document.getElementById('track-name').innerHTML = this.data.track;
-    document.getElementById('player-time-total').innerHTML = this.data.total_time;
+    document.getElementById('artist-name').innerHTML = this.data.artist ?? '';
+    document.getElementById('track-name').innerHTML = this.data.track ?? '';
+    document.getElementById('player-time-total').innerHTML = this.data.total_time ?? '';
     document.getElementById('player-artwork').src = `${this.data.cover}_128px.webp`;
   }
 }

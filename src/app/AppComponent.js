@@ -19,11 +19,14 @@ export class AppComponent extends Component {
     this.authHandler = (e) => {
       if (e.target.className === 'topbar-auth' && e.target.dataset.action === 'logout') {
         logout().then(() => {
+          this.data.player.player.pause();
+          this.data.player.player.src = null;
+
           this.authenticated = false;
           this.data.topbar.data.authenticated = false;
           this.data.topbar.update();
-          this.data.player.pause();
-          this.data.player.data.player.src = null;
+          this.data.player.data = {};
+          this.data.player.update();
           window.localStorage.removeItem('lastPlayedData');
         });
       }
