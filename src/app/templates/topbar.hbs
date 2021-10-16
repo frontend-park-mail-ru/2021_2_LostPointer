@@ -5,7 +5,7 @@
             <img id="settings" class="topbar-icon" src="/src/static/img/settings.svg">
     </span>
     {{# if authenticated }}
-        <img class="topbar-profile" data-link href="/profile" src="/src/static/img/{{ avatar }}">
+        <img class="topbar-profile" data-link href="/profile" src="/src/static/{{ avatar }}">
         <img class="topbar-auth" data-action="logout" src="/src/static/img/logout.png">
     {{ else }}
         <img class="topbar-auth" data-link href="/signin" src="/src/static/img/login.png">

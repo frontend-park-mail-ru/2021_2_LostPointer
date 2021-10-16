@@ -7,7 +7,8 @@ class Profile extends Component {
     super(config);
     this.data = {
       title: 'Profile settings',
-      avatar: config.avatar,
+      small_avatar: config.small_avatar,
+      big_avatar: config.big_avatar,
       inputs: [
         new ProfileInputComponent({
           label: 'Name',

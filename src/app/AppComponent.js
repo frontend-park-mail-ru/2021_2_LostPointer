@@ -50,7 +50,6 @@ export class AppComponent extends Component {
         sidebar: new Sidebar(),
         topbar: new TopBar({
           authenticated: this.authenticated,
-          avatar: this.userAvatar,
         }),
         friend_activity: new FriendActivity(),
         player: new PlayerComponent(),
@@ -74,7 +73,7 @@ export class AppComponent extends Component {
       if (this.authenticated) {
         Request.get('/user/settings')
           .then((settingsResponse) => {
-            this.data.topbar.data.avatar = settingsResponse.body.avatar;
+            this.data.topbar.data.avatar = settingsResponse.body.small_avatar;
             this.data.topbar.update();
           });
       }
