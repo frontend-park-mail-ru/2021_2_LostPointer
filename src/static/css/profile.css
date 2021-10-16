@@ -66,7 +66,7 @@
     border-color: #CD0138;
 }
 
-profile-form__fail_msg {
+.profile-form__msg {
     visibility: hidden;
     font-family: Montserrat;
     font-size: 16px;
@@ -74,11 +74,18 @@ profile-form__fail_msg {
     list-style: disc inside;
     max-width: 350px;
     margin: 10px 10px;
-    color: #ff4d5b;
     display: block;
 }
 
-.profile-form__fail_msg.visible {
+.success {
+    color: #2ecc71;
+}
+
+.fail {
+    color: #ff4d5b;
+}
+
+.visible {
     visibility: visible;
 }
 

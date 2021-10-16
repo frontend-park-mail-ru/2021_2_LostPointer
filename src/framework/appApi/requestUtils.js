@@ -11,6 +11,7 @@ export const ContentType = {
 export const RequestMethods = {
   POST: 'POST',
   PUT: 'PUT',
+  PATCH: 'PATCH',
   GET: 'GET',
   DELETE: 'DELETE',
 };

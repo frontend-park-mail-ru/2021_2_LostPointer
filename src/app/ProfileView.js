@@ -51,8 +51,51 @@ export class ProfileView extends Component {
               this.template = Handlebars.templates['profileview.hbs'](this.data);
               this.render();
               document.addEventListener('click', this._logout.bind(this));
+              const form = document.querySelector('.profile-form');
+              form.addEventListener('submit', this.submitChangeProfileForm);
             });
         }
+      });
+  }
+
+  submitChangeProfileForm(event) {
+    event.preventDefault();
+
+    const nameInput = event.target.querySelector('input[name="name"]');
+    const emailInput = event.target.querySelector('input[name="email"]');
+    const oldPasswordInput = event.target.querySelector('input[name="old_password"]');
+    const passwordInput = event.target.querySelector('input[name="password"]');
+
+    const msg = event.target.querySelector('.profile-form__msg');
+
+    const formdata = new FormData();
+    formdata.append('nickname', nameInput.value);
+    formdata.append('email', emailInput.value);
+
+    if (oldPasswordInput.value && passwordInput.value) {
+      formdata.append('old_password', oldPasswordInput.value);
+      formdata.append('new_password', passwordInput.value);
+    }
+
+    Request.patch(
+      '/user/settings',
+      formdata,
+    )
+      .then(({ status, body }) => {
+        if (status === 200) {
+          msg.classList.remove('fail');
+          msg.innerText = 'Changed successfully';
+          msg.classList.add('success', 'visible');
+        } else {
+          msg.classList.remove('success');
+          msg.innerText = body.message;
+          msg.classList.add('fail', 'visible');
+        }
+      })
+      .catch(() => {
+        msg.classList.remove('success');
+        msg.innerText = 'Profile changing failed';
+        msg.classList.add('fail', 'visible');
       });
   }
 
