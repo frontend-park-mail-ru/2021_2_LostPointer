@@ -11,7 +11,7 @@ export class SigninComponent extends Component {
     super(config);
     // TODO рендерить signin_form
     this.data = {
-      placeholder_img: 'woman_headphones_2.png',
+      placeholder_img: 'woman_headphones_2.webp',
       title: 'Sign in',
       description: 'Let’s get all required data and sign in',
       form: new SigninAuthForm(),

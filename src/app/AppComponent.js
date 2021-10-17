@@ -16,21 +16,7 @@ export class AppComponent extends Component {
   constructor(props) {
     super(props);
     this.isLoaded = false;
-    this.authHandler = (e) => {
-      if (e.target.className === 'topbar-auth' && e.target.dataset.action === 'logout') {
-        logout().then(() => {
-          this.data.player.player.pause();
-          this.data.player.player.src = null;
-
-          this.authenticated = false;
-          this.data.topbar.data.authenticated = false;
-          this.data.topbar.update();
-          this.data.player.data = {};
-          this.data.player.update();
-          window.localStorage.removeItem('lastPlayedData');
-        });
-      }
-    };
+    this.addHandlers();
   }
 
   didMount() {
@@ -78,9 +64,8 @@ export class AppComponent extends Component {
       document.addEventListener('click', this.authHandler);
 
       this.syncPlayButtonsHandler = (target, event) => {
-        const play = event.type === 'play';
         // eslint-disable-next-line no-param-reassign
-        target.src = `/src/static/img/${play ? 'pause' : 'play'}-outline.svg`;
+        target.src = `/src/static/img/${event.type === 'play' ? 'pause' : 'play'}-outline.svg`;
       };
       this.playButtonHandler = (e) => {
         if (e.target.className === 'track-list-item-play') {
@@ -105,7 +90,6 @@ export class AppComponent extends Component {
           this.data.player.player.addEventListener('play', this.currentHandler);
           this.data.player.player.addEventListener('pause', this.currentHandler);
 
-          e.target.src = '/src/static/img/pause-outline.svg';
           if (e.target.dataset.playing === 'true') {
             e.target.dataset.playing = 'false';
             this.data.player.toggle();
@@ -130,6 +114,23 @@ export class AppComponent extends Component {
     document.removeEventListener('click', this.authHandler);
     document.querySelector('.suggested-tracks-container').removeEventListener('click', this.playButtonHandler);
     this.data.player.unmount();
+  }
+
+  addHandlers() {
+    this.authHandler = (e) => {
+      if (e.target.className === 'topbar-auth' && e.target.dataset.action === 'logout') {
+        logout().then(() => {
+          this.data.player.player.pause();
+          this.data.player.player.src = null;
+          this.authenticated = false;
+          this.data.topbar.data.authenticated = false;
+          this.data.topbar.update();
+          this.data.player.data = {};
+          this.data.player.update();
+          window.localStorage.removeItem('lastPlayedData');
+        });
+      }
+    };
   }
 
   render() {

@@ -15,7 +15,7 @@ export class SignupComponent extends Component {
   constructor(config) {
     super(config);
     this.data = {
-      placeholder_img: 'woman_headphones_1.jpeg',
+      placeholder_img: 'woman_headphones_1.webp',
       title: 'Sign up',
       description: 'Let’s get all your required setup information and get started',
       form: new SignupAuthForm(),
