@@ -53,8 +53,50 @@ export class ProfileView extends Component {
               document.addEventListener('click', this._logout.bind(this));
               const form = document.querySelector('.profile-form');
               form.addEventListener('submit', this.submitChangeProfileForm);
+              const fileInput = document.querySelector('input[name="file"]');
+              fileInput.addEventListener('change', this.uploadAvatarFile.bind(this));
             });
         }
+      });
+  }
+
+  uploadAvatarFile(event) {
+    const file = event.target.files[0];
+
+    const formdata = new FormData();
+    formdata.append('avatar', file, file.name);
+
+    const ext = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase();
+    if (ext === 'gif' || ext === 'png' || ext === 'jpeg' || ext === 'jpg' || ext === 'webp') {
+      const reader = new FileReader();
+      reader.addEventListener('load', (e) => {
+        const avatar = document.querySelector('.profile-avatar__img');
+        avatar.setAttribute('src', e.target.result);
+      });
+      reader.readAsDataURL(file);
+    } else {
+      // TODO set fail msg
+      return;
+    }
+
+    Request.patch(
+      '/user/settings',
+      formdata,
+    )
+      .then(({ status }) => {
+        if (status === 200) {
+          // говённо, это надо будет делать через медиатор событий, когда сделаем архитектуру
+          Request.get('/user/settings')
+            .then((response) => {
+              this.data.topbar.data.avatar = response.body.avatar_small;
+              this.data.topbar.update();
+            });
+        } else {
+          // TODO set fail msg
+        }
+      })
+      .catch(() => {
+        // TODO set fail msg
       });
   }
 
