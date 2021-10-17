@@ -7,6 +7,11 @@ class Request {
     this.backendDomain = domain;
   }
 
+  patch(path, requestBody, contentType) {
+    return this._fetchRequest(this._createURL(this.backendDomain, path),
+      RequestMethods.PATCH, requestBody, contentType);
+  }
+
   post(path, requestBody, contentType) {
     return this._fetchRequest(this._createURL(this.backendDomain, path),
       RequestMethods.POST, requestBody, contentType);

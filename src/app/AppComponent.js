@@ -73,7 +73,7 @@ export class AppComponent extends Component {
       if (this.authenticated) {
         Request.get('/user/settings')
           .then((settingsResponse) => {
-            this.data.topbar.data.avatar = settingsResponse.body.small_avatar;
+            this.data.topbar.data.avatar = settingsResponse.body.avatar_small;
             this.data.topbar.update();
           });
       }
