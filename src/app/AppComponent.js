@@ -78,17 +78,17 @@ export class AppComponent extends Component {
             return;
           }
           if (this.nowPlaying) { // Переключили на другой трек
-            this.data.player.player.removeEventListener('play', this.currentHandler);
-            this.data.player.player.removeEventListener('pause', this.currentHandler);
+            this.data.player.player.removeEventListener('play', this.data.player.currentHandler);
+            this.data.player.player.removeEventListener('pause', this.data.player.currentHandler);
             this.nowPlaying.dataset.playing = 'false';
             this.nowPlaying.src = '/src/static/img/play-outline.svg';
           }
 
           this.data.player.pos = parseInt(e.target.dataset.pos, 10);
           this.nowPlaying = e.target; // Включили трек из списка
-          this.currentHandler = this.syncPlayButtonsHandler.bind(null, this.nowPlaying);
-          this.data.player.player.addEventListener('play', this.currentHandler);
-          this.data.player.player.addEventListener('pause', this.currentHandler);
+          this.data.player.currentHandler = this.syncPlayButtonsHandler.bind(null, this.nowPlaying);
+          this.data.player.player.addEventListener('play', this.data.player.currentHandler);
+          this.data.player.player.addEventListener('pause', this.data.player.currentHandler);
 
           if (e.target.dataset.playing === 'true') {
             e.target.dataset.playing = 'false';

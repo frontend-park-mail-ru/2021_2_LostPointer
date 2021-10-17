@@ -235,20 +235,24 @@ class PlayerComponent extends Component {
   }
 
   switchTrack(next) {
+    if (this.currentHandler) {
+      this.player.removeEventListener('play', this.currentHandler);
+      this.player.removeEventListener('pause', this.currentHandler);
+    }
+    const prev = this.playlist[this.pos].querySelector('.track-list-item-play');
     let current;
     let allowed = false;
     if (next) {
       if (this.pos < this.playlist.length - 1) {
-        this.playlist[this.pos].querySelector('.track-list-item-play').src = '/src/static/img/play-outline.svg';
         current = this.playlist[++this.pos].querySelector('.track-list-item-play');
         allowed = true;
       }
     } else if (this.pos >= 1) {
-      this.playlist[this.pos].querySelector('.track-list-item-play').src = '/src/static/img/play-outline.svg';
       current = this.playlist[--this.pos].querySelector('.track-list-item-play');
       allowed = true;
     }
     if (allowed) {
+      prev.src = '/src/static/img/play-outline.svg';
       current.src = '/src/static/img/pause-outline.svg';
       this.setTrack({
         url: `/src/static/tracks/${current.dataset.url}`,
