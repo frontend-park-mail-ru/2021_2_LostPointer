@@ -6,7 +6,7 @@ class PlayerComponent extends Component {
     this.player = new Audio();
     if (!this.getLastPlayed()) {
       this.data = {
-        cover: '/src/static/img/artworks/no_artwork_150px.webp',
+        cover: '/src/static/img/no_artwork_128px.webp',
         playButton: document.querySelector('.player-play'),
       };
     }
