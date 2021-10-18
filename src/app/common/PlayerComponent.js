@@ -208,7 +208,8 @@ class PlayerComponent extends Component {
         window.localStorage.setItem('playerLooped', `${this.player.loop}`);
       } else if (e.target.classList.contains('shuffle')) {
         this.player.shuffle = !e.target.classList.contains('enabled'); // TODO
-        this.trackToStop = this.playlist[this.playlistIndices[this.pos]].querySelector('.track-list-item-play');
+        this.trackToStop = this.trackToStop ?? this.playlist[this.playlistIndices[this.pos]].querySelector('.track-list-item-play');
+        this.pos = -1;
         if (this.player.shuffle) {
           e.target.classList.add('enabled');
           shuffle(this.playlistIndices);
