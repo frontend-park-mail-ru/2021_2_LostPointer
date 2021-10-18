@@ -91,11 +91,6 @@ export class AppComponent extends Component {
           this.data.player.player.addEventListener('play', this.data.player.currentHandler);
           this.data.player.player.addEventListener('pause', this.data.player.currentHandler);
 
-          if (e.target.dataset.playing === 'true') {
-            e.target.dataset.playing = 'false';
-            this.data.player.toggle();
-            return;
-          }
           e.target.dataset.playing = 'true';
           this.data.player.setTrack({
             url: `/src/static/tracks/${e.target.dataset.url}`,
