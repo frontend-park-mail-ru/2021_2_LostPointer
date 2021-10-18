@@ -201,8 +201,14 @@ class PlayerComponent extends Component {
         e.target.src = `/src/static/img/${this.player.muted ? 'muted.svg' : 'volume.svg'}`;
       }
     };
-    this.playHandler = () => { document.querySelector('.player-play').src = '/src/static/img/pause.svg'; };
-    this.pauseHandler = () => { document.querySelector('.player-play').src = '/src/static/img/play.svg'; };
+    this.playHandler = () => {
+      document.querySelector('.player-play').src = '/src/static/img/pause.svg';
+      this.nowPlaying.src = '/src/static/img/pause-outline.svg';
+    };
+    this.pauseHandler = () => {
+      document.querySelector('.player-play').src = '/src/static/img/play.svg';
+      this.nowPlaying.src = '/src/static/img/play-outline.svg';
+    };
     this.seekbarHandler = (e) => this.seek(e.x);
     this.volumeHandler = (e) => this.volume(e.x);
     this.playButtonHandler = () => {
