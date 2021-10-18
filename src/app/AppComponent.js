@@ -73,20 +73,21 @@ export class AppComponent extends Component {
             navigateTo('/signin');
             return;
           }
-          if (e.target === this.nowPlaying) { // Ставим на паузу/продолжаем воспр.
+          if (e.target === this.data.player.nowPlaying) { // Ставим на паузу/продолжаем воспр.
             this.data.player.toggle();
             return;
           }
-          if (this.nowPlaying) { // Переключили на другой трек
+          if (this.data.player.nowPlaying) { // Переключили на другой трек
             this.data.player.player.removeEventListener('play', this.data.player.currentHandler);
             this.data.player.player.removeEventListener('pause', this.data.player.currentHandler);
-            this.nowPlaying.dataset.playing = 'false';
-            this.nowPlaying.src = '/src/static/img/play-outline.svg';
+            this.data.player.nowPlaying.dataset.playing = 'false';
+            this.data.player.nowPlaying.src = '/src/static/img/play-outline.svg';
           }
 
           this.data.player.pos = parseInt(e.target.dataset.pos, 10);
-          this.nowPlaying = e.target; // Включили трек из списка
-          this.data.player.currentHandler = this.syncPlayButtonsHandler.bind(null, this.nowPlaying);
+          this.data.player.nowPlaying = e.target; // Включили трек из списка
+          // eslint-disable-next-line max-len
+          this.data.player.currentHandler = this.syncPlayButtonsHandler.bind(null, this.data.player.nowPlaying);
           this.data.player.player.addEventListener('play', this.data.player.currentHandler);
           this.data.player.player.addEventListener('pause', this.data.player.currentHandler);
 

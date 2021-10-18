@@ -208,6 +208,7 @@ class PlayerComponent extends Component {
     this.playButtonHandler = () => {
       this.data.playing ? this.player.pause() : this.player.play();
       this.data.playing = !this.data.playing;
+      this.nowPlaying.src = `/src/static/img/${this.data.playing ? 'pause' : 'play'}-outline.svg`;
     };
     this.timeUpdateHandler = () => {
       const seconds = (this.player.currentTime % 60) | 0;
@@ -240,26 +241,25 @@ class PlayerComponent extends Component {
       this.player.removeEventListener('pause', this.currentHandler);
     }
     const prev = this.playlist[this.pos].querySelector('.track-list-item-play');
-    let current;
     let allowed = false;
     if (next) {
       if (this.pos < this.playlist.length - 1) {
-        current = this.playlist[++this.pos].querySelector('.track-list-item-play');
+        this.nowPlaying = this.playlist[++this.pos].querySelector('.track-list-item-play');
         allowed = true;
       }
     } else if (this.pos >= 1) {
-      current = this.playlist[--this.pos].querySelector('.track-list-item-play');
+      this.nowPlaying = this.playlist[--this.pos].querySelector('.track-list-item-play');
       allowed = true;
     }
     if (allowed) {
       prev.src = '/src/static/img/play-outline.svg';
-      current.src = '/src/static/img/pause-outline.svg';
+      this.nowPlaying.src = '/src/static/img/pause-outline.svg';
       this.setTrack({
-        url: `/src/static/tracks/${current.dataset.url}`,
-        cover: `/src/static/img/artworks/${current.dataset.cover}`,
-        title: current.dataset.title,
-        artist: current.dataset.artist,
-        album: current.dataset.album,
+        url: `/src/static/tracks/${this.nowPlaying.dataset.url}`,
+        cover: `/src/static/img/artworks/${this.nowPlaying.dataset.cover}`,
+        title: this.nowPlaying.dataset.title,
+        artist: this.nowPlaying.dataset.artist,
+        album: this.nowPlaying.dataset.album,
       });
     }
   }
