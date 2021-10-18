@@ -190,13 +190,32 @@ class PlayerComponent extends Component {
   }
 
   addHandlers() {
+    const shuffle = (array) => {
+      let i = array.length;
+      let temporaryValue;
+      let randomIndex;
+      while (i !== 0) {
+        randomIndex = Math.floor(Math.random() * i);
+        temporaryValue = array[--i];
+        array[i] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+    };
     this.buttonsHandler = (e) => {
       if (e.target.classList.contains('repeat')) {
         this.player.loop = !e.target.classList.contains('enabled');
         this.player.loop ? e.target.classList.add('enabled') : e.target.classList.remove('enabled');
         window.localStorage.setItem('playerLooped', `${this.player.loop}`);
       } else if (e.target.classList.contains('shuffle')) {
-        this.player.shuffle = e.target.classList.contains('enabled'); // TODO
+        this.player.shuffle = !e.target.classList.contains('enabled'); // TODO
+        this.trackToStop = this.playlist[this.playlistIndices[this.pos]].querySelector('.track-list-item-play');
+        if (this.player.shuffle) {
+          e.target.classList.add('enabled');
+          shuffle(this.playlistIndices);
+        } else {
+          e.target.classList.remove('enabled');
+          this.playlistIndices = [...Array(this.playlist.length).keys()];
+        }
       } else if (e.target.classList.contains('mute')) {
         this.player.muted = !this.player.muted;
         this.player.muted ? e.target.classList.add('enabled') : e.target.classList.remove('enabled');
@@ -249,15 +268,16 @@ class PlayerComponent extends Component {
       this.player.removeEventListener('play', this.currentHandler);
       this.player.removeEventListener('pause', this.currentHandler);
     }
-    const prev = this.playlist[this.pos].querySelector('.track-list-item-play');
+    const prev = this.trackToStop ?? this.playlist[this.playlistIndices[this.pos]].querySelector('.track-list-item-play');
+    this.trackToStop = null;
     let allowed = false;
     if (next) {
       if (this.pos < this.playlist.length - 1) {
-        this.nowPlaying = this.playlist[++this.pos].querySelector('.track-list-item-play');
+        this.nowPlaying = this.playlist[this.playlistIndices[++this.pos]].querySelector('.track-list-item-play');
         allowed = true;
       }
     } else if (this.pos >= 1) {
-      this.nowPlaying = this.playlist[--this.pos].querySelector('.track-list-item-play');
+      this.nowPlaying = this.playlist[this.playlistIndices[--this.pos]].querySelector('.track-list-item-play');
       allowed = true;
     }
     if (allowed) {

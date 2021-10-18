@@ -19,6 +19,7 @@ module.exports = {
     'no-bitwise': 'off',
     'no-unused-expressions': 'off',
     'no-plusplus': 'off',
+    'no-param-reassign': 'off',
     'import/extensions': [
       'warn',
       'ignorePackages',

@@ -140,6 +140,7 @@ export class AppComponent extends Component {
       this.data.player.unmount();
       this.data.player.setup();
       this.data.player.playlist = document.querySelectorAll('.track-list-item');
+      this.data.player.playlistIndices = [...Array(this.data.player.playlist.length).keys()];
     }
     document.querySelectorAll('.track-list-item-play').forEach((e) => e.addEventListener('click', this.playButtonHandler));
   }
