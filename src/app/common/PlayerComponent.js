@@ -53,6 +53,7 @@ class PlayerComponent extends Component {
       this.player.src = this.data.url;
       this.data.right_disabled = true;
       this.data.left_disabled = true;
+      document.title = `${this.data.track} · ${this.data.artist}`;
     }
     return typeof data === 'string';
   }
@@ -67,6 +68,8 @@ class PlayerComponent extends Component {
       url: track.url,
       playing: true,
     };
+
+    document.title = `${track.title} · ${track.artist}`;
 
     navigator.mediaSession.metadata = new MediaMetadata({
       title: track.title,
