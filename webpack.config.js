@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const isProduction = process.env.webpack_type === 'development';
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 10000;
 const src = path.join(__dirname, 'src');
 
 module.exports = {
@@ -61,11 +61,13 @@ module.exports = {
     }),
   ],
   devServer: {
-    publicPath: '/',
-    contentBase: '/',
     hot: true,
     port,
     historyApiFallback: true,
+    static: {
+      directory: path.resolve(__dirname, './src/'),
+      publicPath: '/src',
+    },
   },
   optimization: {
     minimize: true,
