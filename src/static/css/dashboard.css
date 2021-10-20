@@ -9,11 +9,9 @@ body,
 html {
     height: 100%;
     overflow: hidden;
-    background-color: #CD0138;
 }
 
 body {
-    background-image: linear-gradient(to bottom, rgb(255 255 255 / 0), rgb(0 0 0)), url(/bidlo.jpeg);
     background-size: cover;
 }
 
@@ -96,7 +94,7 @@ body {
 
 .topbar-icon {
     cursor: pointer;
-    height: 30px;
+    height: 25px;
     padding-left: 10px;
     padding-top: 5px;
 }
@@ -252,10 +250,6 @@ body {
 }
 
 .artist-albums__container {
-    border: 1px rgb(44, 44, 44) solid;
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(20px);
-    border-radius: 20px;
 }
 
 .suggested-artists {
@@ -542,6 +536,7 @@ body {
     display: flex;
     flex-direction: column;
     color: white;
+    margin-left: 25px;
 }
 
 .artist__content {
@@ -569,9 +564,8 @@ body {
 }
 
 .artist__description {
-    margin-left: 50px;
-    font-size: 100px;
+    font-size: 80px;
     font-family: 'Montserrat';
     font-weight: 700;
-    margin-bottom: 80px;
+    margin: 100px 0 80px 0;
 }
