@@ -7,6 +7,8 @@ class SuggestedArtists extends Component {
         super(props);
         this.template = SuggestedArtistsTemplate;
     }
+
+    render() {}
 }
 
 export { SuggestedArtists };

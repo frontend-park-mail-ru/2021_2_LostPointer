@@ -7,6 +7,7 @@ class TopAlbums extends Component {
         super(props);
         this.template = TopAlbumsTemplate;
     }
+    render() {}
 }
 
 export { TopAlbums };

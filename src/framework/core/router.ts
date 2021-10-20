@@ -1,10 +1,10 @@
 import { PATH_ARG, PATH_SLASH } from './regex';
 // eslint-disable-next-line import/no-cycle
-import { AppComponent } from '../../components/app/app';
+import { IndexView } from '../../views/index-view/index';
 // eslint-disable-next-line import/no-cycle
-import { SignupComponent } from '../../components/signupcomponent/signupcomponent';
+// import { SignupComponent } from 'components/signupcomponent/signupcomponent';
 // eslint-disable-next-line import/no-cycle
-import { SigninComponent } from '../../components/signincomponent/signincomponent';
+// import { SigninComponent } from 'components/signincomponent/signincomponent';
 
 const pathToRegex = (path) => new RegExp(`^${path.replace(PATH_SLASH, '\\/').replace(PATH_ARG, '(.+)')}$`);
 
@@ -12,9 +12,9 @@ let currentView = null;
 
 export const router = () => {
   const routes = [
-    { path: '/', view: new AppComponent(null) },
-    { path: '/signin', view: new SigninComponent(null) },
-    { path: '/signup', view: new SignupComponent(null) },
+    { path: '/', view: new IndexView(null) },
+    // { path: '/signin', view: new SigninComponent(null) },
+    // { path: '/signup', view: new SignupComponent(null) },
   ];
 
   const potentialMatches = routes.map((route) => ({

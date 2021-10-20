@@ -7,4 +7,6 @@ export class InputFormComponent extends Component {
         super(props);
         this.template = InputFormTemplate;
     }
+
+    render() {}
 }

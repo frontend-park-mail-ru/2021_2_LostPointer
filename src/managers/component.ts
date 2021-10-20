@@ -1,29 +1,16 @@
-import Handlebars = require("handlebars");
+import {IProps} from "src/interfaces";
 
-export class Component {
+export abstract class  Component<TProps = IProps> {
 
     protected isLoaded: boolean;
     protected template: any;
-    protected data: any;
+    protected props: TProps;
 
-    constructor(props) {
-        this.isLoaded = false;
-        if (props) {
-            this.data = { ...props };
-        }
+    constructor(props?: TProps) {
+        this.props = {...props};
     }
 
-    getHtml() : string {
-        if (this.data === undefined) {
-            return this.template;
-        }
-        const template = Handlebars.compile(this.template);
-        return template(this.data);
-    }
-
-    render() : void {
-        document.querySelector('.app').innerHTML = this.getHtml();
-    }
-
-    unmount() {}
+    abstract render(): void;
 }
+
+
