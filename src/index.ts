@@ -28,9 +28,7 @@ class App {
   }
 }
 
-const app = new App();
+export const app = new App();
 
-function startApp() {
-  app.start();
-}
-export default startApp;
+app.start();
+

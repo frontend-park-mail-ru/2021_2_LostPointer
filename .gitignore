@@ -5,3 +5,4 @@ node_modules/
 src/static/img/artworks
 src/static/js/templates.precompiled.js
 /src/static/img/artists/*
+/dist/

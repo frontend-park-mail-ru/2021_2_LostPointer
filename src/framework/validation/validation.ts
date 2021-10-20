@@ -1,4 +1,8 @@
 export class CustomValidation {
+  private invalidities: any[];
+  private invalidityDiv: any;
+  private validityChecks: any;
+
   constructor(validityChecks, invaliditiesDiv = null) {
     this.invalidities = [];
     this.invalidityDiv = invaliditiesDiv;
@@ -53,7 +57,7 @@ export function checkInput(input) {
     });
   }
   let amountOfDeletedDivs = 0;
-  const invaliditiesListNew = document.querySelector('.auth-form__invalidities');
+  const invaliditiesListNew = document.querySelector('.auth-form__invalidities') as any; // TODO=Поменять
   const invalidsArray = invaliditiesListNew.innerText.split('\n');
   const innerElements = invaliditiesListNew.getElementsByTagName('div');
   for (let i = 0; i < invalidsArray.length; i += 1) {

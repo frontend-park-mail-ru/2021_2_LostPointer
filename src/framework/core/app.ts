@@ -1,7 +1,7 @@
 import {
   router,
   navigateTo,
-} from './router.js';
+} from './router';
 
 class App {
   start() {
@@ -12,9 +12,10 @@ class App {
     window.addEventListener('popstate', router);
     document.addEventListener('DOMContentLoaded', () => {
       document.body.addEventListener('click', (e) => {
-        if (e.target.matches('[data-link]')) {
+        const target = e.target as HTMLElement;
+        if (target.matches('[data-link]')) {
           e.preventDefault();
-          navigateTo(e.target.getAttribute('href'));
+          navigateTo(target.getAttribute('href'));
         }
       });
       router();

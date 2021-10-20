@@ -1,4 +1,8 @@
 class ValidityCheck {
+    private invalidityMessage: any;
+    private isInvalid: boolean;
+    private element: null;
+
   constructor(invalidityMessage, isInvalid) {
     this.invalidityMessage = invalidityMessage;
     this.isInvalid = isInvalid;
@@ -61,7 +65,7 @@ export const passwordValidityChecks = [
   new ValidityCheck(
     'Password must contain one of the required special characters',
     // eslint-disable-next-line no-useless-escape
-    (input) => !input.value.match(/[\@\ \!\"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\?\[\\\]\^\_]/g),
+    (input) => !input.value.match(/[@ !"#$%&'()*+,\-.\/:;<=>?\[\\\]^_]/g),
   ),
 ];
 
@@ -69,8 +73,8 @@ export const confirmPasswordValidityChecks = [
   new ValidityCheck(
     'Password confirmation needs to match the password',
     () => {
-      const passwordInput = document.querySelector('input[name="password"]');
-      const confirmPasswordInput = document.querySelector('input[name="confirm_password"]');
+      const passwordInput = document.querySelector('input[name="password"]') as HTMLTextAreaElement;
+      const confirmPasswordInput = document.querySelector('input[name="confirm_password"]') as HTMLTextAreaElement;
       const isEmpty = confirmPasswordInput.value === '';
       if (isEmpty) {
         return false;
