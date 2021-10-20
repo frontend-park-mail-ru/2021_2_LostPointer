@@ -3,5 +3,9 @@ export interface  IProps {
     arg?: String;
 }
 
+export interface IModel {
+    [key: string]: any
+}
+
 export class TProps {
 }

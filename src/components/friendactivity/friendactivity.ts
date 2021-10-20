@@ -9,11 +9,9 @@ interface IFriendActivityProps{
 class FriendActivity extends Component<IFriendActivityProps> {
     constructor(config) {
         super(config);
-        console.log(this.props);
     }
 
-    render(): HTMLCollection {
-        console.log(FriendActivityTemplate({ friends: this.props.friends }));
+    render() {
         return FriendActivityTemplate({ friends: this.props.friends });
     }
 }

@@ -2,13 +2,18 @@ import { Component } from '../../managers/component';
 
 const SuggestedArtistsTemplate = require('./suggestedartists.hbs');
 
-class SuggestedArtists extends Component {
+interface ISuggestedArtistsProps {
+    artists: Array<any>;
+}
+
+class SuggestedArtists extends Component<ISuggestedArtistsProps> {
     constructor(props) {
         super(props);
-        this.template = SuggestedArtistsTemplate;
     }
 
-    render() {}
+    render() {
+        return SuggestedArtistsTemplate({ artists: this.props.artists });
+    }
 }
 
 export { SuggestedArtists };

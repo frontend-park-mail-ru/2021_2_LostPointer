@@ -2,12 +2,17 @@ import { Component } from 'managers/component';
 
 const TopAlbumsTemplate = require('./topalbums.hbs');
 
-class TopAlbums extends Component {
+interface ITopAlbumsProps {
+    albums: Array<any>
+}
+
+class TopAlbums extends Component<ITopAlbumsProps> {
     constructor(props) {
         super(props);
-        this.template = TopAlbumsTemplate;
     }
-    render() {}
+    render() {
+        return TopAlbumsTemplate({albums: this.props.albums});
+    }
 }
 
 export { TopAlbums };
