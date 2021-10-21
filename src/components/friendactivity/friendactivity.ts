@@ -1,4 +1,4 @@
-import { Component } from 'managers/component';
+import { Component } from 'components/component/component';
 
 const FriendActivityTemplate = require('./friendactivity.hbs');
 

@@ -1,4 +1,4 @@
-import { Component } from 'managers/component';
+import { Component } from 'components/component/component';
 import { Track } from '../track/track';
 
 const TracklistTemplate = require('./tracklist.hbs');

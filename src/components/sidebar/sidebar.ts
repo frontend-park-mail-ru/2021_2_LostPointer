@@ -1,5 +1,4 @@
-import { Component } from '../../managers/component';
-import { TProps } from '../../interfaces'
+import { Component } from '../component/component';
 
 const SidebarTemplate = require('./sidebar.hbs');
 

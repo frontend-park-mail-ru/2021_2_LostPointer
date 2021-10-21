@@ -1,14 +1,12 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const isProduction = process.env.webpack_type === 'development';
 const port = process.env.PORT || 10000;
 const src = path.join(__dirname, 'src');
 
 module.exports = {
-  mode: isProduction ? 'production' : 'development',
+  mode: 'development',
   entry: './src/index.ts',
   output: {
     path: path.join(__dirname, 'dist'),
@@ -29,8 +27,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.hbs$/,
@@ -39,26 +37,22 @@ module.exports = {
       {
         test: /\.ts$/,
         exclude: path.resolve(__dirname, './node_modules'),
-        use: ['babel-loader', 'ts-loader'],
+        use: 'ts-loader',
       },
       {
-        test: /\.(jpg|jpeg|png|gif|svg|pdf|ico)$/,
+        test: /\.(jpg|jpeg|png|svg|ico)$/,
         loader: 'file-loader',
       },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Webpack',
+      title: 'LostPointer',
       template: './src/index.html',
       filename: path.join(__dirname, '/dist/index.html'),
       favicon: path.join(__dirname, '/src/static/img/favicon.ico'),
     }),
     new CleanWebpackPlugin(),
-    new webpack.EnvironmentPlugin({
-      PORT: port,
-      DEBUG: !isProduction,
-    }),
   ],
   devServer: {
     hot: true,

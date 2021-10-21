@@ -301,7 +301,7 @@ body {
 
 .seekbar-current,
 .volume-current {
-    width: 0%;
+    width: 0;
     display: block;
     background-color: white;
 }
@@ -343,7 +343,7 @@ body {
     cursor: pointer;
 }
 
-.now-playing {
+.player-track {
     font-family: 'Montserrat', sans-serif;
     color: white;
     width: 200px;

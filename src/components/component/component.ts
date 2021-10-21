@@ -1,4 +1,12 @@
-import {IProps} from "src/interfaces";
+export interface  IProps {
+    parent?: HTMLElement;
+    arg?: String;
+}
+
+export interface IModel {
+    [key: string]: any
+}
+
 
 export abstract class  Component<TProps = IProps> {
 

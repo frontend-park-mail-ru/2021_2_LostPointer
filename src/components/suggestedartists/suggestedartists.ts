@@ -1,4 +1,4 @@
-import { Component } from '../../managers/component';
+import { Component } from '../component/component';
 
 const SuggestedArtistsTemplate = require('./suggestedartists.hbs');
 

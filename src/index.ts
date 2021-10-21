@@ -1,8 +1,7 @@
 import {
   router,
   navigateTo,
-// eslint-disable-next-line import/extensions
-} from './framework/core/router';
+} from './services/router/router';
 
 const Handlebars = require('handlebars');
 

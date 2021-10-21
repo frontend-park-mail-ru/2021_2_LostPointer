@@ -1,6 +1,6 @@
-import { PATH_ARG, PATH_SLASH } from './regex';
+import { PATH_ARG, PATH_SLASH } from 'store/regex';
 // eslint-disable-next-line import/no-cycle
-import { IndexView } from '../../views/index-view/index';
+import { IndexView } from 'components/indexView';
 // eslint-disable-next-line import/no-cycle
 // import { SignupComponent } from 'components/signupcomponent/signupcomponent';
 // eslint-disable-next-line import/no-cycle

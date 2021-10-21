@@ -1,4 +1,4 @@
-import { IModel } from '../interfaces';
+import { IModel } from 'components/component/component';
 
 export abstract class Model<TModel = IModel> {
     public attrs: TModel;

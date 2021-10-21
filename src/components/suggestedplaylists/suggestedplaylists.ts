@@ -1,4 +1,4 @@
-import { Component } from '../../managers/component';
+import { Component } from '../component/component';
 import { SuggestedPlaylist } from '../suggestedplaylist/suggestedplaylist';
 
 const SuggestedPlaylistsTemplate = require('./suggestedplaylists.hbs');

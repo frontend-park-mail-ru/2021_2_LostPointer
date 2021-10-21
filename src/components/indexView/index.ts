@@ -1,29 +1,24 @@
-import { Component } from 'managers/component';
+import { Component } from 'components/component/component';
 import { Sidebar } from 'components/sidebar/sidebar';
-// import { PlayerComponent } from 'components/player/player';
-// import { TopBar } from 'components/topbar/topbar';
 import { TopAlbums } from 'components/topalbums/topalbums';
-// import { SuggestedPlaylists } from 'components/suggestedplaylists/suggestedplaylists';
-// import { TrackList } from 'components/tracklist/tracklist';
-// import { SuggestedArtists } from 'components/suggestedartists/suggestedartists';
-// import { FriendActivity } from 'components/friendactivity/friendactivity';
-import Request from '../../../src/framework/appApi/request';
-// eslint-disable-next-line import/no-cycle
-// import { navigateTo } from '../../framework/core/router';
-import { View } from "managers/base-view";
+import Request from '../../services/request/request';
 import {TopBar} from "components/topbar/topbar";
 import {FriendActivity} from "components/friendactivity/friendactivity";
 import {SuggestedArtists} from "components/suggestedartists/suggestedartists";
 import {TrackList} from "components/tracklist/tracklist";
 import {SuggestedPlaylists} from "components/suggestedplaylists/suggestedplaylists";
-import {PlayerComponent} from "components/player/player";
-import {navigateTo} from '../../../src/framework/core/router';
+import Player, {PlayerComponent} from "components/player/player";
+// import {navigateTo} from 'src/services/router/router';
 
-const Handlebars = require('handlebars');
+import '../../static/css/dashboard.css';
 
 const IndexTemplate = require('./index.hbs');
 
-export class IndexView extends View {
+interface IIndexViewProps {
+    authenticated: boolean;
+}
+
+export class IndexView extends Component<IIndexViewProps> {
     private authenticated: boolean;
     private authHandler: (e) => void;
     private syncPlayButtonsHandler: (target, event) => void;
@@ -37,6 +32,7 @@ export class IndexView extends View {
     private sidebar: Sidebar;
     private topbar: TopBar;
     private friend_activity: FriendActivity;
+    private currentSyncHandler: EventHandlerNonNull;
 
     constructor(props) {
         super(props);
@@ -70,7 +66,7 @@ export class IndexView extends View {
             this.suggested_artists = new SuggestedArtists({ artists: response.body.artists }).render();
             this.track_list = new TrackList({ tracks: response.body.tracks }).render();
             this.suggested_playlists = new SuggestedPlaylists({ playlists: predefinedPlaylists }).render();
-            this.player = new PlayerComponent().render();
+            this.player = Player;
 
             this.sidebar = new Sidebar().render();
             this.topbar = new TopBar().render();
@@ -86,14 +82,14 @@ export class IndexView extends View {
                         nickname: 'Земфира',
                         listening_to: 'Трафик',
                     },
-                ]}).render(),
+                ]}).render();
 
             this.isLoaded = true;
             this.render();
         });
     }
 
-    afterRender() {
+    addListeners() {
 
         document.addEventListener('click', this.authHandler);
 
@@ -104,7 +100,7 @@ export class IndexView extends View {
         this.playButtonHandler = (e) => {
             if (e.target.className === 'track-list-item-play') {
                 if (!this.authenticated) {
-                    navigateTo('/signin');
+                    // navigateTo('/signin');
                     return;
                 }
                 if (e.target === this.player.nowPlaying) { // Ставим на паузу/продолжаем воспр.
@@ -112,18 +108,17 @@ export class IndexView extends View {
                     return;
                 }
                 if (this.player.nowPlaying) { // Переключили на другой трек
-                    this.player.player.removeEventListener('play', this.player.currentHandler);
-                    this.player.player.removeEventListener('pause', this.player.currentHandler);
+                    this.player.desyncPlayButtons(this.currentSyncHandler);
                     this.player.nowPlaying.dataset.playing = 'false';
                     this.player.nowPlaying.src = '/src/static/img/play-outline.svg';
                 }
 
                 this.player.pos = parseInt(e.target.dataset.pos, 10);
+
                 this.player.nowPlaying = e.target; // Включили трек из списка
                 // eslint-disable-next-line max-len
-                this.player.currentHandler = this.syncPlayButtonsHandler.bind(null, this.player.nowPlaying);
-                this.player.player.addEventListener('play', this.player.currentHandler);
-                this.player.player.addEventListener('pause', this.player.currentHandler);
+                this.currentSyncHandler = this.syncPlayButtonsHandler.bind(null, this.player.nowPlaying);
+                this.player.syncPlayButtons(this.currentSyncHandler);
 
                 e.target.dataset.playing = 'true';
                 this.player.setTrack({
@@ -136,10 +131,7 @@ export class IndexView extends View {
             }
         };
 
-            // this.player.setup();
-            this.player.playlist = document.querySelectorAll('.track-list-item');
-            // @ts-ignore
-            this.player.playlistIndices = [...Array(this.props.player.playlist.length).keys()];
+            this.player.setup(document.querySelectorAll('.track-list-item'));
     }
 
     unmount() {
@@ -153,12 +145,9 @@ export class IndexView extends View {
         this.authHandler = (e) => {
             if (e.target.className === 'topbar-auth' && e.target.dataset.action === 'logout') {
                 Request.post('/user/logout', {}, undefined).then(() => {
-                    this.player.player.pause();
-                    this.player.player.src = null;
+                    this.player.stop();
                     this.authenticated = false;
-                    // this.props.authenticated = false;
-                    // this.player.data = {};
-                    this.player.update();
+                    this.props.authenticated = false;
                     window.localStorage.removeItem('lastPlayedData');
                 });
             }
@@ -180,8 +169,8 @@ export class IndexView extends View {
             suggested_artists: this.suggested_artists,
             track_list: this.track_list,
             suggested_playlists: this.suggested_playlists,
-            player: this.player
+            player: this.player.render()
         });
-        this.afterRender();
+        this.addListeners();
     }
 }
