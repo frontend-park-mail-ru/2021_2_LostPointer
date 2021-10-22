@@ -1,6 +1,6 @@
 <div class="login-ui">
     <div class="auth-page__placeholder">
-        <img class="auth_page__placeholder-photo" src="/src/static/img/{{ placeholder_img }}">
+        <img class="auth_page__placeholder-photo" src="/src/static/img/{{{ placeholder_img }}}">
     </div>
     <div class="auth-form__data">
         <div class="auth-page__content">
@@ -8,10 +8,10 @@
                 <img class="auth-page__logo-image" data-link href="/" src="/src/static/img/Logo.svg">
             </div>
             <div class="auth-page__title">
-                {{ title }}
+                {{{ title }}}
             </div>
             <div class="auth-page__description">
-                {{ description }}
+                {{{ description }}}
             </div>
             {{{ form }}}
         </div>

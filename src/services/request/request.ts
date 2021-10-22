@@ -1,31 +1,33 @@
-import { ContentType, RequestMethods } from './requestUtils.js';
+import { ContentType, RequestMethods } from './requestUtils';
 
 const defaultBackendDomain = '/api/v1';
 
-class Request {
-  constructor(domain = defaultBackendDomain) {
+export class Request {
+  private readonly backendDomain: string;
+
+  constructor(domain: string = defaultBackendDomain) {
     this.backendDomain = domain;
   }
 
-  post(path, requestBody, contentType) {
+  post(path: string, requestBody?: BodyInit, contentType?: string) {
     return this._fetchRequest(this._createURL(this.backendDomain, path),
       RequestMethods.POST, requestBody, contentType);
   }
 
-  put(path, requestBody, contentType) {
+  put(path: string, requestBody?: BodyInit, contentType?: string) {
     return this._fetchRequest(this._createURL(this.backendDomain, path),
       RequestMethods.PUT, requestBody, contentType);
   }
 
-  get(path) {
+  get(path: string) {
     return this._fetchRequest(this._createURL(this.backendDomain, path), RequestMethods.GET);
   }
 
-  delete(path) {
+  delete(path: string) {
     return this._fetchRequest(this._createURL(this.backendDomain, path), RequestMethods.DELETE);
   }
 
-  _fetchRequest(url, requestMethod, requestBody = null, contentType = ContentType.JSON) {
+  _fetchRequest(url: string, requestMethod: string, requestBody: BodyInit = null, contentType:string = ContentType.JSON) {
     const myHeaders = new Headers();
     if (!!requestBody && ((RequestMethods.POST === requestMethod)
       || (RequestMethods.PUT === requestMethod))) {
@@ -39,14 +41,10 @@ class Request {
       headers: myHeaders,
       body: requestBody,
     })
-      .then((response) => response.json()
-        .then((responseBody) => ({
-          status: response.status,
-          body: responseBody,
-        })));
+      .then((response) => response.json());
   }
 
-  _createURL(domain, path) {
+  _createURL(domain: string, path: string): string {
     return domain + path;
   }
 }

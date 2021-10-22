@@ -12,8 +12,9 @@ interface IPlayerComponentProps {
     right_disabled: boolean;
     url: string;
     playerCurrentTime: number;
-    cover: string,
-    playButton: HTMLImageElement
+    cover: string;
+    playButton: HTMLImageElement;
+    hide_artwork: boolean;
 }
 
 export class PlayerComponent extends Component<IPlayerComponentProps> {
@@ -36,7 +37,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private playButtonHandler: EventListenerOrEventListenerObject;
     private pauseHandler: EventListenerOrEventListenerObject;
     private playHandler: EventListenerOrEventListenerObject;
-    private resizeListener: EventListenerOrEventListenerObject;
     private endedHandler: EventListenerOrEventListenerObject;
     private arrowKeysHandler: EventListenerOrEventListenerObject;
     private switchTrackHandler: (e: MediaSessionActionDetails) => void;
@@ -49,12 +49,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private mute: HTMLImageElement;
     private shuffle: boolean;
 
+
     constructor(props?: IPlayerComponentProps) {
         super(props);
         this.audio = new Audio();
         if (!this.getLastPlayed()) {
             this.props = {
-                cover: '/src/static/img/no_artwork_128px.webp',
                 playButton: (document.querySelector('.player-play') as HTMLImageElement)
             } as IPlayerComponentProps;
         }
@@ -64,6 +64,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.gotSeekPos = false;
         this.gotVolPos = false;
         this.props.playing = false;
+        this.props.hide_artwork = true;
     }
 
     seek(xPos) {
@@ -102,6 +103,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.props.right_disabled = true;
             this.props.left_disabled = true;
             document.title = `${this.props.track} · ${this.props.artist}`;
+            this.props.hide_artwork = false;
         }
         return typeof data === 'string';
     }
@@ -144,13 +146,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         if (this.props.right_disabled) {
             right.classList.add('disabled');
         }
-
+        document.querySelector('.player-artwork').classList.remove('hidden');
         this.audio.play();
     }
 
     unmount() {
-        this.removeEventListeners();
         this.audio.pause();
+        this.removeEventListeners();
     }
 
     toggle() {
@@ -166,6 +168,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.props.current_time = '0:00';
             this.props.total_time = `${(this.audio.duration / 60) | 0}:${zero}${totalSeconds}`;
             this.props.playing = !this.firstTime;
+
             this.firstTime = false;
             this.saveLastPlayed();
             this.update();
@@ -193,7 +196,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         document.querySelector('.repeat').removeEventListener('click', this.buttonsHandler);
         document.querySelector('.shuffle').removeEventListener('click', this.buttonsHandler);
         document.querySelector('.mute').removeEventListener('click', this.buttonsHandler);
-        window.removeEventListener('resize', this.resizeListener, true);
+        window.removeEventListener('resize', this.resizeHandler);
         document.querySelector('.player__seekbar').removeEventListener('click', this.seekbarHandler);
         document.querySelector('.player-play').removeEventListener('click', this.playButtonHandler);
         this.audio.removeEventListener('pause', this.pauseHandler);
@@ -282,7 +285,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.playButtonHandler = () => {
             this.props.playing ? this.audio.pause() : this.audio.play();
             this.props.playing = !this.props.playing;
-            this.nowPlaying.src = `/src/static/img/${this.props.playing ? 'pause' : 'play'}-outline.svg`;
+            if (this.nowPlaying) {
+                this.nowPlaying.src = `/src/static/img/${this.props.playing ? 'pause' : 'play'}-outline.svg`;
+            }
         };
         this.timeUpdateHandler = () => {
             const seconds = (this.audio.currentTime % 60) | 0;
@@ -343,7 +348,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         document.getElementById('artist-name').innerHTML = this.props.artist || '';
         document.getElementById('track-name').innerHTML = this.props.track || '';
         document.getElementById('player-time-total').innerHTML = this.props.total_time || '';
-        (<HTMLImageElement>document.getElementById('player-artwork')).src = `${this.props.cover || '/src/static/img/artworks/no_artwork'}_128px.webp`;
+        (<HTMLImageElement>document.querySelector('.player-play')).src = `/src/static/img/${this.props.playing ? 'pause' : 'play'}.svg`;
+        const artwork = (<HTMLImageElement>document.getElementById('player-artwork'));
+        if (this.props.hide_artwork) {
+            artwork.classList.add('hidden');
+            return;
+        }
+        artwork.src = `${this.props.cover}_128px.webp`;
     }
 
     syncPlayButtons(handler: EventHandlerNonNull) {
@@ -359,6 +370,27 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     stop() {
         this.audio.pause();
         this.audio.src = null;
+        this.update();
+        localStorage.removeItem('lastPlayedData');
+    }
+    clear() {
+        this.audio.pause();
+        this.audio.src = '';
+        this.props = {
+            total_time: '',
+            current_time: '',
+            playing: false,
+            artist: '',
+            track: '',
+            left_disabled: true,
+            right_disabled: true,
+            url: '',
+            playerCurrentTime: 0,
+            cover: '',
+            playButton: null,
+            hide_artwork: true,
+        };
+        (<HTMLElement>document.querySelector('.seekbar-current')).style.width = '0';
         this.update();
     }
 }

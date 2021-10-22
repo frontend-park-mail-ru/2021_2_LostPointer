@@ -67,12 +67,12 @@ export function checkInput(input) {
       const pos = i - amountOfDeletedDivs;
       input.CustomValidation.validityChecks.forEach((msg) => {
         if (msg.invalidityMessage === innerElements[pos].innerText) {
-          flag = true;
+          flag = true; //TODO=Завершать цикл сразу, а не идти дальше
         }
       });
       if (flag) {
         innerElements[pos].remove();
-        amountOfDeletedDivs += 1;
+        amountOfDeletedDivs++;
       }
     }
   }
@@ -100,14 +100,14 @@ export function isValidForm(amountOfInputs) {
   let isValid = true;
   let emptyFields = 0;
   inputsArray.forEach((item) => {
-    let isEmpty = false;
-    let isValidTmp = false;
+    let isEmpty: boolean;
+    let isValidTmp: boolean;
     [isValidTmp, isEmpty] = checkInput(item);
     if (!isValidTmp) {
       isValid = false;
     }
     if (isEmpty) {
-      emptyFields += 1;
+      emptyFields++;
     }
   });
 

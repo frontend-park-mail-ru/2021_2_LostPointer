@@ -5,8 +5,10 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const port = process.env.PORT || 10000;
 const src = path.join(__dirname, 'src');
 
+const env = 'development';
+
 module.exports = {
-  mode: 'development',
+  mode: env,
   entry: './src/index.ts',
   output: {
     path: path.join(__dirname, 'dist'),
@@ -27,8 +29,16 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        test: /\.(scss)$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            // options: {
+            //   modules: true, //TODO
+            // },
+          },
+        ],
       },
       {
         test: /\.hbs$/,
@@ -66,4 +76,5 @@ module.exports = {
   optimization: {
     minimize: true,
   },
+
 };
