@@ -26,8 +26,8 @@ export class ProfileView extends Component {
     Request.get(
       '/auth',
     )
-      .then(({ status }) => {
-        this.authenticated = status === 200;
+      .then(({ body }) => {
+        this.authenticated = body.status === 200;
       })
       .then(() => {
         if (!this.authenticated) {
@@ -83,8 +83,8 @@ export class ProfileView extends Component {
       '/user/settings',
       formdata,
     )
-      .then(({ status }) => {
-        if (status === 200) {
+      .then(({ body }) => {
+        if (body.status === 200) {
           // говённо, это надо будет делать через медиатор событий, когда сделаем архитектуру
           Request.get('/user/settings')
             .then((response) => {
@@ -123,8 +123,8 @@ export class ProfileView extends Component {
       '/user/settings',
       formdata,
     )
-      .then(({ status, body }) => {
-        if (status === 200) {
+      .then(({ body }) => {
+        if (body.status === 200) {
           msg.classList.remove('fail');
           msg.innerText = 'Changed successfully';
           msg.classList.add('success', 'visible');

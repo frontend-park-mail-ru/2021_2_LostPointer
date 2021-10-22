@@ -55,8 +55,8 @@ export class SigninComponent extends Component {
         password: passwordInput.value.trim(),
       }),
     )
-      .then(({ status, body }) => {
-        if (status === 200) {
+      .then(({ body }) => {
+        if (body.status === 200) {
           navigateTo('/');
         } else {
           const failMsg = event.target.querySelector('.auth-form__fail_msg');

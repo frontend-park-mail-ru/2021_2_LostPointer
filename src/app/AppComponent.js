@@ -20,8 +20,8 @@ export class AppComponent extends Component {
     Request.get(
       '/auth',
     )
-      .then(({ status }) => {
-        this.authenticated = status === 200;
+      .then(({ body }) => {
+        this.authenticated = body.status === 200;
       })
       .catch((error) => console.log(error.msg));
 
