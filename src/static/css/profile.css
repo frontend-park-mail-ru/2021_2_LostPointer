@@ -13,7 +13,7 @@
 }
 
 .profile-form {
-    width: 400px;
+    width: 720px;
     display: inline-block;
     float: left;
     margin-top: 30px;
@@ -21,7 +21,7 @@
 
 .profile-form__message-block {
     height: 50px;
-    padding-bottom: 10px;
+    padding: 40px 10px 10px;
 }
 
 .profile-form__message {
@@ -31,12 +31,19 @@
     padding-left: 10px;
     padding-bottom: 10px;
 }
+.field {
+    position: relative;
+}
 
 .profile-form__label {
     color: #FFFFFF;
     font-family: Montserrat;
     font-size: 16px;
     padding-left: 10px;
+    text-align: right;
+    width: 150px;
+    top: 20px;
+    position: absolute;
 }
 
 .grey {
@@ -54,6 +61,7 @@
     font-size: 16px;
     padding-left: 10px;
     margin: 10px auto;
+    display: flex;
 }
 
 ::-webkit-calendar-picker-indicator {
@@ -91,6 +99,7 @@
 
 .profile-form__buttons {
     display: block;
+    padding: 10px;
 }
 
 .profile-form__submit {
@@ -103,6 +112,7 @@
     color: #FFFFFF;
     font-size: 22px;
     cursor: pointer;
+    display: flex;
 }
 
 .profile-form__submit:hover {
