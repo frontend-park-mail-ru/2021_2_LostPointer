@@ -1,8 +1,6 @@
 import { Component } from '../framework/core/component.js';
 import { SignupAuthForm } from './auth/SignupAuthForm.js';
 import { addInputsEventListeners, CustomValidation, isValidForm } from '../framework/validation/validation.js';
-// eslint-disable-next-line import/no-cycle
-import { navigateTo } from '../framework/core/router.js';
 import {
   confirmPasswordValidityChecks,
   emailValidityChecks,
@@ -10,6 +8,7 @@ import {
   passwordValidityChecks,
 } from '../framework/validation/validityChecks.js';
 import Request from '../framework/appApi/request.js';
+import routerStore from '../framework/core/routerStore.js';
 
 export class SignupComponent extends Component {
   constructor(config) {
@@ -27,13 +26,13 @@ export class SignupComponent extends Component {
     super.render();
 
     const form = document.querySelector('.auth-form');
-    const nameInput = form.querySelector('input[name="name"]');
+    const nicknameInput = form.querySelector('input[name="nickname"]');
     const emailInput = form.querySelector('input[name="email"]');
     const passwordInput = form.querySelector('input[name="password"]');
     const confirmPasswordInput = form.querySelector('input[name="confirm_password"]');
     const invalidities = document.querySelector('.auth-form__invalidities');
 
-    nameInput.CustomValidation = new CustomValidation(nameValidityChecks, invalidities);
+    nicknameInput.CustomValidation = new CustomValidation(nameValidityChecks, invalidities);
     emailInput.CustomValidation = new CustomValidation(emailValidityChecks, invalidities);
     passwordInput.CustomValidation = new CustomValidation(passwordValidityChecks, invalidities);
     confirmPasswordInput.CustomValidation = new CustomValidation(
@@ -53,22 +52,21 @@ export class SignupComponent extends Component {
       errorsField.classList.add('visible');
       return;
     }
-    const nameInput = event.target.querySelector('input[name="name"]');
+    const nicknameInput = event.target.querySelector('input[name="nickname"]');
     const emailInput = event.target.querySelector('input[name="email"]');
     const passwordInput = event.target.querySelector('input[name="password"]');
 
     Request.post(
       '/user/signup',
       JSON.stringify({
-        nickname: nameInput.value.trim(),
+        nickname: nicknameInput.value.trim(),
         email: emailInput.value.trim(),
         password: passwordInput.value.trim(),
       }),
     )
       .then(({ status, body }) => {
         if (status === 201) {
-          // TODO Переделать navigateTo
-          navigateTo('/');
+          router.go(routerStore.dashboard);
         } else {
           const failMsg = event.target.querySelector('.auth-form__fail_msg');
           failMsg.innerText = body.message;

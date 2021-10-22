@@ -3,8 +3,8 @@ import { SigninAuthForm } from './auth/SigninAuthForm.js';
 import Request from '../framework/appApi/request.js';
 import { addInputsEventListeners, CustomValidation, isValidForm } from '../framework/validation/validation.js';
 import { emailValidityChecks, simplePasswordValidityChecks } from '../framework/validation/validityChecks.js';
-// eslint-disable-next-line import/no-cycle
-import { navigateTo } from '../framework/core/router.js';
+import router from '../framework/core/router.js';
+import routerStore from '../framework/core/routerStore.js';
 
 export class SigninComponent extends Component {
   constructor(config) {
@@ -57,7 +57,7 @@ export class SigninComponent extends Component {
     )
       .then(({ body }) => {
         if (body.status === 200) {
-          navigateTo('/');
+          router.go(routerStore.dashboard);
         } else {
           const failMsg = event.target.querySelector('.auth-form__fail_msg');
           failMsg.innerText = body.message;

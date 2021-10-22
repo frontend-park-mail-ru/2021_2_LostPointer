@@ -5,8 +5,8 @@ import Request from '../framework/appApi/request.js';
 import { logout } from './common/utils.js';
 import { Component } from '../framework/core/component.js';
 import { Profile } from './common/Profile.js';
-// eslint-disable-next-line import/no-cycle
-import { navigateTo } from '../framework/core/router.js';
+import router from '../framework/core/router.js';
+import routerStore from '../framework/core/routerStore.js';
 
 export class ProfileView extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ export class ProfileView extends Component {
   _logout(event) {
     if (event.target.className === 'topbar-auth' && event.target.dataset.action === 'logout') {
       logout().then(() => {
-        navigateTo('/signin');
+        router.go(routerStore.signin);
       });
     }
   }
@@ -31,7 +31,7 @@ export class ProfileView extends Component {
       })
       .then(() => {
         if (!this.authenticated) {
-          navigateTo('/signin');
+          router.go(routerStore.signin);
         } else {
           Request.get('/user/settings')
             .then((response) => {

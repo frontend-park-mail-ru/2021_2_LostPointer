@@ -11,9 +11,9 @@ class SignupAuthForm extends Component {
       inputs: [
         new InputFormComponent({
           class: 'auth-form__input',
-          name: 'name',
+          name: 'nickname',
           type: 'text',
-          placeholder: 'Name',
+          placeholder: 'Nickname',
         }),
         new InputFormComponent({
           class: 'auth-form__input',
