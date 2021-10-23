@@ -8,6 +8,13 @@ import { Profile } from './common/Profile.js';
 import router from '../framework/core/router.js';
 import routerStore from '../framework/core/routerStore.js';
 import { ContentType } from '../framework/appApi/requestUtils.js';
+import { CustomValidation, isValidForm } from '../framework/validation/validation.js';
+import {
+  confirmPasswordValidityChecks,
+  emailValidityChecks,
+  nameValidityChecks,
+  passwordValidityChecks, simplePasswordValidityChecks,
+} from '../framework/validation/validityChecks.js';
 
 export class ProfileView extends Component {
   constructor(props) {
@@ -53,6 +60,16 @@ export class ProfileView extends Component {
               this.render();
               document.addEventListener('click', this._logout.bind(this));
               const form = document.querySelector('.profile-form');
+              const nicknameInput = form.querySelector('input[name="nickname"]');
+              const emailInput = form.querySelector('input[name="email"]');
+              const invalidities = document.querySelector('.profile-form__invalidities');
+
+              nicknameInput.CustomValidation = new CustomValidation(
+                nameValidityChecks,
+                invalidities,
+              );
+              emailInput.CustomValidation = new CustomValidation(emailValidityChecks, invalidities);
+
               form.addEventListener('submit', this.submitChangeProfileForm);
               const fileInput = document.querySelector('input[name="file"]');
               fileInput.addEventListener('change', this.uploadAvatarFile.bind(this));
@@ -127,15 +144,44 @@ export class ProfileView extends Component {
   submitChangeProfileForm(event) {
     event.preventDefault();
 
-    const nameInput = event.target.querySelector('input[name="name"]');
+    const nicknameInput = event.target.querySelector('input[name="nickname"]');
     const emailInput = event.target.querySelector('input[name="email"]');
     const oldPasswordInput = event.target.querySelector('input[name="old_password"]');
     const passwordInput = event.target.querySelector('input[name="password"]');
-
+    const confirmPasswordInput = event.target.querySelector('input[name="confirm_password"]');
+    const invalidities = document.querySelector('.profile-form__invalidities');
     const msg = event.target.querySelector('.profile-form__msg');
+    let requiredInputsNumber = 2;
+
+    if (oldPasswordInput.value !== ''
+      || passwordInput.value !== ''
+      || confirmPasswordInput.value !== '') {
+      oldPasswordInput.CustomValidation = new CustomValidation(
+        simplePasswordValidityChecks, invalidities,
+      );
+      passwordInput.CustomValidation = new CustomValidation(
+        passwordValidityChecks,
+        invalidities,
+      );
+      confirmPasswordInput.CustomValidation = new CustomValidation(
+        confirmPasswordValidityChecks, invalidities,
+      );
+      requiredInputsNumber = 5;
+    } else {
+      delete oldPasswordInput.CustomValidation;
+      delete passwordInput.CustomValidation;
+      delete confirmPasswordInput.CustomValidation;
+    }
+
+    invalidities.innerHTML = '';
+    msg.innerHTML = '';
+    if (!isValidForm(requiredInputsNumber)) {
+      msg.classList.add('fail', 'visible');
+      return;
+    }
 
     const formdata = new FormData();
-    formdata.append('nickname', nameInput.value);
+    formdata.append('nickname', nicknameInput.value);
     formdata.append('email', emailInput.value);
 
     if (oldPasswordInput.value && passwordInput.value) {

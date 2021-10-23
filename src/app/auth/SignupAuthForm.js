@@ -10,25 +10,25 @@ class SignupAuthForm extends Component {
       a_redirect_msg: 'Sign in',
       inputs: [
         new InputFormComponent({
-          class: 'auth-form__input',
+          class: 'auth-form__input form__input',
           name: 'nickname',
           type: 'text',
           placeholder: 'Nickname',
         }),
         new InputFormComponent({
-          class: 'auth-form__input',
+          class: 'auth-form__input form__input',
           name: 'email',
           type: 'email',
           placeholder: 'Email',
         }),
         new InputFormComponent({
-          class: 'auth-form__input',
+          class: 'auth-form__input form__input',
           name: 'password',
           type: 'password',
           placeholder: 'Password',
         }),
         new InputFormComponent({
-          class: 'auth-form__input',
+          class: 'auth-form__input form__input',
           name: 'confirm_password',
           type: 'password',
           placeholder: 'Confirm password',

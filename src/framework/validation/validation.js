@@ -40,7 +40,7 @@ export function checkInput(input) {
   input.CustomValidation.clearInvalidities();
   input.CustomValidation.checkValidity(input);
 
-  const invaliditiesArray = document.querySelectorAll('.auth-form__invalidities');
+  const invaliditiesArray = document.querySelectorAll('.form__invalidities');
   if (input.value.length !== 0) {
     input.CustomValidation.invalidities.forEach((message) => {
       const hasMessage = findInvalidMessage(invaliditiesArray, message);
@@ -53,7 +53,7 @@ export function checkInput(input) {
     });
   }
   let amountOfDeletedDivs = 0;
-  const invaliditiesListNew = document.querySelector('.auth-form__invalidities');
+  const invaliditiesListNew = document.querySelector('.form__invalidities');
   const invalidsArray = invaliditiesListNew.innerText.split('\n');
   const innerElements = invaliditiesListNew.getElementsByTagName('div');
   for (let i = 0; i < invalidsArray.length; i += 1) {
@@ -80,7 +80,7 @@ export function checkInput(input) {
 }
 
 export function addInputsEventListeners(form) {
-  const inputs = form.querySelectorAll('.auth-form__input');
+  const inputs = form.querySelectorAll('.form__input');
 
   inputs.forEach((input) => {
     input.addEventListener('focusout', (event) => {
@@ -91,23 +91,27 @@ export function addInputsEventListeners(form) {
 }
 
 export function isValidForm(amountOfInputs) {
-  const inputsArray = Array.from(document.querySelectorAll('.auth-form__input'))
+  const inputsArray = Array.from(document.querySelectorAll('.form__input'))
     .reverse();
   let isValid = true;
   let emptyFields = 0;
-  inputsArray.forEach((item) => {
-    let isEmpty = false;
-    let isValidTmp = false;
-    [isValidTmp, isEmpty] = checkInput(item);
-    if (!isValidTmp) {
-      isValid = false;
-    }
-    if (isEmpty) {
-      emptyFields += 1;
-    }
-  });
+  inputsArray.filter((item) => Object.prototype.hasOwnProperty.call(
+    item,
+    'CustomValidation',
+  ))
+    .forEach((item) => {
+      let isEmpty = false;
+      let isValidTmp = false;
+      [isValidTmp, isEmpty] = checkInput(item);
+      if (!isValidTmp) {
+        isValid = false;
+      }
+      if (isEmpty) {
+        emptyFields += 1;
+      }
+    });
 
-  const invalidity = document.querySelector('.auth-form__fail_msg');
+  const invalidity = document.querySelector('.form__fail_msg');
   if (emptyFields === amountOfInputs) {
     invalidity.innerHTML = 'Please, fill out the form';
   } else if (emptyFields < amountOfInputs && emptyFields !== 0) {

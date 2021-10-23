@@ -11,19 +11,19 @@ class Profile extends Component {
       avatar_large: config.avatar_large,
       inputs: [
         new ProfileInputComponent({
-          label: 'Name',
+          label: 'Nickname',
           input: new InputFormComponent({
-            class: 'profile-form__input',
-            name: 'name',
+            class: 'profile-form__input form__input',
+            name: 'nickname',
             type: 'text',
-            placeholder: 'Name',
+            placeholder: 'Nickname',
             value: config.nickname,
           }),
         }),
         new ProfileInputComponent({
           label: 'Email',
           input: new InputFormComponent({
-            class: 'profile-form__input',
+            class: 'profile-form__input form__input',
             name: 'email',
             type: 'email',
             placeholder: 'Email',
@@ -35,7 +35,7 @@ class Profile extends Component {
         new ProfileInputComponent({
           label: 'Old password',
           input: new InputFormComponent({
-            class: 'profile-form__input',
+            class: 'profile-form__input form__input',
             name: 'old_password',
             type: 'password',
           }),
@@ -43,7 +43,7 @@ class Profile extends Component {
         new ProfileInputComponent({
           label: 'New password',
           input: new InputFormComponent({
-            class: 'profile-form__input',
+            class: 'profile-form__input form__input',
             name: 'password',
             type: 'password',
           }),
@@ -51,7 +51,7 @@ class Profile extends Component {
         new ProfileInputComponent({
           label: 'Confirm password',
           input: new InputFormComponent({
-            class: 'profile-form__input',
+            class: 'profile-form__input form__input',
             name: 'confirm_password',
             type: 'password',
           }),

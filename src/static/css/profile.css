@@ -64,6 +64,27 @@
     display: flex;
 }
 
+.profile-form__invalidities {
+    display: flex;
+    flex-direction: column;
+    float: left;
+    font-family: Montserrat;
+    font-size: 16px;
+    text-align: left;
+    list-style: disc inside;
+    max-width: 320px;
+    margin: 10px auto;
+    color: #969696;
+    height: 265px;
+}
+
+.profile-form__invalidities div.invalid {
+    color: #ff4d5b;
+}
+.profile-form__invalidities div.valid {
+    color: #2ecc71;
+}
+
 ::-webkit-calendar-picker-indicator {
     filter: invert(1);
     padding-right: 10px;
