@@ -63,6 +63,7 @@ export class ProfileView extends Component {
 
   uploadAvatarFile(event) {
     const file = event.target.files[0];
+    const msg = document.querySelector('.profile-avatar__msg');
 
     const formdata = new FormData();
     formdata.append('avatar', file, file.name);
@@ -76,7 +77,9 @@ export class ProfileView extends Component {
       });
       reader.readAsDataURL(file);
     } else {
-      // TODO set fail msg
+      msg.classList.remove('success');
+      msg.innerText = 'Invalid file';
+      msg.classList.add('fail', 'visible');
       return;
     }
 
@@ -102,13 +105,20 @@ export class ProfileView extends Component {
                   .then((response) => {
                     this.data.topbar.data.avatar = response.body.avatar_small;
                     this.data.topbar.update();
+                    msg.classList.remove('fail');
+                    msg.innerText = 'Changed successfully';
+                    msg.classList.add('success', 'visible');
                   });
               } else {
-                // TODO set fail msg
+                msg.classList.remove('success');
+                msg.innerText = body.message;
+                msg.classList.add('fail', 'visible');
               }
             })
             .catch(() => {
-              // TODO set fail msg
+              msg.classList.remove('success');
+              msg.innerText = 'Avatar changing failed';
+              msg.classList.add('fail', 'visible');
             });
         }
       });

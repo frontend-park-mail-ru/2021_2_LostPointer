@@ -74,7 +74,7 @@
     border-color: #CD0138;
 }
 
-.profile-form__msg {
+.profile-form__msg, .profile-avatar__msg {
     visibility: hidden;
     font-family: Montserrat;
     font-size: 16px;
