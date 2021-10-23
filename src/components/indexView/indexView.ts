@@ -57,15 +57,15 @@ export class IndexView extends Component<IIndexViewProps> {
 
         const predefinedPlaylists = [
             {
-                cover: 'yur.jpg',
+                cover: 'yur',
                 title: 'Jail Mix',
             },
             {
-                cover: 'albina.jpeg',
+                cover: 'albina',
                 title: 'Resine Working Mix Extended',
             },
             {
-                cover: 'starboy.jpg',
+                cover: 'starboy',
                 title: 'Workout Mix 2',
             },
         ];
@@ -83,12 +83,12 @@ export class IndexView extends Component<IIndexViewProps> {
             this.friend_activity = new FriendActivity({
                 friends: [
                     {
-                        img: '6f745898-a510-4fbc-af77-ad69bd9e9e76',
+                        img: 'default_avatar_150px',
                         nickname: 'Frank Sinatra',
                         listening_to: 'Strangers in the Night',
                     },
                     {
-                        img: '6f745898-a510-4fbc-af77-ad69bd9e9e76',
+                        img: 'default_avatar_150px',
                         nickname: 'Земфира',
                         listening_to: 'Трафик',
                     },
