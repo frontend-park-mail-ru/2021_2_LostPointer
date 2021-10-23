@@ -240,7 +240,7 @@ body {
 }
 
 .track-list {
-    width: 500px;
+    width: 700px;
     height: fit-content;
 }
 .suggested-artists__container,
@@ -485,7 +485,7 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: bottom;
-    width: 290px;
+    width: 500px;
 }
 
 .track-list-item__artist {
@@ -568,4 +568,18 @@ body {
     font-family: 'Montserrat';
     font-weight: 700;
     margin: 100px 0 80px 0;
+}
+
+#background-video {
+    height: 100%;
+    /*display: none;*/
+    /* object-fit: cover;*/
+    width: 100%;
+    background: url('https://www.film.ru/sites/default/files/filefield_paths/the-weeknd_d186b_opgh.jpg');
+    object-fit: cover;
+}
+
+#background-video:paused {
+    display: none;
+    object-fit: cover;
 }
