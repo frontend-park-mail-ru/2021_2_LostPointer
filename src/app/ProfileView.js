@@ -7,6 +7,7 @@ import { Component } from '../framework/core/component.js';
 import { Profile } from './common/Profile.js';
 import router from '../framework/core/router.js';
 import routerStore from '../framework/core/routerStore.js';
+import { ContentType } from '../framework/appApi/requestUtils.js';
 
 export class ProfileView extends Component {
   constructor(props) {
@@ -79,24 +80,37 @@ export class ProfileView extends Component {
       return;
     }
 
-    Request.patch(
-      '/user/settings',
-      formdata,
+    Request.get(
+      '/csrf',
     )
-      .then(({ body }) => {
-        if (body.status === 200) {
-          // говённо, это надо будет делать через медиатор событий, когда сделаем архитектуру
-          Request.get('/user/settings')
-            .then((response) => {
-              this.data.topbar.data.avatar = response.body.avatar_small;
-              this.data.topbar.update();
+      .then((csrfResponse) => {
+        if (csrfResponse.body.status === 200) {
+          const csrfToken = csrfResponse.body.message;
+
+          Request.patch(
+            '/user/settings',
+            formdata,
+            ContentType.JSON,
+            {
+              'X-CSRF-Token': csrfToken,
+            },
+          )
+            .then(({ body }) => {
+              if (body.status === 200) {
+                // говённо, это надо будет делать через медиатор событий, когда сделаем архитектуру
+                Request.get('/user/settings')
+                  .then((response) => {
+                    this.data.topbar.data.avatar = response.body.avatar_small;
+                    this.data.topbar.update();
+                  });
+              } else {
+                // TODO set fail msg
+              }
+            })
+            .catch(() => {
+              // TODO set fail msg
             });
-        } else {
-          // TODO set fail msg
         }
-      })
-      .catch(() => {
-        // TODO set fail msg
       });
   }
 
@@ -119,25 +133,38 @@ export class ProfileView extends Component {
       formdata.append('new_password', passwordInput.value);
     }
 
-    Request.patch(
-      '/user/settings',
-      formdata,
+    Request.get(
+      '/csrf',
     )
-      .then(({ body }) => {
-        if (body.status === 200) {
-          msg.classList.remove('fail');
-          msg.innerText = 'Changed successfully';
-          msg.classList.add('success', 'visible');
-        } else {
-          msg.classList.remove('success');
-          msg.innerText = body.message;
-          msg.classList.add('fail', 'visible');
+      .then((csrfResponse) => {
+        if (csrfResponse.body.status === 200) {
+          const csrfToken = csrfResponse.body.message;
+
+          Request.patch(
+            '/user/settings',
+            formdata,
+            ContentType.JSON,
+            {
+              'X-CSRF-Token': csrfToken,
+            },
+          )
+            .then(({ body }) => {
+              if (body.status === 200) {
+                msg.classList.remove('fail');
+                msg.innerText = 'Changed successfully';
+                msg.classList.add('success', 'visible');
+              } else {
+                msg.classList.remove('success');
+                msg.innerText = body.message;
+                msg.classList.add('fail', 'visible');
+              }
+            })
+            .catch(() => {
+              msg.classList.remove('success');
+              msg.innerText = 'Profile changing failed';
+              msg.classList.add('fail', 'visible');
+            });
         }
-      })
-      .catch(() => {
-        msg.classList.remove('success');
-        msg.innerText = 'Profile changing failed';
-        msg.classList.add('fail', 'visible');
       });
   }
 

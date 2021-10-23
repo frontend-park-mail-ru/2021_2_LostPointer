@@ -7,9 +7,9 @@ class Request {
     this.backendDomain = domain;
   }
 
-  patch(path, requestBody, contentType) {
+  patch(path, requestBody, contentType, customHeaders) {
     return this._fetchRequest(this._createURL(this.backendDomain, path),
-      RequestMethods.PATCH, requestBody, contentType);
+      RequestMethods.PATCH, requestBody, contentType, customHeaders);
   }
 
   post(path, requestBody, contentType) {
@@ -30,11 +30,22 @@ class Request {
     return this._fetchRequest(this._createURL(this.backendDomain, path), RequestMethods.DELETE);
   }
 
-  _fetchRequest(url, requestMethod, requestBody = null, contentType = ContentType.JSON) {
+  _fetchRequest(
+    url,
+    requestMethod,
+    requestBody = null,
+    contentType = ContentType.JSON,
+    customHeaders = null,
+  ) {
     const myHeaders = new Headers();
     if (!!requestBody && ((RequestMethods.POST === requestMethod)
       || (RequestMethods.PUT === requestMethod))) {
       myHeaders.append('Content-Type', contentType);
+    }
+    if (customHeaders) {
+      Object.keys(customHeaders).forEach((key) => {
+        myHeaders.append(key, customHeaders[key]);
+      });
     }
 
     return fetch(url, {

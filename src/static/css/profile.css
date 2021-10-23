@@ -81,8 +81,8 @@
     text-align: center;
     list-style: disc inside;
     max-width: 350px;
-    margin: 10px 10px;
-    display: block;
+    margin: 10px auto;
+    display: flex;
 }
 
 .success {
