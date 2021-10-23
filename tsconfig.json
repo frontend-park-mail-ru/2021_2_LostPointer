@@ -4,7 +4,7 @@
     "sourceMap": true,
     "outDir": "./dist/",
     "noImplicitAny": false, // !true
-    "target": "es2021",
+    "target": "esnext",
     "allowJs": true,
     "allowSyntheticDefaultImports" : true,
     "esModuleInterop" : true,
