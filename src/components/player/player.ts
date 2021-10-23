@@ -55,6 +55,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.audio = new Audio();
         if (!this.getLastPlayed()) {
             this.props = {
+                hide_artwork: true,
                 playButton: (document.querySelector('.player-play') as HTMLImageElement)
             } as IPlayerComponentProps;
         }
@@ -64,7 +65,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.gotSeekPos = false;
         this.gotVolPos = false;
         this.props.playing = false;
-        this.props.hide_artwork = true;
     }
 
     seek(xPos) {
