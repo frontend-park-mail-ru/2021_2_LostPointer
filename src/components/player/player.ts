@@ -42,7 +42,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private switchTrackHandler: (e: MediaSessionActionDetails) => void;
 
     private repeatToggle: any;
-    private trackToStop: any;
     nowPlaying: HTMLImageElement;
     private playlistIndices: number[];
     currentHandler: EventListenerOrEventListenerObject;
@@ -256,7 +255,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 window.localStorage.setItem('playerLooped', `${this.audio.loop}`);
             } else if (element.classList.contains('shuffle')) {
                 this.shuffle = !element.classList.contains('enabled'); // TODO
-                this.trackToStop = this.trackToStop || this.playlist[this.playlistIndices[this.pos]].querySelector('.track-list-item-play');
                 this.pos = -1;
                 if (this.shuffle) {
                     element.classList.add('enabled');
@@ -358,11 +356,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.audio.addEventListener('pause', handler);
     }
 
-    desyncPlayButtons(handler: EventHandlerNonNull) {
-        this.audio.removeEventListener('play', handler); // TODO=Переделать на клик
-        this.audio.removeEventListener('pause', handler);
-    }
-
     stop() {
         this.audio.pause();
         this.audio.src = null;
@@ -390,7 +383,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.update();
     }
 
-    setNowPlaying(element: HTMLImageElement) {
+    setPos(pos: number, element: HTMLImageElement) {
+        this.pos = pos;
         this.nowPlaying = element;
     }
 }

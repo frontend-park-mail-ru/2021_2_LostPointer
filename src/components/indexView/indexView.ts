@@ -24,7 +24,6 @@ interface IIndexViewProps {
 export class IndexView extends Component<IIndexViewProps> {
     private authenticated: boolean;
     private authHandler: (e) => void;
-    private syncPlayButtonsHandler: (target, event) => void;
     private playButtonHandler: (e) => void;
 
     private top_albums: TopAlbums;
@@ -120,9 +119,7 @@ addListeners() {
                 this.player.nowPlaying.src = '/src/static/img/play-outline.svg';
             }
 
-            this.player.pos = parseInt(e.target.dataset.pos, 10);
-
-            this.player.setNowPlaying(e.target); // Включили трек из списка
+            this.player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
             this.player.syncPlayButtons(this.currentSyncHandler);
 
             e.target.dataset.playing = 'true';
