@@ -15,7 +15,7 @@ import {Track} from "models/track";
 import {Artist} from "models/artist";
 import {Album} from "models/album";
 
-const IndexTemplate = require('./indexView.hbs');
+import IndexTemplate from './indexView.hbs';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -28,13 +28,12 @@ export class IndexView extends Component<IIndexViewProps> {
 
     private top_albums: TopAlbums;
     private suggested_artists: SuggestedArtists;
-    private track_list: TrackList;
+    private track_list: Track[];
     private suggested_playlists: SuggestedPlaylists;
     private player: PlayerComponent;
     private sidebar: Sidebar;
     private topbar: Topbar;
     private friend_activity: FriendActivity;
-    private currentSyncHandler: EventHandlerNonNull;
     private userAvatar: string;
 
     constructor() {
@@ -52,7 +51,7 @@ export class IndexView extends Component<IIndexViewProps> {
                 this.userAvatar = response.avatar;
             });
 
-        const tracks = Track.getHomepageTracks().then((response) => { this.track_list = response; });
+        const tracks = Track.getHomepageTracks().then((tracks) => { this.track_list = tracks; });
         const artists = Artist.getHomepageArtists().then((response) => { this.suggested_artists = response; });
         const albums = Album.getHomepageAlbums().then((response) => { this.top_albums = response; });
 
@@ -120,7 +119,6 @@ addListeners() {
             }
 
             this.player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
-            this.player.syncPlayButtons(this.currentSyncHandler);
 
             e.target.dataset.playing = 'true';
             this.player.setTrack({

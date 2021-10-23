@@ -1,19 +1,19 @@
 import { Component } from 'components/component/component';
 import { SignupAuthForm } from 'components/signupform/signupform';
-import { addInputsEventListeners, CustomValidation, isValidForm } from '../../../src/services/validation/validation';
-// eslint-disable-next-line import/no-cycle
-import { navigateTo } from '../../../src/services/router/router';
+import { addInputsEventListeners, CustomValidation, isValidForm } from 'services/validation/validation';
+import { navigateTo } from 'services/router/router';
 import {
     confirmPasswordValidityChecks,
     emailValidityChecks,
     nameValidityChecks,
     passwordValidityChecks,
-} from '../../../src/services/validation/validityChecks';
-import Request from '../../../src/services/request/request';
+} from 'services/validation/validityChecks';
+import Request from 'services/request/request';
+import {ICustomInput} from "interfaces/CustomInput";
 
 import './signupcomponent.scss';
 
-const SignupComponentTemplate = require('./signupcomponent.hbs');
+import SignupComponentTemplate from './signupcomponent.hbs';
 
 interface ISignupComponentProps {
     placeholder_img: string,
@@ -43,14 +43,10 @@ export class SignupComponent extends Component<ISignupComponentProps> {
         const confirmPasswordInput = form.querySelector('input[name="confirm_password"]');
         const invalidities = document.querySelector('.auth-form__invalidities');
 
-        // @ts-ignore //TODO
-        nicknameInput.CustomValidation = new CustomValidation(nameValidityChecks, invalidities);
-        // @ts-ignore //TODO
-        emailInput.CustomValidation = new CustomValidation(emailValidityChecks, invalidities);
-        // @ts-ignore //TODO
-        passwordInput.CustomValidation = new CustomValidation(passwordValidityChecks, invalidities);
-        // @ts-ignore //TODO
-        confirmPasswordInput.CustomValidation = new CustomValidation(
+        (<ICustomInput>nicknameInput).CustomValidation = new CustomValidation(nameValidityChecks, invalidities);
+        (<ICustomInput>emailInput).CustomValidation = new CustomValidation(emailValidityChecks, invalidities);
+        (<ICustomInput>passwordInput).CustomValidation = new CustomValidation(passwordValidityChecks, invalidities);
+        (<ICustomInput>confirmPasswordInput).CustomValidation = new CustomValidation(
             confirmPasswordValidityChecks, invalidities,
         );
 

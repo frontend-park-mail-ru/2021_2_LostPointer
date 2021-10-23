@@ -1,11 +1,12 @@
 import { Component } from 'components/component/component';
 import { SigninAuthForm } from 'components/signinform/signinform';
-import Request from '../../services/request/request';
-import { addInputsEventListeners, CustomValidation, isValidForm } from '../../../src/services/validation/validation';
-import { emailValidityChecks, simplePasswordValidityChecks } from '../../../src/services/validation/validityChecks';
-import {routerStore, navigateTo} from '../../../src/services/router/router';
+import Request from 'services/request/request';
+import { addInputsEventListeners, CustomValidation, isValidForm } from 'services/validation/validation';
+import { emailValidityChecks, simplePasswordValidityChecks } from 'services/validation/validityChecks';
+import {routerStore, navigateTo} from 'services/router/router';
+import {ICustomInput} from "interfaces/CustomInput";
 
-const SigninComponentTemplate = require('./signincomponent.hbs');
+import SigninComponentTemplate from './signincomponent.hbs';
 
 import './signincomponent.scss';
 
@@ -35,10 +36,8 @@ export class SigninComponent extends Component<ISigninComponentProps> {
         const passwordInput = form.querySelector('input[name="password"]');
         const invalidities = document.querySelector('.auth-form__invalidities');
 
-        // @ts-ignore //TODO=Починить
-        emailInput.CustomValidation = new CustomValidation(emailValidityChecks, invalidities);
-        // @ts-ignore //TODO=Починить
-        passwordInput.CustomValidation = new CustomValidation(
+        (<ICustomInput>emailInput).CustomValidation = new CustomValidation(emailValidityChecks, invalidities);
+        (<ICustomInput>passwordInput).CustomValidation = new CustomValidation(
             simplePasswordValidityChecks, invalidities,
         );
 
@@ -75,7 +74,7 @@ export class SigninComponent extends Component<ISigninComponentProps> {
                     failMsg.classList.add('visible');
                 }
             })
-            .catch((error) => {
+            .catch(() => {
                 const failMsg = event.target.querySelector('.auth-form__fail_msg');
                 failMsg.innerText = 'Authentication failed';
                 failMsg.classList.add('visible');

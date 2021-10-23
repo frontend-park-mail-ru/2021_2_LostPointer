@@ -1,6 +1,4 @@
-import { IModel } from 'components/component/component';
-
-export abstract class Model<TModel = IModel> {
+export abstract class Model<TModel> {
     public props: TModel;
 
     public isLoaded: boolean;

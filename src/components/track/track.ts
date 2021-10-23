@@ -1,6 +1,6 @@
 import { Component } from 'components/component/component';
 
-const TrackTemplate = require('./track.hbs');
+import TrackTemplate from './track.hbs';
 
 interface ITrackProps {
     cover: string;
@@ -22,7 +22,6 @@ class Track extends Component<ITrackProps> {
             pos: props.pos,
             album: props.album,
         };
-        this.template = TrackTemplate;
     }
 
     render() {

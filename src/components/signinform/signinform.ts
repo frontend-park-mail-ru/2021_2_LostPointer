@@ -1,7 +1,7 @@
 import { Component } from 'components/component/component';
 import { InputFormComponent } from '../inputform/inputform';
 
-const SigninFormTemplate = require('./signinform.hbs');
+import SigninFormTemplate from './signinform.hbs';
 
 interface ISigninAuthFormProps {
     fail_msg: string,

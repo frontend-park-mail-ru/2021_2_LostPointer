@@ -1,6 +1,6 @@
 import { Component } from 'components/component/component';
 
-const SuggestedPlaylistTemplate = require('./suggestedplaylist.hbs');
+import SuggestedPlaylistTemplate from './suggestedplaylist.hbs';
 
 interface ISuggestedPlaylistProps {
     cover: string,

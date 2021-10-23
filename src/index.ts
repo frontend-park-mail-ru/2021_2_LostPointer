@@ -1,9 +1,9 @@
 import {
   router,
   navigateTo,
-} from './services/router/router';
+} from 'services/router/router';
 
-const Handlebars = require('handlebars');
+import Handlebars from 'handlebars';
 
 Handlebars.registerHelper('render', (component) => component.getHtml());
 

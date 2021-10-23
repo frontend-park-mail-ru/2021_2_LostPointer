@@ -8,7 +8,7 @@ export interface IArtist {
 }
 
 export class Artist extends Model<IArtist> {
-    constructor(props: IArtist = null, isLoaded: boolean = false) {
+    constructor(props: IArtist = null, isLoaded = false) {
         super(props, isLoaded);
     }
 

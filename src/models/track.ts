@@ -17,11 +17,17 @@ export interface ITrack {
 }
 
 export class Track extends Model<ITrack> {
-    constructor(props: ITrack = null, isLoaded: boolean = false) {
+    constructor(props: ITrack = null, isLoaded = false) {
         super(props, isLoaded);
     }
 
-    static getHomepageTracks() {
-        return Request.get('/home/tracks').then((response) => { return response; });
+    static getHomepageTracks(): Promise<Track[]> {
+        return new Promise((res) => {
+            Request.get('/home/tracks').then((response) => {
+                const tracks = <Track[]>response;
+                console.log(tracks);
+                res(tracks);
+            });
+        });
     }
 }

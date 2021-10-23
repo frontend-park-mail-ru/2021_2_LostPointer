@@ -1,6 +1,6 @@
 export class CustomValidation {
-  private invalidities: any[];
-  private invalidityDiv: any;
+  private invalidities: string[];
+  private invalidityDiv: Element;
   private validityChecks: any;
 
   constructor(validityChecks, invaliditiesDiv = null) {
@@ -57,10 +57,10 @@ export function checkInput(input) {
     });
   }
   let amountOfDeletedDivs = 0;
-  const invaliditiesListNew = document.querySelector('.auth-form__invalidities') as any; // TODO=Поменять
+  const invaliditiesListNew = <HTMLInputElement>document.querySelector('.auth-form__invalidities');
   const invalidsArray = invaliditiesListNew.innerText.split('\n');
   const innerElements = invaliditiesListNew.getElementsByTagName('div');
-  for (let i = 0; i < invalidsArray.length; i += 1) {
+  for (let i = 0; i < invalidsArray.length; i++) {
     const res = input.CustomValidation.invalidities.indexOf(invalidsArray[i]);
     if (res === -1 && innerElements.length !== 0) {
       let flag = false;
@@ -100,8 +100,12 @@ export function isValidForm(amountOfInputs) {
   let isValid = true;
   let emptyFields = 0;
   inputsArray.forEach((item) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    // TODO=WTF???????
     let isEmpty: boolean;
     let isValidTmp: boolean;
+    // eslint-disable-next-line prefer-const
     [isValidTmp, isEmpty] = checkInput(item);
     if (!isValidTmp) {
       isValid = false;

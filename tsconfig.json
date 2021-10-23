@@ -4,7 +4,7 @@
     "sourceMap": true,
     "outDir": "./dist/",
     "noImplicitAny": false, // !true
-    "target": "es6",
+    "target": "es2021",
     "allowJs": true,
     "allowSyntheticDefaultImports" : true,
     "esModuleInterop" : true,
@@ -14,9 +14,8 @@
       "components/*": ["src/components/*"],
       "store/*": ["src/store/*"],
       "models/*": ["src/models/*"],
-      "managers/*": ["src/managers/*"],
-      "views/*": ["src/views/*"],
-      "assets/*": ["src/assets/*"]
+      "interfaces/*": ["src/interfaces/*"],
+      "services/*": ["src/services/*"],
     }
   },
 

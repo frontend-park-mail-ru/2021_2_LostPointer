@@ -1,7 +1,7 @@
 import { Component } from 'components/component/component';
 import { Track } from '../track/track';
 
-const TracklistTemplate = require('./tracklist.hbs');
+import TracklistTemplate from './tracklist.hbs';
 
 interface ITrackListProps {
     tracks: Array<any>
@@ -15,7 +15,6 @@ class TrackList extends Component<ITrackListProps> {
             e.pos = pos++;
             return { track: new Track(e).render() };
         });
-        this.template = TracklistTemplate;
     }
     render() {
         return TracklistTemplate({tracks: this.props.tracks});

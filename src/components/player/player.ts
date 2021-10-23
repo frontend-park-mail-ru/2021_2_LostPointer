@@ -23,11 +23,11 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private gotSeekPos: boolean;
     private gotVolPos: boolean;
     private seekbarPos: DOMRect;
-    private seekbarCurrent: any;
+    private seekbarCurrent: HTMLElement;
     private volumePos: DOMRect;
-    private currentVolume: any;
+    private currentVolume: HTMLElement;
     pos: number;
-    playlist: any;
+    playlist: HTMLElement[];
 
     private buttonsHandler: EventListenerOrEventListenerObject;
     private resizeHandler: EventListenerOrEventListenerObject;
@@ -41,7 +41,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private arrowKeysHandler: EventListenerOrEventListenerObject;
     private switchTrackHandler: (e: MediaSessionActionDetails) => void;
 
-    private repeatToggle: any;
+    private repeatToggle: HTMLImageElement;
     nowPlaying: HTMLImageElement;
     private playlistIndices: number[];
     currentHandler: EventListenerOrEventListenerObject;
@@ -52,6 +52,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     constructor(props?: IPlayerComponentProps) {
         super(props);
         this.audio = new Audio();
+        this.audio.preload = 'auto';
         if (!this.getLastPlayed()) {
             this.props = {
                 hide_artwork: true,
@@ -272,7 +273,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         };
         this.playHandler = () => {
             (document.querySelector('.player-play') as HTMLImageElement).src = '/src/static/img/pause.svg';
-            this.nowPlaying.src = '/src/static/img/pause-outline.svg';
+            if (this.nowPlaying) {
+                this.nowPlaying.src = '/src/static/img/pause-outline.svg';
+            }
         };
         this.pauseHandler = () => {
             (document.querySelector('.player-play') as HTMLImageElement).src = '/src/static/img/play.svg';
@@ -349,11 +352,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             return;
         }
         artwork.src = `${this.props.cover}_128px.webp`;
-    }
-
-    syncPlayButtons(handler: EventHandlerNonNull) {
-        this.audio.addEventListener('play', handler); // TODO=Переделать на клик
-        this.audio.addEventListener('pause', handler);
     }
 
     stop() {

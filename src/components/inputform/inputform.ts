@@ -1,8 +1,8 @@
-import { Component } from '../component/component';
+import { Component } from 'components/component/component';
 
-const InputFormTemplate = require('./inputform.hbs');
+import InputFormTemplate from './inputform.hbs';
 
-export class InputFormComponent extends Component {
+export class InputFormComponent extends Component<null> {
     constructor(props) {
         super(props);
     }

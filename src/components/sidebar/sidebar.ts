@@ -1,8 +1,8 @@
 import { Component } from '../component/component';
 
-const SidebarTemplate = require('./sidebar.hbs');
+import SidebarTemplate from './sidebar.hbs';
 
-class Sidebar extends Component {
+class Sidebar extends Component<null> {
     render() {
         return SidebarTemplate();
     }

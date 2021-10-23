@@ -5,6 +5,10 @@
   margin: 0;
 }
 
+:root {
+  --accent-color: #CD0138;
+}
+
 body,
 html {
   height: 100%;
@@ -305,9 +309,16 @@ body {
 
 .seekbar-current,
 .volume-current {
+  transition: 0.5s;
   width: 0;
   display: block;
   background-color: white;
+}
+
+.seekbar-current:hover,
+.volume-current:hover {
+  transition: 0.5s;
+  background-color: var(--accent-color);
 }
 
 .volume-current {

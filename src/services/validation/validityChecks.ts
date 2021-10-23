@@ -1,5 +1,5 @@
 class ValidityCheck {
-    private invalidityMessage: any;
+    private invalidityMessage: string;
     private isInvalid: boolean;
     private element: null;
 

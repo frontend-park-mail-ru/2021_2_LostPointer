@@ -1,6 +1,6 @@
 import { Component } from 'components/component/component';
 
-const TopAlbumsTemplate = require('./topalbums.hbs');
+import TopAlbumsTemplate from './topalbums.hbs';
 
 interface ITopAlbumsProps {
     albums: Array<any>

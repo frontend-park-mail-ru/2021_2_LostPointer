@@ -1,6 +1,6 @@
 import { Component } from '../component/component';
 
-const SuggestedArtistsTemplate = require('./suggestedartists.hbs');
+import SuggestedArtistsTemplate from './suggestedartists.hbs';
 
 interface ISuggestedArtistsProps {
     artists: Array<any>;

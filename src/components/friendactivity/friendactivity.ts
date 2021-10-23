@@ -1,6 +1,6 @@
 import { Component } from 'components/component/component';
 
-const FriendActivityTemplate = require('./friendactivity.hbs');
+import FriendActivityTemplate from './friendactivity.hbs';
 
 interface IFriendActivityProps{
     friends: Array<any>,

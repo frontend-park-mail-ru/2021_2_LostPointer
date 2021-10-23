@@ -1,6 +1,6 @@
 import { Component } from 'components/component/component';
 
-const TopbarTemplate = require('./topbar.hbs');
+import TopbarTemplate from './topbar.hbs';
 
 interface ITopbarComponentProps {
     authenticated: boolean;
