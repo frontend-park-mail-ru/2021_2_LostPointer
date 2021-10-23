@@ -278,16 +278,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         };
         this.pauseHandler = () => {
             (document.querySelector('.player-play') as HTMLImageElement).src = '/src/static/img/play.svg';
-            (this.nowPlaying as HTMLImageElement).src = '/src/static/img/play-outline.svg';
+            this.nowPlaying.src = '/src/static/img/play-outline.svg';
         };
         this.seekbarHandler = (e: MouseEvent) => this.seek(e.x);
         this.volumeHandler = (e: MouseEvent) => this.volume(e.x);
         this.playButtonHandler = () => {
             this.props.playing ? this.audio.pause() : this.audio.play();
             this.props.playing = !this.props.playing;
-            if (this.nowPlaying) {
-                this.nowPlaying.src = `/src/static/img/${this.props.playing ? 'pause' : 'play'}-outline.svg`;
-            }
         };
         this.timeUpdateHandler = () => {
             const seconds = (this.audio.currentTime % 60) | 0;
@@ -319,8 +316,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.audio.removeEventListener('play', this.currentHandler);
             this.audio.removeEventListener('pause', this.currentHandler);
         }
-        const prev = this.trackToStop || this.playlist[this.playlistIndices[this.pos]].querySelector('.track-list-item-play');
-        this.trackToStop = null;
+        const prev = this.nowPlaying || this.playlist[this.playlistIndices[this.pos]].querySelector('.track-list-item-play');
         let allowed = false;
         if (next) {
             if (this.pos < this.playlist.length - 1) {
@@ -392,6 +388,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         };
         (<HTMLElement>document.querySelector('.seekbar-current')).style.width = '0';
         this.update();
+    }
+
+    setNowPlaying(element: HTMLImageElement) {
+        this.nowPlaying = element;
     }
 }
 

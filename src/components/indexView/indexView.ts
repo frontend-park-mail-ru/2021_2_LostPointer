@@ -53,17 +53,9 @@ export class IndexView extends Component<IIndexViewProps> {
                 this.userAvatar = response.avatar;
             });
 
-        const tracks = Track.getHomepageTracks().then((response) => {
-            this.track_list = response;
-        });
-
-        const artists = Artist.getHomepageArtists().then((response) => {
-            this.suggested_artists = response;
-        })
-
-        const albums = Album.getHomepageAlbums().then((response) => {
-            this.top_albums = response;
-        })
+        const tracks = Track.getHomepageTracks().then((response) => { this.track_list = response; });
+        const artists = Artist.getHomepageArtists().then((response) => { this.suggested_artists = response; });
+        const albums = Album.getHomepageAlbums().then((response) => { this.top_albums = response; });
 
         const predefinedPlaylists = [
             {
@@ -113,10 +105,6 @@ addListeners() {
 
     document.addEventListener('click', this.authHandler);
 
-    this.syncPlayButtonsHandler = (target, event) => {
-        // eslint-disable-next-line no-param-reassign
-        target.src = `/src/static/img/${event.type === 'play' ? 'pause' : 'play'}-outline.svg`;
-    };
     this.playButtonHandler = (e) => {
         if (e.target.className === 'track-list-item-play') {
             if (!this.authenticated) {
@@ -128,15 +116,13 @@ addListeners() {
                 return;
             }
             if (this.player.nowPlaying) { // Переключили на другой трек
-                this.player.desyncPlayButtons(this.currentSyncHandler);
                 this.player.nowPlaying.dataset.playing = 'false';
                 this.player.nowPlaying.src = '/src/static/img/play-outline.svg';
             }
 
             this.player.pos = parseInt(e.target.dataset.pos, 10);
 
-            this.player.nowPlaying = e.target; // Включили трек из списка
-            this.currentSyncHandler = this.syncPlayButtonsHandler.bind(null, this.player.nowPlaying);
+            this.player.setNowPlaying(e.target); // Включили трек из списка
             this.player.syncPlayButtons(this.currentSyncHandler);
 
             e.target.dataset.playing = 'true';
