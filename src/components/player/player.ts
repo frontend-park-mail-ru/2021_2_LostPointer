@@ -119,8 +119,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             cover: track.cover,
             track: track.title,
             artist: track.artist,
-            url: track.url,
-            playing: true,
+            url: track.url
         } as IPlayerComponentProps;
 
         document.title = `${track.title} · ${track.artist}`;
@@ -150,7 +149,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         if (this.props.right_disabled) {
             right.classList.add('disabled');
         }
-        this.audio.play();
+        this.audio.play().then(() => this.props.playing = true);
     }
 
     unmount() {
