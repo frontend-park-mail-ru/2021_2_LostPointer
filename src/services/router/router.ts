@@ -1,7 +1,7 @@
 import { PATH_ARG, PATH_SLASH } from 'store/regex';
-import Index from 'components/indexView/indexView';
-import SignupComponent from 'components/signupcomponent/signupcomponent';
-import SigninComponent from 'components/signincomponent/signincomponent';
+import Index from 'components/IndexView/indexView';
+import SignupComponent from 'components/SignupView/signupcomponent';
+import SigninComponent from 'components/SigninView/signincomponent';
 
 const pathToRegex = (path) => new RegExp(`^${path.replace(PATH_SLASH, '\\/').replace(PATH_ARG, '(.+)')}$`);
 
