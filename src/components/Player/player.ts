@@ -220,6 +220,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.audio.volume = vol;
             this.currentVolume.style.width = `${vol * 100}%`;
         }
+        this.seekbarCurrent.style.width = `${(this.audio.currentTime / this.audio.duration) * 100}%`;
         this.audio.muted = window.localStorage.getItem('playerMuted') === 'true';
         if (this.audio.muted) {
             this.mute.classList.add('enabled');
@@ -258,7 +259,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 this.audio.loop ? element.classList.add('enabled') : element.classList.remove('enabled');
                 window.localStorage.setItem('playerLooped', `${this.audio.loop}`);
             } else if (element.classList.contains('shuffle')) {
-                this.shuffle = !element.classList.contains('enabled'); // TODO
+                this.shuffle = !element.classList.contains('enabled');
                 this.pos = -1;
                 if (this.shuffle) {
                     element.classList.add('enabled');
@@ -381,7 +382,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             cover: '',
             playButton: null,
             hide_artwork: true,
-            recovered: false
+            recovered: false,
         };
         (<HTMLElement>document.querySelector('.seekbar-current')).style.width = '0';
         this.update();
