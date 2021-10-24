@@ -150,7 +150,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         if (this.props.right_disabled) {
             right.classList.add('disabled');
         }
-        document.querySelector('.player-artwork').classList.remove('hidden');
         this.audio.play();
     }
 
@@ -176,6 +175,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.firstTime = false;
             this.saveLastPlayed();
             this.update();
+            document.querySelector('.player-artwork').classList.remove('hidden');
         });
         document.querySelector('.repeat').addEventListener('click', this.buttonsHandler);
         document.querySelector('.shuffle').addEventListener('click', this.buttonsHandler);
@@ -349,6 +349,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         document.getElementById('artist-name').innerHTML = this.props.artist || '';
         document.getElementById('track-name').innerHTML = this.props.track || '';
         document.getElementById('player-time-total').innerHTML = this.props.total_time || '';
+        (<HTMLImageElement>document.querySelector('.player-play')).src = `/src/static/img/${this.props.playing ? 'pause' : 'play'}.svg`;
         const artwork = (<HTMLImageElement>document.getElementById('player-artwork'));
         if (this.props.hide_artwork) {
             artwork.classList.add('hidden');
