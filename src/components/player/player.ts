@@ -3,6 +3,7 @@ import { Component } from 'components/component/component';
 import PlayerTemplate from './player.hbs';
 
 interface IPlayerComponentProps {
+    recovered: boolean;
     total_time: string;
     current_time: string;
     playing: boolean;
@@ -89,7 +90,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     saveLastPlayed() {
-        window.localStorage.setItem('lastPlayedData', JSON.stringify(this.props));
+        if (this.props.playing) {
+            window.localStorage.setItem('lastPlayedData', JSON.stringify(this.props));
+        }
     }
 
     getLastPlayed(): boolean {
@@ -104,11 +107,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.props.left_disabled = true;
             document.title = `${this.props.track} · ${this.props.artist}`;
             this.props.hide_artwork = false;
+            this.props.recovered = true;
         }
         return typeof data === 'string';
     }
 
-    setTrack(track) {
+    setTrack(track): void {
         this.audio.pause();
         this.audio.src = track.url;
         this.props = {
@@ -345,7 +349,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         document.getElementById('artist-name').innerHTML = this.props.artist || '';
         document.getElementById('track-name').innerHTML = this.props.track || '';
         document.getElementById('player-time-total').innerHTML = this.props.total_time || '';
-        (<HTMLImageElement>document.querySelector('.player-play')).src = `/src/static/img/${this.props.playing ? 'pause' : 'play'}.svg`;
         const artwork = (<HTMLImageElement>document.getElementById('player-artwork'));
         if (this.props.hide_artwork) {
             artwork.classList.add('hidden');
@@ -376,6 +379,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             cover: '',
             playButton: null,
             hide_artwork: true,
+            recovered: false
         };
         (<HTMLElement>document.querySelector('.seekbar-current')).style.width = '0';
         this.update();

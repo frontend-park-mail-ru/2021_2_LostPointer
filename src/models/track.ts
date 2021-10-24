@@ -25,7 +25,6 @@ export class Track extends Model<ITrack> {
         return new Promise((res) => {
             Request.get('/home/tracks').then((response) => {
                 const tracks = <Track[]>response;
-                console.log(tracks);
                 res(tracks);
             });
         });
