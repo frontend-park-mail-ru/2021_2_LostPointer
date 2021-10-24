@@ -315,8 +315,8 @@ body {
   background-color: white;
 }
 
-.seekbar-current:hover,
-.volume-current:hover {
+.player__seekbar:hover .seekbar-current,
+.player-volume:hover .volume-current {
   transition: 0.5s;
   background-color: var(--accent-color);
 }

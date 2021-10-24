@@ -309,7 +309,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         };
 
         this.arrowKeysHandler = (e) => {
-            this.switchTrack((e.target as HTMLElement).classList.contains('player-skip-right'));
+            if (!(<HTMLImageElement>e.target).classList.contains('disabled')) {
+                this.switchTrack((e.target as HTMLElement).classList.contains('player-skip-right'));
+            }
         };
         this.endedHandler = () => {
             this.switchTrack(true);
@@ -349,7 +351,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         document.getElementById('artist-name').innerHTML = this.props.artist || '';
         document.getElementById('track-name').innerHTML = this.props.track || '';
         document.getElementById('player-time-total').innerHTML = this.props.total_time || '';
-        (<HTMLImageElement>document.querySelector('.player-play')).src = `/src/static/img/${this.props.playing ? 'pause' : 'play'}.svg`;
         const artwork = (<HTMLImageElement>document.getElementById('player-artwork'));
         if (this.props.hide_artwork) {
             artwork.classList.add('hidden');
