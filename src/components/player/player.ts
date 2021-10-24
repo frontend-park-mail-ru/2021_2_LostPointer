@@ -361,6 +361,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     stop() {
         this.audio.pause();
         this.audio.src = null;
+        this.nowPlaying.src = '/src/static/img/play-outline.svg';
         this.update();
         localStorage.removeItem('lastPlayedData');
     }
