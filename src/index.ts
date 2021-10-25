@@ -8,6 +8,8 @@ import routerStore from 'services/router/routerStore';
 class App {
   start() {
     this.initRoutes();
+    document.body.addEventListener('click', this._dataLinkRoute);
+    router.route();
   }
 
   _dataLinkRoute(event) {
@@ -23,11 +25,6 @@ class App {
         .register(routerStore.signin, SigninView)
         .register(routerStore.signup, SignupView)
         .start();
-
-    document.addEventListener('DOMContentLoaded', () => {
-      document.body.addEventListener('click', this._dataLinkRoute);
-      router.check().render();
-    });
   }
 }
 

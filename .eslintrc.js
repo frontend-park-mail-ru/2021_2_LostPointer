@@ -18,6 +18,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
   ],
   ignorePatterns: [
-    'webpack.config.js'
+    'webpack.config.js',
+    '*.precompiled.js',
   ],
 };
