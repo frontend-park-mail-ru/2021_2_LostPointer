@@ -15,11 +15,13 @@
 ">
 <div class="app"><div class="app__content">
     <div class="sidebar">
-        <img class="sidebar__logo" data-link="" href="/" src="src/static/img/sidebar_logo.svg">
-        <object class="sidebar__icon" data="src/static/img/home.svg"></object>
-        <object class="sidebar__icon" data="src/static/img/explore.svg"></object>
-        <object class="sidebar__icon" data="src/static/img/favorite.svg"></object>
-        <object class="sidebar__icon" data="src/static/img/more.svg"></object>
+        <img class="sidebar__logo" data-link="" href="/" src="src/static/img/sidebar_logo.png">
+        <span class="sidebar__icons">
+            <object class="sidebar__icon" data="src/static/img/home.svg"></object>
+            <object class="sidebar__icon" data="src/static/img/explore.svg"></object>
+            <object class="sidebar__icon" data="src/static/img/favorite.svg"></object>
+            <object class="sidebar__icon" data="src/static/img/more.svg"></object>
+        </span>
     </div>
 
     <div class="main-layout">
@@ -28,18 +30,19 @@
             <span class="topbar-icons">
                 <img class="topbar-icon" src="src/static/img/notifications-none.svg">
                 <img id="settings" class="topbar-icon" src="src/static/img/settings.svg">
+                <img class="topbar-icon topbar-auth" data-link="" href="/signin" src="src/static/img/login.svg">
             </span>
-            <img class="topbar-auth" data-link="" href="/signin" src="src/static/img/login.svg">
         </div>
         <div style="
         position: absolute;
-        top: 0;
+        top: -100px;
         left: 0;
         z-index: -1;
-        height: 325px;
+        height: 800px;
         width: 100%;
         background: url('https://www.film.ru/sites/default/files/filefield_paths/the-weeknd_d186b_opgh.jpg');
     ">
+            <div class="overlay"></div>
             <video id="background-video" autoplay="" muted="" src="src/static/mov/weeknd.mp4" poster="https://www.film.ru/sites/default/files/filefield_paths/the-weeknd_d186b_opgh.jpg" class=""></video>
         </div>
 

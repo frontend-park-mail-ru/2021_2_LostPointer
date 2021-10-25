@@ -53,9 +53,16 @@ body {
     background-color: #191919;
 }
 
+.sidebar__icons {
+    background-color: #191919;
+    border-radius: 50px;
+    height: 185px;
+}
+
 .sidebar__icon {
     cursor: pointer;
-    margin: 20px 10px 5px;
+    margin: 10px 10px 5px;
+    width: 30px;
 }
 
 .player {
@@ -87,24 +94,19 @@ body {
     background-color: #191919;
     border-radius: 50px;
     padding: 5px 10px;
-    width: 85px;
-    height: 40px;
-    margin: auto 0 auto auto;
+    width: 140px;
+    height: 50px;
+    margin: auto 40px auto auto;
 }
 
 .topbar-icon {
     cursor: pointer;
-    height: 25px;
+    height: 35px;
     padding-left: 10px;
-    padding-top: 5px;
+    padding-top: 7px;
 }
 
 .topbar-profile, .topbar-auth {
-    cursor: pointer;
-    margin-right: 40px;
-    margin-top: 2px;
-    padding: 8px;
-    height: 45px;
 }
 
 .top-album {
@@ -240,7 +242,7 @@ body {
 }
 
 .track-list {
-    width: 700px;
+    width: 800px;
     height: fit-content;
 }
 .suggested-artists__container,
@@ -257,7 +259,7 @@ body {
 }
 
 .artist-tracks {
-    width: 600px;
+    width: 380px;
 }
 
 .suggested-artist,
@@ -485,7 +487,7 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: bottom;
-    width: 500px;
+    width: 600px;
 }
 
 .track-list-item__artist {
@@ -573,13 +575,14 @@ body {
 #background-video {
     height: 100%;
     /*display: none;*/
-    /* object-fit: cover;*/
-    width: 100%;
-    background: url('https://www.film.ru/sites/default/files/filefield_paths/the-weeknd_d186b_opgh.jpg');
     object-fit: cover;
+    z-index: -1;
+    width: 100%;
 }
 
-#background-video:paused {
-    display: none;
-    object-fit: cover;
+.overlay {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1));
+    position: absolute;
+    height: 800px;
+    width: 100%;
 }
