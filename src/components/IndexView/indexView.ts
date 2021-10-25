@@ -8,7 +8,6 @@ import {SuggestedArtists} from "components/SuggestedArtists/suggestedartists";
 import {TrackList} from "components/TrackList/tracklist";
 import {SuggestedPlaylists} from "components/SuggestedPlaylists/suggestedplaylists";
 import Player, {PlayerComponent} from "components/Player/player";
-import {navigateTo} from 'services/router/router';
 
 import './indexView.scss';
 import {Track} from "models/track";
@@ -16,6 +15,8 @@ import {Artist} from "models/artist";
 import {Album} from "models/album";
 
 import IndexTemplate from './indexView.hbs';
+import routerStore from "services/router/routerStore";
+import router from "services/router/router";
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -106,7 +107,7 @@ export class IndexView extends Component<IIndexViewProps> {
         this.playButtonHandler = (e) => {
             if (e.target.className === 'track-list-item-play') {
                 if (!this.authenticated) {
-                    navigateTo('/signin');
+                    router.go(routerStore.signin);
                     return;
                 }
                 if (e.target === this.player.nowPlaying) { // Ставим на паузу/продолжаем воспр.

@@ -1,7 +1,7 @@
 import { Component } from 'components/Component/component';
 import { SignupAuthForm } from 'components/SignupForm/signupform';
 import { addInputsEventListeners, CustomValidation, isValidForm } from 'services/validation/validation';
-import { navigateTo } from 'services/router/router';
+import router from 'services/router/router';
 import {
     confirmPasswordValidityChecks,
     emailValidityChecks,
@@ -14,6 +14,7 @@ import {ICustomInput} from "interfaces/CustomInput";
 import './signupcomponent.scss';
 
 import SignupComponentTemplate from './signupcomponent.hbs';
+import routerStore from "services/router/routerStore";
 
 interface ISignupComponentProps {
     placeholder_img: string,
@@ -78,8 +79,7 @@ export class SignupComponent extends Component<ISignupComponentProps> {
         )
             .then(({ status, body }) => {
                 if (status === 201) {
-                    // TODO Переделать navigateTo
-                    navigateTo('/');
+                    router.go(routerStore.dashboard);
                 } else {
                     const failMsg = event.target.querySelector('.auth-form__fail_msg');
                     failMsg.innerText = body.message;

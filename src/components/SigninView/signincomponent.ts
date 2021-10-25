@@ -3,7 +3,8 @@ import { SigninAuthForm } from 'components/SigninForm/signinform';
 import Request from 'services/request/request';
 import { addInputsEventListeners, CustomValidation, isValidForm } from 'services/validation/validation';
 import { emailValidityChecks, simplePasswordValidityChecks } from 'services/validation/validityChecks';
-import {routerStore, navigateTo} from 'services/router/router';
+import router from 'services/router/router';
+import routerStore from "services/router/routerStore";
 import {ICustomInput} from "interfaces/CustomInput";
 
 import SigninComponentTemplate from './signincomponent.hbs';
@@ -67,7 +68,7 @@ export class SigninComponent extends Component<ISigninComponentProps> {
         )
             .then(({status, body}) => {
                 if (status === 200) {
-                    navigateTo(routerStore.dashboard);
+                    router.go(routerStore.dashboard);
                 } else {
                     const failMsg = event.target.querySelector('.auth-form__fail_msg');
                     failMsg.innerText = body.message;

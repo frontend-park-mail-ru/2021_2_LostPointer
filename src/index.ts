@@ -1,33 +1,36 @@
-import {
-  router,
-  navigateTo,
-} from 'services/router/router';
+import router from 'services/router/router';
+import IndexView from 'components/IndexView/indexView';
+import SigninView from 'components/SigninView/signincomponent';
+import SignupView from 'components/SignupView/signupcomponent';
 
-import Handlebars from 'handlebars';
-
-Handlebars.registerHelper('render', (component) => component.getHtml());
+import routerStore from 'services/router/routerStore';
 
 class App {
   start() {
     this.initRoutes();
   }
 
+  _dataLinkRoute(event) {
+    if (event.target.matches('[data-link]')) {
+      event.preventDefault();
+      router.go(event.target.getAttribute('href'));
+    }
+  }
+
   initRoutes() {
-    window.addEventListener('popstate', router);
+    router
+        .register(routerStore.dashboard, IndexView)
+        .register(routerStore.signin, SigninView)
+        .register(routerStore.signup, SignupView)
+        .start();
+
     document.addEventListener('DOMContentLoaded', () => {
-      document.body.addEventListener('click', (e:MouseEvent) => {
-        const target = (e.target as HTMLElement);
-        if (target.matches('[data-link]')) {
-          e.preventDefault();
-          navigateTo(target.getAttribute('href'));
-        }
-      });
-      router();
+      document.body.addEventListener('click', this._dataLinkRoute);
+      router.check().render();
     });
   }
 }
 
-export const app = new App();
+const app = new App();
 
 app.start();
-
