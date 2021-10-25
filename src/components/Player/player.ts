@@ -283,7 +283,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         };
         this.pauseHandler = () => {
             (document.querySelector('.player-play') as HTMLImageElement).src = '/src/static/img/play.svg';
-            this.nowPlaying.src = '/src/static/img/play-outline.svg';
+            if (this.nowPlaying) {
+                this.nowPlaying.src = '/src/static/img/play-outline.svg';
+            }
         };
         this.seekbarHandler = (e: MouseEvent) => this.seek(e.x);
         this.volumeHandler = (e: MouseEvent) => this.volume(e.x);
@@ -362,6 +364,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     stop() {
         this.audio.pause();
         this.audio.src = null;
+        (<HTMLImageElement>document.querySelector('.player-play')).src = '/src/static/img/play.svg';  //TODO=Почему хэндлер паузы это не отрабатывает - большой вопрос
         this.nowPlaying.src = '/src/static/img/play-outline.svg';
         this.update();
         localStorage.removeItem('lastPlayedData');

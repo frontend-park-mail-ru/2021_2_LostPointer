@@ -27,8 +27,8 @@ export class IndexView extends Component<IIndexViewProps> {
     private authHandler: (e) => void;
     private playButtonHandler: (e) => void;
 
-    private top_albums: TopAlbums;
-    private suggested_artists: SuggestedArtists;
+    private top_albums: Album[];
+    private suggested_artists: Artist[];
     private track_list: Track[];
     private suggested_playlists: SuggestedPlaylists;
     private player: PlayerComponent;
@@ -53,8 +53,8 @@ export class IndexView extends Component<IIndexViewProps> {
             });
 
         const tracks = Track.getHomepageTracks().then((tracks) => { this.track_list = tracks; });
-        const artists = Artist.getHomepageArtists().then((response) => { this.suggested_artists = response; });
-        const albums = Album.getHomepageAlbums().then((response) => { this.top_albums = response; });
+        const artists = Artist.getHomepageArtists().then((artists) => { this.suggested_artists = artists; });
+        const albums = Album.getHomepageAlbums().then((albums) => { this.top_albums = albums; });
 
         const predefinedPlaylists = [
             {

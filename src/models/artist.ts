@@ -13,6 +13,10 @@ export class Artist extends Model<IArtist> {
     }
 
     static getHomepageArtists() {
-        return Request.get('/home/artists').then((response) => { return response; });
+        return new Promise<Artist[]>((res) => {
+            Request.get('/home/artists').then((response) => {
+                res(<Artist[]>response);
+            });
+        });
     }
 }

@@ -24,8 +24,7 @@ export class Track extends Model<ITrack> {
     static getHomepageTracks(): Promise<Track[]> {
         return new Promise((res) => {
             Request.get('/home/tracks').then((response) => {
-                const tracks = <Track[]>response;
-                res(tracks);
+                res(<Track[]>response);
             });
         });
     }
