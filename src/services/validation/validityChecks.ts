@@ -1,4 +1,4 @@
-class ValidityCheck {
+export class ValidityCheck {
     private invalidityMessage: string;
     private isInvalid: boolean;
     private element: null;

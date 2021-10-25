@@ -16,6 +16,7 @@ module.exports = {
     alias: {
       handlebars: 'handlebars/dist/handlebars.min.js',
       components: path.join(src, 'components'),
+      views: path.join(src, 'views'),
       store: path.join(src, 'store'),
       models: path.join(src, 'models'),
       interfaces: path.join(src, 'interfaces'),

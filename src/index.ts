@@ -1,9 +1,9 @@
 import router from 'services/router/router';
-import IndexView from 'components/IndexView/indexView';
-import SigninView from 'components/SigninView/signincomponent';
-import SignupView from 'components/SignupView/signupcomponent';
 
 import routerStore from 'services/router/routerStore';
+import IndexView from 'views/IndexView/indexView';
+import SigninView from 'views/SigninView/signinView';
+import SignupView from 'views/SignupView/signupView';
 
 class App {
   start() {

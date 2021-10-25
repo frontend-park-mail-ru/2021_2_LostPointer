@@ -1,6 +1,10 @@
-import { Component } from 'components/Component/component';
 import { SignupAuthForm } from 'components/SignupForm/signupform';
-import { addInputsEventListeners, CustomValidation, isValidForm } from 'services/validation/validation';
+import {
+    addInputsEventListeners,
+    CustomValidation,
+    isValidForm,
+    removeInputsEventListeners
+} from 'services/validation/validation';
 import router from 'services/router/router';
 import {
     confirmPasswordValidityChecks,
@@ -11,10 +15,11 @@ import {
 import Request from 'services/request/request';
 import {ICustomInput} from "interfaces/CustomInput";
 
-import './signupcomponent.scss';
+import './signupView.scss';
 
-import SignupComponentTemplate from './signupcomponent.hbs';
+import SignupComponentTemplate from './signupView.hbs';
 import routerStore from "services/router/routerStore";
+import {View} from "views/View/view";
 
 interface ISignupComponentProps {
     placeholder_img: string,
@@ -23,7 +28,7 @@ interface ISignupComponentProps {
     form: string
 }
 
-export class SignupComponent extends Component<ISignupComponentProps> {
+export class SignupView extends View<ISignupComponentProps> {
     constructor() {
         super();
         this.props = {
@@ -32,6 +37,10 @@ export class SignupComponent extends Component<ISignupComponentProps> {
             description: 'Let’s get all your required setup information and get started',
             form: new SignupAuthForm().render(),
         };
+    }
+
+    didMount(): void {
+        throw new Error('Method not implemented.');
     }
 
     render() {
@@ -53,6 +62,12 @@ export class SignupComponent extends Component<ISignupComponentProps> {
 
         addInputsEventListeners(form);
         form.addEventListener('submit', this.submitSignupForm);
+    }
+
+    unmount() {
+        const form = document.querySelector('.auth-form');
+        form.removeEventListener('submit', this.submitSignupForm);
+        removeInputsEventListeners(form);
     }
 
     submitSignupForm(event) {
@@ -94,4 +109,4 @@ export class SignupComponent extends Component<ISignupComponentProps> {
     }
 }
 
-export default new SignupComponent();
+export default new SignupView();

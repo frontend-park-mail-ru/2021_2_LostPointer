@@ -12,6 +12,7 @@
     "paths": {
       "src/*": ["src/*"],
       "components/*": ["src/components/*"],
+      "views/*": ["src/views/*"],
       "store/*": ["src/store/*"],
       "models/*": ["src/models/*"],
       "interfaces/*": ["src/interfaces/*"],

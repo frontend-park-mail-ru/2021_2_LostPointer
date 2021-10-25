@@ -1,7 +1,6 @@
-import { Component } from 'components/Component/component';
 import { Sidebar } from 'components/Sidebar/sidebar';
 import { TopAlbums } from 'components/TopAlbums/topalbums';
-import Request from '../../services/request/request';
+import Request from 'services/request/request';
 import TopbarComponent, {Topbar} from "components/Topbar/topbar";
 import {FriendActivity} from "components/FriendActivity/friendactivity";
 import {SuggestedArtists} from "components/SuggestedArtists/suggestedartists";
@@ -17,12 +16,13 @@ import {Album} from "models/album";
 import IndexTemplate from './indexView.hbs';
 import routerStore from "services/router/routerStore";
 import router from "services/router/router";
+import {View} from "views/View/view";
 
 interface IIndexViewProps {
     authenticated: boolean;
 }
 
-export class IndexView extends Component<IIndexViewProps> {
+export class IndexView extends View<IIndexViewProps> {
     private authenticated: boolean;
     private authHandler: (e) => void;
     private playButtonHandler: (e) => void;
@@ -37,8 +37,8 @@ export class IndexView extends Component<IIndexViewProps> {
     private friend_activity: FriendActivity;
     private userAvatar: string;
 
-    constructor() {
-        super();
+    constructor(props?: IIndexViewProps) {
+        super(props);
         this.isLoaded = false;
         this.addHandlers();
     }
@@ -116,15 +116,15 @@ export class IndexView extends Component<IIndexViewProps> {
                 }
                 if (this.player.nowPlaying) { // Переключили на другой трек
                     this.player.nowPlaying.dataset.playing = 'false';
-                    this.player.nowPlaying.src = '/src/static/img/play-outline.svg';
+                    this.player.nowPlaying.src = '/static/img/play-outline.svg';
                 }
 
                 this.player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
 
                 e.target.dataset.playing = 'true';
                 this.player.setTrack({
-                    url: `/src/static/tracks/${e.target.dataset.url}`,
-                    cover: `/src/static/img/artworks/${e.target.dataset.cover}`,
+                    url: `/static/tracks/${e.target.dataset.url}`,
+                    cover: `/static/img/artworks/${e.target.dataset.cover}`,
                     title: e.target.dataset.title,
                     artist: e.target.dataset.artist,
                     album: e.target.dataset.album,

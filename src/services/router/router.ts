@@ -1,18 +1,20 @@
 import {PATH_ARG, PATH_ARG_CG, PATH_SLASH} from 'store/regex';
-import {Component} from "components/Component/component";
+import {View} from "src/views/View/view";
 
 interface IRoute {
   path: string;
-  view: Component<never>;
+  view: View<never>;
 }
 
 class Router {
-  private routes: IRoute[];
+  private readonly routes: IRoute[];
+  private currentView: View<never>;
   constructor() {
     this.routes = [];
+    this.currentView = null;
   }
 
-  register(path, view) {
+  register(path: string, view) {
     this.routes.push({
       path,
       view,
@@ -24,7 +26,7 @@ class Router {
     return new RegExp(`^${path.replace(PATH_SLASH, '\\/').replace(PATH_ARG, '(.+)')}$`);
   }
 
-  _getView() {
+  _getView(): View<never> {
     const potentialMatches = this.routes.map((route) => ({
       route,
       result: window.location.pathname.match(this._pathToRegex(route.path)),
@@ -39,8 +41,12 @@ class Router {
     return matches.route.view;
   }
 
-  route() {
-    this._getView().render();
+  route(): void {
+    if (this.currentView && this.currentView.unmount) {
+      this.currentView.unmount();
+    }
+    this.currentView = this._getView()
+    this.currentView.render();
   }
 
   go(path: string): void {

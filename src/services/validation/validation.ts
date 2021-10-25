@@ -83,14 +83,24 @@ export function checkInput(input) {
   return [isValid, isEmpty];
 }
 
+function checkInputEventListener(input, event) {
+  event.preventDefault();
+  checkInput(input);
+}
+
 export function addInputsEventListeners(form) {
   const inputs = form.querySelectorAll('.auth-form__input');
 
   inputs.forEach((input) => {
-    input.addEventListener('focusout', (event) => {
-      event.preventDefault();
-      checkInput(input);
-    });
+    input.addEventListener('focusout', checkInputEventListener.bind(null, input));
+  });
+}
+
+export function removeInputsEventListeners(form) {
+  const inputs = form.querySelectorAll('.auth-form__input');
+
+  inputs.forEach((input) => {
+    input.removeEventListener('focusout', checkInputEventListener.bind(null, input));
   });
 }
 

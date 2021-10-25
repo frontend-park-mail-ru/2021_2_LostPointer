@@ -1,15 +1,20 @@
-import { Component } from 'components/Component/component';
 import { SigninAuthForm } from 'components/SigninForm/signinform';
 import Request from 'services/request/request';
-import { addInputsEventListeners, CustomValidation, isValidForm } from 'services/validation/validation';
+import {
+    addInputsEventListeners,
+    CustomValidation,
+    isValidForm,
+    removeInputsEventListeners
+} from 'services/validation/validation';
 import { emailValidityChecks, simplePasswordValidityChecks } from 'services/validation/validityChecks';
 import router from 'services/router/router';
 import routerStore from "services/router/routerStore";
 import {ICustomInput} from "interfaces/CustomInput";
 
-import SigninComponentTemplate from './signincomponent.hbs';
+import SigninComponentTemplate from './signinView.hbs';
 
-import './signincomponent.scss';
+import './signinView.scss';
+import {View} from "views/View/view";
 
 interface ISigninComponentProps {
     placeholder_img: string,
@@ -18,7 +23,7 @@ interface ISigninComponentProps {
     form: string
 }
 
-export class SigninComponent extends Component<ISigninComponentProps> {
+export class SigninView extends View<ISigninComponentProps> {
     constructor() {
         super();
         this.props = {
@@ -29,6 +34,9 @@ export class SigninComponent extends Component<ISigninComponentProps> {
         };
     }
 
+    didMount(): void {
+        throw new Error('Method not implemented.');
+    }
 
     render() {
         document.querySelector('.app').innerHTML = SigninComponentTemplate(this.props);
@@ -44,6 +52,12 @@ export class SigninComponent extends Component<ISigninComponentProps> {
 
         addInputsEventListeners(form);
         form.addEventListener('submit', this.submitSigninForm);
+    }
+
+    unmount() {
+        const form = document.querySelector('.auth-form');
+        form.removeEventListener('submit', this.submitSigninForm);
+        removeInputsEventListeners(form);
     }
 
     submitSigninForm(event) {
@@ -83,4 +97,4 @@ export class SigninComponent extends Component<ISigninComponentProps> {
     }
 }
 
-export default new SigninComponent();
+export default new SigninView();
