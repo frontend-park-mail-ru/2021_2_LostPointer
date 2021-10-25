@@ -574,10 +574,14 @@ body {
 
 #background-video {
     height: 100%;
-    /*display: none;*/
     object-fit: cover;
     z-index: -1;
     width: 100%;
+}
+
+.transition {
+    opacity: 0;
+    transition: opacity 1s linear;
 }
 
 .overlay {

@@ -233,4 +233,11 @@
 
 
 
-</body></html>
+</body>
+<script>
+  const video = document.querySelector('#background-video');
+  video.addEventListener('ended', (event) => {
+    video.classList.add('transition');
+  });
+
+</script></html>
