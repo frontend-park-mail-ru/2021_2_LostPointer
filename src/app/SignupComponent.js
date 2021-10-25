@@ -9,6 +9,7 @@ import {
 } from '../framework/validation/validityChecks.js';
 import Request from '../framework/appApi/request.js';
 import routerStore from '../framework/core/routerStore.js';
+import router from '../framework/core/router.js';
 
 export class SignupComponent extends Component {
   constructor(config) {
