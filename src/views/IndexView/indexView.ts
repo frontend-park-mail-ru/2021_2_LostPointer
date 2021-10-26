@@ -116,7 +116,7 @@ export class IndexView extends View<IIndexViewProps> {
                 }
                 if (this.player.nowPlaying) { // Переключили на другой трек
                     this.player.nowPlaying.dataset.playing = 'false';
-                    this.player.nowPlaying.src = '/static/img/play-outline.svg';
+                    this.player.nowPlaying.src = '/src/static/img/play-outline.svg';
                 }
 
                 this.player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
