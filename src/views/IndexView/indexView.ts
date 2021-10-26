@@ -122,9 +122,10 @@ export class IndexView extends View<IIndexViewProps> {
                 this.player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
 
                 e.target.dataset.playing = 'true';
+                console.log(e.target);
                 this.player.setTrack({
-                    url: `/static/tracks/${e.target.dataset.url}`,
-                    cover: `/static/img/artworks/${e.target.dataset.cover}`,
+                    url: `/src/static/tracks/${e.target.dataset.url}`,
+                    cover: `/src/static/img/artworks/${e.target.dataset.cover}`,
                     title: e.target.dataset.title,
                     artist: e.target.dataset.artist,
                     album: e.target.dataset.album,
