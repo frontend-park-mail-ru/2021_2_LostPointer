@@ -1,8 +1,6 @@
 import { Component } from '../framework/core/component.js';
 import { SignupAuthForm } from './auth/SignupAuthForm.js';
 import { addInputsEventListeners, CustomValidation, isValidForm } from '../framework/validation/validation.js';
-// eslint-disable-next-line import/no-cycle
-import { navigateTo } from '../framework/core/router.js';
 import {
   confirmPasswordValidityChecks,
   emailValidityChecks,
@@ -10,6 +8,8 @@ import {
   passwordValidityChecks,
 } from '../framework/validation/validityChecks.js';
 import Request from '../framework/appApi/request.js';
+import routerStore from '../framework/core/routerStore.js';
+import router from '../framework/core/router.js';
 
 export class SignupComponent extends Component {
   constructor(config) {
@@ -67,8 +67,7 @@ export class SignupComponent extends Component {
     )
       .then(({ status, body }) => {
         if (status === 201) {
-          // TODO Переделать navigateTo
-          navigateTo('/');
+          router.go(routerStore.dashboard);
         } else {
           const failMsg = event.target.querySelector('.auth-form__fail_msg');
           failMsg.innerText = body.message;
