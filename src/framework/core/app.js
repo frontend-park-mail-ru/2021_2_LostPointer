@@ -11,6 +11,18 @@ class App {
     router.route();
   }
 
+  enableServiceWorker() {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('../../../sw.js', { scope: '/' })
+        .then((registration) => {
+          console.log('sw registration on scope:', registration.scope);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }
+
   _dataLinkRoute(event) {
     if (event.target.matches('[data-link]')) {
       event.preventDefault();
@@ -30,6 +42,7 @@ class App {
 const app = new App();
 
 function startApp() {
+  app.enableServiceWorker();
   app.start();
 }
 export default startApp;

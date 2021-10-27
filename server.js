@@ -8,6 +8,10 @@ const path = require('path');
 
 app.use('/src', express.static('src'));
 
+app.get('/sw.js', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'sw.js'));
+});
+
 app.get('/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'index.html'));
 });
