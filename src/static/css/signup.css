@@ -115,6 +115,8 @@ body {
 
 .auth-form__fail_msg {
     visibility: hidden;
+    display: flex;
+    align-content: center;
     font-family: Montserrat;
     font-size: 16px;
     text-align: center;
