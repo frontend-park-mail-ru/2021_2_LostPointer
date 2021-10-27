@@ -80,6 +80,7 @@
 
 .profile-form__invalidities div.invalid {
     color: #ff4d5b;
+    margin-bottom: 10px;
 }
 .profile-form__invalidities div.valid {
     color: #2ecc71;
