@@ -24,7 +24,7 @@ class Router {
     return Object.fromEntries(keys.map((key, i) => [key, values[i]]));
   }
 
-  check() {
+  _getView() {
     const potentialMatches = this.routes.map((route) => ({
       route,
       result: window.location.pathname.match(this._pathToRegex(route.path)),
@@ -40,22 +40,18 @@ class Router {
     return new ViewClass(this._getParams(matches));
   }
 
-  start() {
-    window.addEventListener('popstate', this.check);
-    return this;
+  route() {
+    this._getView().render();
   }
 
   go(path) {
     window.history.pushState(null, null, path);
-    window.history.go(0);
+    this.route();
   }
 
-  back() {
-    window.history.back();
-  }
-
-  forward() {
-    window.history.forward();
+  start() {
+    window.addEventListener('popstate', this.route.bind(this));
+    return this;
   }
 }
 

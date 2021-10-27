@@ -8,6 +8,8 @@ import { ProfileView } from '../../app/ProfileView.js';
 class App {
   start() {
     this.initRoutes();
+    document.body.addEventListener('click', this._dataLinkRoute);
+    router.route();
   }
 
   _dataLinkRoute(event) {
@@ -24,11 +26,6 @@ class App {
       .register(routerStore.signup, SignupComponent)
       .register(routerStore.profile, ProfileView)
       .start();
-
-    document.addEventListener('DOMContentLoaded', () => {
-      document.body.addEventListener('click', this._dataLinkRoute);
-      router.check().render();
-    });
   }
 }
 
