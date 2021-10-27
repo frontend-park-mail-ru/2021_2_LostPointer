@@ -44,7 +44,7 @@ export class SignupView extends View<ISignupComponentProps> {
     }
 
     render() {
-        document.querySelector('.app').innerHTML = SignupComponentTemplate(this.props);
+        document.getElementById('app').innerHTML = SignupComponentTemplate(this.props);
 
         const form = document.querySelector('.auth-form');
         const nicknameInput = form.querySelector('input[name="nickname"]');

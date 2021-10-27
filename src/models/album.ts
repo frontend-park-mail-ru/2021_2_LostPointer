@@ -20,7 +20,10 @@ export class Album extends Model<IAlbum> {
         return new Promise((res) => {
             Request.get('/home/albums').then((response) => {
                 res((<Album[]>response));
-            });
+            })
+                .catch(() => {
+                    res(<Album[]>[]);
+                });
         });
     }
 }

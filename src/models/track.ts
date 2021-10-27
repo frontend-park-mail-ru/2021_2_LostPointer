@@ -25,7 +25,10 @@ export class Track extends Model<ITrack> {
         return new Promise((res) => {
             Request.get('/home/tracks').then((response) => {
                 res(<Track[]>response);
-            });
+            })
+                .catch(() => {
+                    res(<Track[]>[]);
+                });
         });
     }
 }

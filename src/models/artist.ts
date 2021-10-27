@@ -16,7 +16,10 @@ export class Artist extends Model<IArtist> {
         return new Promise<Artist[]>((res) => {
             Request.get('/home/artists').then((response) => {
                 res(<Artist[]>response);
-            });
+            })
+                .catch(() => {
+                    res(<Artist[]>[]);
+                });
         });
     }
 }

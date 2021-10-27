@@ -97,7 +97,10 @@ export class IndexView extends View<IIndexViewProps> {
 
             this.isLoaded = true;
             this.render();
-        });
+        })
+            .catch(() => {
+                this.showDeadMsg();
+            });
     }
 
     addListeners() {
@@ -165,7 +168,7 @@ export class IndexView extends View<IIndexViewProps> {
             return;
         }
 
-        document.querySelector(' .app').innerHTML = IndexTemplate({
+        document.getElementById('app').innerHTML = IndexTemplate({
             topbar: this.topbar.set({authenticated: this.authenticated, avatar: this.userAvatar}).render(),
             sidebar: this.sidebar,
             friend_activity: this.friend_activity,
@@ -177,6 +180,26 @@ export class IndexView extends View<IIndexViewProps> {
         });
         this.addListeners();
 
+    }
+
+    showDeadMsg(): void {
+        const msg = 'Backend is dead';
+        const app = document.getElementById('app');
+        const MAX = 200;
+        const MIN = 50;
+
+        document.title = 'Oops';
+
+        app.classList.add('app-dead');
+        let i = 0;
+        const typeWriter = () => {
+            if (i < msg.length) {
+                app.innerHTML += msg.charAt(i);
+                i++;
+                setTimeout(typeWriter, Math.random() * (MAX - MIN) + MIN);
+            }
+        }
+        typeWriter();
     }
 }
 

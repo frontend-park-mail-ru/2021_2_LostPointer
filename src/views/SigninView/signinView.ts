@@ -39,7 +39,7 @@ export class SigninView extends View<ISigninComponentProps> {
     }
 
     render() {
-        document.querySelector('.app').innerHTML = SigninComponentTemplate(this.props);
+        document.getElementById('app').innerHTML = SigninComponentTemplate(this.props);
         const form = document.querySelector('.auth-form');
         const emailInput = form.querySelector('input[name="email"]');
         const passwordInput = form.querySelector('input[name="password"]');
