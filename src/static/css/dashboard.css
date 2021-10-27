@@ -46,7 +46,7 @@ body {
 
 .sidebar__logo {
     cursor: pointer;
-    margin: 10px 8px 25px 8px;
+    margin: 20px 8px 25px 8px;
 }
 
 .main {
@@ -72,42 +72,38 @@ body {
     justify-content: space-between;
     display: flex;
     width: 100%;
-    margin: 25px 10px 0;
-    height: 40px;
+    margin: 25px 10px;
 }
 
 .topbar__search {
     background-color: #191919;
     width: 75%;
-    height: 40px;
+    height: 65px;
     border-radius: 50px;
 }
 
 .topbar-icons {
-    display: flex;
     background-color: #191919;
     border-radius: 50px;
-    padding: 0 auto;
+    padding: 5px 10px;
     width: 85px;
     height: 40px;
-    /* margin: auto; */
-    justify-content: space-evenly;
-    align-items: center;
+    margin: auto;
 }
 
 .topbar-icon {
     cursor: pointer;
-    height: 20px;
-    /* padding-left: 10px; */
-    /* padding-top: 5px; */
+    height: 30px;
+    padding-left: 10px;
+    padding-top: 5px;
 }
 
 .topbar-profile, .topbar-auth {
     cursor: pointer;
     margin-right: 40px;
-    /* margin-top: 2px; */
-    /* padding: 8px; */
-    height: 40px;
+    margin-top: 2px;
+    padding: 8px;
+    height: 45px;
     border-radius: 50%;
 }
 

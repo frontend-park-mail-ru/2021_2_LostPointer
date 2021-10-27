@@ -11,26 +11,24 @@
 .profile-page__title {
     font-family: Montserrat;
     color: aliceblue;
-    font-size: 40px;
+    font-size: 45px;
     font-weight: 400;
     text-align: center;
-    padding: 10px 0 20px;
 }
 
 .profile-form {
-    /* width: 700px; */
+    width: 700px;
     display: inline-block;
     float: left;
-    /* margin-top: 30px; */
+    margin-top: 30px;
 }
 
 .profile-form__message-block {
-    padding: 20px 0 0;
+    height: 50px;
+    padding: 40px 10px 10px;
 }
 
 .profile-form__message {
-    display: flex;
-    justify-content: center;
     color: #FFFFFF;
     font-family: Montserrat;
     font-size: 18px;
@@ -49,6 +47,7 @@
     text-align: right;
     width: 150px;
     top: 20px;
+    position: absolute;
 }
 
 .grey {
@@ -101,8 +100,6 @@
 }
 
 .profile-form__msg, .profile-avatar__msg {
-    display: flex;
-    justify-content: center;
     visibility: hidden;
     font-family: Montserrat;
     font-size: 16px;
@@ -110,6 +107,7 @@
     list-style: disc inside;
     max-width: 350px;
     margin: 10px auto;
+    display: flex;
 }
 
 .success {
@@ -147,7 +145,7 @@
 }
 
 .profile-avatar {
-    width: 200px;
+    width: 400px;
     display: inline-block;
     flex-direction: column;
     float: left;
@@ -156,7 +154,7 @@
 
 .profile-avatar__img {
     display: block;
-    width: inherit;
+    width: 300px;
     margin-left: auto;
     margin-right: auto;
     border-radius: 50%;
