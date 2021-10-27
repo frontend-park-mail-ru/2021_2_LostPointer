@@ -5,6 +5,8 @@ const cacheUrls = [
   '/',
   '/api/v1/auth',
   '/api/v1/home',
+  'https://fonts.gstatic.com/s/montserrat/v18/JTURjIg1_i6t8kCHKm45_aZA3g3D_vx3rCubqg.woff2',
+  'https://fonts.gstatic.com/s/montserrat/v18/JTURjIg1_i6t8kCHKm45_aZA3gnD_vx3rCs.woff2',
   './src/app/SignupComponent.js',
   './src/app/AppComponent.js',
   './src/app/auth/SigninAuthForm.js',
@@ -57,6 +59,14 @@ const cacheUrls = [
   './src/static/img/shuffle.svg',
   './src/static/img/Logo.svg',
   './src/static/img/pause.svg',
+  './src/static/img/albina.jpeg',
+  './src/static/img/woman_headphones_1.jpeg',
+  './src/static/img/id.jpeg',
+  './src/static/img/login.png',
+  './src/static/img/ava.png',
+  './src/static/img/logout.png',
+  './src/static/img/woman_headphones_2.png',
+  './src/static/img/sidebar_logo.png',
 ];
 
 this.addEventListener('install', (event) => {
