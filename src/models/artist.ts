@@ -8,8 +8,8 @@ export interface IArtist {
 }
 
 export class Artist extends Model<IArtist> {
-    constructor(props: IArtist = null, isLoaded = false) {
-        super(props, isLoaded);
+    constructor(props: IArtist = null) {
+        super(props);
     }
 
     static getHomepageArtists(): Promise<Artist[]> | Promise<[]> {

@@ -11,7 +11,7 @@ interface ITrackProps {
     album: string;
 }
 
-class Track extends Component<ITrackProps> {
+export class TrackComponent extends Component<ITrackProps> {
     constructor(props) {
         super(props);
     }
@@ -20,5 +20,3 @@ class Track extends Component<ITrackProps> {
         return TrackTemplate(this.props);
     }
 }
-
-export { Track };

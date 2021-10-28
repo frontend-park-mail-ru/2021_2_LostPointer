@@ -6,5 +6,9 @@ export abstract class  Component<TProps> {
         this.props = {...props};
     }
 
+    getProps(): TProps {
+        return this.props;
+    }
+
     abstract render(): void;
 }

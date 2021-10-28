@@ -1,5 +1,5 @@
 import { Component } from 'components/Component/component';
-import { InputFormComponent } from '../InputForm/inputform';
+import { InputFormComponent } from 'components/InputForm/inputform';
 
 import SigninFormTemplate from './signinform.hbs';
 

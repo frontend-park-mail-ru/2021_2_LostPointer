@@ -13,9 +13,9 @@ import {
     passwordValidityChecks,
 } from 'services/validation/validityChecks';
 import Request from 'services/request/request';
-import {ICustomInput} from "interfaces/CustomInput";
-import routerStore from "services/router/routerStore";
-import {View} from "views/View/view";
+import {ICustomInput} from 'interfaces/CustomInput';
+import routerStore from 'services/router/routerStore';
+import {View} from 'views/View/view';
 
 import SignupComponentTemplate from './signupView.hbs';
 import './signupView.scss';

@@ -12,8 +12,8 @@ export interface IAlbum {
 }
 
 export class Album extends Model<IAlbum> {
-    constructor(props: IAlbum = null, isLoaded = false) {
-        super(props, isLoaded);
+    constructor(props: IAlbum = null) {
+        super(props);
     }
 
     static getHomepageAlbums(): Promise<Album[]> | Promise<[]> {

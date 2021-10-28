@@ -1,9 +1,10 @@
-import { Component } from '../Component/component';
+import { Component } from 'components/Component/component';
 
 import SuggestedArtistsTemplate from './suggestedartists.hbs';
+import {Artist} from "models/artist";
 
 interface ISuggestedArtistsProps {
-    artists: Array<any>;
+    artists: Array<Artist>;
 }
 
 class SuggestedArtists extends Component<ISuggestedArtistsProps> {

@@ -1,5 +1,5 @@
-import {Model} from "models/model";
-import Request from "../../src/services/request/request";
+import {Model} from 'models/model';
+import Request from 'services/request/request';
 
 export interface ITrack {
     id: number;
@@ -17,8 +17,8 @@ export interface ITrack {
 }
 
 export class Track extends Model<ITrack> {
-    constructor(props: ITrack = null, isLoaded = false) {
-        super(props, isLoaded);
+    constructor(props: ITrack = null) {
+        super(props);
     }
 
     static getHomepageTracks(): Promise<Track[]> | Promise<[]> {

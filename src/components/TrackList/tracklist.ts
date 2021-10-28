@@ -1,10 +1,10 @@
 import { Component } from 'components/Component/component';
-import { Track } from '../Track/track';
+import { TrackComponent } from 'components/TrackComponent/track'
 
 import TracklistTemplate from './tracklist.hbs';
 
 interface ITrackListProps {
-    tracks: Array<Track>
+    tracks: Array<TrackComponent>
 }
 
 class TrackList extends Component<ITrackListProps> {
@@ -12,7 +12,7 @@ class TrackList extends Component<ITrackListProps> {
         super(props);
         this.props.tracks = props.tracks.map((item, index) => {
             item.pos = index;
-            return { track: new Track(item).render() };
+            return { track: new TrackComponent(item).render() };
         });
     }
     render() {

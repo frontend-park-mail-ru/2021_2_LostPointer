@@ -1,18 +1,18 @@
 import { Sidebar } from 'components/Sidebar/sidebar';
 import { TopAlbums } from 'components/TopAlbums/topalbums';
 import Request from 'services/request/request';
-import TopbarComponent, {Topbar} from "components/Topbar/topbar";
-import {FriendActivity} from "components/FriendActivity/friendactivity";
-import {SuggestedArtists} from "components/SuggestedArtists/suggestedartists";
-import {TrackList} from "components/TrackList/tracklist";
-import {SuggestedPlaylists} from "components/SuggestedPlaylists/suggestedplaylists";
-import Player, {PlayerComponent} from "components/Player/player";
-import {Track} from "models/track";
-import {Artist} from "models/artist";
-import {Album} from "models/album";
-import routerStore from "services/router/routerStore";
-import router from "services/router/router";
-import {View} from "views/View/view";
+import TopbarComponent, {Topbar} from 'components/Topbar/topbar';
+import {FriendActivity} from 'components/FriendActivity/friendactivity';
+import {SuggestedArtists} from 'components/SuggestedArtists/suggestedartists';
+import {TrackList} from 'components/TrackList/tracklist';
+import {SuggestedPlaylists} from 'components/SuggestedPlaylists/suggestedplaylists';
+import Player, {PlayerComponent} from 'components/Player/player';
+import {Track} from 'models/track';
+import {Artist} from 'models/artist';
+import {Album} from 'models/album';
+import routerStore from 'services/router/routerStore';
+import router from 'services/router/router';
+import {View} from 'views/View/view';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
@@ -52,7 +52,7 @@ export class IndexView extends View<IIndexViewProps> {
             });
 
         const tracks = Track.getHomepageTracks().then((tracks) => { this.track_list = tracks; });
-        const artists = Artist.getHomepageArtists().then((artists) => { this.suggested_artists = artists; });
+        const artists = Artist.getHomepageArtists().then((artists) => { this.suggested_artists = artists;});
         const albums = Album.getHomepageAlbums().then((albums) => { this.top_albums = albums; });
 
         const predefinedPlaylists = [
