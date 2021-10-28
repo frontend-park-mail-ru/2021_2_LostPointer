@@ -62,10 +62,11 @@ export class SigninView extends View<ISigninComponentProps> {
 
     submitSigninForm(event) {
         event.preventDefault();
+        const inputs = event.target.querySelectorAll('.auth-form__input');
         const errorsField = document.querySelector('.auth-form__fail_msg');
         errorsField.innerHTML = '&nbsp;';
 
-        if (!isValidForm(2)) {
+        if (!isValidForm(inputs.length)) {
             errorsField.classList.add('visible');
             return;
         }
