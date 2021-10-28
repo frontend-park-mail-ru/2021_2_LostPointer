@@ -21,13 +21,13 @@ export class Track extends Model<ITrack> {
         super(props, isLoaded);
     }
 
-    static getHomepageTracks(): Promise<Track[]> {
+    static getHomepageTracks(): Promise<Track[]> | Promise<[]> {
         return new Promise((res) => {
             Request.get('/home/tracks').then((response) => {
                 res(<Track[]>response);
             })
                 .catch(() => {
-                    res(<Track[]>[]);
+                    res([]);
                 });
         });
     }

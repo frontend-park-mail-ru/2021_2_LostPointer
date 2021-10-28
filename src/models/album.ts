@@ -16,13 +16,13 @@ export class Album extends Model<IAlbum> {
         super(props, isLoaded);
     }
 
-    static getHomepageAlbums(): Promise<Album[]> {
+    static getHomepageAlbums(): Promise<Album[]> | Promise<[]> {
         return new Promise((res) => {
             Request.get('/home/albums').then((response) => {
                 res((<Album[]>response));
             })
                 .catch(() => {
-                    res(<Album[]>[]);
+                    res([]);
                 });
         });
     }

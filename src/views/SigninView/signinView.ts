@@ -10,11 +10,10 @@ import { emailValidityChecks, simplePasswordValidityChecks } from 'services/vali
 import router from 'services/router/router';
 import routerStore from "services/router/routerStore";
 import {ICustomInput} from "interfaces/CustomInput";
+import {View} from "views/View/view";
 
 import SigninComponentTemplate from './signinView.hbs';
-
 import './signinView.scss';
-import {View} from "views/View/view";
 
 interface ISigninComponentProps {
     placeholder_img: string,

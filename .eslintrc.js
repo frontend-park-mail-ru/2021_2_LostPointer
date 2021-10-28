@@ -19,6 +19,5 @@ module.exports = {
   ],
   ignorePatterns: [
     'webpack.config.js',
-    '*.precompiled.js',
   ],
 };

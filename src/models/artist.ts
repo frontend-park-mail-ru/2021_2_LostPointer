@@ -12,13 +12,13 @@ export class Artist extends Model<IArtist> {
         super(props, isLoaded);
     }
 
-    static getHomepageArtists() {
+    static getHomepageArtists(): Promise<Artist[]> | Promise<[]> {
         return new Promise<Artist[]>((res) => {
             Request.get('/home/artists').then((response) => {
                 res(<Artist[]>response);
             })
                 .catch(() => {
-                    res(<Artist[]>[]);
+                    res([]);
                 });
         });
     }

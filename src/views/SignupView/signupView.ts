@@ -14,12 +14,11 @@ import {
 } from 'services/validation/validityChecks';
 import Request from 'services/request/request';
 import {ICustomInput} from "interfaces/CustomInput";
-
-import './signupView.scss';
-
-import SignupComponentTemplate from './signupView.hbs';
 import routerStore from "services/router/routerStore";
 import {View} from "views/View/view";
+
+import SignupComponentTemplate from './signupView.hbs';
+import './signupView.scss';
 
 interface ISignupComponentProps {
     placeholder_img: string,

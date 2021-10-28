@@ -7,8 +7,8 @@
     "server": "node server.js",
     "lint": "eslint src/",
     "prepare": "husky install",
-    "compile": "webpack --mode=development",
-    "serve": "webpack serve --mode=development"
+    "compile": "webpack --mode=production",
+    "start": "webpack serve --mode=development"
   },
   "repository": {
     "type": "git",

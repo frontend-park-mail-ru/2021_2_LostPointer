@@ -7,16 +7,15 @@ import {SuggestedArtists} from "components/SuggestedArtists/suggestedartists";
 import {TrackList} from "components/TrackList/tracklist";
 import {SuggestedPlaylists} from "components/SuggestedPlaylists/suggestedplaylists";
 import Player, {PlayerComponent} from "components/Player/player";
-
-import './indexView.scss';
 import {Track} from "models/track";
 import {Artist} from "models/artist";
 import {Album} from "models/album";
-
-import IndexTemplate from './indexView.hbs';
 import routerStore from "services/router/routerStore";
 import router from "services/router/router";
 import {View} from "views/View/view";
+
+import IndexTemplate from './indexView.hbs';
+import './indexView.scss';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -99,7 +98,7 @@ export class IndexView extends View<IIndexViewProps> {
             this.render();
         })
             .catch(() => {
-                this.showDeadMsg();
+                // Show that backend is dead somehow
             });
     }
 
@@ -180,26 +179,6 @@ export class IndexView extends View<IIndexViewProps> {
         });
         this.addListeners();
 
-    }
-
-    showDeadMsg(): void {
-        const msg = 'Backend is dead';
-        const app = document.getElementById('app');
-        const MAX = 200;
-        const MIN = 50;
-
-        document.title = 'Oops';
-
-        app.classList.add('app-dead');
-        let i = 0;
-        const typeWriter = () => {
-            if (i < msg.length) {
-                app.innerHTML += msg.charAt(i);
-                i++;
-                setTimeout(typeWriter, Math.random() * (MAX - MIN) + MIN);
-            }
-        }
-        typeWriter();
     }
 }
 

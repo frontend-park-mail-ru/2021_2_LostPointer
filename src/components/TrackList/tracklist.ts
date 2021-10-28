@@ -4,16 +4,15 @@ import { Track } from '../Track/track';
 import TracklistTemplate from './tracklist.hbs';
 
 interface ITrackListProps {
-    tracks: Array<any>
+    tracks: Array<Track>
 }
 
 class TrackList extends Component<ITrackListProps> {
     constructor(props) {
         super(props);
-        let pos = 0;
-        this.props.tracks = props.tracks.map((e) => {
-            e.pos = pos++;
-            return { track: new Track(e).render() };
+        this.props.tracks = props.tracks.map((item, index) => {
+            item.pos = index;
+            return { track: new Track(item).render() };
         });
     }
     render() {

@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const port = process.env.PORT || 10000;
+const port = process.env.PORT || 3000;
 const src = path.join(__dirname, 'src');
 
 module.exports = {
@@ -27,7 +27,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(scss)$/,
+        test: /\.scss$/,
         use: [
           'style-loader',
           {

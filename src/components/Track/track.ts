@@ -14,14 +14,6 @@ interface ITrackProps {
 class Track extends Component<ITrackProps> {
     constructor(props) {
         super(props);
-        this.props = {
-            cover: props.cover,
-            title: props.title,
-            artist: props.artist,
-            file: props.file,
-            pos: props.pos,
-            album: props.album,
-        };
     }
 
     render() {
