@@ -11,9 +11,11 @@ interface ISigninAuthFormProps {
 }
 
 export class SigninAuthForm extends Component<ISigninAuthFormProps> {
+    private data: ISigninAuthFormProps;
+
     constructor() {
         super();
-        this.props = {
+        this.data = {
             fail_msg: 'Authentication failed',
             p_redirect_msg: "Don't have an account?",
             a_redirect_msg: 'Sign up',
@@ -33,6 +35,6 @@ export class SigninAuthForm extends Component<ISigninAuthFormProps> {
     }
 
     render(): string {
-        return SigninFormTemplate(this.props);
+        return SigninFormTemplate(this.data);
     }
 }

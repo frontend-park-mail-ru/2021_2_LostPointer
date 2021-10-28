@@ -3,7 +3,7 @@ import { Component } from 'components/Component/component';
 import FriendActivityTemplate from './friendactivity.hbs';
 
 interface IFriendActivityProps {
-    friends: Array<any>;
+    friends: Array<any>; //TODO
 }
 
 export class FriendActivity extends Component<IFriendActivityProps> {

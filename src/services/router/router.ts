@@ -1,4 +1,4 @@
-import { PATH_ARG, PATH_ARG_CG, PATH_SLASH } from 'store/regex';
+import { PATH_ARG, PATH_SLASH } from 'store/regex';
 import { View } from 'src/views/View/view';
 
 interface IRoute {
