@@ -110,13 +110,7 @@ export function isValidForm(amountOfInputs) {
   let isValid = true;
   let emptyFields = 0;
   inputsArray.forEach((item) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // TODO=WTF???????
-    let isEmpty: boolean;
-    let isValidTmp: boolean;
-    // eslint-disable-next-line prefer-const
-    [isValidTmp, isEmpty] = checkInput(item);
+    const [isValidTmp, isEmpty] = checkInput(item);
     if (!isValidTmp) {
       isValid = false;
     }
