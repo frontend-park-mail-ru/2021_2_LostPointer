@@ -108,7 +108,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             json.playing = false;
             this.props = json;
             this.audio.currentTime = this.props.playerCurrentTime;
-            this.audio.src = this.props.url;
+            this.audio.src = this.props.url.replace('.m4a', '.opus');
             this.props.right_disabled = true;
             this.props.left_disabled = true;
             document.title = `${this.props.track} · ${this.props.artist}`;
@@ -121,7 +121,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
     setTrack(track): void {
         this.audio.pause();
-        this.audio.src = track.url;
+        this.audio.src = track.url.replace('.m4a', '.opus');
         this.props = {
             cover: track.cover,
             track: track.title,
