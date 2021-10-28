@@ -1,7 +1,7 @@
 import {Model} from 'models/model';
 import Request from 'services/request/request';
 
-export interface ITrack {
+export interface ITrackModel {
     id: number;
     title: string;
     artist: string;
@@ -14,17 +14,23 @@ export interface ITrack {
     duration: number;
     lossless: boolean;
     cover: string;
+    pos: number;
 }
 
-export class Track extends Model<ITrack> {
-    constructor(props: ITrack = null) {
+export class TrackModel extends Model<ITrackModel> {
+    constructor(props: ITrackModel = null) {
         super(props);
     }
 
-    static getHomepageTracks(): Promise<Track[]> | Promise<[]> {
+    static getHomepageTracks(): Promise<TrackModel[]> | Promise<[]> {
         return new Promise((res) => {
             Request.get('/home/tracks').then((response) => {
-                res(<Track[]>response);
+                const tracks: Array<TrackModel> =  response.reduce((acc, elem, index) => {
+                    elem.pos = index;
+                    acc.push(new TrackModel(elem));
+                    return acc;
+                }, []);
+                res(tracks);
             })
                 .catch(() => {
                     res([]);

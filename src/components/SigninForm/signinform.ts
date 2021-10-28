@@ -10,7 +10,7 @@ interface ISigninAuthFormProps {
     inputs: Array<string>
 }
 
-class SigninAuthForm extends Component<ISigninAuthFormProps> {
+export class SigninAuthForm extends Component<ISigninAuthFormProps> {
     constructor() {
         super();
         this.props = {
@@ -36,5 +36,3 @@ class SigninAuthForm extends Component<ISigninAuthFormProps> {
         return SigninFormTemplate(this.props);
     }
 }
-
-export { SigninAuthForm };

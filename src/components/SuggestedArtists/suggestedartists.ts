@@ -1,13 +1,13 @@
 import { Component } from 'components/Component/component';
 
 import SuggestedArtistsTemplate from './suggestedartists.hbs';
-import {Artist} from "models/artist";
+import {ArtistModel} from 'models/artist';
 
 interface ISuggestedArtistsProps {
-    artists: Array<Artist>;
+    artists: Array<ArtistModel>;
 }
 
-class SuggestedArtists extends Component<ISuggestedArtistsProps> {
+export class SuggestedArtists extends Component<ISuggestedArtistsProps> {
     constructor(props) {
         super(props);
     }
@@ -17,4 +17,3 @@ class SuggestedArtists extends Component<ISuggestedArtistsProps> {
     }
 }
 
-export { SuggestedArtists };

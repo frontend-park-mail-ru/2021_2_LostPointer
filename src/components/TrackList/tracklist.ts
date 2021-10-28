@@ -2,22 +2,24 @@ import { Component } from 'components/Component/component';
 import { TrackComponent } from 'components/TrackComponent/track'
 
 import TracklistTemplate from './tracklist.hbs';
+import {TrackModel} from 'models/track';
 
 interface ITrackListProps {
-    tracks: Array<TrackComponent>
+    tracks: Array<TrackModel>
 }
 
-class TrackList extends Component<ITrackListProps> {
+export class TrackList extends Component<ITrackListProps> {
+    private trackComponents: Array<TrackComponent>;
+
     constructor(props) {
         super(props);
-        this.props.tracks = props.tracks.map((item, index) => {
-            item.pos = index;
-            return { track: new TrackComponent(item).render() };
-        });
+        this.trackComponents = this.props.tracks.reduce((acc, item) => {
+            acc.push(new TrackComponent(item.getProps()).render());
+            return acc;
+        }, []);
     }
     render() {
-        return TracklistTemplate({tracks: this.props.tracks});
+        return TracklistTemplate({tracks: this.trackComponents});
     }
 }
 
-export { TrackList };

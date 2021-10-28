@@ -1,12 +1,13 @@
 import { Component } from 'components/Component/component';
 
 import TopAlbumsTemplate from './topalbums.hbs';
+import {AlbumModel} from 'models/album';
 
 interface ITopAlbumsProps {
-    albums: Array<any>
+    albums: Array<AlbumModel>
 }
 
-class TopAlbums extends Component<ITopAlbumsProps> {
+export class TopAlbums extends Component<ITopAlbumsProps> {
     constructor(props) {
         super(props);
     }
@@ -14,5 +15,3 @@ class TopAlbums extends Component<ITopAlbumsProps> {
         return TopAlbumsTemplate({albums: this.props.albums});
     }
 }
-
-export { TopAlbums };

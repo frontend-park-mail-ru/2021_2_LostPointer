@@ -7,9 +7,9 @@ import {SuggestedArtists} from 'components/SuggestedArtists/suggestedartists';
 import {TrackList} from 'components/TrackList/tracklist';
 import {SuggestedPlaylists} from 'components/SuggestedPlaylists/suggestedplaylists';
 import Player, {PlayerComponent} from 'components/Player/player';
-import {Track} from 'models/track';
-import {Artist} from 'models/artist';
-import {Album} from 'models/album';
+import {TrackModel} from 'models/track';
+import {ArtistModel} from 'models/artist';
+import {AlbumModel} from 'models/album';
 import routerStore from 'services/router/routerStore';
 import router from 'services/router/router';
 import {View} from 'views/View/view';
@@ -26,9 +26,9 @@ export class IndexView extends View<IIndexViewProps> {
     private authHandler: (e) => void;
     private playButtonHandler: (e) => void;
 
-    private top_albums: Album[];
-    private suggested_artists: Artist[];
-    private track_list: Track[];
+    private top_albums: AlbumModel[];
+    private suggested_artists: ArtistModel[];
+    private track_list: TrackModel[];
     private suggested_playlists: SuggestedPlaylists;
     private player: PlayerComponent;
     private sidebar: Sidebar;
@@ -51,9 +51,9 @@ export class IndexView extends View<IIndexViewProps> {
                 this.userAvatar = response.avatar;
             });
 
-        const tracks = Track.getHomepageTracks().then((tracks) => { this.track_list = tracks; });
-        const artists = Artist.getHomepageArtists().then((artists) => { this.suggested_artists = artists;});
-        const albums = Album.getHomepageAlbums().then((albums) => { this.top_albums = albums; });
+        const tracks = TrackModel.getHomepageTracks().then((tracks) => { this.track_list = tracks; });
+        const artists = ArtistModel.getHomepageArtists().then((artists) => { this.suggested_artists = artists;});
+        const albums = AlbumModel.getHomepageAlbums().then((albums) => { this.top_albums = albums; });
 
         const predefinedPlaylists = [
             {
@@ -124,7 +124,6 @@ export class IndexView extends View<IIndexViewProps> {
                 this.player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
 
                 e.target.dataset.playing = 'true';
-                console.log(e.target);
                 this.player.setTrack({
                     url: `/src/static/tracks/${e.target.dataset.url}`,
                     cover: `/src/static/img/artworks/${e.target.dataset.cover}`,

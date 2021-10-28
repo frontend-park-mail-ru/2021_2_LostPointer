@@ -7,7 +7,7 @@ interface ISuggestedPlaylistProps {
     title: string
 }
 
-class SuggestedPlaylist extends Component<ISuggestedPlaylistProps> {
+export class SuggestedPlaylist extends Component<ISuggestedPlaylistProps> {
     constructor(props) {
         super(props);
         this.props = {
@@ -21,4 +21,3 @@ class SuggestedPlaylist extends Component<ISuggestedPlaylistProps> {
     }
 }
 
-export { SuggestedPlaylist };

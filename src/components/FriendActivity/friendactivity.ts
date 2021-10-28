@@ -6,7 +6,7 @@ interface IFriendActivityProps{
     friends: Array<any>,
 }
 
-class FriendActivity extends Component<IFriendActivityProps> {
+export class FriendActivity extends Component<IFriendActivityProps> {
     constructor(config) {
         super(config);
     }
@@ -16,4 +16,3 @@ class FriendActivity extends Component<IFriendActivityProps> {
     }
 }
 
-export { FriendActivity };

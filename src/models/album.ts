@@ -1,7 +1,7 @@
 import {Model} from './model';
 import Request from '../../src/services/request/request'
 
-export interface IAlbum {
+export interface IAlbumModel {
     id: number;
     title: string;
     year: number;
@@ -11,15 +11,19 @@ export interface IAlbum {
     tracksDuration: number;
 }
 
-export class Album extends Model<IAlbum> {
-    constructor(props: IAlbum = null) {
+export class AlbumModel extends Model<IAlbumModel> {
+    constructor(props: IAlbumModel = null) {
         super(props);
     }
 
-    static getHomepageAlbums(): Promise<Album[]> | Promise<[]> {
+    static getHomepageAlbums(): Promise<AlbumModel[]> | Promise<[]> {
         return new Promise((res) => {
             Request.get('/home/albums').then((response) => {
-                res((<Album[]>response));
+                const albums: Array<AlbumModel> = response.reduce((acc, elem) => {
+                    acc.push(new AlbumModel(elem));
+                    return acc;
+                }, []);
+                res(albums);
             })
                 .catch(() => {
                     res([]);
