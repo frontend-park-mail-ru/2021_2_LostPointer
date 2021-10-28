@@ -19,6 +19,10 @@ interface IPlayerComponentProps {
 }
 
 export class PlayerComponent extends Component<IPlayerComponentProps> {
+    pos: number;
+    playlist: HTMLElement[];
+    nowPlaying: HTMLImageElement;
+    currentHandler: EventListenerOrEventListenerObject;
     private audio: HTMLAudioElement;
     private firstTime: boolean;
     private gotSeekPos: boolean;
@@ -27,9 +31,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private seekbarCurrent: HTMLElement;
     private volumePos: DOMRect;
     private currentVolume: HTMLElement;
-    pos: number;
-    playlist: HTMLElement[];
-
     private buttonsHandler: EventListenerOrEventListenerObject;
     private resizeHandler: EventListenerOrEventListenerObject;
     private seekbarHandler: EventListenerOrEventListenerObject;
@@ -41,11 +42,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private endedHandler: EventListenerOrEventListenerObject;
     private arrowKeysHandler: EventListenerOrEventListenerObject;
     private switchTrackHandler: (e: MediaSessionActionDetails) => void;
-
     private repeatToggle: HTMLImageElement;
-    nowPlaying: HTMLImageElement;
     private playlistIndices: number[];
-    currentHandler: EventListenerOrEventListenerObject;
     private mute: HTMLImageElement;
     private shuffle: boolean;
 
@@ -116,6 +114,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             document.title = `${this.props.track} · ${this.props.artist}`;
             this.props.hide_artwork = false;
             this.props.recovered = true;
+            this.audio.preload = 'metadata';
         }
         return typeof data === 'string';
     }
@@ -472,6 +471,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.update();
         localStorage.removeItem('lastPlayedData');
     }
+
     clear() {
         this.audio.pause();
         this.audio.src = '';
