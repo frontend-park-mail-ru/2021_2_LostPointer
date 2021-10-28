@@ -4,22 +4,25 @@ import {
     addInputsEventListeners,
     CustomValidation,
     isValidForm,
-    removeInputsEventListeners
+    removeInputsEventListeners,
 } from 'services/validation/validation';
-import { emailValidityChecks, simplePasswordValidityChecks } from 'services/validation/validityChecks';
+import {
+    emailValidityChecks,
+    simplePasswordValidityChecks,
+} from 'services/validation/validityChecks';
 import router from 'services/router/router';
-import routerStore from "services/router/routerStore";
-import {ICustomInput} from "interfaces/CustomInput";
-import {View} from "views/View/view";
+import routerStore from 'services/router/routerStore';
+import { ICustomInput } from 'interfaces/CustomInput';
+import { View } from 'views/View/view';
 
 import SigninComponentTemplate from './signinView.hbs';
 import './signinView.scss';
 
 interface ISigninComponentProps {
-    placeholder_img: string,
-    title: string,
-    description: string,
-    form: string
+    placeholder_img: string;
+    title: string;
+    description: string;
+    form: string;
 }
 
 export class SigninView extends View<ISigninComponentProps> {
@@ -38,15 +41,21 @@ export class SigninView extends View<ISigninComponentProps> {
     }
 
     render() {
-        document.getElementById('app').innerHTML = SigninComponentTemplate(this.props);
+        document.getElementById('app').innerHTML = SigninComponentTemplate(
+            this.props
+        );
         const form = document.querySelector('.auth-form');
         const emailInput = form.querySelector('input[name="email"]');
         const passwordInput = form.querySelector('input[name="password"]');
         const invalidities = document.querySelector('.auth-form__invalidities');
 
-        (<ICustomInput>emailInput).CustomValidation = new CustomValidation(emailValidityChecks, invalidities);
+        (<ICustomInput>emailInput).CustomValidation = new CustomValidation(
+            emailValidityChecks,
+            invalidities
+        );
         (<ICustomInput>passwordInput).CustomValidation = new CustomValidation(
-            simplePasswordValidityChecks, invalidities,
+            simplePasswordValidityChecks,
+            invalidities
         );
 
         addInputsEventListeners(form);
@@ -70,7 +79,9 @@ export class SigninView extends View<ISigninComponentProps> {
             return;
         }
         const emailInput = event.target.querySelector('input[name="email"]');
-        const passwordInput = event.target.querySelector('input[name="password"]');
+        const passwordInput = event.target.querySelector(
+            'input[name="password"]'
+        );
 
         Request.post(
             '/user/signin',
@@ -80,17 +91,21 @@ export class SigninView extends View<ISigninComponentProps> {
             }),
             undefined
         )
-            .then(({status, body}) => {
+            .then(({ status, body }) => {
                 if (status === 200) {
                     router.go(routerStore.dashboard);
                 } else {
-                    const failMsg = event.target.querySelector('.auth-form__fail_msg');
+                    const failMsg = event.target.querySelector(
+                        '.auth-form__fail_msg'
+                    );
                     failMsg.innerText = body.message;
                     failMsg.classList.add('visible');
                 }
             })
             .catch(() => {
-                const failMsg = event.target.querySelector('.auth-form__fail_msg');
+                const failMsg = event.target.querySelector(
+                    '.auth-form__fail_msg'
+                );
                 failMsg.innerText = 'Authentication failed';
                 failMsg.classList.add('visible');
             });

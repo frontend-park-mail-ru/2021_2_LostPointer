@@ -3,8 +3,8 @@ import { Component } from 'components/Component/component';
 import SuggestedPlaylistTemplate from './suggestedplaylist.hbs';
 
 interface ISuggestedPlaylistProps {
-    cover: string,
-    title: string
+    cover: string;
+    title: string;
 }
 
 export class SuggestedPlaylist extends Component<ISuggestedPlaylistProps> {
@@ -20,4 +20,3 @@ export class SuggestedPlaylist extends Component<ISuggestedPlaylistProps> {
         return SuggestedPlaylistTemplate(this.props);
     }
 }
-

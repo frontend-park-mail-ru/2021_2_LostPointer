@@ -2,8 +2,8 @@ import { Component } from 'components/Component/component';
 
 import FriendActivityTemplate from './friendactivity.hbs';
 
-interface IFriendActivityProps{
-    friends: Array<any>,
+interface IFriendActivityProps {
+    friends: Array<any>;
 }
 
 export class FriendActivity extends Component<IFriendActivityProps> {
@@ -15,4 +15,3 @@ export class FriendActivity extends Component<IFriendActivityProps> {
         return FriendActivityTemplate({ friends: this.props.friends });
     }
 }
-

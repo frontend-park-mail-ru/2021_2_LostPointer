@@ -1,5 +1,5 @@
-import {Model} from './model';
-import Request from '../../src/services/request/request'
+import { Model } from './model';
+import Request from '../../src/services/request/request';
 
 export interface IAlbumModel {
     id: number;
@@ -18,13 +18,17 @@ export class AlbumModel extends Model<IAlbumModel> {
 
     static getHomepageAlbums(): Promise<AlbumModel[]> | Promise<[]> {
         return new Promise((res) => {
-            Request.get('/home/albums').then((response) => {
-                const albums: Array<AlbumModel> = response.reduce((acc, elem) => {
-                    acc.push(new AlbumModel(elem));
-                    return acc;
-                }, []);
-                res(albums);
-            })
+            Request.get('/home/albums')
+                .then((response) => {
+                    const albums: Array<AlbumModel> = response.reduce(
+                        (acc, elem) => {
+                            acc.push(new AlbumModel(elem));
+                            return acc;
+                        },
+                        []
+                    );
+                    res(albums);
+                })
                 .catch(() => {
                     res([]);
                 });

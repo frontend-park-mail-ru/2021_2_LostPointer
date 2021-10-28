@@ -4,10 +4,10 @@ import { InputFormComponent } from 'components/InputForm/inputform';
 import SignupFormTemplate from './signupform.hbs';
 
 interface ISignupAuthFormProps {
-    fail_msg: string,
-    p_redirect_msg: string,
-    a_redirect_msg: string,
-    inputs: Array<string>,
+    fail_msg: string;
+    p_redirect_msg: string;
+    a_redirect_msg: string;
+    inputs: Array<string>;
 }
 
 export class SignupAuthForm extends Component<ISignupAuthFormProps> {
@@ -46,4 +46,3 @@ export class SignupAuthForm extends Component<ISignupAuthFormProps> {
         return SignupFormTemplate(this.props);
     }
 }
-

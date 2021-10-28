@@ -2,170 +2,169 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@350&display=swap');
 
 .app {
-  height: 100%;
+    height: 100%;
 }
 
-body, html {
-  height: 100%;
+body,
+html {
+    height: 100%;
 }
 
 .login-ui {
-  display: flex;
-  height: 100%;
-  align-items: center;
+    display: flex;
+    height: 100%;
+    align-items: center;
 }
 
 .auth-page__placeholder {
-  width: 50%;
-  height: 100%;
+    width: 50%;
+    height: 100%;
 }
 
 .auth_page__placeholder-photo {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
 }
 
 .auth-page__content {
-  margin-left: 60px;
+    margin-left: 60px;
 }
 
 .auth-page__logo {
-  display: flex;
+    display: flex;
 }
 
 .auth-page__logo-image {
-  cursor: pointer;
-  width: 272px;
-  display: inline-block;
-  margin-left: 10px;
+    cursor: pointer;
+    width: 272px;
+    display: inline-block;
+    margin-left: 10px;
 }
 
 .auth-page__title {
-  font-family: Montserrat;
-  color: aliceblue;
-  font-size: 45px;
-  font-weight: 400;
-  margin-top: 20px;
-  text-align: center;
+    font-family: Montserrat;
+    color: aliceblue;
+    font-size: 45px;
+    font-weight: 400;
+    margin-top: 20px;
+    text-align: center;
 }
 
 .auth-page__description {
-  font-family: Montserrat;
-  color: aliceblue;
-  font-size: 21px;
-  font-weight: 400;
-  margin-top: 15px;
-  line-height: 30px;
-  width: 350px;
-  text-align: center;
+    font-family: Montserrat;
+    color: aliceblue;
+    font-size: 21px;
+    font-weight: 400;
+    margin-top: 15px;
+    line-height: 30px;
+    width: 350px;
+    text-align: center;
 }
 
 .auth-form {
-  width: 350px;
-  display: inline-block;
-  float: left;
-  margin-top: 30px;
+    width: 350px;
+    display: inline-block;
+    float: left;
+    margin-top: 30px;
 }
 
 .auth-form__input {
-  width: 335px;
-  height: 50px;
-  border-radius: 10px;
-  border: 2px solid #3D3D3D;
-  background-color: #3D3D3D;
-  color: #FFFFFF;
-  font-family: Montserrat;
-  font-size: 16px;
-  padding-left: 10px;
-  margin: 10px auto;
+    width: 335px;
+    height: 50px;
+    border-radius: 10px;
+    border: 2px solid #3d3d3d;
+    background-color: #3d3d3d;
+    color: #ffffff;
+    font-family: Montserrat;
+    font-size: 16px;
+    padding-left: 10px;
+    margin: 10px auto;
 }
 
 .auth-form__input:focus {
-  outline: none;
-  border-color: #CD0138;
+    outline: none;
+    border-color: #cd0138;
 }
 
 .auth-form__invalidities {
-  display: flex;
-  flex-direction: column;
-  float: left;
-  font-family: Montserrat;
-  font-size: 16px;
-  text-align: left;
-  list-style: disc inside;
-  max-width: 320px;
-  margin: 290px 10px 10px;
-  color: #969696;
-  height: 265px;
+    display: flex;
+    flex-direction: column;
+    float: left;
+    font-family: Montserrat;
+    font-size: 16px;
+    text-align: left;
+    list-style: disc inside;
+    max-width: 320px;
+    margin: 290px 10px 10px;
+    color: #969696;
+    height: 265px;
 }
 
 .auth-form__invalidities div.invalid {
-  color: #ff4d5b;
-  margin-bottom: 15px;
+    color: #ff4d5b;
+    margin-bottom: 15px;
 }
 .auth-form__invalidities div.valid {
-  color: #2ecc71;
-  margin-bottom: 15px;
+    color: #2ecc71;
+    margin-bottom: 15px;
 }
 
 .auth-form__fail_msg {
-  visibility: hidden;
-  font-family: Montserrat;
-  font-size: 16px;
-  text-align: center;
-  list-style: disc inside;
-  max-width: 350px;
-  margin: 10px 10px;
-  color: #ff4d5b;
-  display: block;
+    visibility: hidden;
+    font-family: Montserrat;
+    font-size: 16px;
+    text-align: center;
+    list-style: disc inside;
+    max-width: 350px;
+    margin: 10px 10px;
+    color: #ff4d5b;
+    display: block;
 }
 
 .auth-form__fail_msg.visible {
-  visibility: visible;
+    visibility: visible;
 }
 
 .redirect-msg {
-  color: #FFFFFF;
+    color: #ffffff;
 }
 
-
 .auth-form__buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .auth-form__redirect {
-  white-space: nowrap;
-  font-family: Montserrat;
-  font-size: 15px;
-  color: #FFFFFF;
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    white-space: nowrap;
+    font-family: Montserrat;
+    font-size: 15px;
+    color: #ffffff;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .auth-form__submit {
-  transition: 0.5s;
-  width: 300px;
-  height: 45px;
-  border-radius: 10px;
-  margin: 10px auto;
-  font-family: Montserrat;
-  font-weight: 200;
-  color: #FFFFFF;
-  font-size: 22px;
-  cursor: pointer;
+    transition: 0.5s;
+    width: 300px;
+    height: 45px;
+    border-radius: 10px;
+    margin: 10px auto;
+    font-family: Montserrat;
+    font-weight: 200;
+    color: #ffffff;
+    font-size: 22px;
+    cursor: pointer;
 }
 
 .auth-form__submit:hover {
-  transition: 0.5s ease-in-out;
-
+    transition: 0.5s ease-in-out;
 }
 
 .auth-form__data {
-  width: 50%;
-  display: flex;
+    width: 50%;
+    display: flex;
 }

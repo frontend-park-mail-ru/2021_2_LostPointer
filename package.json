@@ -8,7 +8,8 @@
     "lint": "eslint src/",
     "prepare": "husky install",
     "compile": "webpack --mode=production",
-    "start": "webpack serve --mode=development"
+    "start": "webpack serve --mode=development",
+    "prettier": "prettier --write src/"
   },
   "repository": {
     "type": "git",
@@ -28,10 +29,12 @@
     "css-loader": "^6.4.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.24.2",
     "handlebars-loader": "^1.7.1",
     "html-webpack-plugin": "^5.4.0",
     "husky": "^7.0.2",
+    "prettier": "2.4.1",
     "style-loader": "^3.3.0",
     "ts-loader": "^9.2.6",
     "typescript": "^4.4.4",

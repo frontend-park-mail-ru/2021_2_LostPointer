@@ -7,4 +7,3 @@ export class Sidebar extends Component<null> {
         return SidebarTemplate();
     }
 }
-

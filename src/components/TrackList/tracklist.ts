@@ -1,11 +1,11 @@
 import { Component } from 'components/Component/component';
-import { TrackComponent } from 'components/TrackComponent/track'
+import { TrackComponent } from 'components/TrackComponent/track';
 
 import TracklistTemplate from './tracklist.hbs';
-import {TrackModel} from 'models/track';
+import { TrackModel } from 'models/track';
 
 interface ITrackListProps {
-    tracks: Array<TrackModel>
+    tracks: Array<TrackModel>;
 }
 
 export class TrackList extends Component<ITrackListProps> {
@@ -19,7 +19,6 @@ export class TrackList extends Component<ITrackListProps> {
         }, []);
     }
     render() {
-        return TracklistTemplate({tracks: this.trackComponents});
+        return TracklistTemplate({ tracks: this.trackComponents });
     }
 }
-

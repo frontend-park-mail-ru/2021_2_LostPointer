@@ -1,4 +1,4 @@
-import {Model} from 'models/model';
+import { Model } from 'models/model';
 import Request from 'services/request/request';
 
 export interface ITrackModel {
@@ -24,14 +24,18 @@ export class TrackModel extends Model<ITrackModel> {
 
     static getHomepageTracks(): Promise<TrackModel[]> | Promise<[]> {
         return new Promise((res) => {
-            Request.get('/home/tracks').then((response) => {
-                const tracks: Array<TrackModel> =  response.reduce((acc, elem, index) => {
-                    elem.pos = index;
-                    acc.push(new TrackModel(elem));
-                    return acc;
-                }, []);
-                res(tracks);
-            })
+            Request.get('/home/tracks')
+                .then((response) => {
+                    const tracks: Array<TrackModel> = response.reduce(
+                        (acc, elem, index) => {
+                            elem.pos = index;
+                            acc.push(new TrackModel(elem));
+                            return acc;
+                        },
+                        []
+                    );
+                    res(tracks);
+                })
                 .catch(() => {
                     res([]);
                 });

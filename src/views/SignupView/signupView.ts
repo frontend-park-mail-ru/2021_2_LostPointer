@@ -3,7 +3,7 @@ import {
     addInputsEventListeners,
     CustomValidation,
     isValidForm,
-    removeInputsEventListeners
+    removeInputsEventListeners,
 } from 'services/validation/validation';
 import router from 'services/router/router';
 import {
@@ -13,18 +13,18 @@ import {
     passwordValidityChecks,
 } from 'services/validation/validityChecks';
 import Request from 'services/request/request';
-import {ICustomInput} from 'interfaces/CustomInput';
+import { ICustomInput } from 'interfaces/CustomInput';
 import routerStore from 'services/router/routerStore';
-import {View} from 'views/View/view';
+import { View } from 'views/View/view';
 
 import SignupComponentTemplate from './signupView.hbs';
 import './signupView.scss';
 
 interface ISignupComponentProps {
-    placeholder_img: string,
-    title: string,
-    description: string,
-    form: string
+    placeholder_img: string;
+    title: string;
+    description: string;
+    form: string;
 }
 
 export class SignupView extends View<ISignupComponentProps> {
@@ -33,7 +33,8 @@ export class SignupView extends View<ISignupComponentProps> {
         this.props = {
             placeholder_img: 'woman_headphones_1.webp',
             title: 'Sign up',
-            description: 'Let’s get all your required setup information and get started',
+            description:
+                'Let’s get all your required setup information and get started',
             form: new SignupAuthForm().render(),
         };
     }
@@ -43,21 +44,33 @@ export class SignupView extends View<ISignupComponentProps> {
     }
 
     render() {
-        document.getElementById('app').innerHTML = SignupComponentTemplate(this.props);
+        document.getElementById('app').innerHTML = SignupComponentTemplate(
+            this.props
+        );
 
         const form = document.querySelector('.auth-form');
         const nicknameInput = form.querySelector('input[name="nickname"]');
         const emailInput = form.querySelector('input[name="email"]');
         const passwordInput = form.querySelector('input[name="password"]');
-        const confirmPasswordInput = form.querySelector('input[name="confirm_password"]');
+        const confirmPasswordInput = form.querySelector(
+            'input[name="confirm_password"]'
+        );
         const invalidities = document.querySelector('.auth-form__invalidities');
 
-        (<ICustomInput>nicknameInput).CustomValidation = new CustomValidation(nameValidityChecks, invalidities);
-        (<ICustomInput>emailInput).CustomValidation = new CustomValidation(emailValidityChecks, invalidities);
-        (<ICustomInput>passwordInput).CustomValidation = new CustomValidation(passwordValidityChecks, invalidities);
-        (<ICustomInput>confirmPasswordInput).CustomValidation = new CustomValidation(
-            confirmPasswordValidityChecks, invalidities,
+        (<ICustomInput>nicknameInput).CustomValidation = new CustomValidation(
+            nameValidityChecks,
+            invalidities
         );
+        (<ICustomInput>emailInput).CustomValidation = new CustomValidation(
+            emailValidityChecks,
+            invalidities
+        );
+        (<ICustomInput>passwordInput).CustomValidation = new CustomValidation(
+            passwordValidityChecks,
+            invalidities
+        );
+        (<ICustomInput>confirmPasswordInput).CustomValidation =
+            new CustomValidation(confirmPasswordValidityChecks, invalidities);
 
         addInputsEventListeners(form);
         form.addEventListener('submit', this.submitSignupForm);
@@ -79,9 +92,13 @@ export class SignupView extends View<ISignupComponentProps> {
             errorsField.classList.add('visible');
             return;
         }
-        const nicknameInput = event.target.querySelector('input[name="nickname"]');
+        const nicknameInput = event.target.querySelector(
+            'input[name="nickname"]'
+        );
         const emailInput = event.target.querySelector('input[name="email"]');
-        const passwordInput = event.target.querySelector('input[name="password"]');
+        const passwordInput = event.target.querySelector(
+            'input[name="password"]'
+        );
 
         Request.post(
             '/user/signup',
@@ -96,13 +113,17 @@ export class SignupView extends View<ISignupComponentProps> {
                 if (status === 201) {
                     router.go(routerStore.dashboard);
                 } else {
-                    const failMsg = event.target.querySelector('.auth-form__fail_msg');
+                    const failMsg = event.target.querySelector(
+                        '.auth-form__fail_msg'
+                    );
                     failMsg.innerText = body.message;
                     failMsg.classList.add('visible');
                 }
             })
             .catch((error) => {
-                const failMsg = event.target.querySelector('.auth-form__fail_msg');
+                const failMsg = event.target.querySelector(
+                    '.auth-form__fail_msg'
+                );
                 failMsg.innerText = error.message;
                 failMsg.classList.add('visible');
             });

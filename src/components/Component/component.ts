@@ -1,9 +1,8 @@
-export abstract class  Component<TProps> {
-
+export abstract class Component<TProps> {
     protected props: TProps;
 
     constructor(props?: TProps) {
-        this.props = {...props};
+        this.props = { ...props };
     }
 
     abstract render(): void;
