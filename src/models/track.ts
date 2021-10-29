@@ -1,0 +1,44 @@
+import { Model } from 'models/model';
+import Request from 'services/request/request';
+
+export interface ITrackModel {
+    id: number;
+    title: string;
+    artist: string;
+    album: string;
+    explicit: boolean;
+    genre: string;
+    number: number;
+    file: string;
+    listenCount: number;
+    duration: number;
+    lossless: boolean;
+    cover: string;
+    pos: number;
+}
+
+export class TrackModel extends Model<ITrackModel> {
+    constructor(props: ITrackModel = null) {
+        super(props);
+    }
+
+    static getHomepageTracks(): Promise<TrackModel[]> | Promise<[]> {
+        return new Promise((res) => {
+            Request.get('/home/tracks')
+                .then((response) => {
+                    const tracks: Array<TrackModel> = response.reduce(
+                        (acc, elem, index) => {
+                            elem.pos = index;
+                            acc.push(new TrackModel(elem));
+                            return acc;
+                        },
+                        []
+                    );
+                    res(tracks);
+                })
+                .catch(() => {
+                    res([]);
+                });
+        });
+    }
+}

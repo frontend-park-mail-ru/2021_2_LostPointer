@@ -1,30 +1,24 @@
 module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-  },
-  extends: [
-    'airbnb-base',
-  ],
   parserOptions: {
     ecmaVersion: 2021,
     sourceType: 'module',
   },
-  rules: {
-    'no-console': 'off',
-    'no-undef': 'off',
-    'import/prefer-default-export': 'off',
-    'class-methods-use-this': 'off',
-    'no-underscore-dangle': 'off',
-    'import/extensions': [
-      'warn',
-      'ignorePackages',
-      {
-        js: 'always',
-        ts: 'always',
-      },
-    ],
+  env: {
+    browser: true,
+    node: true,
+    es2021: true,
   },
-  ignorePatterns: ['src/static/js/templates.precompiled.js'],
-  settings: {},
+  root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: [
+    '@typescript-eslint',
+  ],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier'
+  ],
+  ignorePatterns: [
+    'webpack.config.js',
+  ],
 };
