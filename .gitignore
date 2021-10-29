@@ -1,6 +1,4 @@
-.DS_Store
+*.DS_Store
 .idea/
 node_modules/
-*.hbs.precompiled.js
-src/static/img/artworks
-src/static/js/templates.precompiled.js
+src/static/

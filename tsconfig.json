@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "sourceMap": true,
+    "outDir": "./dist/",
+    "noImplicitAny": false, // !true
+    "target": "esnext",
+    "allowJs": true,
+    "allowSyntheticDefaultImports" : true,
+    "esModuleInterop" : true,
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"],
+      "components/*": ["src/components/*"],
+      "views/*": ["src/views/*"],
+      "store/*": ["src/store/*"],
+      "models/*": ["src/models/*"],
+      "interfaces/*": ["src/interfaces/*"],
+      "services/*": ["src/services/*"],
+    }
+  },
+
+  "include": [
+    "./types/global.d.ts",
+    "./src/**/*"
+  ]
+}
