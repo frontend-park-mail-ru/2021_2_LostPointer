@@ -7,9 +7,22 @@ import SignupView from 'views/SignupView/signupView';
 
 class App {
     start() {
+        this._enableServiceWorker();
         this.initRoutes();
         document.body.addEventListener('click', this._dataLinkRoute);
         router.route();
+    }
+
+    _enableServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js', { scope: '/' })
+                .then((registration) => {
+                    console.log('sw registration on scope:', registration.scope);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        }
     }
 
     _dataLinkRoute(event) {
