@@ -1,0 +1,31 @@
+<div class="profile-page">
+    <div class="profile-page__title">
+        {{{title}}}
+    </div>
+    <div class="profile-page__content">
+        <form class="profile-avatar" action="#" novalidate>
+            <img class="profile-avatar__img" src="/src/static/{{{avatar}}}">
+
+            <input type="file" name="file" id="file" accept="image/*" class="profile-avatar__input">
+            <label for="file" class="profile-avatar__input-btn">Upload file</label>
+
+            <div class="profile-avatar__msg"></div>
+        </form>
+        <form class="profile-form" action="#" novalidate>
+            {{#each inputs}}
+                {{{this}}}
+            {{/each}}
+            <div class="profile-form__message-block">
+                <p class="profile-form__message">Change password</p>
+            </div>
+            {{#each password_inputs}}
+                {{{this}}}
+            {{/each}}
+            <div class="profile-form__msg form__fail_msg"></div>
+            <div class="profile-form__buttons">
+                <input class="profile-form__submit" type="image" src="/src/static/img/save.svg" />
+            </div>
+        </form>
+        <div class="profile-form__invalidities form__invalidities"></div>
+    </div>
+</div>

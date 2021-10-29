@@ -20,5 +20,6 @@ module.exports = {
   ],
   ignorePatterns: [
     'webpack.config.js',
+    'src/static/js/templates.precompiled.js'
   ],
 };
