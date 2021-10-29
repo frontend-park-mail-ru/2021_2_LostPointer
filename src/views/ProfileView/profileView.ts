@@ -267,7 +267,7 @@ export class ProfileView extends View<IProfileViewProps> {
                     avatar: this.userAvatar,
                 })
                 .render(),
-            sidebar: this.sidebar,
+            sidebar: this.sidebar.render(),
             profileform: this.profileform.render(),
             player: this.player.render(),
         });
