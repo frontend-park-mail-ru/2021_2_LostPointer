@@ -49,18 +49,19 @@ export class ProfileView extends View<IProfileViewProps> {
                 return;
             }
 
-            Request.get('/user/settings')
-                .then((response) => {
+            UserModel.getUserSettings()
+                .then((settings) => {
+
                     this.sidebar = new Sidebar();
                     this.topbar = new Topbar({
                         authenticated: this.authenticated,
-                        avatar: response.small_avatar,
+                        avatar: settings.small_avatar,
                     })
                     this.player = new PlayerComponent();
-                    this.profileform = new ProfileForm(response);
+                    this.profileform = new ProfileForm(settings);
                     this.isLoaded = true;
                     this.render();
-                });
+                })
         });
     }
 
@@ -115,7 +116,7 @@ export class ProfileView extends View<IProfileViewProps> {
                                 msg.classList.add('fail', 'visible');
                             }
                         })
-                        .catch((error) => {
+                        .catch(() => {
                             msg.classList.remove('success');
                             msg.innerText = 'Avatar changing failed';
                             msg.classList.add('fail', 'visible');
