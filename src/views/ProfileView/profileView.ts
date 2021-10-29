@@ -16,6 +16,7 @@ import {
     simplePasswordValidityChecks,
 } from 'services/validation/validityChecks';
 import {ProfileForm} from 'components/ProfileForm/profileForm';
+import {UserModel} from "models/user";
 
 import ProfileTemplate from './profileView.hbs';
 import './profileView.scss';
@@ -84,7 +85,7 @@ export class ProfileView extends View<IProfileViewProps> {
             reader.readAsDataURL(file);
         } else {
             msg.classList.remove('success');
-            msg.innerText = 'Invalid file';
+            (<HTMLElement>msg).innerText = 'Invalid file';
             msg.classList.add('fail', 'visible');
             return;
         }
@@ -107,18 +108,18 @@ export class ProfileView extends View<IProfileViewProps> {
                         .then((response) => {
                             if (response.status === 200) {
                                 msg.classList.remove('fail');
-                                msg.innerText = 'Changed successfully';
+                                (<HTMLElement>msg).innerText = 'Changed successfully';
                                 msg.classList.add('success', 'visible');
                                 //     });
                             } else {
                                 msg.classList.remove('success');
-                                msg.innerText = body.message;
+                                (<HTMLElement>msg).innerText = response.message;
                                 msg.classList.add('fail', 'visible');
                             }
                         })
                         .catch(() => {
                             msg.classList.remove('success');
-                            msg.innerText = 'Avatar changing failed';
+                            (<HTMLElement>msg).innerText = 'Avatar changing failed';
                             msg.classList.add('fail', 'visible');
                         });
                 }
