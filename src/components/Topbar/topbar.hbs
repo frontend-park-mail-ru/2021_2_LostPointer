@@ -1,33 +1,25 @@
 <div class='topbar'>
-    <span class='topbar__search'></span>
+    <div class='topbar__search'>
+        <i class='topbar__search-icon fa-solid fa-magnifying-glass'></i>
+        <input
+            class='topbar__search-input'
+            type='text'
+            placeholder='Search...'
+        />
+    </div>
     <span class='topbar-icons'>
-        <img
-            alt
-            class='topbar-icon'
-            src='/src/static/img/notifications-none.svg'
-        />
-        <img
-            alt
-            id='settings'
-            class='topbar-icon'
-            src='/src/static/img/settings.svg'
-        />
+        <i class='topbar-icon fa-regular fa-bell'></i>
+        <i class='topbar-icon fa-solid fa-gear'></i>
+        {{#if authenticated}}
+            <i class='topbar-icon fa-solid fa-right-from-bracket'></i>
+            <img alt class='topbar-profile' src='/src/static/img/{{avatar}}' />
+        {{else}}
+
+            <i
+                class='topbar-icon fa-solid fa-right-to-bracket'
+                data-link
+                href='/signin'
+            ></i>
+        {{/if}}
     </span>
-    {{#if authenticated}}
-        <img alt class='topbar-profile' src='/src/static/img/{{avatar}}' />
-        <img
-            alt
-            class='topbar-auth'
-            data-action='logout'
-            src='/src/static/img/logout.png'
-        />
-    {{else}}
-        <img
-            alt
-            class='topbar-auth'
-            data-link
-            href='/signin'
-            src='/src/static/img/login.png'
-        />
-    {{/if}}
 </div>

@@ -1,0 +1,50 @@
+
+.top-album {
+  width: 250px;
+  height: 380px;
+  position: relative;
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    border-radius: 25px;
+    object-fit: cover;
+    cursor: pointer;
+    filter: brightness(0.8);
+  }
+
+  &__description {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(30, 30, 30, 0.8) 100%);
+    font-family: 'Montserrat';
+    color: white;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 20px;
+  }
+
+  &__track-count {
+    margin-top: 25px;
+    margin-left: 10px;
+    font-size: 18px;
+  }
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    margin-left: 10px;
+  }
+
+  &__play {
+    color: var(--accent-color);
+    font-size: 30px;
+    margin: 0 10px;
+  }
+}

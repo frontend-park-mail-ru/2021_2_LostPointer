@@ -5,6 +5,9 @@ import IndexView from 'views/IndexView/indexView';
 import SigninView from 'views/SigninView/signinView';
 import SignupView from 'views/SignupView/signupView';
 
+import '@fortawesome/fontawesome-free/js/all.js';
+import '@fortawesome/fontawesome-free/css/all.css';
+
 class App {
     start() {
         this.initRoutes();
