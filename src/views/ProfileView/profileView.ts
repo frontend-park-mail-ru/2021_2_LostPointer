@@ -105,11 +105,6 @@ export class ProfileView extends View<IProfileViewProps> {
                     )
                         .then((response) => {
                             if (response.status === 200) {
-                                // говённо, это надо будет делать через медиатор событий, когда сделаем архитектуру
-                                // Request.get('/user/settings')
-                                //     .then((response) => {
-                                //         this.topbar.data.avatar = response.avatar_small;
-                                //         this.data.topbar.update();
                                 msg.classList.remove('fail');
                                 msg.innerText = 'Changed successfully';
                                 msg.classList.add('success', 'visible');
