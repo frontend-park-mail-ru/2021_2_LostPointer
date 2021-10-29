@@ -1,5 +1,5 @@
-import {Component} from "components/Component/component";
-import {ProfileInputForm} from "components/ProfileInputForm/profileInputForm";
+import {Component} from 'components/Component/component';
+import {ProfileInputForm} from 'components/ProfileInputForm/profileInputForm';
 import { InputFormComponent } from 'components/InputForm/inputform';
 
 import ProfileFormTemplate from './profileForm.hbs';

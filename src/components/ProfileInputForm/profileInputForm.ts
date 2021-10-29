@@ -1,4 +1,4 @@
-import {Component} from "components/Component/component";
+import {Component} from 'components/Component/component';
 
 import ProfileInputFormTemplate from './profileInputForm.hbs';
 

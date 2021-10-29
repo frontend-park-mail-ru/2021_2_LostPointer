@@ -1,21 +1,21 @@
-import {View} from "views/View/view";
-import Request from "services/request/request";
-import router from "services/router/router";
-import routerStore from "services/router/routerStore";
-import {Topbar} from "components/Topbar/topbar";
-import {PlayerComponent} from "components/Player/player";
-import {Sidebar} from "components/Sidebar/sidebar";
-import {ICustomInput} from "interfaces/CustomInput";
-import {ContentType} from "services/request/requestUtils";
-import {CustomValidation, isValidForm} from "services/validation/validation";
+import {View} from 'views/View/view';
+import Request from 'services/request/request';
+import router from 'services/router/router';
+import routerStore from 'services/router/routerStore';
+import {Topbar} from 'components/Topbar/topbar';
+import {PlayerComponent} from 'components/Player/player';
+import {Sidebar} from 'components/Sidebar/sidebar';
+import {ICustomInput} from 'interfaces/CustomInput';
+import {ContentType} from 'services/request/requestUtils';
+import {CustomValidation, isValidForm} from 'services/validation/validation';
 import {
     confirmPasswordValidityChecks,
     emailValidityChecks,
     nameValidityChecks,
     passwordValidityChecks,
     simplePasswordValidityChecks,
-} from "services/validation/validityChecks";
-import {ProfileForm} from "components/ProfileForm/profileForm";
+} from 'services/validation/validityChecks';
+import {ProfileForm} from 'components/ProfileForm/profileForm';
 
 import ProfileTemplate from './profileView.hbs';
 import './profileView.scss';
@@ -76,7 +76,7 @@ export class ProfileView extends View<IProfileViewProps> {
             const reader = new FileReader();
             reader.addEventListener('load', (e) => {
                 const avatar = document.querySelector('.profile-avatar__img');
-                if (typeof e.target.result === "string") {
+                if (typeof e.target.result === 'string') {
                     avatar.setAttribute('src', e.target.result);
                 }
             });
