@@ -2,6 +2,11 @@ import {Model} from 'models/model';
 import Request, {IResponseBody} from 'services/request/request';
 import {ContentType} from "services/request/requestUtils";
 
+export interface IAuthResponse {
+    authenticated: boolean;
+    avatar: string;
+}
+
 export interface IUserModel {
     email: string;
     nickname: string;
@@ -17,6 +22,18 @@ export class UserModel extends Model<IUserModel> {
 
     constructor(props: IUserModel = null) {
         super(props);
+    }
+
+    static authUser(): Promise<IAuthResponse> {
+        return new Promise<IAuthResponse>((res) => {
+            Request.get('/auth')
+                .then((body) => {
+                    res({
+                        authenticated: body.status === 200,
+                        avatar: body.avatar ? body.avatar : null,
+                    });
+                })
+        })
     }
 
     static getUserSettings(): Promise<UserModel> {
@@ -47,7 +64,7 @@ export class UserModel extends Model<IUserModel> {
                                 'X-CSRF-Token': csrfToken,
                             },
                         ).then((body) => {
-                            return res(body);
+                            res(body);
                         })
                     }
                 })

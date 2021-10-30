@@ -16,6 +16,7 @@ import { View } from 'views/View/view';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
+import {UserModel} from "models/user";
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -43,9 +44,9 @@ export class IndexView extends View<IIndexViewProps> {
     }
 
     didMount() {
-        const auth = Request.get('/auth').then((response) => {
-            this.authenticated = response.status === 200;
-            this.userAvatar = response.avatar;
+        const auth = UserModel.authUser().then((authResponse) => {
+            this.authenticated = authResponse.authenticated;
+            this.userAvatar = authResponse.avatar;
         });
 
         const tracks = TrackModel.getHomepageTracks().then((tracks) => {

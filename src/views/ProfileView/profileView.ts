@@ -6,7 +6,6 @@ import {Topbar} from 'components/Topbar/topbar';
 import {PlayerComponent} from 'components/Player/player';
 import {Sidebar} from 'components/Sidebar/sidebar';
 import {ICustomInput} from 'interfaces/CustomInput';
-import {ContentType} from 'services/request/requestUtils';
 import {CustomValidation, isValidForm} from 'services/validation/validation';
 import {
     confirmPasswordValidityChecks,
@@ -16,7 +15,7 @@ import {
     simplePasswordValidityChecks,
 } from 'services/validation/validityChecks';
 import {ProfileForm} from 'components/ProfileForm/profileForm';
-import {UserModel} from "models/user";
+import {UserModel} from 'models/user';
 
 import ProfileTemplate from './profileView.hbs';
 import './profileView.scss';
@@ -43,13 +42,14 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     didMount() {
-        Request.get('/auth').then((response) => {
-            this.authenticated = response.status === 200;
-            this.userAvatar = response.avatar;
+        UserModel.authUser()
+            .then((authResponse) => {
+            this.authenticated = authResponse.authenticated;
             if (!this.authenticated) {
                 router.go(routerStore.signin);
                 return;
             }
+            this.userAvatar = authResponse.avatar;
 
             UserModel.getUserSettings()
                 .then((user) => {
