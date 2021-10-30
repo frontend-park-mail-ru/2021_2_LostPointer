@@ -45,7 +45,7 @@ export class UserModel extends Model<IUserModel> {
         })
     }
 
-    updateSettings(formdata: FormData): Promise<IResponseBody> {
+    updateUserSettings(formdata: FormData): Promise<IResponseBody> {
         this.nickname = String(formdata.get('nickname'));
         this.email = String(formdata.get('email'));
 

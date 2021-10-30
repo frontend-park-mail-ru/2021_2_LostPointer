@@ -91,7 +91,7 @@ export class ProfileView extends View<IProfileViewProps> {
             return;
         }
 
-        this.user.updateSettings(formdata)
+        this.user.updateUserSettings(formdata)
             .then((body) => {
                 if (body.status === 200) {
                     msg.classList.remove('fail');
@@ -166,7 +166,7 @@ export class ProfileView extends View<IProfileViewProps> {
             return;
         }
 
-        user.updateSettings(formdata)
+        user.updateUserSettings(formdata)
             .then((body) => {
                 if (body.status === 200) {
                     msg.classList.remove('fail');
