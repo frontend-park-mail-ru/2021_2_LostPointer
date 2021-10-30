@@ -68,8 +68,12 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     uploadAvatarFile(event) {
+        event.preventDefault();
+
         const file = event.target.files[0];
+        let readFile = null;
         const msg = document.querySelector('.profile-avatar__msg');
+        (<HTMLElement>msg).innerText = '';
 
         const formdata = new FormData();
         formdata.append('avatar', file, file.name);
@@ -78,9 +82,11 @@ export class ProfileView extends View<IProfileViewProps> {
         if (ext === 'gif' || ext === 'png' || ext === 'jpeg' || ext === 'jpg' || ext === 'webp') {
             const reader = new FileReader();
             reader.addEventListener('load', (e) => {
+                e.preventDefault();
                 const avatar = document.querySelector('.profile-avatar__img');
                 if (typeof e.target.result === 'string') {
                     avatar.setAttribute('src', e.target.result);
+                    readFile = e.target.result;
                 }
             });
             reader.readAsDataURL(file);
@@ -94,6 +100,8 @@ export class ProfileView extends View<IProfileViewProps> {
         this.user.updateSettings(formdata)
             .then((body) => {
                 if (body.status === 200) {
+                    const smallAvatar = document.querySelector('.topbar-profile');
+                    smallAvatar.setAttribute('src', readFile);
                     msg.classList.remove('fail');
                     (<HTMLElement>msg).innerText = 'Changed successfully';
                     msg.classList.add('success', 'visible');
@@ -207,7 +215,6 @@ export class ProfileView extends View<IProfileViewProps> {
 
     unmount() {
         this.isLoaded = false;
-        this.player.unmount();
     }
 
     addHandlers() {
