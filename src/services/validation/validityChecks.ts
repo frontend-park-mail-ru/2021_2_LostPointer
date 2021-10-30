@@ -66,6 +66,10 @@ export const passwordValidityChecks = [
             const oldPasswordInput = document.querySelector(
                 'input[name="old_password"]'
             ) as HTMLTextAreaElement;
+            if (!oldPasswordInput) {
+                return false;
+            }
+
             const passwordInput = document.querySelector(
                 'input[name="password"]'
             ) as HTMLTextAreaElement;
