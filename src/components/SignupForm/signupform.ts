@@ -2,6 +2,7 @@ import { Component } from 'components/Component/component';
 import { InputFormComponent } from 'components/InputForm/inputform';
 
 import SignupFormTemplate from './signupform.hbs';
+import './signupform.scss';
 
 interface ISignupAuthFormProps {
     fail_msg: string;
