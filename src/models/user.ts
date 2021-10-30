@@ -1,5 +1,6 @@
 import {Model} from 'models/model';
-import Request from '../../src/services/request/request';
+import Request, {IResponseBody} from 'services/request/request';
+import {ContentType} from "services/request/requestUtils";
 
 export interface IUserModel {
     email: string;
@@ -24,6 +25,32 @@ export class UserModel extends Model<IUserModel> {
                 .then((response) => {
                     res(response);
                 });
+        })
+    }
+
+    updateSettings(formdata: FormData): Promise<IResponseBody> {
+        this.nickname = String(formdata.get('nickname'));
+        this.email = String(formdata.get('email'));
+
+        return new Promise<IResponseBody>((res) => {
+            Request.get(
+                '/csrf',
+            )
+                .then((csrfBody) => {
+                    if (csrfBody.status === 200) {
+                        const csrfToken = csrfBody.message;
+                        Request.patch(
+                            '/user/settings',
+                            formdata,
+                            ContentType.JSON,
+                            {
+                                'X-CSRF-Token': csrfToken,
+                            },
+                        ).then((body) => {
+                            return res(body);
+                        })
+                    }
+                })
         })
     }
 }

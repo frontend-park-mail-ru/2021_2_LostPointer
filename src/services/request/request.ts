@@ -2,6 +2,11 @@ import { ContentType, RequestMethods } from './requestUtils';
 
 const defaultBackendDomain = '/api/v1';
 
+export interface IResponseBody {
+    status: number;
+    message: string;
+}
+
 export class Request {
     private readonly backendDomain: string;
 

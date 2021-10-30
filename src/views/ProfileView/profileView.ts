@@ -34,6 +34,7 @@ export class ProfileView extends View<IProfileViewProps> {
     private topbar: Topbar;
     private profileform: ProfileForm;
     private userAvatar: string;
+    private user: UserModel;
 
     constructor(props?: IProfileViewProps) {
         super(props);
@@ -51,15 +52,15 @@ export class ProfileView extends View<IProfileViewProps> {
             }
 
             UserModel.getUserSettings()
-                .then((settings) => {
-
+                .then((user) => {
+                    this.user = user;
                     this.sidebar = new Sidebar();
                     this.topbar = new Topbar({
                         authenticated: this.authenticated,
-                        avatar: settings.small_avatar,
+                        avatar: user.small_avatar,
                     })
                     this.player = new PlayerComponent();
-                    this.profileform = new ProfileForm(settings);
+                    this.profileform = new ProfileForm(user);
                     this.isLoaded = true;
                     this.render();
                 })
@@ -90,39 +91,22 @@ export class ProfileView extends View<IProfileViewProps> {
             return;
         }
 
-        Request.get(
-            '/csrf',
-        )
-            .then((csrfResponse) => {
-                if (csrfResponse.status === 200) {
-                    const csrfToken = csrfResponse.message;
-
-                    Request.patch(
-                        '/user/settings',
-                        formdata,
-                        ContentType.JSON,
-                        {
-                            'X-CSRF-Token': csrfToken,
-                        },
-                    )
-                        .then((response) => {
-                            if (response.status === 200) {
-                                msg.classList.remove('fail');
-                                (<HTMLElement>msg).innerText = 'Changed successfully';
-                                msg.classList.add('success', 'visible');
-                                //     });
-                            } else {
-                                msg.classList.remove('success');
-                                (<HTMLElement>msg).innerText = response.message;
-                                msg.classList.add('fail', 'visible');
-                            }
-                        })
-                        .catch(() => {
-                            msg.classList.remove('success');
-                            (<HTMLElement>msg).innerText = 'Avatar changing failed';
-                            msg.classList.add('fail', 'visible');
-                        });
+        this.user.updateSettings(formdata)
+            .then((body) => {
+                if (body.status === 200) {
+                    msg.classList.remove('fail');
+                    (<HTMLElement>msg).innerText = 'Changed successfully';
+                    msg.classList.add('success', 'visible');
+                } else {
+                    msg.classList.remove('success');
+                    (<HTMLElement>msg).innerText = body.message;
+                    msg.classList.add('fail', 'visible');
                 }
+            })
+            .catch(() => {
+                msg.classList.remove('success');
+                (<HTMLElement>msg).innerText = 'Avatar changing failed';
+                msg.classList.add('fail', 'visible');
             });
     }
 
@@ -176,38 +160,28 @@ export class ProfileView extends View<IProfileViewProps> {
             formdata.append('new_password', passwordInput.value);
         }
 
-        Request.get(
-            '/csrf',
-        )
-            .then((csrfResponse) => {
-                if (csrfResponse.status === 200) {
-                    const csrfToken = csrfResponse.message;
+        const user = this.user;
+        if (user.nickname == formdata.get('nickname')
+            && user.email == formdata.get('email')) {
+            return;
+        }
 
-                    Request.patch(
-                        '/user/settings',
-                        formdata,
-                        ContentType.JSON,
-                        {
-                            'X-CSRF-Token': csrfToken,
-                        },
-                    )
-                        .then((response) => {
-                            if (response.status === 200) {
-                                msg.classList.remove('fail');
-                                msg.innerText = 'Changed successfully';
-                                msg.classList.add('success', 'visible');
-                            } else {
-                                msg.classList.remove('success');
-                                msg.innerText = response.message;
-                                msg.classList.add('fail', 'visible');
-                            }
-                        })
-                        .catch(() => {
-                            msg.classList.remove('success');
-                            msg.innerText = 'Profile changing failed';
-                            msg.classList.add('fail', 'visible');
-                        });
+        user.updateSettings(formdata)
+            .then((body) => {
+                if (body.status === 200) {
+                    msg.classList.remove('fail');
+                    msg.innerText = 'Changed successfully';
+                    msg.classList.add('success', 'visible');
+                } else {
+                    msg.classList.remove('success');
+                    msg.innerText = body.message;
+                    msg.classList.add('fail', 'visible');
                 }
+            })
+            .catch(() => {
+                msg.classList.remove('success');
+                msg.innerText = 'Profile changing failed';
+                msg.classList.add('fail', 'visible');
             });
     }
 
