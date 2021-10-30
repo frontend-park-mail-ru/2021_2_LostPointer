@@ -57,10 +57,10 @@ export class ProfileView extends View<IProfileViewProps> {
                     this.sidebar = new Sidebar();
                     this.topbar = new Topbar({
                         authenticated: this.authenticated,
-                        avatar: user.small_avatar,
+                        avatar: user.getProps().small_avatar,
                     })
                     this.player = new PlayerComponent();
-                    this.profileform = new ProfileForm(user);
+                    this.profileform = new ProfileForm(user.getProps());
                     this.isLoaded = true;
                     this.render();
                 })
@@ -120,8 +120,10 @@ export class ProfileView extends View<IProfileViewProps> {
         const confirmPasswordInput = event.target.querySelector('input[name="confirm_password"]');
         const invalidities = document.querySelector('.profile-form__invalidities');
         const msg = event.target.querySelector('.profile-form__msg');
-        let requiredInputsNumber = 2;
+        invalidities.innerHTML = '';
+        msg.innerHTML = '';
 
+        let requiredInputsNumber = 2;
         if (oldPasswordInput.value !== ''
             || passwordInput.value !== ''
             || confirmPasswordInput.value !== '') {
@@ -142,10 +144,13 @@ export class ProfileView extends View<IProfileViewProps> {
             delete oldPasswordInput.CustomValidation;
             delete passwordInput.CustomValidation;
             delete confirmPasswordInput.CustomValidation;
+            const userSettings = this.user.getProps();
+            if (userSettings.nickname == nicknameInput.value
+                && userSettings.email == emailInput.value) {
+                return;
+            }
         }
 
-        invalidities.innerHTML = '';
-        msg.innerHTML = '';
         if (!isValidForm(requiredInputsNumber)) {
             msg.classList.add('fail', 'visible');
             return;
@@ -160,13 +165,7 @@ export class ProfileView extends View<IProfileViewProps> {
             formdata.append('new_password', passwordInput.value);
         }
 
-        const user = this.user;
-        if (user.nickname == formdata.get('nickname')
-            && user.email == formdata.get('email')) {
-            return;
-        }
-
-        user.updateSettings(formdata)
+        this.user.updateSettings(formdata)
             .then((body) => {
                 if (body.status === 200) {
                     msg.classList.remove('fail');
@@ -201,7 +200,7 @@ export class ProfileView extends View<IProfileViewProps> {
             emailValidityChecks,
             invalidities);
 
-        form.addEventListener('submit', this.submitChangeProfileForm);
+        form.addEventListener('submit', this.submitChangeProfileForm.bind(this));
         const fileInput = document.querySelector('input[name="file"]');
         fileInput.addEventListener('change', this.uploadAvatarFile.bind(this));
     }

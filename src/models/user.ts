@@ -15,11 +15,6 @@ export interface IUserModel {
 }
 
 export class UserModel extends Model<IUserModel> {
-    email: string;
-    nickname: string;
-    small_avatar: string;
-    big_avatar: string;
-
     constructor(props: IUserModel = null) {
         super(props);
     }
@@ -70,8 +65,8 @@ export class UserModel extends Model<IUserModel> {
     }
 
     updateSettings(formdata: FormData): Promise<IResponseBody> {
-        this.nickname = String(formdata.get('nickname'));
-        this.email = String(formdata.get('email'));
+        this.props.nickname = String(formdata.get('nickname'));
+        this.props.email = String(formdata.get('email'));
 
         return new Promise<IResponseBody>((res) => {
             Request.get(
