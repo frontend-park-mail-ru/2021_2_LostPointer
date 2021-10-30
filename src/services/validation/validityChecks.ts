@@ -60,6 +60,22 @@ export const passwordValidityChecks = [
         // eslint-disable-next-line no-useless-escape
         (input) => !input.value.match(/[@ !"#$%&'()*+,\-.\/:;<=>?\[\\\]^_]/g)
     ),
+    new ValidityCheck(
+        'New password doesn\'t need to match the old one',
+        () => {
+            const oldPasswordInput = document.querySelector(
+                'input[name="old_password"]'
+            ) as HTMLTextAreaElement;
+            const passwordInput = document.querySelector(
+                'input[name="password"]'
+            ) as HTMLTextAreaElement;
+            const isEmpty = passwordInput.value === '';
+            if (isEmpty) {
+                return false;
+            }
+            return oldPasswordInput.value === passwordInput.value
+        }
+    ),
 ];
 
 export const confirmPasswordValidityChecks = [
