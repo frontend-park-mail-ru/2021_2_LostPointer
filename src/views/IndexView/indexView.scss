@@ -19,8 +19,7 @@ body {
     background-color: #000000;
 }
 
-.app,
-.sidebar {
+.app {
     display: flex;
     flex-direction: column;
 }
@@ -29,18 +28,8 @@ body {
     height: 100%;
 }
 
-.sidebar {
-    height: 100%;
-}
-
 .invisible {
     visibility: hidden;
-}
-
-.sidebar {
-    background-color: transparent;
-    width: 50px;
-    margin: 20px 15px;
 }
 
 .app__content {
@@ -48,18 +37,8 @@ body {
     height: calc(100% - 80px);
 }
 
-.sidebar__logo {
-    cursor: pointer;
-    margin: 20px 8px 25px 8px;
-}
-
 .main {
     background-color: #191919;
-}
-
-.sidebar__icon {
-    cursor: pointer;
-    margin: 20px 10px 5px;
 }
 
 .player {
