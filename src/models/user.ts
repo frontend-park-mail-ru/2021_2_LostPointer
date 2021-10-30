@@ -1,6 +1,6 @@
 import {Model} from 'models/model';
 import Request, {IResponseBody} from 'services/request/request';
-import {ContentType} from "services/request/requestUtils";
+import {ContentType} from 'services/request/requestUtils';
 
 export interface IAuthResponse {
     authenticated: boolean;
@@ -22,6 +22,30 @@ export class UserModel extends Model<IUserModel> {
 
     constructor(props: IUserModel = null) {
         super(props);
+    }
+
+    static signup(payload: object): Promise<IResponseBody> {
+        return new Promise<IResponseBody>((res) => {
+            Request.post(
+                '/user/signup',
+                JSON.stringify(payload),
+                ContentType.JSON
+            ).then((body) => {
+                res(body);
+            })
+        });
+    }
+
+    static signin(payload: object): Promise<IResponseBody> {
+        return new Promise<IResponseBody>((res) => {
+            Request.post(
+                '/user/signin',
+                JSON.stringify(payload),
+                ContentType.JSON
+            ).then((body) => {
+                res(body);
+            })
+        });
     }
 
     static auth(): Promise<IAuthResponse> {
