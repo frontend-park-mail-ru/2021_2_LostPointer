@@ -234,6 +234,7 @@ export class ProfileView extends View<IProfileViewProps> {
 
     unmount() {
         this.isLoaded = false;
+        this.player.unmount();
     }
 
     addHandlers() {
