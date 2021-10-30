@@ -24,7 +24,7 @@ export class UserModel extends Model<IUserModel> {
         super(props);
     }
 
-    static authUser(): Promise<IAuthResponse> {
+    static auth(): Promise<IAuthResponse> {
         return new Promise<IAuthResponse>((res) => {
             Request.get('/auth')
                 .then((body) => {
@@ -36,7 +36,7 @@ export class UserModel extends Model<IUserModel> {
         })
     }
 
-    static getUserSettings(): Promise<UserModel> {
+    static getSettings(): Promise<UserModel> {
         return new Promise<UserModel>((res) => {
             Request.get('/user/settings')
                 .then((body) => {
@@ -45,7 +45,7 @@ export class UserModel extends Model<IUserModel> {
         })
     }
 
-    updateUserSettings(formdata: FormData): Promise<IResponseBody> {
+    updateSettings(formdata: FormData): Promise<IResponseBody> {
         this.nickname = String(formdata.get('nickname'));
         this.email = String(formdata.get('email'));
 

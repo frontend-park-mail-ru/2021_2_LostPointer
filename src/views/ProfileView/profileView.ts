@@ -42,7 +42,7 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     didMount() {
-        UserModel.authUser()
+        UserModel.auth()
             .then((authResponse) => {
             this.authenticated = authResponse.authenticated;
             if (!this.authenticated) {
@@ -51,7 +51,7 @@ export class ProfileView extends View<IProfileViewProps> {
             }
             this.userAvatar = authResponse.avatar;
 
-            UserModel.getUserSettings()
+            UserModel.getSettings()
                 .then((user) => {
                     this.user = user;
                     this.sidebar = new Sidebar();
@@ -91,7 +91,7 @@ export class ProfileView extends View<IProfileViewProps> {
             return;
         }
 
-        this.user.updateUserSettings(formdata)
+        this.user.updateSettings(formdata)
             .then((body) => {
                 if (body.status === 200) {
                     msg.classList.remove('fail');
@@ -166,7 +166,7 @@ export class ProfileView extends View<IProfileViewProps> {
             return;
         }
 
-        user.updateUserSettings(formdata)
+        user.updateSettings(formdata)
             .then((body) => {
                 if (body.status === 200) {
                     msg.classList.remove('fail');

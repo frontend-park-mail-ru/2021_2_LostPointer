@@ -44,7 +44,7 @@ export class IndexView extends View<IIndexViewProps> {
     }
 
     didMount() {
-        const auth = UserModel.authUser().then((authResponse) => {
+        const auth = UserModel.auth().then((authResponse) => {
             this.authenticated = authResponse.authenticated;
             this.userAvatar = authResponse.avatar;
         });
