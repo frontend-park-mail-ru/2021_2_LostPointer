@@ -65,9 +65,6 @@ export class UserModel extends Model<IUserModel> {
     }
 
     updateSettings(formdata: FormData): Promise<IResponseBody> {
-        this.props.nickname = String(formdata.get('nickname'));
-        this.props.email = String(formdata.get('email'));
-
         return new Promise<IResponseBody>((res) => {
             Request.get(
                 '/csrf',
@@ -83,6 +80,10 @@ export class UserModel extends Model<IUserModel> {
                                 'X-CSRF-Token': csrfToken,
                             },
                         ).then((body) => {
+                            if (body.status === 200) {
+                                this.props.nickname = String(formdata.get('nickname'));
+                                this.props.email = String(formdata.get('email'));
+                            }
                             res(body);
                         })
                     }
