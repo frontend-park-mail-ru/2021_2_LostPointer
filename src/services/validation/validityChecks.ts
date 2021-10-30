@@ -16,8 +16,8 @@ export class ValidityCheck {
 
 export const nameValidityChecks = [
     new ValidityCheck(
-        'Name needs to be at least 2 characters',
-        (input) => input.value.length < 2
+        'Name needs to be at least 3 characters',
+        (input) => input.value.length < 3
     ),
     new ValidityCheck('Name allows only letters and numbers', (input) => {
         const illegalCharacters = input.value.match(/[^a-zA-Z0-9]/g);
