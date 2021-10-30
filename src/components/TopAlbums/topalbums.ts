@@ -2,6 +2,7 @@ import { Component } from 'components/Component/component';
 
 import TopAlbumsTemplate from './topalbums.hbs';
 import { AlbumModel } from 'models/album';
+import './topalbums.scss'
 
 interface ITopAlbumsProps {
     albums: Array<AlbumModel>;

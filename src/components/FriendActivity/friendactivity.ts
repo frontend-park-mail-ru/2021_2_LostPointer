@@ -1,6 +1,7 @@
 import { Component } from 'components/Component/component';
 
 import FriendActivityTemplate from './friendactivity.hbs';
+import './friendactivity.scss'
 
 interface IFriendActivityProps {
     friends: Array<any>; //TODO

@@ -2,6 +2,7 @@ import { Component } from '../Component/component';
 import { SuggestedPlaylist } from '../Playlist/suggestedplaylist';
 
 import SuggestedPlaylistsTemplate from './suggestedplaylists.hbs';
+import './suggestedplaylists.scss'
 
 interface ISuggestedPlaylistsProps {
     playlists: Array<any>;
