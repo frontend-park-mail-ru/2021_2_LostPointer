@@ -70,69 +70,6 @@ body {
     margin: 10px 10px 0;
 }
 
-.suggested-tracks__header,
-.suggested-artists__header {
-    color: white;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    width: max-content;
-}
-
-.suggested-tracks-container {
-    margin: 12px 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgb(13, 13, 13);
-    border-radius: 15px;
-    border: 1px rgb(44, 44, 44) solid;
-}
-
-.suggested-playlist {
-    cursor: pointer;
-    background-color: #191919;
-    width: 100%;
-    height: 65px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    display: flex;
-}
-
-.track-list {
-    width: 500px;
-    height: fit-content;
-}
-.suggested-artists__container {
-    padding-top: 12px;
-}
-
-.suggested-artists {
-    width: 215px;
-}
-
-.suggested-artist {
-    background-color: white;
-    width: 105px;
-    height: 105px;
-    object-fit: cover;
-    cursor: pointer;
-}
-
-.suggested-artist:nth-child(1) {
-    border-radius: 20px 10px 10px 10px;
-}
-
-.suggested-artist:nth-child(2) {
-    border-radius: 10px 20px 10px 10px;
-}
-
-.suggested-artist:nth-child(3) {
-    border-radius: 10px 10px 10px 20px;
-}
-
-.suggested-artist:nth-child(4) {
-    border-radius: 10px 10px 20px 10px;
-}
-
 .hidden {
     visibility: hidden;
 }
@@ -179,56 +116,9 @@ body {
     cursor: pointer;
 }
 
-.track-name {
-    font-weight: 700;
-}
-
-.artist-name {
-    font-weight: 400;
-}
-
-.suggested-playlist-artwork {
-    height: 100%;
-    width: auto;
-    border-radius: inherit;
-}
-
-.suggested-playlist-name {
-    margin: auto 0 auto 10px;
-    font-family: 'Montserrat', sans-serif;
-    color: white;
-    font-weight: 400;
-    box-shadow: inset;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    width: 75%;
-}
-
 .disabled {
     opacity: 50%;
     cursor: not-allowed;
-}
-
-.friend {
-    display: flex;
-    height: 60px;
-    font-size: 14px;
-}
-
-.friend-avatar {
-    margin: auto 10px auto 20px;
-    object-fit: cover;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
-
-.friend-info-container {
-    display: flex;
-    flex-direction: column;
-    margin: auto 0 auto 0;
-    width: 100%;
 }
 
 .listening-to {
@@ -254,68 +144,6 @@ body {
     margin: auto;
     width: fit-content;
     font-weight: 400;
-}
-
-.track-list-item {
-    display: flex;
-    width: 100%;
-    height: 60px;
-    margin: 25px;
-    font-family: 'Montserrat', sans-serif;
-    color: white;
-    overflow: hidden;
-}
-
-.suggested-track-play {
-    height: 70%;
-    cursor: pointer;
-    margin: auto 25px auto 0;
-}
-
-.track-list-item__artwork {
-    border-radius: 15px;
-}
-
-.track-list-item__name-container {
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-}
-
-.track-list-item__name,
-.track-list-item__artist {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    vertical-align: bottom;
-    width: 290px;
-}
-
-.track-list-item__artist {
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.track-list-item__artist:hover {
-    text-decoration: underline;
-}
-
-.track-list-item-fav {
-    height: 13px;
-    margin: auto 10px auto 13px;
-    cursor: pointer;
-}
-
-.track-list-item-play {
-    cursor: pointer;
-}
-
-.track-list-item__ellipsis {
-    display: flex;
-    border: 1px rgb(65, 66, 63) solid;
-    border-radius: 50px;
-    width: 75px;
-    height: fit-content;
 }
 
 ::-webkit-scrollbar {

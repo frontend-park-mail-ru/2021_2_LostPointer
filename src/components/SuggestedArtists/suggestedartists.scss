@@ -1,0 +1,50 @@
+$root_suggested_artists: '.suggested-artists';
+
+#{$root_suggested_artists} {
+  width: 215px;
+
+  &__container {
+    padding-top: 12px;
+  }
+
+  &__header {
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    width: max-content;
+  }
+}
+
+$root_suggested_artist: '.suggested-artist';
+
+#{$root_suggested_artist} {
+  background-color: white;
+  width: 105px;
+  height: 105px;
+  object-fit: cover;
+  cursor: pointer;
+
+  &:nth-child(1) {
+    border-radius: 20px 10px 10px 10px;
+  }
+
+  &:nth-child(2) {
+    border-radius: 10px 20px 10px 10px;
+  }
+
+  &:nth-child(3) {
+    border-radius: 10px 10px 10px 20px;
+  }
+
+  &:nth-child(4) {
+    border-radius: 10px 10px 20px 10px;
+  }
+}
+
+$root_artist: '.artist';
+
+#{$root_artist} {
+  &-name {
+    font-weight: 400;
+  }
+}

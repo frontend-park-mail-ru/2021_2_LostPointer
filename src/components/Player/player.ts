@@ -1,7 +1,7 @@
 import { Component } from 'components/Component/component';
 
 import PlayerTemplate from './player.hbs';
-import './player.scss'
+import './player.scss';
 
 interface IPlayerComponentProps {
     recovered: boolean;
