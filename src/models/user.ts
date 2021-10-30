@@ -22,8 +22,8 @@ export class UserModel extends Model<IUserModel> {
     static getUserSettings(): Promise<UserModel> {
         return new Promise<UserModel>((res) => {
             Request.get('/user/settings')
-                .then((response) => {
-                    res(response);
+                .then((body) => {
+                    res(new UserModel(body));
                 });
         })
     }
