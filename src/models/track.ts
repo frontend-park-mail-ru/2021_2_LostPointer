@@ -37,7 +37,6 @@ export class TrackModel extends Model<ITrackModel> {
                         },
                         []
                     );
-                    console.error(tracks);
                     res(tracks);
                 })
                 .catch(() => {
