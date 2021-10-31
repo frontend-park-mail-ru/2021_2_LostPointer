@@ -1,6 +1,4 @@
-$root_activity: '.friend-activity';
-
-#{$root_activity} {
+#{'.friend-activity'} {
 
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
@@ -32,9 +30,7 @@ $root_activity: '.friend-activity';
   }
 }
 
-$root_friend: '.friend';
-
-#{$root_friend} {
+#{'.friend'} {
   display: flex;
   height: 60px;
   font-size: 14px;

@@ -1,9 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@350&display=swap');
 
-$root: '.auth';
-
-#{$root} {
+#{'.auth'} {
   &_page__placeholder-photo {
     height: 100%;
     width: 100%;
@@ -57,24 +55,6 @@ $root: '.auth';
     display: inline-block;
     float: left;
     margin-top: 30px;
-
-    &__input {
-      width: 335px;
-      height: 50px;
-      border-radius: 10px;
-      border: 2px solid #3d3d3d;
-      background-color: #3d3d3d;
-      color: #ffffff;
-      font-family: Montserrat;
-      font-size: 16px;
-      padding-left: 10px;
-      margin: 10px auto;
-
-      &:focus {
-        outline: none;
-        border-color: #cd0138;
-      }
-    }
 
     &__invalidities {
       display: flex;

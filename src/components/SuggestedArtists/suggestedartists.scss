@@ -1,6 +1,4 @@
-$root_suggested_artists: '.suggested-artists';
-
-#{$root_suggested_artists} {
+#{'.suggested-artists'} {
   width: 215px;
 
   &__container {
@@ -15,9 +13,7 @@ $root_suggested_artists: '.suggested-artists';
   }
 }
 
-$root_suggested_artist: '.suggested-artist';
-
-#{$root_suggested_artist} {
+#{'.suggested-artist'} {
   background-color: white;
   width: 105px;
   height: 105px;
@@ -41,9 +37,7 @@ $root_suggested_artist: '.suggested-artist';
   }
 }
 
-$root_artist: '.artist';
-
-#{$root_artist} {
+#{'.artist'} {
   &-name {
     font-weight: 400;
   }

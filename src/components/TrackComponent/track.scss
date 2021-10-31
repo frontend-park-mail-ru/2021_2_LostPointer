@@ -1,6 +1,4 @@
-$root_suggested_tracks: '.suggested-tracks';
-
-#{$root_suggested_tracks} {
+#{'.suggested-tracks'} {
   &__header {
     color: white;
     font-family: 'Montserrat', sans-serif;
@@ -18,9 +16,7 @@ $root_suggested_tracks: '.suggested-tracks';
   }
 }
 
-$root_suggested_track: '.suggested-track';
-
-#{$root_suggested_track} {
+#{'.suggested-track'} {
   &-play {
     height: 70%;
     cursor: pointer;
