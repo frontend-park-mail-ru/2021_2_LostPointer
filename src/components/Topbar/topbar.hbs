@@ -1,25 +1,21 @@
 <div class='topbar'>
     <span class='topbar__search'></span>
     <span class='topbar-icons'>
-        <img
-            alt
-            class='topbar-icon'
-            src='/src/static/img/notifications-none.svg'
-        />
+        <img alt class='topbar-icon' src='/static/img/notifications-none.svg' />
         <img
             alt
             id='settings'
             class='topbar-icon'
-            src='/src/static/img/settings.svg'
+            src='/static/img/settings.svg'
         />
     </span>
     {{#if authenticated}}
-        <img alt class='topbar-profile' src='/src/static/img/{{avatar}}' />
+        <img alt class='topbar-profile' src='/static/img/{{avatar}}' />
         <img
             alt
             class='topbar-auth'
             data-action='logout'
-            src='/src/static/img/logout.png'
+            src='/static/img/logout.png'
         />
     {{else}}
         <img
@@ -27,7 +23,7 @@
             class='topbar-auth'
             data-link
             href='/signin'
-            src='/src/static/img/login.png'
+            src='/static/img/login.png'
         />
     {{/if}}
 </div>

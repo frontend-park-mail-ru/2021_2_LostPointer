@@ -278,7 +278,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             window.localStorage.getItem('playerMuted') === 'true';
         if (this.audio.muted) {
             this.mute.classList.add('enabled');
-            this.mute.src = '/src/static/img/muted.svg';
+            this.mute.src = '/static/img/muted.svg';
         }
 
         this.audio.loop =
@@ -341,23 +341,23 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     'playerMuted',
                     `${this.audio.muted}`
                 );
-                (element as HTMLImageElement).src = `/src/static/img/${
+                (element as HTMLImageElement).src = `/static/img/${
                     this.audio.muted ? 'muted.svg' : 'volume.svg'
                 }`;
             }
         };
         this.playHandler = () => {
             (document.querySelector('.player-play') as HTMLImageElement).src =
-                '/src/static/img/pause.svg';
+                '/static/img/pause.svg';
             if (this.nowPlaying) {
-                this.nowPlaying.src = '/src/static/img/pause-outline.svg';
+                this.nowPlaying.src = '/static/img/pause-outline.svg';
             }
         };
         this.pauseHandler = () => {
             (document.querySelector('.player-play') as HTMLImageElement).src =
-                '/src/static/img/play.svg';
+                '/static/img/play.svg';
             if (this.nowPlaying) {
-                this.nowPlaying.src = '/src/static/img/play-outline.svg';
+                this.nowPlaying.src = '/static/img/play-outline.svg';
             }
         };
         this.seekbarHandler = (e: MouseEvent) => this.seek(e.x);
@@ -431,11 +431,11 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             allowed = true;
         }
         if (allowed) {
-            prev.src = '/src/static/img/play-outline.svg';
-            this.nowPlaying.src = '/src/static/img/pause-outline.svg';
+            prev.src = '/static/img/play-outline.svg';
+            this.nowPlaying.src = '/static/img/pause-outline.svg';
             this.setTrack({
-                url: `/src/static/tracks/${this.nowPlaying.dataset.url}`,
-                cover: `/src/static/img/artworks/${this.nowPlaying.dataset.cover}`,
+                url: `/static/tracks/${this.nowPlaying.dataset.url}`,
+                cover: `/static/img/artworks/${this.nowPlaying.dataset.cover}`,
                 title: this.nowPlaying.dataset.title,
                 artist: this.nowPlaying.dataset.artist,
                 album: this.nowPlaying.dataset.album,
@@ -464,9 +464,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.audio.pause();
         this.audio.src = null;
         (<HTMLImageElement>document.querySelector('.player-play')).src =
-            '/src/static/img/play.svg'; //TODO=Почему хэндлер паузы это не отрабатывает - большой вопрос
+            '/static/img/play.svg'; //TODO=Почему хэндлер паузы это не отрабатывает - большой вопрос
         if (this.nowPlaying) {
-            this.nowPlaying.src = '/src/static/img/play-outline.svg';
+            this.nowPlaying.src = '/static/img/play-outline.svg';
         }
         this.update();
         localStorage.removeItem('lastPlayedData');
