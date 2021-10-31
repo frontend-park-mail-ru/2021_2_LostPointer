@@ -1,0 +1,71 @@
+.profile-form {
+  display: inline-block;
+  float: left;
+  margin-top: 30px;
+
+  &__message-block {
+    padding: 35px 0 0;
+  }
+
+  &__message {
+    color: #FFFFFF;
+    font-family: Montserrat;
+    font-size: 18px;
+    margin-left: 265px;
+  }
+
+  &__label {
+    color: #FFFFFF;
+    font-family: Montserrat;
+    font-size: 16px;
+    padding-left: 10px;
+    text-align: right;
+    width: 150px;
+    top: 20px;
+  }
+
+  &__invalidities {
+    display: flex;
+    flex-direction: column;
+    float: left;
+    font-family: Montserrat;
+    font-size: 16px;
+    text-align: left;
+    max-width: 320px;
+    margin: 50px 0;
+    color: #969696;
+    height: 265px;
+
+    & div.invalid {
+      color: #ff4d5b;
+      margin-bottom: 10px;
+    }
+
+    & div.valid {
+      color: #2ecc71;
+    }
+  }
+
+  &__buttons {
+    padding: 10px;
+    margin-left: 160px;
+  }
+
+  &__submit {
+    transition: 0.5s;
+    height: 45px;
+    border-radius: 10px;
+    margin: 10px auto;
+    font-family: Montserrat;
+    font-weight: 200;
+    color: #FFFFFF;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+
+    &:hover {
+      transition: 0.5s ease-in-out;
+    }
+  }
+}

@@ -56,14 +56,16 @@
     float: left;
     margin-top: 30px;
 
-    &__invalidities div.invalid {
-      color: #ff4d5b;
-      margin-bottom: 15px;
-    }
+    &__invalidities {
+      div.invalid {
+        color: #ff4d5b;
+        margin-bottom: 15px;
+      }
 
-    &__invalidities div.valid {
-      color: #2ecc71;
-      margin-bottom: 15px;
+      div.valid {
+        color: #2ecc71;
+        margin-bottom: 15px;
+      }
     }
 
     &__fail_msg {
