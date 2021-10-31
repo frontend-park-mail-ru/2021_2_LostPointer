@@ -21,11 +21,13 @@ export class SigninAuthForm extends Component<ISigninAuthFormProps> {
             a_redirect_msg: 'Sign up',
             inputs: [
                 new InputFormComponent({
+                    class: 'auth-form__input form__input',
                     name: 'email',
                     type: 'email',
                     placeholder: 'Email',
                 }).render(),
                 new InputFormComponent({
+                    class: 'auth-form__input form__input',
                     name: 'password',
                     type: 'password',
                     placeholder: 'Password',

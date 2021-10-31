@@ -16,8 +16,8 @@ export class ValidityCheck {
 
 export const nameValidityChecks = [
     new ValidityCheck(
-        'Name needs to be at least 2 characters',
-        (input) => input.value.length < 2
+        'Name needs to be at least 3 characters',
+        (input) => input.value.length < 3
     ),
     new ValidityCheck('Name allows only letters and numbers', (input) => {
         const illegalCharacters = input.value.match(/[^a-zA-Z0-9]/g);
@@ -59,6 +59,26 @@ export const passwordValidityChecks = [
         'Password must contain one of the required special characters',
         // eslint-disable-next-line no-useless-escape
         (input) => !input.value.match(/[@ !"#$%&'()*+,\-.\/:;<=>?\[\\\]^_]/g)
+    ),
+    new ValidityCheck(
+        'New password doesn\'t need to match the old one',
+        () => {
+            const oldPasswordInput = document.querySelector(
+                'input[name="old_password"]'
+            ) as HTMLTextAreaElement;
+            if (!oldPasswordInput) {
+                return false;
+            }
+
+            const passwordInput = document.querySelector(
+                'input[name="password"]'
+            ) as HTMLTextAreaElement;
+            const isEmpty = passwordInput.value === '';
+            if (isEmpty) {
+                return false;
+            }
+            return oldPasswordInput.value === passwordInput.value
+        }
     ),
 ];
 
