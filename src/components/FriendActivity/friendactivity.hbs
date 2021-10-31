@@ -4,18 +4,14 @@
         <img
             alt
             class='friend-activity__header-img'
-            src='/src/static/img/more_friends.svg'
+            src='/static/img/more_friends.svg'
             alt=''
         />
     </div>
     <div class='friends-container'>
         {{#each friends}}
             <div class='friend'>
-                <img
-                    alt
-                    class='friend-avatar'
-                    src='/src/static/img/{{img}}.webp'
-                />
+                <img alt class='friend-avatar' src='/static/img/{{img}}.webp' />
                 <div class='friend-info-container'>
                     <div class='friend-nickname'>{{nickname}}</div>
                     <div class='listening-to'>{{listening_to}}</div>

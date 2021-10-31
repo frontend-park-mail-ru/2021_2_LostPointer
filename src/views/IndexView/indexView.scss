@@ -41,6 +41,78 @@ body {
     background-color: #191919;
 }
 
+.sidebar__icon {
+    cursor: pointer;
+    margin: 20px 10px 5px;
+}
+
+.player {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: auto;
+    height: 80px;
+    width: 100%;
+    background-color: #212121;
+}
+
+.topbar {
+    justify-content: space-between;
+    display: flex;
+    width: 100%;
+    margin: 25px 10px;
+}
+
+.topbar__search {
+    background-color: #191919;
+    width: 30%;
+    height: 65px;
+    border-radius: 50px;
+}
+
+.topbar-icons {
+    background-color: #191919;
+    border-radius: 50px;
+    padding: 5px 10px;
+    width: 85px;
+    height: 40px;
+    margin: auto 0 auto auto;
+}
+
+.topbar-icon {
+    cursor: pointer;
+    height: 30px;
+    padding-left: 10px;
+    padding-top: 5px;
+}
+
+.topbar-profile,
+.topbar-auth {
+    cursor: pointer;
+    margin-right: 40px;
+    margin-top: 2px;
+    padding: 8px;
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.top-album {
+    transition-duration: 0.5s;
+    box-shadow: 0 0 10px 1px #333333;
+    width: 250px;
+    height: 380px;
+    border-radius: 25px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.top-album:hover {
+    transition-duration: 0.5s;
+    box-shadow: 0 0 10px 4px #333333;
+}
+
 .main-layout__content {
     display: flex;
     overflow-y: scroll;
