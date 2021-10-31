@@ -421,13 +421,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             if (this.pos < this.playlist.length - 1) {
                 this.nowPlaying = this.playlist[
                     this.playlistIndices[++this.pos]
-                ].querySelector('.track-list-item-play'); //TODO=Сделать плейлист компонентом + потом отрисовывать
+                    ].querySelector('.track-list-item-play'); //TODO=Сделать плейлист компонентом + потом отрисовывать
                 allowed = true;
             }
         } else if (this.pos >= 1) {
             this.nowPlaying = this.playlist[
                 this.playlistIndices[--this.pos]
-            ].querySelector('.track-list-item-play');
+                ].querySelector('.track-list-item-play');
             allowed = true;
         }
         if (allowed) {
@@ -435,7 +435,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.nowPlaying.src = '/static/img/pause-outline.svg';
             this.setTrack({
                 url: `/static/tracks/${this.nowPlaying.dataset.url}`,
-                cover: `/static/img/artworks/${this.nowPlaying.dataset.cover}`,
+                cover: `/static/artworks/${this.nowPlaying.dataset.cover}`,
                 title: this.nowPlaying.dataset.title,
                 artist: this.nowPlaying.dataset.artist,
                 album: this.nowPlaying.dataset.album,

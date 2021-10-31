@@ -143,7 +143,7 @@ export class IndexView extends View<IIndexViewProps> {
                 e.target.dataset.playing = 'true';
                 this.player.setTrack({
                     url: `/static/tracks/${e.target.dataset.url}`,
-                    cover: `/static/img/artworks/${e.target.dataset.cover}`,
+                    cover: `/static/artworks/${e.target.dataset.cover}`,
                     title: e.target.dataset.title,
                     artist: e.target.dataset.artist,
                     album: e.target.dataset.album,
