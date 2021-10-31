@@ -4,6 +4,7 @@ import routerStore from 'services/router/routerStore';
 import IndexView from 'views/IndexView/indexView';
 import SigninView from 'views/SigninView/signinView';
 import SignupView from 'views/SignupView/signupView';
+import ProfileView from 'views/ProfileView/profileView';
 import ArtistView from 'views/ArtistView/artistView';
 
 class App {
@@ -25,6 +26,7 @@ class App {
             .register(routerStore.dashboard, IndexView)
             .register(routerStore.signin, SigninView)
             .register(routerStore.signup, SignupView)
+            .register(routerStore.profile, ProfileView)
             .register(routerStore.artist, ArtistView)
             .start();
     }

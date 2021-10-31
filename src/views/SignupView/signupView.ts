@@ -19,6 +19,7 @@ import { View } from 'views/View/view';
 
 import SignupComponentTemplate from './signupView.hbs';
 import './signupView.scss';
+import {UserModel} from "models/user";
 
 interface ISignupComponentProps {
     placeholder_img: string;
@@ -100,17 +101,13 @@ export class SignupView extends View<ISignupComponentProps> {
             'input[name="password"]'
         );
 
-        Request.post(
-            '/user/signup',
-            JSON.stringify({
-                nickname: nicknameInput.value.trim(),
-                email: emailInput.value.trim(),
-                password: passwordInput.value.trim(),
-            }),
-            undefined
-        )
-            .then(({ status, body }) => {
-                if (status === 201) {
+        UserModel.signup({
+            nickname: nicknameInput.value.trim(),
+            email: emailInput.value.trim(),
+            password: passwordInput.value.trim(),
+        })
+            .then((body) => {
+                if (body.status === 201) {
                     router.go(routerStore.dashboard);
                 } else {
                     const failMsg = event.target.querySelector(
