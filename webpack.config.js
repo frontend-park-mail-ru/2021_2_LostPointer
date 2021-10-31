@@ -14,6 +14,7 @@ module.exports = {
     },
     resolve: {
         alias: {
+            handlebars: 'handlebars/dist/handlebars.min.js',
             components: path.join(src, 'components'),
             views: path.join(src, 'views'),
             store: path.join(src, 'store'),
@@ -26,13 +27,8 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.scss$/,
-                use: [
-                    'style-loader',
-                    {
-                        loader: 'css-loader',
-                    },
-                ],
+                test: /\.(scss|css)$/,
+                use: ['style-loader', 'css-loader', 'sass-loader'],
             },
             {
                 test: /\.hbs$/,
