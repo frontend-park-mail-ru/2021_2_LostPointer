@@ -19,7 +19,7 @@ export class Topbar extends Component<ITopbarComponentProps> {
 
     logout() {
         const button = <HTMLImageElement>document.querySelector('.topbar-auth');
-        button.src = '/src/static/img/login.png';
+        button.src = '/static/img/login.png';
         button.setAttribute('data-link', '');
         button.removeAttribute('data-action');
         button.setAttribute('href', '/signin');
