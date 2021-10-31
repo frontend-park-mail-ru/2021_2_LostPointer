@@ -22,7 +22,7 @@
 }
 
 .profile-form__message-block {
-  padding: 35px  0 0;
+  padding: 35px 0 0;
 }
 
 .profile-form__message {
@@ -31,6 +31,7 @@
   font-size: 18px;
   margin-left: 265px;
 }
+
 .field {
   position: relative;
   display: flex;
@@ -78,6 +79,7 @@
   color: #ff4d5b;
   margin-bottom: 10px;
 }
+
 .profile-form__invalidities div.valid {
   color: #2ecc71;
 }
@@ -165,9 +167,11 @@
   font-size: 16px;
   cursor: pointer;
 }
+
 .profile-avatar__input-btn:hover, .profile-avatar__input-btn:focus {
   border-color: #CD0138;
 }
+
 .profile-avatar__input {
   width: .1px;
   height: .1px;
