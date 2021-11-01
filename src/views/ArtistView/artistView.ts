@@ -39,7 +39,6 @@ export class ArtistView extends View<IArtistViewProps> {
         });
 
         const artist = ArtistModel.getArtist('325').then((artist) => {
-            console.log(artist);
             this.artist = artist;
         });
 
