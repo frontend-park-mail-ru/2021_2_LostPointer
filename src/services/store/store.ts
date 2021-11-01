@@ -1,4 +1,4 @@
-class Store<IStore> {
+class Store {
     private authenticated: boolean;
     private nowPlaying: HTMLImageElement;
     private userAvatar: string;

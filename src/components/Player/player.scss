@@ -1,4 +1,4 @@
-.player{
+.player {
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -70,5 +70,16 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+
+    &__title {
+      &-shadow {
+        width: 5px;
+        position: absolute;
+      }
+
+      &-container {
+        display: flex;
+      }
+    }
   }
 }
