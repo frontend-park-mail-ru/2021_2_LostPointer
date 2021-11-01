@@ -185,6 +185,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         bus.on('set-player-track', ({ detail }) => {
             this.setTrack(detail);
         });
+        bus.on('set-player-pos', ({ detail }) => {
+            this.setPos(detail.pos, detail.target);
+        });
         this.audio.addEventListener('loadedmetadata', () => {
             const totalSeconds = this.audio.duration % 60 | 0;
             const zero = totalSeconds < 10 ? '0' : '';

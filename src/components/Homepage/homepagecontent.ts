@@ -130,6 +130,7 @@ export class Homepage extends Component<IHomepageProps> {
                 });
 
                 e.target.dataset.playing = 'true';
+                store.set('nowPlaying', e.target);
 
                 bus.emit('set-player-track', {
                     url: `/static/tracks/${e.target.dataset.url}`,

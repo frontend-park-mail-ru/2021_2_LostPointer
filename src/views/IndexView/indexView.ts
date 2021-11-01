@@ -8,8 +8,6 @@ import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
 import store from 'services/store/store';
 import { Homepage } from 'components/Homepage/homepagecontent';
-import router from 'services/router/router';
-import routerStore from 'services/router/routerStore';
 import bus from 'services/eventbus/eventbus';
 
 interface IIndexViewProps {
@@ -50,8 +48,6 @@ export class IndexView extends View<IIndexViewProps> {
 
     addListeners() {
         document.addEventListener('click', this.authHandler);
-
-        this.player.setup(document.querySelectorAll('.track-list-item'));
     }
 
     unmount() {
@@ -113,40 +109,6 @@ export class IndexView extends View<IIndexViewProps> {
         this.addListeners();
         this.homepage.addListeners();
 
-        this.playButtonHandler = (e) => {
-            if (e.target.className === 'track-list-item-play') {
-                if (!store.get('authenticated')) {
-                    router.go(routerStore.signin);
-                    return;
-                }
-                if (e.target === store.get('nowPlaying')) {
-                    // Ставим на паузу/продолжаем воспр.
-                    bus.emit('toggle-player');
-                    return;
-                }
-                if (store.get('nowPlaying')) {
-                    // Переключили на другой трек
-                    store.get('nowPlaying').dataset.playing = 'false';
-                    store.get('nowPlaying').src =
-                        '/static/img/play-outline.svg';
-                }
-
-                bus.emit('set-player-pos', {
-                    pos: parseInt(e.target.dataset.pos, 10),
-                    target: e.target,
-                });
-
-                e.target.dataset.playing = 'true';
-
-                bus.emit('set-player-track', {
-                    url: `/static/tracks/${e.target.dataset.url}`,
-                    cover: `/static/artworks/${e.target.dataset.cover}`,
-                    title: e.target.dataset.title,
-                    artist: e.target.dataset.artist,
-                    album: e.target.dataset.album,
-                });
-            }
-        };
         this.player.setup(document.querySelectorAll('.track-list-item'));
         bus.emit('home-rendered');
         this.renderedOnce = true;
