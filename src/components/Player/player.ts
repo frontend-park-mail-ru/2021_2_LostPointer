@@ -1,7 +1,13 @@
 import { Component } from 'components/Component/component';
+import bus from 'services/eventbus/eventbus';
 
 import PlayerTemplate from './player.hbs';
 import './player.scss';
+
+interface IPlayerSetTrack {
+    pos: number;
+    target: HTMLImageElement;
+}
 
 interface IPlayerComponentProps {
     recovered: boolean;
@@ -20,10 +26,10 @@ interface IPlayerComponentProps {
 }
 
 export class PlayerComponent extends Component<IPlayerComponentProps> {
-    pos: number;
-    playlist: HTMLElement[];
-    nowPlaying: HTMLImageElement;
     currentHandler: EventListenerOrEventListenerObject;
+    private pos: number;
+    private playlist: HTMLElement[];
+    private nowPlaying: HTMLImageElement;
     private audio: HTMLAudioElement;
     private firstTime: boolean;
     private gotSeekPos: boolean;
@@ -175,6 +181,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     setEventListeners() {
+        bus.on('toggle-player', () => this.toggle());
+        bus.on('set-player-track', ({ detail }) => {
+            this.setTrack(detail);
+        });
         this.audio.addEventListener('loadedmetadata', () => {
             const totalSeconds = this.audio.duration % 60 | 0;
             const zero = totalSeconds < 10 ? '0' : '';
@@ -422,13 +432,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             if (this.pos < this.playlist.length - 1) {
                 this.nowPlaying = this.playlist[
                     this.playlistIndices[++this.pos]
-                    ].querySelector('.track-list-item-play'); //TODO=Сделать плейлист компонентом + потом отрисовывать
+                ].querySelector('.track-list-item-play'); //TODO=Сделать плейлист компонентом + потом отрисовывать
                 allowed = true;
             }
         } else if (this.pos >= 1) {
             this.nowPlaying = this.playlist[
                 this.playlistIndices[--this.pos]
-                ].querySelector('.track-list-item-play');
+            ].querySelector('.track-list-item-play');
             allowed = true;
         }
         if (allowed) {

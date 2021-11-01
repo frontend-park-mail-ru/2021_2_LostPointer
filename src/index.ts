@@ -5,12 +5,20 @@ import IndexView from 'views/IndexView/indexView';
 import SigninView from 'views/SigninView/signinView';
 import SignupView from 'views/SignupView/signupView';
 import ProfileView from 'views/ProfileView/profileView';
+import { UserModel } from 'models/user';
+import store from 'services/store/store';
 
 class App {
     start() {
-        this.initRoutes();
-        document.body.addEventListener('click', this._dataLinkRoute);
-        router.route();
+        const auth = UserModel.auth().then((authResponse) => {
+            store.set('authenticated', authResponse.authenticated);
+            store.set('userAvatar', authResponse.avatar);
+        });
+        Promise.all([auth]).then(() => {
+            this.initRoutes();
+            document.body.addEventListener('click', this._dataLinkRoute);
+            router.route();
+        });
     }
 
     _dataLinkRoute(event) {

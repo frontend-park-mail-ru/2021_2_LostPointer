@@ -1,22 +1,16 @@
 import { Sidebar } from 'components/Sidebar/sidebar';
-import { TopAlbums } from 'components/TopAlbums/topalbums';
 import Request from 'services/request/request';
 import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
-import { FriendActivity } from 'components/FriendActivity/friendactivity';
-import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
-import { TrackList } from 'components/TrackList/tracklist';
-import { SuggestedPlaylists } from 'components/SuggestedPlaylists/suggestedplaylists';
 import Player, { PlayerComponent } from 'components/Player/player';
-import { TrackModel } from 'models/track';
-import { ArtistModel } from 'models/artist';
-import { AlbumModel } from 'models/album';
-import routerStore from 'services/router/routerStore';
-import router from 'services/router/router';
 import { View } from 'views/View/view';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
-import { UserModel } from 'models/user';
+import store from 'services/store/store';
+import { Homepage } from 'components/Homepage/homepagecontent';
+import router from 'services/router/router';
+import routerStore from 'services/router/routerStore';
+import bus from 'services/eventbus/eventbus';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -27,150 +21,51 @@ export class IndexView extends View<IIndexViewProps> {
     private authHandler: (e) => void;
     private playButtonHandler: (e) => void;
 
-    private top_albums: AlbumModel[];
-    private suggested_artists: ArtistModel[];
-    private track_list: TrackModel[];
-    private suggested_playlists: SuggestedPlaylists;
     private player: PlayerComponent;
     private sidebar: Sidebar;
     private topbar: Topbar;
-    private friend_activity: FriendActivity;
+
     private userAvatar: string;
+    private renderedOnce: boolean;
+    private homepage: Homepage;
+    private homepageTemplate: string;
 
     constructor(props?: IIndexViewProps) {
         super(props);
-        this.isLoaded = false;
         this.addHandlers();
     }
 
     didMount() {
-        const auth = UserModel.auth().then((authResponse) => {
-            this.authenticated = authResponse.authenticated;
-            this.userAvatar = authResponse.avatar;
+        this.player = Player;
+        this.topbar = TopbarComponent;
+        this.sidebar = new Sidebar().render();
+
+        this.homepage = new Homepage();
+        this.homepage.getData().then(() => {
+            this.homepageTemplate = this.homepage.render();
+            this.isLoaded = true;
+            this.render();
         });
-
-        const tracks = TrackModel.getHomepageTracks().then((tracks) => {
-            this.track_list = tracks;
-        });
-        const artists = ArtistModel.getHomepageArtists().then((artists) => {
-            this.suggested_artists = artists;
-        });
-        const albums = AlbumModel.getHomepageAlbums().then((albums) => {
-            this.top_albums = albums;
-        });
-
-        const predefinedPlaylists = [
-            {
-                cover: 'yur',
-                title: 'Jail Mix',
-            },
-            {
-                cover: 'albina',
-                title: 'Resine Working Mix Extended',
-            },
-            {
-                cover: 'starboy',
-                title: 'Workout Mix 2',
-            },
-        ];
-
-        Promise.all([auth, tracks, artists, albums])
-            .then(() => {
-                this.track_list = new TrackList({
-                    tracks: this.track_list,
-                }).render();
-                this.suggested_playlists = new SuggestedPlaylists({
-                    playlists: predefinedPlaylists,
-                }).render();
-                this.player = Player;
-                this.topbar = TopbarComponent;
-                this.sidebar = new Sidebar().render();
-
-                this.top_albums = new TopAlbums({
-                    albums: this.top_albums,
-                }).render();
-                this.suggested_artists = new SuggestedArtists({
-                    artists: this.suggested_artists,
-                }).render();
-
-                this.friend_activity = new FriendActivity({
-                    friends: [
-                        {
-                            img: 'default_avatar_150px',
-                            nickname: 'Frank Sinatra',
-                            listening_to: 'Strangers in the Night',
-                        },
-                        {
-                            img: 'default_avatar_150px',
-                            nickname: 'Земфира',
-                            listening_to: 'Трафик',
-                        },
-                    ],
-                }).render();
-
-                this.isLoaded = true;
-                this.render();
-            })
-            .catch(() => {
-                // Show that backend is dead somehow
-            });
     }
 
     addListeners() {
         document.addEventListener('click', this.authHandler);
 
-        this.playButtonHandler = (e) => {
-            if (e.target.className === 'track-list-item-play') {
-                if (!this.authenticated) {
-                    router.go(routerStore.signin);
-                    return;
-                }
-                if (e.target === this.player.nowPlaying) {
-                    // Ставим на паузу/продолжаем воспр.
-                    this.player.toggle();
-                    return;
-                }
-                if (this.player.nowPlaying) {
-                    // Переключили на другой трек
-                    this.player.nowPlaying.dataset.playing = 'false';
-                    this.player.nowPlaying.src = '/static/img/play-outline.svg';
-                }
-
-                this.player.setPos(
-                    parseInt(e.target.dataset.pos, 10),
-                    e.target
-                );
-
-                e.target.dataset.playing = 'true';
-                this.player.setTrack({
-                    url: `/static/tracks/${e.target.dataset.url}`,
-                    cover: `/static/artworks/${e.target.dataset.cover}`,
-                    title: e.target.dataset.title,
-                    artist: e.target.dataset.artist,
-                    album: e.target.dataset.album,
-                });
-            }
-        };
         this.player.setup(document.querySelectorAll('.track-list-item'));
-        document
-            .querySelectorAll('.track-list-item-play')
-            .forEach((e) =>
-                e.addEventListener('click', this.playButtonHandler)
-            );
     }
 
     unmount() {
-        document
-            .querySelectorAll('.track-list-item-play')
-            .forEach((e) =>
-                e.removeEventListener('click', this.playButtonHandler)
-            );
-        document.removeEventListener('click', this.authHandler);
-        document
-            .querySelector('.suggested-tracks-container')
-            .removeEventListener('click', this.playButtonHandler);
-        this.isLoaded = false;
-        this.player.unmount();
+        // document
+        //     .querySelectorAll('.track-list-item-play')
+        //     .forEach((e) =>
+        //         e.removeEventListener('click', this.playButtonHandler)
+        //     );
+        // document.removeEventListener('click', this.authHandler);
+        // document
+        //     .querySelector('.suggested-tracks-container')
+        //     .removeEventListener('click', this.playButtonHandler);
+        // this.isLoaded = false;
+        // this.player.unmount();
     }
 
     addHandlers() {
@@ -192,27 +87,69 @@ export class IndexView extends View<IIndexViewProps> {
     }
 
     render() {
-        if (!this.isLoaded) {
+        if (!this.isLoaded && !this.renderedOnce) {
             this.didMount();
+            return;
+        }
+        if (this.renderedOnce) {
+            document.getElementById('content').innerHTML =
+                this.homepageTemplate;
+            this.homepage.addListeners();
+            bus.emit('home-rendered');
             return;
         }
 
         document.getElementById('app').innerHTML = IndexTemplate({
             topbar: this.topbar
                 .set({
-                    authenticated: this.authenticated,
-                    avatar: this.userAvatar,
+                    authenticated: store.get('authenticated'),
+                    avatar: store.get('userAvatar'),
                 })
                 .render(),
             sidebar: this.sidebar,
-            friend_activity: this.friend_activity,
-            top_albums: this.top_albums,
-            suggested_artists: this.suggested_artists,
-            track_list: this.track_list,
-            suggested_playlists: this.suggested_playlists,
+            content: this.homepageTemplate,
             player: this.player.render(),
         });
         this.addListeners();
+        this.homepage.addListeners();
+
+        this.playButtonHandler = (e) => {
+            if (e.target.className === 'track-list-item-play') {
+                if (!store.get('authenticated')) {
+                    router.go(routerStore.signin);
+                    return;
+                }
+                if (e.target === store.get('nowPlaying')) {
+                    // Ставим на паузу/продолжаем воспр.
+                    bus.emit('toggle-player');
+                    return;
+                }
+                if (store.get('nowPlaying')) {
+                    // Переключили на другой трек
+                    store.get('nowPlaying').dataset.playing = 'false';
+                    store.get('nowPlaying').src =
+                        '/static/img/play-outline.svg';
+                }
+
+                bus.emit('set-player-pos', {
+                    pos: parseInt(e.target.dataset.pos, 10),
+                    target: e.target,
+                });
+
+                e.target.dataset.playing = 'true';
+
+                bus.emit('set-player-track', {
+                    url: `/static/tracks/${e.target.dataset.url}`,
+                    cover: `/static/artworks/${e.target.dataset.cover}`,
+                    title: e.target.dataset.title,
+                    artist: e.target.dataset.artist,
+                    album: e.target.dataset.album,
+                });
+            }
+        };
+        this.player.setup(document.querySelectorAll('.track-list-item'));
+        bus.emit('home-rendered');
+        this.renderedOnce = true;
     }
 }
 

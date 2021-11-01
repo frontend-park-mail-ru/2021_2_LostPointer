@@ -7,6 +7,8 @@ export abstract class View<TProps> {
     }
 
     abstract didMount(): void;
+
     abstract render(): void;
+
     abstract unmount(): void;
 }
