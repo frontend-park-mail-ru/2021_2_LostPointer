@@ -8,6 +8,7 @@ export interface IArtistModel {
     name: string;
     avatar: string;
     video: string;
+    albums: Array<AlbumModel>;
     tracks: Array<TrackModel>;
 }
 
@@ -45,6 +46,14 @@ export class ArtistModel extends Model<IArtistModel> {
                             const album = new AlbumModel(elem.album);
                             elem.album = album;
                             acc.push(new TrackModel(elem));
+                            return acc;
+                        },
+                        []
+                    );
+                    response.albums = response.albums.reduce(
+                        (acc, elem, index) => {
+                            elem.pos = index;
+                            acc.push(new AlbumModel(elem));
                             return acc;
                         },
                         []
