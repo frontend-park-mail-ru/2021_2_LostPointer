@@ -6,6 +6,8 @@ import TopbarComponent, {Topbar} from 'components/Topbar/topbar';
 import {SuggestedAlbums} from 'components/SugestedAlbums/suggestedAlbums';
 import {TrackList} from 'components/TrackList/tracklist';
 import {ArtistModel} from 'models/artist';
+import router from 'services/router/router';
+import routerStore from 'services/router/routerStore';
 
 import ArtistTemplate from './artistView.hbs';
 import './artistView.scss';
@@ -33,12 +35,22 @@ export class ArtistView extends View<IArtistViewProps> {
     }
 
     didMount() {
+        const regex = /^\/artist\/(\d+)$/gm;
+        const match = regex.exec(window.location.pathname)
+        if (!match) {
+            router.go(routerStore.dashboard);
+        }
+        const artistId = match[1];
+
         const auth = Request.get('/auth').then((response) => {
             this.authenticated = response.status === 200;
             this.userAvatar = response.avatar;
         });
 
-        const artist = ArtistModel.getArtist('325').then((artist) => {
+        const artist = ArtistModel.getArtist(artistId).then((artist) => {
+            if (!artist) {
+                router.go(routerStore.dashboard);
+            }
             this.artist = artist;
         });
 
@@ -68,7 +80,6 @@ export class ArtistView extends View<IArtistViewProps> {
 
     unmount() {
         this.isLoaded = false;
-        this.player.unmount();
     }
 
     addHandlers() {

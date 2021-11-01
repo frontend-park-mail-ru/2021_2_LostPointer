@@ -36,10 +36,14 @@ export class ArtistModel extends Model<IArtistModel> {
         });
     }
 
-    static getArtist(artistId: string): Promise<ArtistModel> {
+    static getArtist(artistId: string): Promise<ArtistModel> | Promise<null> {
         return new Promise<ArtistModel>((res) => {
             Request.get(`/artist/${artistId}`)
                 .then((response) => {
+                    if ('status' in response && response.status !== 200) {
+                        return res(null);
+                    }
+
                     response.tracks = response.tracks.reduce(
                         (acc, elem, index) => {
                             elem.pos = index;

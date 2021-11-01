@@ -23,11 +23,11 @@ class App {
 
     initRoutes() {
         router
-            .register(routerStore.dashboard, IndexView)
+            .register(routerStore.artist, ArtistView)
             .register(routerStore.signin, SigninView)
             .register(routerStore.signup, SignupView)
             .register(routerStore.profile, ProfileView)
-            .register(routerStore.artist, ArtistView)
+            .register(routerStore.dashboard, IndexView)
             .start();
     }
 }
