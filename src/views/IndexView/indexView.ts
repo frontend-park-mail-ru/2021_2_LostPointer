@@ -77,6 +77,7 @@ export class IndexView extends View<IIndexViewProps> {
         Promise.all([auth, tracks, artists, albums])
             .then(() => {
                 this.track_list = new TrackList({
+                    title: 'Tracks of the Week',
                     tracks: this.track_list,
                 }).render();
                 this.suggested_playlists = new SuggestedPlaylists({

@@ -10,7 +10,7 @@
             class='track-list-item__artist'
             href='/artists/'
             data-link
-        >{{artist}}</div>
+        >{{artist.name}}</div>
     </div>
     <div class='track-list-item__ellipsis'>
         <img alt class='track-list-item-fav' src='/static/img/favorite.svg' />
@@ -18,7 +18,7 @@
             alt
             class='track-list-item-play'
             data-title='{{title}}'
-            data-artist='{{artist}}'
+            data-artist='{{artist.name}}'
             data-cover='{{album.props.artwork}}'
             data-url='{{file}}'
             data-pos='{{pos}}'

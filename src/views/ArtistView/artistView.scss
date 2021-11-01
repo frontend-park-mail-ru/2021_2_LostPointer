@@ -56,7 +56,6 @@
   z-index: -1;
   height: 800px;
   width: 100%;
-  background: url('https://www.film.ru/sites/default/files/filefield_paths/the-weeknd_d186b_opgh.jpg');
 }
 
 .artist__background-video {
@@ -78,12 +77,12 @@
   width: 100%;
 }
 
-.track-list.long {
+.artist__content .track-list {
   width: 800px;
 }
 
-.track-list-item__name.long,
-.track-list-item__artist.long {
+.artist__content .track-list-item__name,
+.artist__content .track-list-item__artist {
   width: 600px;
 }
 

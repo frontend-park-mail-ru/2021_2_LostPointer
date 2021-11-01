@@ -64,7 +64,6 @@ module.exports = {
         historyApiFallback: true,
         static: {
             directory: path.resolve(__dirname, './src/'),
-            publicPath: '/src',
         },
     },
     optimization: {
