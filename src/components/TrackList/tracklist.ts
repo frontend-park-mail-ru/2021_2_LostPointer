@@ -3,6 +3,7 @@ import { TrackComponent } from 'components/TrackComponent/track';
 
 import TracklistTemplate from './tracklist.hbs';
 import { TrackModel } from 'models/track';
+import './tracklist.scss';
 
 interface ITrackListProps {
     tracks: Array<TrackModel>;

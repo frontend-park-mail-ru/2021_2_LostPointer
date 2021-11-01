@@ -1,0 +1,45 @@
+.topbar {
+  justify-content: space-between;
+  display: flex;
+  width: 100%;
+  margin: 25px 10px;
+
+  &__search {
+    background-color: #191919;
+    width: 30%;
+    height: 65px;
+    border-radius: 50px;
+  }
+
+  &-icons {
+    background-color: #191919;
+    border-radius: 50px;
+    padding: 5px 10px;
+    width: 85px;
+    height: 40px;
+    margin: auto 0 auto auto;
+  }
+
+  &-icon {
+    cursor: pointer;
+    height: 30px;
+    padding-left: 10px;
+    padding-top: 5px;
+  }
+
+  &-profile {
+    cursor: pointer;
+    margin-right: 40px;
+    margin-top: 2px;
+    padding: 8px;
+    height: 45px;
+  }
+
+  &-auth {
+    cursor: pointer;
+    margin-right: 40px;
+    margin-top: 2px;
+    padding: 8px;
+    height: 45px;
+  }
+}

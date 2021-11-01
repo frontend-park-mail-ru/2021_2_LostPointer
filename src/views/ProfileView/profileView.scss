@@ -1,95 +1,29 @@
 .profile-page {
   display: block;
   width: 1610px;
+
+  &__content {
+    display: flex;
+  }
+
+  &__title {
+    font-family: Montserrat;
+    color: aliceblue;
+    font-size: 45px;
+    font-weight: 400;
+    text-align: center;
+  }
 }
 
-.profile-page__content {
-  display: flex;
-}
-
-.profile-page__title {
-  font-family: Montserrat;
-  color: aliceblue;
-  font-size: 45px;
-  font-weight: 400;
-  text-align: center;
-}
-
-.profile-form {
-  display: inline-block;
-  float: left;
-  margin-top: 30px;
-}
-
-.profile-form__message-block {
-  padding: 35px  0 0;
-}
-
-.profile-form__message {
-  color: #FFFFFF;
-  font-family: Montserrat;
-  font-size: 18px;
-  margin-left: 265px;
-}
 .field {
   position: relative;
   display: flex;
   align-items: baseline;
 }
 
-.profile-form__label {
-  color: #FFFFFF;
-  font-family: Montserrat;
-  font-size: 16px;
-  padding-left: 10px;
-  text-align: right;
-  width: 150px;
-  top: 20px;
-}
-
-.profile-form__input {
-  width: 350px;
-  height: 50px;
-  border-radius: 10px;
-  border: 2px solid #3D3D3D;
-  background-color: #3D3D3D;
-  color: #FFFFFF;
-  font-family: Montserrat;
-  font-size: 16px;
-  padding-left: 10px;
-  margin: 10px 9px;
-  display: flex;
-}
-
-.profile-form__invalidities {
-  display: flex;
-  flex-direction: column;
-  float: left;
-  font-family: Montserrat;
-  font-size: 16px;
-  text-align: left;
-  max-width: 320px;
-  margin: 50px 0;
-  color: #969696;
-  height: 265px;
-}
-
-.profile-form__invalidities div.invalid {
-  color: #ff4d5b;
-  margin-bottom: 10px;
-}
-.profile-form__invalidities div.valid {
-  color: #2ecc71;
-}
-
 ::-webkit-calendar-picker-indicator {
   filter: invert(1);
   padding-right: 10px;
-}
-
-.profile-form__input:focus {
-  outline: none;
-  border-color: #CD0138;
 }
 
 .profile-form__msg, .profile-avatar__msg {
@@ -115,64 +49,43 @@
   visibility: visible;
 }
 
-.profile-form__buttons {
-  padding: 10px;
-  margin-left: 160px;
-}
-
-.profile-form__submit {
-  transition: 0.5s;
-  height: 45px;
-  border-radius: 10px;
-  margin: 10px auto;
-  font-family: Montserrat;
-  font-weight: 200;
-  color: #FFFFFF;
-  font-size: 22px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-}
-
-.profile-form__submit:hover {
-  transition: 0.5s ease-in-out;
-}
-
 .profile-avatar {
   margin: 50px;
-}
 
-.profile-avatar__img {
-  display: block;
-  width: 300px;
-  height: 300px;
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 50%;
-  object-fit: cover;
-}
+  &__img {
+    display: block;
+    width: 300px;
+    height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 50%;
+    object-fit: cover;
+  }
 
-.profile-avatar__input-btn {
-  color: #FFFFFF;
-  padding-left: 10px;
-  line-height: 40px;
-  width: 100px;
-  margin: 20px auto;
-  display: block;
-  border-radius: 10px;
-  border: 2px solid #3D3D3D;
-  font-family: Montserrat;
-  font-size: 16px;
-  cursor: pointer;
-}
-.profile-avatar__input-btn:hover, .profile-avatar__input-btn:focus {
-  border-color: #CD0138;
-}
-.profile-avatar__input {
-  width: .1px;
-  height: .1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
+  &__input-btn {
+    color: #FFFFFF;
+    padding-left: 10px;
+    line-height: 40px;
+    width: 100px;
+    margin: 20px auto;
+    display: block;
+    border-radius: 10px;
+    border: 2px solid #3D3D3D;
+    font-family: Montserrat;
+    font-size: 16px;
+    cursor: pointer;
+
+    &:hover, &:focus {
+      border-color: #CD0138;
+    }
+  }
+
+  &__input {
+    width: .1px;
+    height: .1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
 }

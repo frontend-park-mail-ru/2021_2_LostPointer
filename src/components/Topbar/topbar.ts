@@ -1,6 +1,7 @@
 import { Component } from 'components/Component/component';
 
 import TopbarTemplate from './topbar.hbs';
+import './topbar.scss';
 
 interface ITopbarComponentProps {
     authenticated: boolean;

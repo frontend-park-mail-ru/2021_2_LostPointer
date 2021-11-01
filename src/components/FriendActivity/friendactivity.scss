@@ -1,0 +1,51 @@
+.friend-activity {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  margin: 10px 20px 0 0;
+  background-color: #191919;
+  width: 240px;
+  height: 660px;
+  border-radius: 20px;
+
+  &__header {
+    display: flex;
+    padding: 10px;
+
+    &-text {
+      display: inline-block;
+      width: 70%;
+      padding: 20px 15px;
+      font-size: 18px;
+    }
+
+    &-img {
+      display: inline-flex;
+      height: 20px;
+      margin: auto 0;
+    }
+  }
+}
+
+.friend {
+  display: flex;
+  height: 60px;
+  font-size: 14px;
+
+  &-avatar {
+    margin: auto 10px auto 20px;
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+
+  &-info-container {
+    display: flex;
+    flex-direction: column;
+    margin: auto 0 auto 0;
+    width: 100%;
+  }
+}

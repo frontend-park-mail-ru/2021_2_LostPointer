@@ -1,0 +1,25 @@
+.suggested-tracks{
+  &__header {
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    width: max-content;
+  }
+
+  &-container {
+    margin: 12px 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(13, 13, 13);
+    border-radius: 15px;
+    border: 1px rgb(44, 44, 44) solid;
+  }
+}
+
+.suggested-track{
+  &-play {
+    height: 70%;
+    cursor: pointer;
+    margin: auto 25px auto 0;
+  }
+}
