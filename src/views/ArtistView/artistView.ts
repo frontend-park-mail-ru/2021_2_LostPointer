@@ -9,6 +9,8 @@ import { ArtistModel } from 'models/artist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 
+import store from 'services/store/store';
+
 import ArtistTemplate from './artistView.hbs';
 import './artistView.scss';
 
@@ -138,15 +140,16 @@ export class ArtistView extends View<IArtistViewProps> {
                     router.go(routerStore.signin);
                     return;
                 }
-                if (e.target === player.nowPlaying) {
+                if (e.target === store.get('nowPlaying')) {
                     // Ставим на паузу/продолжаем воспр.
                     player.toggle();
                     return;
                 }
-                if (player.nowPlaying) {
+                if (store.get('nowPlaying')) {
                     // Переключили на другой трек
-                    player.nowPlaying.dataset.playing = 'false';
-                    player.nowPlaying.src = '/static/img/play-outline.svg';
+                    const nowPlaying = store.get('nowPlaying');
+                    nowPlaying.dataset.playing = 'false';
+                    nowPlaying.src = '/static/img/play-outline.svg';
                 }
 
                 player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
