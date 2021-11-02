@@ -55,7 +55,6 @@ export class ArtistView extends View<IArtistViewProps> {
         });
 
         Promise.all([auth, artist]).then(() => {
-            console.log(this.artist.getProps());
             this.topbar = TopbarComponent;
             this.sidebar = new Sidebar().render();
             this.albumList = new SuggestedAlbums({
@@ -107,6 +106,7 @@ export class ArtistView extends View<IArtistViewProps> {
                 });
             }
         };
+        document.addEventListener('click', this.authHandler);
     }
 
     render() {
