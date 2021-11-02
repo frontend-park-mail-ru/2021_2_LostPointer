@@ -1,6 +1,7 @@
 import { Model } from 'models/model';
 import Request from 'services/request/request';
 import { AlbumModel } from 'models/album';
+import { ArtistModel } from 'models/artist';
 
 export interface ITrackModel {
     id: number;
@@ -30,8 +31,10 @@ export class TrackModel extends Model<ITrackModel> {
                     const tracks: Array<TrackModel> = response.reduce(
                         (acc, elem, index) => {
                             elem.pos = index;
+                            const artist = new ArtistModel(elem.artist);
                             const album = new AlbumModel(elem.album);
                             elem.album = album;
+                            elem.artist = artist;
                             acc.push(new TrackModel(elem));
                             return acc;
                         },
