@@ -34,6 +34,7 @@
     "handlebars-loader": "^1.7.1",
     "html-webpack-plugin": "^5.4.0",
     "husky": "^7.0.2",
+    "mini-css-extract-plugin": "^2.4.3",
     "prettier": "2.4.1",
     "sass": "^1.43.4",
     "sass-loader": "^12.3.0",
