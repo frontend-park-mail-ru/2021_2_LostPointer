@@ -46,6 +46,7 @@ module.exports = {
         ],
     },
     plugins: [
+        new MiniCssExtractPlugin({ filename: '[name].[fullhash:8].css' }),
         new HtmlWebpackPlugin({
             title: 'LostPointer',
             template: './src/index.html',

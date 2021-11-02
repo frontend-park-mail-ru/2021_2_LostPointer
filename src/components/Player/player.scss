@@ -39,6 +39,13 @@
     border-radius: 10px;
     cursor: pointer;
 
+    &__current, .volume-current {
+      transition: 0.5s;
+      width: 0;
+      display: block;
+      background-color: white;
+    }
+
     &:hover .seekbar-current {
       transition: 0.5s;
       background-color: var(--accent-color);
@@ -82,4 +89,45 @@
       }
     }
   }
+}
+
+.seekbar-current,
+.volume-current {
+  height: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.5s;
+  width: 0;
+  display: block;
+  background-color: white;
+}
+
+.volume-current {
+  width: 50%;
+}
+
+.shuffle,
+.repeat {
+  transition: 0.1s;
+  width: 30px;
+  opacity: 50%;
+}
+
+.shuffle {
+  cursor: pointer;
+}
+
+.mute {
+  width: 23px;
+  opacity: 100%;
+  cursor: pointer;
+}
+
+.repeat {
+  cursor: pointer;
+}
+
+.disabled {
+  opacity: 50%;
+  cursor: not-allowed;
 }

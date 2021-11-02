@@ -1,6 +1,8 @@
 import { Component } from 'components/Component/component';
 import bus from 'services/eventbus/eventbus';
 
+import Request from 'services/request/request';
+
 import PlayerTemplate from './player.hbs';
 import './player.scss';
 
@@ -53,6 +55,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private playlistIndices: number[];
     private mute: HTMLImageElement;
     private shuffle: boolean;
+    private counted: boolean;
 
     constructor(props?: IPlayerComponentProps) {
         super(props);
@@ -128,6 +131,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
     setTrack(track): void {
         this.audio.pause();
+        this.counted = false;
         this.audio.src = track.url;
         this.props = {
             cover: track.cover,
@@ -381,6 +385,18 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.props.playing = !this.props.playing;
         };
         this.timeUpdateHandler = () => {
+            if (
+                this.nowPlaying &&
+                this.audio.currentTime / this.audio.duration > 0.35 &&
+                !this.counted
+            ) {
+                Request.post(
+                    '/inc_listencount',
+                    JSON.stringify({ id: parseInt(this.nowPlaying.dataset.id) })
+                ).then(() => {
+                    this.counted = true;
+                });
+            }
             const seconds = this.audio.currentTime % 60 | 0;
             const zero = seconds < 10 ? '0' : '';
             this.seekbarCurrent.style.width = `${
