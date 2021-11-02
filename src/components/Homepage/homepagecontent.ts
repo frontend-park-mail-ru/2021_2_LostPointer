@@ -123,7 +123,7 @@ export class Homepage extends Component<IHomepageProps> {
                     store.get('nowPlaying').src =
                         '/static/img/play-outline.svg';
                 }
-
+                
                 bus.emit('set-player-pos', {
                     pos: parseInt(e.target.dataset.pos, 10),
                     target: e.target,

@@ -117,20 +117,13 @@ export class ArtistView extends View<IArtistViewProps> {
             return;
         }
 
-        document.getElementById('app').innerHTML = ArtistTemplate({
+        document.getElementById('content').innerHTML = ArtistTemplate({
             name: this.artist.getProps().name,
             video: this.artist.getProps().video,
             artistAvatar: this.artist.getProps().avatar,
-            topbar: this.topbar
-                .set({
-                    authenticated: this.authenticated,
-                    avatar: this.userAvatar,
-                })
-                .render(),
-            sidebar: this.sidebar,
+
             albumList: this.albumList,
             trackList: this.trackList,
-            player: player.render(),
         });
         this.addListeners();
 

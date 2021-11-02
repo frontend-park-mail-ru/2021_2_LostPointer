@@ -1,32 +1,28 @@
 class EventBus<DetailType = any> {
     private eventTarget: EventTarget;
-    private listeners: any = {};
 
-    on(type: string, listener: (event: any) => void) {
-        // this.eventTarget.addEventListener(type, listener);
-        if (!this.listeners[type]) {
-            this.listeners[type] = [];
-        }
-        this.listeners[type].push(listener);
+    constructor(description = '') {
+        this.eventTarget = document.appendChild(
+            document.createComment(description)
+        );
     }
 
-    // once(type: string, listener: (event: CustomEvent<DetailType>) => void) {
-    //     this.eventTarget.addEventListener(type, listener, { once: true });
-    //     this.listeners[type].push(listene)
-    // }
+    on(type: string, listener: (event: CustomEvent<DetailType>) => void) {
+        this.eventTarget.addEventListener(type, listener);
+    }
 
-    // off(type: string, listener: (event: CustomEvent<DetailType>) => void) {
-    //     // this.eventTarget.removeEventListener(type, listener);
-    //     this.listeners[type].delete(listener);
-    // }
-    //
+    once(type: string, listener: (event: CustomEvent<DetailType>) => void) {
+        this.eventTarget.addEventListener(type, listener, { once: true });
+    }
+
+    off(type: string, listener: (event: CustomEvent<DetailType>) => void) {
+        this.eventTarget.removeEventListener(type, listener);
+    }
+
     emit(type: string, detail?: DetailType) {
-        if (!this.listeners[type]) {
-            return;
-        }
-        this.listeners[type].forEach(function (listener) {
-            listener(detail);
-        });
+        return this.eventTarget.dispatchEvent(
+            new CustomEvent(type, { detail })
+        );
     }
 }
 
