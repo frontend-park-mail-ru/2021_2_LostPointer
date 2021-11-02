@@ -14,9 +14,10 @@ import routerStore from 'services/router/routerStore';
 import router from 'services/router/router';
 import { View } from 'views/View/view';
 
+import { UserModel } from 'models/user';
+
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
-import { UserModel } from 'models/user';
 
 interface IIndexViewProps {
     authenticated: boolean;

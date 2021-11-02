@@ -94,3 +94,29 @@
 .volume-current {
   width: 50%;
 }
+
+.shuffle,
+.repeat {
+  transition: 0.1s;
+  width: 30px;
+  opacity: 50%;
+}
+
+.shuffle {
+  cursor: pointer;
+}
+
+.mute {
+  width: 23px;
+  opacity: 100%;
+  cursor: pointer;
+}
+
+.repeat {
+  cursor: pointer;
+}
+
+.disabled {
+  opacity: 50%;
+  cursor: not-allowed;
+}

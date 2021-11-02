@@ -1,11 +1,11 @@
-import {View} from 'views/View/view';
+import { View } from 'views/View/view';
 import Request from 'services/request/request';
-import Player, {PlayerComponent} from 'components/Player/player';
-import {Sidebar} from 'components/Sidebar/sidebar';
-import TopbarComponent, {Topbar} from 'components/Topbar/topbar';
-import {SuggestedAlbums} from 'components/SugestedAlbums/suggestedAlbums';
-import {TrackList} from 'components/TrackList/tracklist';
-import {ArtistModel} from 'models/artist';
+import player from 'components/Player/player';
+import { Sidebar } from 'components/Sidebar/sidebar';
+import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
+import { SuggestedAlbums } from 'components/SugestedAlbums/suggestedAlbums';
+import { TrackList } from 'components/TrackList/tracklist';
+import { ArtistModel } from 'models/artist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 
@@ -19,8 +19,8 @@ interface IArtistViewProps {
 export class ArtistView extends View<IArtistViewProps> {
     private authenticated: boolean;
     private authHandler: (e) => void;
+    private playButtonHandler: (e) => void;
 
-    private player: PlayerComponent;
     private sidebar: Sidebar;
     private topbar: Topbar;
     private userAvatar: string;
@@ -36,7 +36,7 @@ export class ArtistView extends View<IArtistViewProps> {
 
     didMount() {
         const regex = /^\/artist\/(\d+)$/gm;
-        const match = regex.exec(window.location.pathname)
+        const match = regex.exec(window.location.pathname);
         if (!match) {
             router.go(routerStore.dashboard);
         }
@@ -54,28 +54,37 @@ export class ArtistView extends View<IArtistViewProps> {
             this.artist = artist;
         });
 
-        Promise.all([auth, artist])
-            .then(() => {
-                this.player = Player;
-                this.topbar = TopbarComponent;
-                this.sidebar = new Sidebar().render();
-                this.albumList = new SuggestedAlbums({
-                    albums: this.artist.getProps().albums,
-                }).render();
-                this.trackList = new TrackList({
-                    title: 'Tracks',
-                    tracks: this.artist.getProps().tracks,
-                }).render();
-                this.isLoaded = true;
-                this.render();
+        Promise.all([auth, artist]).then(() => {
+            console.log(this.artist.getProps());
+            this.topbar = TopbarComponent;
+            this.sidebar = new Sidebar().render();
+            this.albumList = new SuggestedAlbums({
+                albums: this.artist.getProps().albums,
+            }).render();
+            const props = this.artist.getProps();
+            const tracks = props.tracks.map((track) => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore
+                track.props.artist = this.artist;
+                //TODO=ПОПРАВИТЬ!!!
+                return track;
             });
+            this.trackList = new TrackList({
+                title: 'Tracks',
+                tracks: tracks,
+            }).render();
+            this.isLoaded = true;
+            this.render();
+        });
     }
 
     addListeners() {
         const video = document.querySelector('.artist__background-video');
-        video.addEventListener('ended', (event) => {
-            video.classList.add('transition');
-        });
+        if (video) {
+            video.addEventListener('ended', () => {
+                video.classList.add('transition');
+            });
+        }
     }
 
     unmount() {
@@ -89,10 +98,10 @@ export class ArtistView extends View<IArtistViewProps> {
                 e.target.dataset.action === 'logout'
             ) {
                 Request.post('/user/logout').then(() => {
-                    this.player.stop();
+                    player.stop();
                     this.authenticated = false;
                     this.props.authenticated = false;
-                    this.player.clear();
+                    player.clear();
                     window.localStorage.removeItem('lastPlayedData');
                     this.topbar.logout();
                 });
@@ -119,9 +128,45 @@ export class ArtistView extends View<IArtistViewProps> {
             sidebar: this.sidebar,
             albumList: this.albumList,
             trackList: this.trackList,
-            player: this.player.render(),
+            player: player.render(),
         });
         this.addListeners();
+
+        this.playButtonHandler = (e) => {
+            if (e.target.className === 'track-list-item-play') {
+                if (!this.authenticated) {
+                    router.go(routerStore.signin);
+                    return;
+                }
+                if (e.target === player.nowPlaying) {
+                    // Ставим на паузу/продолжаем воспр.
+                    player.toggle();
+                    return;
+                }
+                if (player.nowPlaying) {
+                    // Переключили на другой трек
+                    player.nowPlaying.dataset.playing = 'false';
+                    player.nowPlaying.src = '/static/img/play-outline.svg';
+                }
+
+                player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
+
+                e.target.dataset.playing = 'true';
+                player.setTrack({
+                    url: `/static/tracks/${e.target.dataset.url}`,
+                    cover: `/static/artworks/${e.target.dataset.cover}`,
+                    title: e.target.dataset.title,
+                    artist: e.target.dataset.artist,
+                    album: e.target.dataset.album,
+                });
+            }
+        };
+        player.setup(document.querySelectorAll('.track-list-item'));
+        document
+            .querySelectorAll('.track-list-item-play')
+            .forEach((e) =>
+                e.addEventListener('click', this.playButtonHandler)
+            );
     }
 }
 
