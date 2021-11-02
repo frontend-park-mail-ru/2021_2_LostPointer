@@ -373,6 +373,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         };
         this.timeUpdateHandler = () => {
             if (
+                this.nowPlaying &&
                 this.audio.currentTime / this.audio.duration > 0.35 &&
                 !this.counted
             ) {
