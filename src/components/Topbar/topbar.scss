@@ -27,19 +27,14 @@
     padding-top: 5px;
   }
 
-  &-profile {
+  &-profile, &-auth {
     cursor: pointer;
     margin-right: 40px;
     margin-top: 2px;
     padding: 8px;
     height: 45px;
-  }
-
-  &-auth {
-    cursor: pointer;
-    margin-right: 40px;
-    margin-top: 2px;
-    padding: 8px;
-    height: 40px;
+    width: 45px;
+    border-radius: 50%;
+    object-fit: cover;
   }
 }

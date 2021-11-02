@@ -1,4 +1,4 @@
-.player{
+.player {
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -39,6 +39,13 @@
     border-radius: 10px;
     cursor: pointer;
 
+    &__current, .volume-current {
+      transition: 0.5s;
+      width: 0;
+      display: block;
+      background-color: white;
+    }
+
     &:hover .seekbar-current {
       transition: 0.5s;
       background-color: var(--accent-color);
@@ -71,4 +78,19 @@
     overflow: hidden;
     white-space: nowrap;
   }
+}
+
+.seekbar-current,
+.volume-current {
+  height: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.5s;
+  width: 0;
+  display: block;
+  background-color: white;
+}
+
+.volume-current {
+  width: 50%;
 }

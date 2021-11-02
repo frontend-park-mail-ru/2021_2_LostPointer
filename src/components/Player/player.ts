@@ -422,13 +422,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             if (this.pos < this.playlist.length - 1) {
                 this.nowPlaying = this.playlist[
                     this.playlistIndices[++this.pos]
-                    ].querySelector('.track-list-item-play'); //TODO=Сделать плейлист компонентом + потом отрисовывать
+                ].querySelector('.track-list-item-play'); //TODO=Сделать плейлист компонентом + потом отрисовывать
                 allowed = true;
             }
         } else if (this.pos >= 1) {
             this.nowPlaying = this.playlist[
                 this.playlistIndices[--this.pos]
-                ].querySelector('.track-list-item-play');
+            ].querySelector('.track-list-item-play');
             allowed = true;
         }
         if (allowed) {

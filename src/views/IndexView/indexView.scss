@@ -23,91 +23,19 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  &__content {
+    display: flex;
+    height: calc(100% - 80px);
+  }
 }
 
 .invisible {
   visibility: hidden;
 }
 
-.app__content {
-  display: flex;
-  height: calc(100% - 80px);
-}
-
 .main {
   background-color: #191919;
-}
-
-.sidebar__icon {
-  cursor: pointer;
-  margin: 20px 10px 5px;
-}
-
-.player {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  margin-top: auto;
-  height: 80px;
-  width: 100%;
-  background-color: #212121;
-}
-
-.topbar {
-  justify-content: space-between;
-  display: flex;
-  width: 100%;
-  margin: 25px 10px;
-}
-
-.topbar__search {
-  background-color: #191919;
-  width: 30%;
-  height: 65px;
-  border-radius: 50px;
-}
-
-.topbar-icons {
-  background-color: #191919;
-  border-radius: 50px;
-  padding: 5px 10px;
-  width: 85px;
-  height: 40px;
-  margin: auto 0 auto auto;
-}
-
-.topbar-icon {
-  cursor: pointer;
-  height: 30px;
-  padding-left: 10px;
-  padding-top: 5px;
-}
-
-.topbar-profile,
-.topbar-auth {
-  cursor: pointer;
-  margin-right: 40px;
-  margin-top: 2px;
-  padding: 8px;
-  height: 45px;
-  width: 45px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.top-album {
-  transition-duration: 0.5s;
-  box-shadow: 0 0 10px 1px #333333;
-  width: 250px;
-  height: 380px;
-  border-radius: 25px;
-  object-fit: cover;
-  cursor: pointer;
-}
-
-.top-album:hover {
-  transition-duration: 0.5s;
-  box-shadow: 0 0 10px 4px #333333;
 }
 
 .main-layout__content {
@@ -141,48 +69,6 @@ body {
 
 .hidden {
   visibility: hidden;
-}
-
-.seekbar-current,
-.volume-current {
-  background-color: grey;
-  height: 5px;
-  width: 30%;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.seekbar-current,
-.volume-current {
-  transition: 0.5s;
-  width: 0;
-  display: block;
-  background-color: white;
-}
-
-.volume-current {
-  width: 50%;
-}
-
-.shuffle,
-.repeat {
-  transition: 0.1s;
-  width: 30px;
-  opacity: 50%;
-}
-
-.shuffle {
-  cursor: pointer;
-}
-
-.mute {
-  width: 23px;
-  opacity: 100%;
-  cursor: pointer;
-}
-
-.repeat {
-  cursor: pointer;
 }
 
 .disabled {
@@ -231,15 +117,4 @@ body {
 .enabled {
   transition: 0.1s;
   opacity: 100%;
-}
-
-.app-dead {
-  display: flex;
-  flex-direction: row;
-  align-content: center;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  color: white;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 100px;
 }
