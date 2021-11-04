@@ -46,7 +46,7 @@ export class TrackModel extends Model<ITrackModel> {
                     const emptyArtist = new ArtistModel({
                         id: 0,
                         name: 'Loading artist name...',
-                        avatar: '/static/img/loading.webp',
+                        avatar: 'loading',
                     });
 
                     const emptyAlbum = new AlbumModel({
@@ -54,7 +54,7 @@ export class TrackModel extends Model<ITrackModel> {
                         title: 'Loading album name...',
                         year: 0,
                         artist: 'Loading artist name...',
-                        artwork: '/static/img/loading.webp',
+                        artwork: 'loading',
                         tracksCount: 0,
                         tracksDuration: 0,
                     });
