@@ -14,9 +14,10 @@ import routerStore from 'services/router/routerStore';
 import router from 'services/router/router';
 import { View } from 'views/View/view';
 
+import { UserModel } from 'models/user';
+
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
-import { UserModel } from 'models/user';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -77,6 +78,7 @@ export class IndexView extends View<IIndexViewProps> {
         Promise.all([auth, tracks, artists, albums])
             .then(() => {
                 this.track_list = new TrackList({
+                    title: 'Tracks of the Week',
                     tracks: this.track_list,
                 }).render();
                 this.suggested_playlists = new SuggestedPlaylists({

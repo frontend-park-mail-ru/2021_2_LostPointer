@@ -1,8 +1,9 @@
 const routerStore = {
-    dashboard: '/',
+    artist: '/artist',
     signin: '/signin',
     signup: '/signup',
     profile: '/profile',
+    dashboard: '/',
 };
 
 export default routerStore;

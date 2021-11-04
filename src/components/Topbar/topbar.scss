@@ -3,6 +3,7 @@
   display: flex;
   width: 100%;
   margin: 25px 10px;
+  align-items: center;
 
   &__search {
     background-color: #191919;
@@ -34,19 +35,19 @@
     padding-top: 5px;
   }
 
-  &-profile {
+  &-profile, &-auth {
     cursor: pointer;
     margin-right: 40px;
     margin-top: 2px;
     padding: 8px;
     height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    object-fit: cover;
   }
 
   &-auth {
-    cursor: pointer;
-    margin-right: 40px;
-    margin-top: 2px;
-    padding: 8px;
-    height: 45px;
+    height: 40px;
+    width: 40px;
   }
 }
