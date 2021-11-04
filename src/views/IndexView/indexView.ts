@@ -212,6 +212,14 @@ export class IndexView extends View<IIndexViewProps> {
             suggested_playlists: this.suggested_playlists,
             player: this.player.render(),
         });
+
+        const topbarMessage = document.querySelector('.topbar__message');
+        if ((navigator.onLine === true)) {
+            (<HTMLElement>topbarMessage).innerText = '';
+        } else {
+            (<HTMLElement>topbarMessage).innerText = 'Internet is unavailable';
+        }
+
         this.addListeners();
     }
 }
