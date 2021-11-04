@@ -9,20 +9,15 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// eslint-disable-next-line consistent-return
 self.addEventListener('fetch', (event) => {
-  /** online first */
   if (navigator.onLine === true) {
     return fetch(event.request);
   }
 
-  /** cache first */
   event.respondWith(
-    // ищем запрашиваемый ресурс в хранилище кэша
     caches
       .match(event.request)
       .then((cachedResponse) => {
-        // выдаём кэш, если он есть
         if (cachedResponse) {
           return cachedResponse;
         }
@@ -30,7 +25,7 @@ self.addEventListener('fetch', (event) => {
         return fetch(event.request);
       })
       .catch((err) => {
-        console.error('smth went wrong with caches.match: ', err);
+        console.error('CACHE: ', err);
       }),
   );
 });
