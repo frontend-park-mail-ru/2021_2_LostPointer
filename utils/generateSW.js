@@ -3,8 +3,10 @@ const fs = require('fs');
 
 const cachedUrl = [
   glob.sync('./dist/*'),
-  glob.sync('./src/static/**/*'),
-].flat(Infinity).join('\',\'');
+  glob.sync('./src/static/**/*.*'),
+].flat(Infinity).map((url) => {
+  return url.replace('./dist', '').replace('./src', '');
+}).join('\',\'');
 
 const content = fs.readFileSync('./src/sw.js');
 let contentString = String(content);
