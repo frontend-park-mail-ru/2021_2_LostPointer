@@ -191,6 +191,7 @@ export class IndexView extends View<IIndexViewProps> {
         };
     }
 
+    // TODO: это надо переместить "наружу", туда, где будет хранение аваторизации, а то сейчас неотключаемо
     pause = time => new Promise(resolve => setTimeout(resolve, time));
 
     async runPeriodically(callback, getCondition, time) {
