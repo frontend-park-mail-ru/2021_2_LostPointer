@@ -5,6 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const port = process.env.PORT || 3000;
 const src = path.join(__dirname, 'src');
 
+// TODO: PWA-webpack plugin для генерации манифеста
 module.exports = {
     entry: './src/index.ts',
     output: {

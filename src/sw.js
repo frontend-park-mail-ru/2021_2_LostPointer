@@ -11,6 +11,7 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (navigator.onLine === true) {
+      // TODO: кэшировать некоторые запросы на бэкенд, статику
     return fetch(event.request);
   }
 
