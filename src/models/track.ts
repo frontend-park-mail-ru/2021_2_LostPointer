@@ -6,7 +6,7 @@ import { ArtistModel } from 'models/artist';
 export interface ITrackModel {
     id: number;
     title: string;
-    artist: string;
+    artist: ArtistModel;
     album: AlbumModel;
     explicit: boolean;
     genre: string;
@@ -43,7 +43,39 @@ export class TrackModel extends Model<ITrackModel> {
                     res(tracks);
                 })
                 .catch(() => {
-                    res([]);
+                    const emptyArtist = new ArtistModel({
+                        id: 0,
+                        name: 'Loading artist name...',
+                        avatar: '/static/img/loading.gif',
+                    });
+
+                    const emptyAlbum = new AlbumModel({
+                        id: 0,
+                        title: 'Loading album name...',
+                        year: 0,
+                        artist: 'Loading artist name...',
+                        artwork: '/static/img/loading.gif',
+                        tracksCount: 0,
+                        tracksDuration: 0,
+                    });
+
+                    const emptyTrack = new TrackModel({
+                        id: 0,
+                        title: 'Loading title...',
+                        artist: emptyArtist,
+                        album: emptyAlbum,
+                        explicit: false,
+                        genre: '',
+                        number: 0,
+                        file: '',
+                        listenCount: 0,
+                        duration: 0,
+                        lossless: false,
+                        cover: '',
+                        pos: 0,
+                    })
+
+                    res(Array.from({length: 3}, () => emptyTrack));
                 });
         });
     }

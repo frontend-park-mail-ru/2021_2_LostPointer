@@ -30,7 +30,17 @@ export class AlbumModel extends Model<IAlbumModel> {
                     res(albums);
                 })
                 .catch(() => {
-                    res([]);
+                    const emptyAlbum = new AlbumModel({
+                        id: 0,
+                        title: 'Loading album name...',
+                        year: 0,
+                        artist: 'Loading artist name...',
+                        artwork: '/static/img/loading.gif',
+                        tracksCount: 0,
+                        tracksDuration: 0,
+                    });
+
+                    res(Array.from({length: 4}, () => emptyAlbum));
                 });
         });
     }

@@ -26,7 +26,13 @@ export class ArtistModel extends Model<IArtistModel> {
                     res(artists);
                 })
                 .catch(() => {
-                    res([]);
+                    const emptyArtist = new ArtistModel({
+                        id: 0,
+                        name: 'Loading artist name...',
+                        avatar: '/static/img/loading.gif',
+                    });
+
+                    res(Array.from({length: 4}, () => emptyArtist));
                 });
         });
     }
