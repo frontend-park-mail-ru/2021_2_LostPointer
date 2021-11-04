@@ -237,7 +237,7 @@ export class IndexView extends View<IIndexViewProps> {
                 () => {
                     return navigator.onLine !== true;
                 },
-                2000)
+                5000)
         }
         this.addListeners();
     }
