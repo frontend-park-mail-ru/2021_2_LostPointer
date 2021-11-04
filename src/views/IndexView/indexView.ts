@@ -191,6 +191,17 @@ export class IndexView extends View<IIndexViewProps> {
         };
     }
 
+    pause = time => new Promise(resolve => setTimeout(resolve, time));
+
+    async runPeriodically(callback, getCondition, time) {
+        let condition = true;
+        while(condition) {
+            condition = getCondition();
+            await callback();
+            await this.pause(time);
+        }
+    }
+
     render() {
         if (!this.isLoaded) {
             this.didMount();
@@ -218,8 +229,16 @@ export class IndexView extends View<IIndexViewProps> {
             (<HTMLElement>topbarMessage).innerText = '';
         } else {
             (<HTMLElement>topbarMessage).innerText = 'Internet is unavailable';
+            this.runPeriodically(
+                () => {
+                    // TODO: поменять на вызов другой функции, типа healthcheck
+                    Request.get('/auth').then(() => {router.go(routerStore.dashboard)});
+                },
+                () => {
+                    return navigator.onLine !== true;
+                },
+                2000)
         }
-
         this.addListeners();
     }
 }
