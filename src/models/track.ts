@@ -47,6 +47,9 @@ export class TrackModel extends Model<ITrackModel> {
                         id: 0,
                         name: 'Loading artist name...',
                         avatar: 'loading',
+                        video: '',
+                        albums: [],
+                        tracks: [],
                     });
 
                     const emptyAlbum = new AlbumModel({

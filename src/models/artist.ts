@@ -35,6 +35,9 @@ export class ArtistModel extends Model<IArtistModel> {
                         id: 0,
                         name: 'Loading artist name...',
                         avatar: 'loading',
+                        video: '',
+                        albums: [],
+                        tracks: [],
                     });
 
                     res(Array.from({length: 4}, () => emptyArtist));
