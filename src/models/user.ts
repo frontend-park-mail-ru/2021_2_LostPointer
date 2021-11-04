@@ -52,6 +52,12 @@ export class UserModel extends Model<IUserModel> {
                         avatar: body.avatar ? body.avatar : null,
                     });
                 })
+                .catch(() => {
+                    res({
+                        authenticated: false,
+                        avatar: '/static/img/default_avatar_150px.webp',
+                    })
+                })
         })
     }
 

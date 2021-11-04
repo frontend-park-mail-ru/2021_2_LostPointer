@@ -49,7 +49,7 @@ module.exports = {
             title: 'LostPointer',
             template: './src/index.html',
             filename: path.join(__dirname, '/dist/index.html'),
-            favicon: path.join(__dirname, '/src/static/img/favicon.ico'),
+            favicon: path.join(__dirname, '/static/img/favicon.ico'),
         }),
         new CleanWebpackPlugin(),
     ],
