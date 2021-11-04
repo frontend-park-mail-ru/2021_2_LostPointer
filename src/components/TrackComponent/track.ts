@@ -1,6 +1,7 @@
 import { Component } from 'components/Component/component';
 
 import TrackTemplate from './track.hbs';
+import './track.scss';
 
 interface ITrackProps {
     cover: string;

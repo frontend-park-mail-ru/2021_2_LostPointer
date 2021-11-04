@@ -1,0 +1,74 @@
+.player{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: auto;
+  height: 80px;
+  width: 100%;
+  background-color: #212121;
+
+  &-artwork {
+    background-color: white;
+    height: 60px;
+    width: 60px;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+
+  &-controls {
+    display: flex;
+  }
+
+  &-skip-right {
+    cursor: pointer;
+    transform: rotate(180deg);
+  }
+
+  &-skip-left {
+    cursor: pointer;
+  }
+
+  &-play {
+    cursor: pointer;
+  }
+
+  &__seekbar {
+    background-color: grey;
+    height: 5px;
+    width: 30%;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover .seekbar-current {
+      transition: 0.5s;
+      background-color: var(--accent-color);
+    }
+  }
+
+  &__time {
+    width: 30px;
+    color: white;
+    font-size: 17px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+  }
+
+  &-volume {
+    width: 10%;
+    cursor: pointer;
+
+    &:hover .volume-current {
+      transition: 0.5s;
+      background-color: var(--accent-color);
+    }
+  }
+
+  &-track {
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
