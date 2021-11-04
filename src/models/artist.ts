@@ -29,7 +29,7 @@ export class ArtistModel extends Model<IArtistModel> {
                     const emptyArtist = new ArtistModel({
                         id: 0,
                         name: 'Loading artist name...',
-                        avatar: '/static/img/loading.gif',
+                        avatar: '/static/img/loading.webp',
                     });
 
                     res(Array.from({length: 4}, () => emptyArtist));

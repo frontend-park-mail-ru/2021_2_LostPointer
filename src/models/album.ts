@@ -35,7 +35,7 @@ export class AlbumModel extends Model<IAlbumModel> {
                         title: 'Loading album name...',
                         year: 0,
                         artist: 'Loading artist name...',
-                        artwork: '/static/img/loading.gif',
+                        artwork: '/static/img/loading.webp',
                         tracksCount: 0,
                         tracksDuration: 0,
                     });
