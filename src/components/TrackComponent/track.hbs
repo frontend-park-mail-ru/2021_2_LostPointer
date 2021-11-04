@@ -8,7 +8,7 @@
         <div class='track-list-item__name'>{{title}}</div>
         <div
             class='track-list-item__artist'
-            href='/artists/{{artist.props.id}}'
+            href='/artist/{{artist.props.id}}'
             data-link
         >{{artist.props.name}}</div>
     </div>
@@ -17,6 +17,7 @@
         <img
             alt
             class='track-list-item-play'
+            data-id='{{id}}'
             data-title='{{title}}'
             data-artist='{{artist.props.name}}'
             data-cover='{{album.props.artwork}}'

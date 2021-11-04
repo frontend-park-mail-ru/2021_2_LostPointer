@@ -5,6 +5,7 @@ import IndexView from 'views/IndexView/indexView';
 import SigninView from 'views/SigninView/signinView';
 import SignupView from 'views/SignupView/signupView';
 import ProfileView from 'views/ProfileView/profileView';
+import ArtistView from 'views/ArtistView/artistView';
 
 class App {
     start() {
@@ -22,10 +23,11 @@ class App {
 
     initRoutes() {
         router
-            .register(routerStore.dashboard, IndexView)
+            .register(routerStore.artist, ArtistView)
             .register(routerStore.signin, SigninView)
             .register(routerStore.signup, SignupView)
             .register(routerStore.profile, ProfileView)
+            .register(routerStore.dashboard, IndexView)
             .start();
     }
 }

@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const port = process.env.PORT || 3000;
 const src = path.join(__dirname, 'src');
@@ -27,7 +28,7 @@ module.exports = {
         rules: [
             {
                 test: /\.(scss|css)$/,
-                use: ['style-loader', 'css-loader', 'sass-loader'],
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
             },
             {
                 test: /\.hbs$/,
@@ -45,6 +46,7 @@ module.exports = {
         ],
     },
     plugins: [
+        new MiniCssExtractPlugin({ filename: '[name].[fullhash:8].css' }),
         new HtmlWebpackPlugin({
             title: 'LostPointer',
             template: './src/index.html',

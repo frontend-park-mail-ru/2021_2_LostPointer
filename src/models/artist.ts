@@ -1,10 +1,15 @@
 import { Model } from 'models/model';
-import Request from '../../src/services/request/request';
+import Request from 'services/request/request';
+import {TrackModel} from 'models/track';
+import {AlbumModel} from 'models/album';
 
 export interface IArtistModel {
     id: number;
     name: string;
     avatar: string;
+    video: string;
+    albums: Array<AlbumModel>;
+    tracks: Array<TrackModel>;
 }
 
 export class ArtistModel extends Model<IArtistModel> {
@@ -27,6 +32,37 @@ export class ArtistModel extends Model<IArtistModel> {
                 })
                 .catch(() => {
                     res([]);
+                });
+        });
+    }
+
+    static getArtist(artistId: string): Promise<ArtistModel> | Promise<null> {
+        return new Promise<ArtistModel>((res) => {
+            Request.get(`/artist/${artistId}`)
+                .then((response) => {
+                    if ('status' in response && response.status !== 200) {
+                        return res(null);
+                    }
+
+                    response.tracks = response.tracks.reduce(
+                        (acc, elem, index) => {
+                            elem.pos = index;
+                            const album = new AlbumModel(elem.album);
+                            elem.album = album;
+                            acc.push(new TrackModel(elem));
+                            return acc;
+                        },
+                        []
+                    );
+                    response.albums = response.albums.reduce(
+                        (acc, elem, index) => {
+                            elem.pos = index;
+                            acc.push(new AlbumModel(elem));
+                            return acc;
+                        },
+                        []
+                    );
+                    res(new ArtistModel(response));
                 });
         });
     }
