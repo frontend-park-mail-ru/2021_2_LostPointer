@@ -39,6 +39,11 @@
     align-items: center;
     margin-bottom: 25px;
     margin-left: 10px;
+
+    svg {
+      background: white;
+      border-radius: 15px;
+    }
   }
 
   &__play {
