@@ -9,13 +9,12 @@
     border-radius: 25px;
     object-fit: cover;
     cursor: pointer;
-    filter: brightness(0.8);
   }
 
   &__description {
     display: flex;
     flex-direction: column;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(30, 30, 30, 0.8) 100%);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(30, 30, 30, 0.8) 100%);
     font-family: 'Montserrat';
     color: white;
     justify-content: space-between;
@@ -26,6 +25,17 @@
     top: 0;
     left: 0;
     border-radius: 20px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &__title {
+      overflow: hidden;
+      width: 170px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 
   &__track-count {
@@ -35,6 +45,8 @@
   }
 
   &__wrapper {
+
+
     display: flex;
     align-items: center;
     margin-bottom: 25px;

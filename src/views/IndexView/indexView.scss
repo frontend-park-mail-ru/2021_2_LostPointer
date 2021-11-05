@@ -11,12 +11,12 @@
 
 body,
 html {
-    height: 100%;
-    overflow: hidden;
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
-    background-color: #000000;
+  background-color: #000000;
 }
 
 .app {
@@ -39,82 +39,78 @@ body {
 }
 
 .main-layout__content {
-    display: flex;
-    overflow-y: scroll;
-    height: 100%;
-    justify-content: space-between;
+  display: flex;
+  overflow-y: scroll;
+  height: 100%;
+  justify-content: space-between;
 }
 
 .main-layout {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .listen-now__top-albums {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .listen-now__suggested-content {
-    margin-top: 50px;
-    display: flex;
-    justify-content: space-between;
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .listen-now {
-    width: 80%;
-    margin: 10px 10px 0;
+  width: 80%;
+  margin: 10px 10px 0;
 }
 
 .hidden {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .disabled {
-    opacity: 50%;
-    cursor: not-allowed;
+  opacity: 50%;
+  cursor: not-allowed;
 }
 
 .listening-to {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 90%;
-    overflow: hidden;
-    font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
+  overflow: hidden;
+  font-weight: 400;
 }
 
 .more-friends {
-    margin: auto 20px 15px;
-    background-color: rgb(56, 56, 56);
-    width: auto;
-    height: 10%;
-    border-radius: 20px;
-    display: flex;
-    cursor: pointer;
+  margin: auto 20px 15px;
+  background-color: rgb(56, 56, 56);
+  width: auto;
+  height: 10%;
+  border-radius: 20px;
+  display: flex;
+  cursor: pointer;
 }
 
 .view-all-text {
-    display: inline-block;
-    margin: auto;
-    width: fit-content;
-    font-weight: 400;
+  display: inline-block;
+  margin: auto;
+  width: fit-content;
+  font-weight: 400;
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background-color: #191919;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: grey;
-    border-radius: 20px;
+  background-color: grey;
+  border-radius: 20px;
 }
 
 .enabled {
-    transition: 0.1s;
-    opacity: 100%;
+  transition: 0.1s;
+  opacity: 100%;
 }
