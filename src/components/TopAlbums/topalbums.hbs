@@ -6,8 +6,13 @@
                 alt
                 src='/static/artworks/{{props.artwork}}_384px.webp'
             />
-            <div class='top-album__description'>
-                <div class='top-album__track-count'>38 Tracks</div>
+            <div
+                class='top-album__description'
+                style='background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, {{props.artwork_color}}99 100%)'
+            >
+                <div class='top-album__track-count'>{{props.tracksCount}}
+                    Tracks
+                </div>
                 <div class='top-album__wrapper'>
                     <i class='top-album__play fa-solid fa-circle-play'></i>
                     <div class='top-album__description__title'>
