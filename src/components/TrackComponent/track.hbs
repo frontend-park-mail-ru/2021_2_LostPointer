@@ -2,28 +2,28 @@
     <img
         alt
         class='track-list-item__artwork'
-        src='/src/static/img/artworks/{{cover}}_128px.webp'
+        src='/static/artworks/{{album.props.artwork}}_128px.webp'
     />
     <div class='track-list-item__name-container'>
         <div class='track-list-item__name'>{{title}}</div>
-        <div class='track-list-item__artist'>{{artist}}</div>
+        <div
+            class='track-list-item__artist'
+            href='/artists/{{artist.props.id}}'
+            data-link
+        >{{artist.props.name}}</div>
     </div>
     <div class='track-list-item__ellipsis'>
-        <img
-            alt
-            class='track-list-item-fav'
-            src='/src/static/img/favorite.svg'
-        />
+        <img alt class='track-list-item-fav' src='/static/img/favorite.svg' />
         <img
             alt
             class='track-list-item-play'
             data-title='{{title}}'
-            data-artist='{{artist}}'
-            data-cover='{{cover}}'
+            data-artist='{{artist.props.name}}'
+            data-cover='{{album.props.artwork}}'
             data-url='{{file}}'
             data-pos='{{pos}}'
-            data-album='{{album}}'
-            src='/src/static/img/play-outline.svg'
+            data-album='{{album.props.title}}'
+            src='/static/img/play-outline.svg'
         />
     </div>
 </div>

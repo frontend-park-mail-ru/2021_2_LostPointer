@@ -1,6 +1,7 @@
 import { Component } from 'components/Component/component';
 
 import SuggestedPlaylistTemplate from './suggestedplaylist.hbs';
+import './suggestedplaylist.scss';
 
 interface ISuggestedPlaylistProps {
     cover: string;

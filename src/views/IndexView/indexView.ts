@@ -16,6 +16,7 @@ import { View } from 'views/View/view';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
+import { UserModel } from 'models/user';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -43,9 +44,9 @@ export class IndexView extends View<IIndexViewProps> {
     }
 
     didMount() {
-        const auth = Request.get('/auth').then((response) => {
-            this.authenticated = response.status === 200;
-            this.userAvatar = response.avatar;
+        const auth = UserModel.auth().then((authResponse) => {
+            this.authenticated = authResponse.authenticated;
+            this.userAvatar = authResponse.avatar;
         });
 
         const tracks = TrackModel.getHomepageTracks().then((tracks) => {
@@ -132,8 +133,7 @@ export class IndexView extends View<IIndexViewProps> {
                 if (this.player.nowPlaying) {
                     // Переключили на другой трек
                     this.player.nowPlaying.dataset.playing = 'false';
-                    this.player.nowPlaying.src =
-                        '/src/static/img/play-outline.svg';
+                    this.player.nowPlaying.src = '/static/img/play-outline.svg';
                 }
 
                 this.player.setPos(
@@ -143,8 +143,8 @@ export class IndexView extends View<IIndexViewProps> {
 
                 e.target.dataset.playing = 'true';
                 this.player.setTrack({
-                    url: `/src/static/tracks/${e.target.dataset.url}`,
-                    cover: `/src/static/img/artworks/${e.target.dataset.cover}`,
+                    url: `/static/tracks/${e.target.dataset.url}`,
+                    cover: `/static/artworks/${e.target.dataset.cover}`,
                     title: e.target.dataset.title,
                     artist: e.target.dataset.artist,
                     album: e.target.dataset.album,

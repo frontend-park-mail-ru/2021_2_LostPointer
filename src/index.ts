@@ -4,6 +4,7 @@ import routerStore from 'services/router/routerStore';
 import IndexView from 'views/IndexView/indexView';
 import SigninView from 'views/SigninView/signinView';
 import SignupView from 'views/SignupView/signupView';
+import ProfileView from 'views/ProfileView/profileView';
 
 import '@fortawesome/fontawesome-free/js/all.js';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -27,6 +28,7 @@ class App {
             .register(routerStore.dashboard, IndexView)
             .register(routerStore.signin, SigninView)
             .register(routerStore.signup, SignupView)
+            .register(routerStore.profile, ProfileView)
             .start();
     }
 }

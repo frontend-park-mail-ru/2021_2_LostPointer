@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@350&display=swap');
+
+.auth {
+  &_page__placeholder-photo {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  &-page {
+    &__placeholder {
+      width: 50%;
+      height: 100%;
+    }
+
+    &__content {
+      margin-left: 60px;
+    }
+
+    &__logo {
+      display: flex;
+
+      &-image {
+        cursor: pointer;
+        width: 272px;
+        display: inline-block;
+        margin-left: 10px;
+      }
+    }
+
+    &__title {
+      font-family: Montserrat;
+      color: aliceblue;
+      font-size: 45px;
+      font-weight: 400;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    &__description {
+      font-family: Montserrat;
+      color: aliceblue;
+      font-size: 21px;
+      font-weight: 400;
+      margin-top: 15px;
+      line-height: 30px;
+      width: 350px;
+      text-align: center;
+    }
+  }
+
+  &-form {
+    width: 350px;
+    display: inline-block;
+    float: left;
+    margin-top: 30px;
+
+    &__invalidities {
+      display: flex;
+      flex-direction: column;
+      float: left;
+      font-family: Montserrat;
+      font-size: 16px;
+      text-align: left;
+      list-style: disc inside;
+      max-width: 320px;
+      margin: 290px 10px 10px;
+      color: #969696;
+      height: 265px;
+
+      & div.invalid {
+        color: #ff4d5b;
+        margin-bottom: 15px;
+      }
+
+      & div.valid {
+        color: #2ecc71;
+        margin-bottom: 15px;
+      }
+    }
+
+    &__fail_msg {
+      visibility: hidden;
+      font-family: Montserrat;
+      font-size: 16px;
+      text-align: center;
+      list-style: disc inside;
+      max-width: 350px;
+      margin: 10px 10px;
+      color: #ff4d5b;
+      display: block;
+
+      &.visible {
+        visibility: visible;
+      }
+    }
+
+    &__buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__redirect {
+      white-space: nowrap;
+      font-family: Montserrat;
+      font-size: 15px;
+      color: #ffffff;
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__submit {
+      transition: 0.5s;
+      width: 300px;
+      height: 45px;
+      border-radius: 10px;
+      margin: 10px auto;
+      font-family: Montserrat;
+      font-weight: 200;
+      color: #ffffff;
+      font-size: 22px;
+      cursor: pointer;
+
+      &:hover {
+        transition: 0.5s ease-in-out;
+      }
+    }
+
+    &__data {
+      width: 50%;
+      display: flex;
+    }
+  }
+}

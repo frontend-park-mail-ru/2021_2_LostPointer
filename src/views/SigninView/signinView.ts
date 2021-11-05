@@ -17,6 +17,7 @@ import { View } from 'views/View/view';
 
 import SigninComponentTemplate from './signinView.hbs';
 import './signinView.scss';
+import {UserModel} from "models/user";
 
 interface ISigninComponentProps {
     placeholder_img: string;
@@ -83,16 +84,12 @@ export class SigninView extends View<ISigninComponentProps> {
             'input[name="password"]'
         );
 
-        Request.post(
-            '/user/signin',
-            JSON.stringify({
-                email: emailInput.value.trim(),
-                password: passwordInput.value.trim(),
-            }),
-            undefined
-        )
-            .then(({ status, body }) => {
-                if (status === 200) {
+        UserModel.signin({
+            email: emailInput.value.trim(),
+            password: passwordInput.value.trim(),
+        })
+            .then((body) => {
+                if (body.status === 200) {
                     router.go(routerStore.dashboard);
                 } else {
                     const failMsg = event.target.querySelector(

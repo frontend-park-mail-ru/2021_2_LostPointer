@@ -1,0 +1,18 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: transparent;
+  width: 50px;
+  margin: 20px 15px;
+
+  &__logo {
+    cursor: pointer;
+    margin: 15px 8px 25px 8px;
+  }
+
+  &__icon {
+    cursor: pointer;
+    margin: 20px 10px 5px;
+  }
+}

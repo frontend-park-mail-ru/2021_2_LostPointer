@@ -45,7 +45,7 @@ export function checkInput(input) {
     input.CustomValidation.checkValidity(input);
 
     const invaliditiesArray = document.querySelectorAll(
-        '.auth-form__invalidities'
+        '.form__invalidities'
     );
     if (input.value.length !== 0) {
         input.CustomValidation.invalidities.forEach((message) => {
@@ -60,7 +60,7 @@ export function checkInput(input) {
     }
     let amountOfDeletedDivs = 0;
     const invaliditiesListNew = <HTMLInputElement>(
-        document.querySelector('.auth-form__invalidities')
+        document.querySelector('.form__invalidities')
     );
     const invalidsArray = invaliditiesListNew.innerText.split('\n');
     const innerElements = invaliditiesListNew.getElementsByTagName('div');
@@ -95,7 +95,7 @@ function checkInputEventListener(input, event) {
 }
 
 export function addInputsEventListeners(form) {
-    const inputs = form.querySelectorAll('.auth-form__input');
+    const inputs = form.querySelectorAll('.form__input');
 
     inputs.forEach((input) => {
         input.addEventListener(
@@ -106,7 +106,7 @@ export function addInputsEventListeners(form) {
 }
 
 export function removeInputsEventListeners(form) {
-    const inputs = form.querySelectorAll('.auth-form__input');
+    const inputs = form.querySelectorAll('.form__input');
 
     inputs.forEach((input) => {
         input.removeEventListener(
@@ -118,21 +118,27 @@ export function removeInputsEventListeners(form) {
 
 export function isValidForm(amountOfInputs) {
     const inputsArray = Array.from(
-        document.querySelectorAll('.auth-form__input')
+        document.querySelectorAll('.form__input')
     ).reverse();
     let isValid = true;
     let emptyFields = 0;
-    inputsArray.forEach((item) => {
-        const [isValidTmp, isEmpty] = checkInput(item);
-        if (!isValidTmp) {
-            isValid = false;
-        }
-        if (isEmpty) {
-            emptyFields++;
-        }
-    });
+    inputsArray.filter((item) => Object.prototype.hasOwnProperty.call(
+        item,
+        'CustomValidation',
+    ))
+        .forEach((item) => {
+            let isEmpty = false;
+            let isValidTmp = false;
+            [isValidTmp, isEmpty] = checkInput(item);
+            if (!isValidTmp) {
+                isValid = false;
+            }
+            if (isEmpty) {
+                emptyFields += 1;
+            }
+        });
 
-    const invalidity = document.querySelector('.auth-form__fail_msg');
+    const invalidity = document.querySelector('.form__fail_msg');
     if (emptyFields === amountOfInputs) {
         invalidity.innerHTML = 'Please, fill out the form';
     } else if (emptyFields < amountOfInputs && emptyFields !== 0) {
