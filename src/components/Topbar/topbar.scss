@@ -1,16 +1,15 @@
-
 .topbar {
   justify-content: space-between;
   display: flex;
   width: 100%;
   margin: 25px 10px;
 
-
   &__search {
     display: flex;
     align-items: center;
     background-color: #191919;
     width: 30%;
+    height: 65px;
     border-radius: 50px;
 
     &-icon {
@@ -75,4 +74,3 @@
     height: 45px;
   }
 }
-
