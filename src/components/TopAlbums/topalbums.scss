@@ -31,10 +31,7 @@
     white-space: nowrap;
 
     &__title {
-      overflow: hidden;
       width: 170px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
     }
   }
 
@@ -62,5 +59,11 @@
     color: var(--accent-color);
     font-size: 30px;
     margin: 0 10px;
+  }
+
+  & __artist, &__title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
