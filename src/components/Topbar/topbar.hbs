@@ -12,7 +12,13 @@
         <i class='topbar-icon fa-solid fa-gear'></i>
         {{#if authenticated}}
             <i class='topbar-icon js-logout fa-solid fa-right-from-bracket'></i>
-            <img alt class='topbar-profile' src='{{avatar}}' />
+            <img
+                alt
+                class='topbar-profile'
+                data-link
+                href='/profile'
+                src='{{avatar}}'
+            />
         {{else}}
             <a href='/signin' data-link>
                 <i class='topbar-icon fa-solid fa-right-to-bracket'></i>
