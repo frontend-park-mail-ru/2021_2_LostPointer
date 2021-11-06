@@ -27,8 +27,6 @@ export class Homepage extends Component<IHomepageProps> {
     private top_albums: AlbumModel[];
     private suggested_artists: ArtistModel[];
     private track_list: TrackModel[];
-    private suggested_playlists: SuggestedPlaylists;
-    private friend_activity: FriendActivity;
     private playButtonHandler: (e) => void;
 
     constructor() {

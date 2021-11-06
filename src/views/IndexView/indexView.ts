@@ -81,7 +81,6 @@ export class IndexView extends View<IIndexViewProps> {
                 });
             }
         };
-        Player.setup(document.querySelectorAll('.track-list-item'));
         document
             .querySelectorAll('.track-list-item-play')
             .forEach((e) =>
