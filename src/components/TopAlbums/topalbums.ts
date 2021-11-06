@@ -9,10 +9,19 @@ interface ITopAlbumsProps {
 }
 
 export class TopAlbums extends Component<ITopAlbumsProps> {
+    private albums: Array<AlbumModel>;
+
     constructor(props) {
         super(props);
+        this.albums = this.props.albums.reduce((acc, album) => {
+            const alb = album;
+            alb.props.album = !alb.isSingle();
+            acc.push(alb);
+            return acc;
+        }, []);
     }
+
     render() {
-        return TopAlbumsTemplate({ albums: this.props.albums });
+        return TopAlbumsTemplate({ albums: this.albums });
     }
 }

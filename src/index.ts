@@ -9,6 +9,8 @@ import ArtistView from 'views/ArtistView/artistView';
 import { UserModel } from 'models/user';
 import store from 'services/store/store';
 
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 class App {
     start() {
         const auth = UserModel.auth().then((authResponse) => {

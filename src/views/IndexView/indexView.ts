@@ -1,7 +1,7 @@
 import { Sidebar } from 'components/Sidebar/sidebar';
 import Request from 'services/request/request';
 import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
-import Player, { PlayerComponent } from 'components/Player/player';
+import Player from 'components/Player/player';
 import { View } from 'views/View/view';
 
 import IndexTemplate from './indexView.hbs';
@@ -9,6 +9,8 @@ import './indexView.scss';
 import store from 'services/store/store';
 import { Homepage } from 'components/Homepage/homepagecontent';
 import bus from 'services/eventbus/eventbus';
+import router from 'services/router/router';
+import routerStore from 'services/router/routerStore';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -16,10 +18,7 @@ interface IIndexViewProps {
 
 export class IndexView extends View<IIndexViewProps> {
     private authenticated: boolean;
-    private authHandler: (e) => void;
     private playButtonHandler: (e) => void;
-
-    private player: PlayerComponent;
     private sidebar: Sidebar;
     private topbar: Topbar;
 
@@ -30,11 +29,9 @@ export class IndexView extends View<IIndexViewProps> {
 
     constructor(props?: IIndexViewProps) {
         super(props);
-        this.addHandlers();
     }
 
     didMount() {
-        this.player = Player;
         this.topbar = TopbarComponent;
         this.sidebar = new Sidebar().render();
 
@@ -44,10 +41,51 @@ export class IndexView extends View<IIndexViewProps> {
             this.isLoaded = true;
             this.render();
         });
+        this.authenticated = store.get('authenticated');
     }
 
     addListeners() {
-        document.addEventListener('click', this.authHandler);
+        if (this.authenticated) {
+            document
+                .querySelector('.js-logout')
+                .addEventListener('click', this.userLogout);
+        }
+
+        this.playButtonHandler = (e) => {
+            if (e.target.className === 'track-list-item-play') {
+                if (!this.authenticated) {
+                    router.go(routerStore.signin);
+                    return;
+                }
+                if (e.target === Player.nowPlaying) {
+                    // Ставим на паузу/продолжаем воспр.
+                    Player.toggle();
+                    return;
+                }
+                if (Player.nowPlaying) {
+                    // Переключили на другой трек
+                    Player.nowPlaying.dataset.playing = 'false';
+                    Player.nowPlaying.src = '/static/img/play-outline.svg';
+                }
+
+                Player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
+
+                e.target.dataset.playing = 'true';
+                Player.setTrack({
+                    url: `/static/tracks/${e.target.dataset.url}`,
+                    cover: `/static/artworks/${e.target.dataset.cover}`,
+                    title: e.target.dataset.title,
+                    artist: e.target.dataset.artist,
+                    album: e.target.dataset.album,
+                });
+            }
+        };
+        Player.setup(document.querySelectorAll('.track-list-item'));
+        document
+            .querySelectorAll('.track-list-item-play')
+            .forEach((e) =>
+                e.addEventListener('click', this.playButtonHandler)
+            );
     }
 
     unmount() {
@@ -61,25 +99,17 @@ export class IndexView extends View<IIndexViewProps> {
         //     .querySelector('.suggested-tracks-container')
         //     .removeEventListener('click', this.playButtonHandler);
         // this.isLoaded = false;
-        // this.player.unmount();
+        // this.Player.unmount();
     }
 
-    addHandlers() {
-        this.authHandler = (e) => {
-            if (
-                e.target.className === 'topbar-auth' &&
-                e.target.dataset.action === 'logout'
-            ) {
-                Request.post('/user/logout').then(() => {
-                    this.player.stop();
-                    this.authenticated = false;
-                    this.props.authenticated = false;
-                    this.player.clear();
-                    window.localStorage.removeItem('lastPlayedData');
-                    this.topbar.logout();
-                });
-            }
-        };
+    userLogout() {
+        Request.post('/user/logout').then(() => {
+            Player.stop();
+            this.authenticated = false;
+            Player.clear();
+            window.localStorage.removeItem('lastPlayedData');
+            TopbarComponent.logout();
+        });
     }
 
     render() {
@@ -104,12 +134,12 @@ export class IndexView extends View<IIndexViewProps> {
                 .render(),
             sidebar: this.sidebar,
             content: this.homepageTemplate,
-            player: this.player.render(),
+            player: Player.render(),
         });
         this.addListeners();
         this.homepage.addListeners();
 
-        this.player.setup(document.querySelectorAll('.track-list-item'));
+        Player.setup(document.querySelectorAll('.track-list-item'));
         bus.emit('home-rendered');
         this.renderedOnce = true;
     }

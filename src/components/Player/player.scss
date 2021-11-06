@@ -46,6 +46,10 @@
       background-color: white;
     }
 
+    .volume-current {
+      width: 50%;
+    }
+
     &:hover .seekbar-current {
       transition: 0.5s;
       background-color: var(--accent-color);

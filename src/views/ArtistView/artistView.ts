@@ -94,10 +94,7 @@ export class ArtistView extends View<IArtistViewProps> {
 
     addHandlers() {
         this.authHandler = (e) => {
-            if (
-                e.target.className === 'topbar-auth' &&
-                e.target.dataset.action === 'logout'
-            ) {
+            if (e.target.dataset.action === 'logout') {
                 Request.post('/user/logout').then(() => {
                     player.stop();
                     this.authenticated = false;
