@@ -141,6 +141,7 @@ export class IndexView extends View<IIndexViewProps> {
         this.homepage.addListeners();
 
         Player.setup(document.querySelectorAll('.track-list-item'));
+        Player.init();
         bus.emit('home-rendered');
         this.renderedOnce = true;
     }

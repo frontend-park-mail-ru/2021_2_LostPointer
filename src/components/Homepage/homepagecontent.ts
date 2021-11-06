@@ -114,7 +114,6 @@ export class Homepage extends Component<IHomepageProps> {
                 }
                 if (e.target === store.get('nowPlaying')) {
                     // Ставим на паузу/продолжаем воспр.
-                    bus.emit('toggle-player');
                     return;
                 }
                 if (store.get('nowPlaying')) {
@@ -131,15 +130,6 @@ export class Homepage extends Component<IHomepageProps> {
 
                 e.target.dataset.playing = 'true';
                 store.set('nowPlaying', e.target);
-
-                bus.emit('set-player-track', {
-                    url: `/static/tracks/${e.target.dataset.url}`,
-                    cover: `/static/artworks/${e.target.dataset.cover}`,
-                    title: e.target.dataset.title,
-                    artist: e.target.dataset.artist,
-                    artist_id: e.target.dataset.artist_id,
-                    album: e.target.dataset.album,
-                });
             }
         };
     }

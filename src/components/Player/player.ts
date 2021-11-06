@@ -76,24 +76,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.gotSeekPos = false;
         this.gotVolPos = false;
         this.props.playing = false;
-
-        this.audio.addEventListener('loadedmetadata', () => {
-            const totalSeconds = this.audio.duration % 60 | 0;
-            const zero = totalSeconds < 10 ? '0' : '';
-
-            this.props.current_time = '0:00';
-            this.props.total_time = `${
-                (this.audio.duration / 60) | 0
-            }:${zero}${totalSeconds}`;
-            this.props.playing = !this.firstTime;
-
-            this.firstTime = false;
-            this.saveLastPlayed();
-            this.update();
-            document
-                .querySelector('.player-artwork')
-                .classList.remove('hidden');
-        });
     }
 
     seek(xPos) {
@@ -281,6 +263,26 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             .removeEventListener('click', this.arrowKeysHandler);
     }
 
+    init() {
+        this.audio.addEventListener('loadedmetadata', () => {
+            const totalSeconds = this.audio.duration % 60 | 0;
+            const zero = totalSeconds < 10 ? '0' : '';
+
+            this.props.current_time = '0:00';
+            this.props.total_time = `${
+                (this.audio.duration / 60) | 0
+            }:${zero}${totalSeconds}`;
+            this.props.playing = !this.firstTime;
+
+            this.firstTime = false;
+            this.saveLastPlayed();
+            this.update();
+            document
+                .querySelector('.player-artwork')
+                .classList.remove('hidden');
+        });
+    }
+
     setup(playlist) {
         this.seekbarCurrent = document.querySelector('.seekbar-current');
         this.currentVolume = document.querySelector('.volume-current');
@@ -454,13 +456,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             if (this.pos < this.playlist.length - 1) {
                 this.nowPlaying = this.playlist[
                     this.playlistIndices[++this.pos]
-                ].querySelector('.track-list-item-play'); //TODO=Сделать плейлист компонентом + потом отрисовывать
+                    ].querySelector('.track-list-item-play'); //TODO=Сделать плейлист компонентом + потом отрисовывать
                 allowed = true;
             }
         } else if (this.pos >= 1) {
             this.nowPlaying = this.playlist[
                 this.playlistIndices[--this.pos]
-            ].querySelector('.track-list-item-play');
+                ].querySelector('.track-list-item-play');
             allowed = true;
         }
         if (allowed) {
