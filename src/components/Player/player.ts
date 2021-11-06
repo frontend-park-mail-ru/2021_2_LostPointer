@@ -126,7 +126,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     setTrack(track): void {
         this.audio.pause();
         this.counted = false;
-        this.audio.src = track.url;
+        this.audio.src = track.url.replace('.m4a', '.webm');
         this.props = {
             cover: track.cover,
             track: track.title,
