@@ -75,47 +75,42 @@ export class IndexView extends View<IIndexViewProps> {
             },
         ];
 
-        Promise.all([auth, tracks, artists, albums])
-            .then(() => {
-                this.track_list = new TrackList({
-                    title: 'Tracks of the Week',
-                    tracks: this.track_list,
-                }).render();
-                this.suggested_playlists = new SuggestedPlaylists({
-                    playlists: predefinedPlaylists,
-                }).render();
-                this.player = Player;
-                this.topbar = TopbarComponent;
-                this.sidebar = new Sidebar().render();
+        Promise.all([auth, tracks, artists, albums]).then(() => {
+            this.track_list = new TrackList({
+                title: 'Tracks of the Week',
+                tracks: this.track_list,
+            }).render();
+            this.suggested_playlists = new SuggestedPlaylists({
+                playlists: predefinedPlaylists,
+            }).render();
+            this.player = Player;
+            this.topbar = TopbarComponent;
+            this.sidebar = new Sidebar().render();
 
-                this.top_albums = new TopAlbums({
-                    albums: this.top_albums,
-                }).render();
-                this.suggested_artists = new SuggestedArtists({
-                    artists: this.suggested_artists,
-                }).render();
+            this.top_albums = new TopAlbums({
+                albums: this.top_albums,
+            }).render();
+            this.suggested_artists = new SuggestedArtists({
+                artists: this.suggested_artists,
+            }).render();
 
-                this.friend_activity = new FriendActivity({
-                    friends: [
-                        {
-                            img: 'default_avatar_150px',
-                            nickname: 'Frank Sinatra',
-                            listening_to: 'Strangers in the Night',
-                        },
-                        {
-                            img: 'default_avatar_150px',
-                            nickname: 'Земфира',
-                            listening_to: 'Трафик',
-                        },
-                    ],
-                }).render();
-
-                this.isLoaded = true;
-                this.render();
-            })
-            .catch(() => {
-                // Show that backend is dead somehow
-            });
+            this.friend_activity = new FriendActivity({
+                friends: [
+                    {
+                        img: 'default_avatar_150px',
+                        nickname: 'Frank Sinatra',
+                        listening_to: 'Strangers in the Night',
+                    },
+                    {
+                        img: 'default_avatar_150px',
+                        nickname: 'Земфира',
+                        listening_to: 'Трафик',
+                    },
+                ],
+            }).render();
+            this.isLoaded = true;
+            this.render();
+        });
     }
 
     addListeners() {

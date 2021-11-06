@@ -11,7 +11,9 @@
         <i class='topbar-icon fa-regular fa-bell'></i>
         <i class='topbar-icon fa-solid fa-gear'></i>
         {{#if authenticated}}
-            <i class='topbar-icon fa-solid fa-right-from-bracket'></i>
+            <a href='/signout' data-link>
+                <i class='topbar-icon fa-solid fa-right-from-bracket'></i>
+            </a>
             <img alt class='topbar-profile' src='{{avatar}}' />
         {{else}}
             <i
