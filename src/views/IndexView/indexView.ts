@@ -6,7 +6,7 @@ import { FriendActivity } from 'components/FriendActivity/friendactivity';
 import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
 import { TrackList } from 'components/TrackList/tracklist';
 import { SuggestedPlaylists } from 'components/SuggestedPlaylists/suggestedplaylists';
-import Player, { PlayerComponent } from 'components/Player/player';
+import player, { PlayerComponent } from 'components/Player/player';
 import { TrackModel } from 'models/track';
 import { ArtistModel } from 'models/artist';
 import { AlbumModel } from 'models/album';
@@ -41,7 +41,6 @@ export class IndexView extends View<IIndexViewProps> {
     constructor(props?: IIndexViewProps) {
         super(props);
         this.isLoaded = false;
-        this.addHandlers();
     }
 
     didMount() {
@@ -75,51 +74,48 @@ export class IndexView extends View<IIndexViewProps> {
             },
         ];
 
-        Promise.all([auth, tracks, artists, albums])
-            .then(() => {
-                this.track_list = new TrackList({
-                    title: 'Tracks of the Week',
-                    tracks: this.track_list,
-                }).render();
-                this.suggested_playlists = new SuggestedPlaylists({
-                    playlists: predefinedPlaylists,
-                }).render();
-                this.player = Player;
-                this.topbar = TopbarComponent;
-                this.sidebar = new Sidebar().render();
+        Promise.all([auth, tracks, artists, albums]).then(() => {
+            this.track_list = new TrackList({
+                title: 'Tracks of the Week',
+                tracks: this.track_list,
+            }).render();
+            this.suggested_playlists = new SuggestedPlaylists({
+                playlists: predefinedPlaylists,
+            }).render();
+            this.sidebar = new Sidebar().render();
 
-                this.top_albums = new TopAlbums({
-                    albums: this.top_albums,
-                }).render();
-                this.suggested_artists = new SuggestedArtists({
-                    artists: this.suggested_artists,
-                }).render();
+            this.top_albums = new TopAlbums({
+                albums: this.top_albums,
+            }).render();
+            this.suggested_artists = new SuggestedArtists({
+                artists: this.suggested_artists,
+            }).render();
 
-                this.friend_activity = new FriendActivity({
-                    friends: [
-                        {
-                            img: 'default_avatar_150px',
-                            nickname: 'Frank Sinatra',
-                            listening_to: 'Strangers in the Night',
-                        },
-                        {
-                            img: 'default_avatar_150px',
-                            nickname: 'Земфира',
-                            listening_to: 'Трафик',
-                        },
-                    ],
-                }).render();
-
-                this.isLoaded = true;
-                this.render();
-            })
-            .catch(() => {
-                // Show that backend is dead somehow
-            });
+            this.friend_activity = new FriendActivity({
+                friends: [
+                    {
+                        img: 'default_avatar_150px',
+                        nickname: 'Frank Sinatra',
+                        listening_to: 'Strangers in the Night',
+                    },
+                    {
+                        img: 'default_avatar_150px',
+                        nickname: 'Земфира',
+                        listening_to: 'Трафик',
+                    },
+                ],
+            }).render();
+            this.isLoaded = true;
+            this.render();
+        });
     }
 
     addListeners() {
-        document.addEventListener('click', this.authHandler);
+        if (this.authenticated) {
+            document
+                .querySelector('.js-logout')
+                .addEventListener('click', this.userLogout);
+        }
 
         this.playButtonHandler = (e) => {
             if (e.target.className === 'track-list-item-play') {
@@ -127,24 +123,21 @@ export class IndexView extends View<IIndexViewProps> {
                     router.go(routerStore.signin);
                     return;
                 }
-                if (e.target === this.player.nowPlaying) {
+                if (e.target === player.nowPlaying) {
                     // Ставим на паузу/продолжаем воспр.
-                    this.player.toggle();
+                    player.toggle();
                     return;
                 }
-                if (this.player.nowPlaying) {
+                if (player.nowPlaying) {
                     // Переключили на другой трек
-                    this.player.nowPlaying.dataset.playing = 'false';
-                    this.player.nowPlaying.src = '/static/img/play-outline.svg';
+                    player.nowPlaying.dataset.playing = 'false';
+                    player.nowPlaying.src = '/static/img/play-outline.svg';
                 }
 
-                this.player.setPos(
-                    parseInt(e.target.dataset.pos, 10),
-                    e.target
-                );
+                player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
 
                 e.target.dataset.playing = 'true';
-                this.player.setTrack({
+                player.setTrack({
                     url: `/static/tracks/${e.target.dataset.url}`,
                     cover: `/static/artworks/${e.target.dataset.cover}`,
                     title: e.target.dataset.title,
@@ -153,7 +146,7 @@ export class IndexView extends View<IIndexViewProps> {
                 });
             }
         };
-        this.player.setup(document.querySelectorAll('.track-list-item'));
+        player.setup(document.querySelectorAll('.track-list-item'));
         document
             .querySelectorAll('.track-list-item-play')
             .forEach((e) =>
@@ -172,25 +165,17 @@ export class IndexView extends View<IIndexViewProps> {
             .querySelector('.suggested-tracks-container')
             .removeEventListener('click', this.playButtonHandler);
         this.isLoaded = false;
-        this.player.unmount();
+        player.unmount();
     }
 
-    addHandlers() {
-        this.authHandler = (e) => {
-            if (
-                e.target.className === 'topbar-auth' &&
-                e.target.dataset.action === 'logout'
-            ) {
-                Request.post('/user/logout').then(() => {
-                    this.player.stop();
-                    this.authenticated = false;
-                    this.props.authenticated = false;
-                    this.player.clear();
-                    window.localStorage.removeItem('lastPlayedData');
-                    this.topbar.logout();
-                });
-            }
-        };
+    userLogout() {
+        Request.post('/user/logout').then(() => {
+            player.stop();
+            this.authenticated = false;
+            player.clear();
+            window.localStorage.removeItem('lastPlayedData');
+            TopbarComponent.logout();
+        });
     }
 
     render() {
@@ -200,19 +185,17 @@ export class IndexView extends View<IIndexViewProps> {
         }
 
         document.getElementById('app').innerHTML = IndexTemplate({
-            topbar: this.topbar
-                .set({
-                    authenticated: this.authenticated,
-                    avatar: this.userAvatar,
-                })
-                .render(),
+            topbar: TopbarComponent.set({
+                authenticated: this.authenticated,
+                avatar: this.userAvatar,
+            }).render(),
             sidebar: this.sidebar,
             friend_activity: this.friend_activity,
             top_albums: this.top_albums,
             suggested_artists: this.suggested_artists,
             track_list: this.track_list,
             suggested_playlists: this.suggested_playlists,
-            player: this.player.render(),
+            player: player.render(),
         });
         this.addListeners();
     }

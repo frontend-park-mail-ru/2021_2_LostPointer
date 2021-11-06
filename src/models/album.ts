@@ -2,6 +2,7 @@ import { Model } from './model';
 import Request from '../../src/services/request/request';
 
 export interface IAlbumModel {
+    album: boolean;
     id: number;
     title: string;
     year: number;
@@ -33,5 +34,9 @@ export class AlbumModel extends Model<IAlbumModel> {
                     res([]);
                 });
         });
+    }
+
+    isSingle(): boolean {
+        return this.props.tracksCount === 1;
     }
 }

@@ -1,9 +1,30 @@
 <div class='listen-now__top-albums'>
     {{#each albums}}
-        <img
-            alt
-            class='top-album'
-            src='/static/artworks/{{props.artwork}}_384px.webp'
-        />
+        <div class='top-album'>
+            <img
+                class='top-album__img'
+                alt
+                src='/static/artworks/{{props.artwork}}_384px.webp'
+            />
+            <div
+                class='top-album__description'
+                style='background: linear-gradient(180deg, rgba(30, 30, 30, 0.5) 0%, {{props.artwork_color}}CC 100%)'
+            >
+                <div class='top-album__track-count'>{{props.tracksCount}}
+                    Track{{#if props.album}}s{{/if}}
+                </div>
+                <div class='top-album__wrapper'>
+                    <i class='top-album__play fa-solid fa-play'></i>
+                    <div class='top-album__description__title'>
+                        <div class='top-album__artist'>
+                            {{props.artist}}
+                        </div>
+                        <div class='top-album__title'>
+                            {{props.title}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     {{/each}}
 </div>

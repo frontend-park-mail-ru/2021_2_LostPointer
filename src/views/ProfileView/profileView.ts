@@ -1,12 +1,12 @@
-import {View} from 'views/View/view';
+import { View } from 'views/View/view';
 import Request from 'services/request/request';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import {Topbar} from 'components/Topbar/topbar';
-import {PlayerComponent} from 'components/Player/player';
-import {Sidebar} from 'components/Sidebar/sidebar';
-import {ICustomInput} from 'interfaces/CustomInput';
-import {CustomValidation, isValidForm} from 'services/validation/validation';
+import { Topbar } from 'components/Topbar/topbar';
+import { PlayerComponent } from 'components/Player/player';
+import { Sidebar } from 'components/Sidebar/sidebar';
+import { ICustomInput } from 'interfaces/CustomInput';
+import { CustomValidation, isValidForm } from 'services/validation/validation';
 import {
     confirmPasswordValidityChecks,
     emailValidityChecks,
@@ -14,8 +14,8 @@ import {
     passwordValidityChecks,
     simplePasswordValidityChecks,
 } from 'services/validation/validityChecks';
-import {ProfileForm} from 'components/ProfileForm/profileForm';
-import {UserModel} from 'models/user';
+import { ProfileForm } from 'components/ProfileForm/profileForm';
+import { UserModel } from 'models/user';
 
 import ProfileTemplate from './profileView.hbs';
 import './profileView.scss';
@@ -42,8 +42,7 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     didMount() {
-        UserModel.auth()
-            .then((authResponse) => {
+        UserModel.auth().then((authResponse) => {
             this.authenticated = authResponse.authenticated;
             if (!this.authenticated) {
                 router.go(routerStore.signin);
@@ -51,19 +50,18 @@ export class ProfileView extends View<IProfileViewProps> {
             }
             this.userAvatar = authResponse.avatar;
 
-            UserModel.getSettings()
-                .then((user) => {
-                    this.user = user;
-                    this.sidebar = new Sidebar();
-                    this.topbar = new Topbar({
-                        authenticated: this.authenticated,
-                        avatar: user.getProps().small_avatar,
-                    })
-                    this.player = new PlayerComponent();
-                    this.profileform = new ProfileForm(user.getProps());
-                    this.isLoaded = true;
-                    this.render();
-                })
+            UserModel.getSettings().then((user) => {
+                this.user = user;
+                this.sidebar = new Sidebar();
+                this.topbar = new Topbar({
+                    authenticated: this.authenticated,
+                    avatar: user.getProps().small_avatar,
+                });
+                this.player = new PlayerComponent();
+                this.profileform = new ProfileForm(user.getProps());
+                this.isLoaded = true;
+                this.render();
+            });
         });
     }
 
@@ -78,8 +76,16 @@ export class ProfileView extends View<IProfileViewProps> {
         const formdata = new FormData();
         formdata.append('avatar', file, file.name);
 
-        const ext = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase();
-        if (ext === 'gif' || ext === 'png' || ext === 'jpeg' || ext === 'jpg' || ext === 'webp') {
+        const ext = file.name
+            .substring(file.name.lastIndexOf('.') + 1)
+            .toLowerCase();
+        if (
+            ext === 'gif' ||
+            ext === 'png' ||
+            ext === 'jpeg' ||
+            ext === 'jpg' ||
+            ext === 'webp'
+        ) {
             const reader = new FileReader();
             reader.addEventListener('load', (e) => {
                 e.preventDefault();
@@ -97,10 +103,12 @@ export class ProfileView extends View<IProfileViewProps> {
             return;
         }
 
-        this.user.updateSettings(formdata)
+        this.user
+            .updateSettings(formdata)
             .then((body) => {
                 if (body.status === 200) {
-                    const smallAvatar = document.querySelector('.topbar-profile');
+                    const smallAvatar =
+                        document.querySelector('.topbar-profile');
                     smallAvatar.setAttribute('src', readFile);
                     msg.classList.remove('fail');
                     (<HTMLElement>msg).innerText = 'Changed successfully';
@@ -121,40 +129,54 @@ export class ProfileView extends View<IProfileViewProps> {
     submitChangeProfileForm(event) {
         event.preventDefault();
 
-        const nicknameInput = event.target.querySelector('input[name="nickname"]');
+        const nicknameInput = event.target.querySelector(
+            'input[name="nickname"]'
+        );
         const emailInput = event.target.querySelector('input[name="email"]');
-        const oldPasswordInput = event.target.querySelector('input[name="old_password"]');
-        const passwordInput = event.target.querySelector('input[name="password"]');
-        const confirmPasswordInput = event.target.querySelector('input[name="confirm_password"]');
-        const invalidities = document.querySelector('.profile-form__invalidities');
+        const oldPasswordInput = event.target.querySelector(
+            'input[name="old_password"]'
+        );
+        const passwordInput = event.target.querySelector(
+            'input[name="password"]'
+        );
+        const confirmPasswordInput = event.target.querySelector(
+            'input[name="confirm_password"]'
+        );
+        const invalidities = document.querySelector(
+            '.profile-form__invalidities'
+        );
         const msg = event.target.querySelector('.profile-form__msg');
         invalidities.innerHTML = '';
         msg.innerHTML = '';
 
         let requiredInputsNumber = 2;
-        if (oldPasswordInput.value !== ''
-            || passwordInput.value !== ''
-            || confirmPasswordInput.value !== '') {
-            (<ICustomInput>oldPasswordInput).CustomValidation = new CustomValidation(
-                simplePasswordValidityChecks,
-                invalidities,
-            );
-            (<ICustomInput>passwordInput).CustomValidation = new CustomValidation(
-                passwordValidityChecks,
-                invalidities,
-            );
-            (<ICustomInput>confirmPasswordInput).CustomValidation = new CustomValidation(
-                confirmPasswordValidityChecks,
-                invalidities,
-            );
+        if (
+            oldPasswordInput.value !== '' ||
+            passwordInput.value !== '' ||
+            confirmPasswordInput.value !== ''
+        ) {
+            (<ICustomInput>oldPasswordInput).CustomValidation =
+                new CustomValidation(
+                    simplePasswordValidityChecks,
+                    invalidities
+                );
+            (<ICustomInput>passwordInput).CustomValidation =
+                new CustomValidation(passwordValidityChecks, invalidities);
+            (<ICustomInput>confirmPasswordInput).CustomValidation =
+                new CustomValidation(
+                    confirmPasswordValidityChecks,
+                    invalidities
+                );
             requiredInputsNumber = 5;
         } else {
             delete oldPasswordInput.CustomValidation;
             delete passwordInput.CustomValidation;
             delete confirmPasswordInput.CustomValidation;
             const userSettings = this.user.getProps();
-            if (userSettings.nickname == nicknameInput.value
-                && userSettings.email == emailInput.value) {
+            if (
+                userSettings.nickname == nicknameInput.value &&
+                userSettings.email == emailInput.value
+            ) {
                 return;
             }
         }
@@ -173,7 +195,8 @@ export class ProfileView extends View<IProfileViewProps> {
             formdata.append('new_password', passwordInput.value);
         }
 
-        this.user.updateSettings(formdata)
+        this.user
+            .updateSettings(formdata)
             .then((body) => {
                 if (body.status === 200) {
                     msg.classList.remove('fail');
@@ -198,17 +221,23 @@ export class ProfileView extends View<IProfileViewProps> {
         const form = document.querySelector('.profile-form');
         const nicknameInput = form.querySelector('input[name="nickname"]');
         const emailInput = form.querySelector('input[name="email"]');
-        const invalidities = document.querySelector('.profile-form__invalidities');
+        const invalidities = document.querySelector(
+            '.profile-form__invalidities'
+        );
 
         (<ICustomInput>nicknameInput).CustomValidation = new CustomValidation(
             nameValidityChecks,
-            invalidities,
+            invalidities
         );
         (<ICustomInput>emailInput).CustomValidation = new CustomValidation(
             emailValidityChecks,
-            invalidities);
+            invalidities
+        );
 
-        form.addEventListener('submit', this.submitChangeProfileForm.bind(this));
+        form.addEventListener(
+            'submit',
+            this.submitChangeProfileForm.bind(this)
+        );
         const fileInput = document.querySelector('input[name="file"]');
         fileInput.addEventListener('change', this.uploadAvatarFile.bind(this));
     }

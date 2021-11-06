@@ -480,8 +480,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     stop() {
         this.audio.pause();
         this.audio.src = null;
-        (<HTMLImageElement>document.querySelector('.player-play')).src =
-            '/static/img/play.svg'; //TODO=Почему хэндлер паузы это не отрабатывает - большой вопрос
+        const playButton = <HTMLImageElement>(
+            document.querySelector('.player-play')
+        );
+        if (playButton) {
+            playButton.src = '/static/img/play.svg'; //TODO=Почему хэндлер паузы это не отрабатывает - большой вопрос
+        }
         if (this.nowPlaying) {
             this.nowPlaying.src = '/static/img/play-outline.svg';
         }

@@ -9,6 +9,7 @@ interface IRoute {
 class Router {
     private readonly routes: IRoute[];
     private currentView: View<never>;
+
     constructor() {
         this.routes = [];
         this.currentView = null;

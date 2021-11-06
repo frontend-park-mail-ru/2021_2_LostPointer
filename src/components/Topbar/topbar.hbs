@@ -1,39 +1,28 @@
 <div class='topbar'>
-    <span class='topbar__search'></span>
+    <div class='topbar__search'>
+        <i class='topbar__search-icon fa-solid fa-magnifying-glass'></i>
+        <input
+            class='topbar__search-input'
+            type='text'
+            placeholder='Search...'
+        />
+    </div>
     <span class='topbar-icons'>
-        <img
-            alt
-            class='topbar-icon'
-            src='/src/static/img/notifications-none.svg'
-        />
-        <img
-            alt
-            id='settings'
-            class='topbar-icon'
-            src='/src/static/img/settings.svg'
-        />
+        <i class='topbar-icon fa-regular fa-bell'></i>
+        <i class='topbar-icon fa-solid fa-gear'></i>
+        {{#if authenticated}}
+            <i class='topbar-icon js-logout fa-solid fa-right-from-bracket'></i>
+            <img
+                alt
+                class='topbar-profile'
+                data-link
+                href='/profile'
+                src='{{avatar}}'
+            />
+        {{else}}
+            <a href='/signin' data-link>
+                <i class='topbar-icon fa-solid fa-right-to-bracket'></i>
+            </a>
+        {{/if}}
     </span>
-    {{#if authenticated}}
-        <img
-            alt
-            class='topbar-profile'
-            data-link
-            href='/profile'
-            src='{{avatar}}'
-        />
-        <img
-            alt
-            class='topbar-auth'
-            data-action='logout'
-            src='/src/static/img/logout.svg'
-        />
-    {{else}}
-        <img
-            alt
-            class='topbar-auth'
-            data-link
-            href='/signin'
-            src='/src/static/img/login.svg'
-        />
-    {{/if}}
 </div>
