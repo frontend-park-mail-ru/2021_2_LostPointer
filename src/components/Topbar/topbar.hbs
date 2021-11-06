@@ -11,16 +11,12 @@
         <i class='topbar-icon fa-regular fa-bell'></i>
         <i class='topbar-icon fa-solid fa-gear'></i>
         {{#if authenticated}}
-            <a href='/signout' data-link>
-                <i class='topbar-icon fa-solid fa-right-from-bracket'></i>
-            </a>
+            <i class='topbar-icon js-logout fa-solid fa-right-from-bracket'></i>
             <img alt class='topbar-profile' src='{{avatar}}' />
         {{else}}
-            <i
-                class='topbar-icon fa-solid fa-right-to-bracket'
-                data-link
-                href='/signin'
-            ></i>
+            <a href='/signin' data-link>
+                <i class='topbar-icon fa-solid fa-right-to-bracket'></i>
+            </a>
         {{/if}}
     </span>
 </div>
