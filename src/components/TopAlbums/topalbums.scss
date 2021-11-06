@@ -54,10 +54,20 @@
   }
 
   &__play {
+    height: 40px;
+    width: 40px;
     cursor: pointer;
-    color: var(--accent-color);
-    font-size: 40px;
+    color: white;
+    font-size: 20px;
     margin: 0 10px;
+    background: var(--accent-color);
+    border-radius: 20px;
+  }
+
+  i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   & __artist, &__title {
