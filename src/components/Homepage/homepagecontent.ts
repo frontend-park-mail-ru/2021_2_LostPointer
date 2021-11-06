@@ -123,7 +123,7 @@ export class Homepage extends Component<IHomepageProps> {
                     store.get('nowPlaying').src =
                         '/static/img/play-outline.svg';
                 }
-                
+
                 bus.emit('set-player-pos', {
                     pos: parseInt(e.target.dataset.pos, 10),
                     target: e.target,
@@ -137,6 +137,7 @@ export class Homepage extends Component<IHomepageProps> {
                     cover: `/static/artworks/${e.target.dataset.cover}`,
                     title: e.target.dataset.title,
                     artist: e.target.dataset.artist,
+                    artist_id: e.target.dataset.artist_id,
                     album: e.target.dataset.album,
                 });
             }

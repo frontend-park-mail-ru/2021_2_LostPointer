@@ -5,9 +5,9 @@
         <div class='player-track__title-container'>
             <div class='player-track__title-shadow'></div>
             <div id="track-name" class="track-name">{{ track }}</div>
-            <!--            <div class='player-track__title-shadow'></div>-->
         </div>
-        <div id="artist-name" class="artist-name">{{ artist }}</div>
+        <div id="artist-name" href='/artist/{{artist_id}}' data-link
+             class="player-track__artist-name">{{ artist }}</div>
     </div>
     <div class="player-controls">
         <img alt src="/static/img/skip.svg" id="player-skip-left"

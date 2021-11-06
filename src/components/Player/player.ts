@@ -25,6 +25,7 @@ interface IPlayerComponentProps {
     cover: string;
     playButton: HTMLImageElement;
     hide_artwork: boolean;
+    artist_id: number;
 }
 
 export class PlayerComponent extends Component<IPlayerComponentProps> {
@@ -75,6 +76,24 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.gotSeekPos = false;
         this.gotVolPos = false;
         this.props.playing = false;
+
+        this.audio.addEventListener('loadedmetadata', () => {
+            const totalSeconds = this.audio.duration % 60 | 0;
+            const zero = totalSeconds < 10 ? '0' : '';
+
+            this.props.current_time = '0:00';
+            this.props.total_time = `${
+                (this.audio.duration / 60) | 0
+            }:${zero}${totalSeconds}`;
+            this.props.playing = !this.firstTime;
+
+            this.firstTime = false;
+            this.saveLastPlayed();
+            this.update();
+            document
+                .querySelector('.player-artwork')
+                .classList.remove('hidden');
+        });
     }
 
     seek(xPos) {
@@ -138,8 +157,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             track: track.title,
             artist: track.artist,
             url: track.url,
+            artist_id: track.artist_id,
         } as IPlayerComponentProps;
-
         document.title = `${track.title} · ${track.artist}`;
 
         navigator.mediaSession.metadata = new MediaMetadata({
@@ -181,7 +200,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
     toggle() {
         this.props.playing = !this.props.playing;
-        this.props.playing ? this.audio.play() : this.audio.pause();
+        this.props.playing ? this.audio.play().then() : this.audio.pause();
     }
 
     setEventListeners() {
@@ -192,23 +211,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         bus.on('set-player-pos', ({ detail }) => {
             this.setPos(detail.pos, detail.target);
         });
-        this.audio.addEventListener('loadedmetadata', () => {
-            const totalSeconds = this.audio.duration % 60 | 0;
-            const zero = totalSeconds < 10 ? '0' : '';
 
-            this.props.current_time = '0:00';
-            this.props.total_time = `${
-                (this.audio.duration / 60) | 0
-            }:${zero}${totalSeconds}`;
-            this.props.playing = !this.firstTime;
-
-            this.firstTime = false;
-            this.saveLastPlayed();
-            this.update();
-            document
-                .querySelector('.player-artwork')
-                .classList.remove('hidden');
-        });
         document
             .querySelector('.repeat')
             .addEventListener('click', this.buttonsHandler);
@@ -381,7 +384,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.seekbarHandler = (e: MouseEvent) => this.seek(e.x);
         this.volumeHandler = (e: MouseEvent) => this.volume(e.x);
         this.playButtonHandler = () => {
-            this.props.playing ? this.audio.pause() : this.audio.play();
+            this.props.playing ? this.audio.pause() : this.audio.play().then();
             this.props.playing = !this.props.playing;
         };
         this.timeUpdateHandler = () => {
@@ -468,18 +471,21 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 cover: `/static/artworks/${this.nowPlaying.dataset.cover}`,
                 title: this.nowPlaying.dataset.title,
                 artist: this.nowPlaying.dataset.artist,
+                artist_id: this.nowPlaying.dataset.artist_id,
                 album: this.nowPlaying.dataset.album,
             });
         }
     }
 
     update() {
-        document.getElementById('artist-name').innerHTML =
-            this.props.artist || '';
+        const artist = document.getElementById('artist-name');
+        artist.innerHTML = this.props.artist || '';
+        artist.setAttribute('href', `/artist/${String(this.props.artist_id)}`);
         document.getElementById('track-name').innerHTML =
             this.props.track || '';
         document.getElementById('player-time-total').innerHTML =
             this.props.total_time || '';
+
         const artwork = <HTMLImageElement>(
             document.getElementById('player-artwork')
         );
@@ -523,6 +529,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             playButton: null,
             hide_artwork: true,
             recovered: false,
+            artist_id: 0,
         };
         (<HTMLElement>document.querySelector('.seekbar-current')).style.width =
             '0';

@@ -150,6 +150,7 @@ export class ArtistView extends View<IArtistViewProps> {
                     cover: `/static/artworks/${e.target.dataset.cover}`,
                     title: e.target.dataset.title,
                     artist: e.target.dataset.artist,
+                    artist_id: e.target.dataset.artist_id,
                     album: e.target.dataset.album,
                 });
             }

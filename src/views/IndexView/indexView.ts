@@ -76,6 +76,7 @@ export class IndexView extends View<IIndexViewProps> {
                     cover: `/static/artworks/${e.target.dataset.cover}`,
                     title: e.target.dataset.title,
                     artist: e.target.dataset.artist,
+                    artist_id: e.target.dataset.artist_id,
                     album: e.target.dataset.album,
                 });
             }
