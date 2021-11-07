@@ -7,5 +7,3 @@ const routerStore = {
 };
 
 export default routerStore;
-// TODO: экспортировать как node модуль и как ES6 модуль
-//module.exports = routerStore;

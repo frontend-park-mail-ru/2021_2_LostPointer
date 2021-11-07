@@ -1,10 +1,10 @@
 const glob = require('glob');
 const fs = require('fs');
-// const routerStore = require('../src/services/router/routerStore');
+const routerStoreModule = require('../src/services/router/routerStore.ts');
+const routerStore = routerStoreModule.default
 
 const cachedUrl = [
-    '/', '/signup', '/signin',
-    // ...Object.values(routerStore),
+    ...Object.values(routerStore),
   glob.sync('./dist/*'),
   glob.sync('./src/static/**/*.*'),
 ].flat(Infinity).map((url) => {

@@ -7,8 +7,8 @@
     "server": "node server.js",
     "lint": "eslint src/",
     "prepare": "husky install",
-    "build": "webpack --mode=production && node ./utils/generateSW.js",
-    "buildDev": "webpack --mode=development && node ./utils/generateSW.js",
+    "build": "webpack --mode=production && node --loader ts-node/esm utils/generateSW.js",
+    "buildDev": "webpack --mode=development && node --loader ts-node/esm utils/generateSW.js",
     "start": "webpack serve --mode=development",
     "prettier": "prettier --write src/"
   },
@@ -43,6 +43,7 @@
     "sass-loader": "^12.3.0",
     "style-loader": "^3.3.0",
     "ts-loader": "^9.2.6",
+    "ts-node": "^10.4.0",
     "typescript": "^4.4.4",
     "webpack": "^5.59.0",
     "webpack-cli": "^4.9.1",
