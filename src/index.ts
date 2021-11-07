@@ -7,6 +7,8 @@ import SignupView from 'views/SignupView/signupView';
 import ProfileView from 'views/ProfileView/profileView';
 import ArtistView from 'views/ArtistView/artistView';
 
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 class App {
     start() {
         this._enableServiceWorker();

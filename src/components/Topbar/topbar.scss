@@ -3,13 +3,35 @@
   display: flex;
   width: 100%;
   margin: 25px 10px;
-  align-items: center;
 
   &__search {
+    display: flex;
+    align-items: center;
     background-color: #191919;
     width: 30%;
-    height: 65px;
     border-radius: 50px;
+
+    &-icon {
+      color: grey;
+      margin: 0 5px 0 20px;
+      font-size: 20px;
+    }
+
+    &-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'Montserrat';
+      color: white;
+      font-size: 18px;
+      padding-right: 20px;
+      width: 100%;
+      overflow: hidden;
+
+      &:focus + .topbar-search-icon { //TODO=Переделать через жс
+        color: white;
+      }
+    }
   }
 
   &__message {
@@ -20,34 +42,41 @@
   }
 
   &-icons {
-    background-color: #191919;
-    border-radius: 50px;
     padding: 5px 10px;
-    width: 85px;
     height: 40px;
-    margin: auto 0 auto auto;
+
+    width: 180px;
+    display: flex;
+    align-items: center;
+    margin-right: 100px;
   }
 
   &-icon {
     cursor: pointer;
     height: 30px;
     padding-left: 10px;
-    padding-top: 5px;
+    color: white;
+    font-size: 25px;
+    margin-left: 10px;
   }
 
-  &-profile, &-auth {
+  &-profile {
     cursor: pointer;
     margin-right: 40px;
     margin-top: 2px;
     padding: 8px;
     height: 45px;
+    border-radius: 30px;
+
+    margin-left: 50px;
     width: 45px;
-    border-radius: 50%;
-    object-fit: cover;
   }
 
   &-auth {
-    height: 40px;
-    width: 40px;
+    cursor: pointer;
+    margin-right: 40px;
+    margin-top: 2px;
+    padding: 8px;
+    height: 45px;
   }
 }
