@@ -178,18 +178,6 @@ export class IndexView extends View<IIndexViewProps> {
         });
     }
 
-    // TODO: это надо переместить "наружу", туда, где будет хранение аваторизации, а то сейчас неотключаемо
-    pause = time => new Promise(resolve => setTimeout(resolve, time));
-
-    async runPeriodically(callback, getCondition, time) {
-        let condition = true;
-        while(condition) {
-            condition = getCondition();
-            await callback();
-            await this.pause(time);
-        }
-    }
-
     render() {
         if (!this.isLoaded) {
             this.didMount();
@@ -200,6 +188,7 @@ export class IndexView extends View<IIndexViewProps> {
             topbar: TopbarComponent.set({
                 authenticated: this.authenticated,
                 avatar: this.userAvatar,
+                offline: navigator.onLine !== true,
             }).render(),
             sidebar: this.sidebar,
             friend_activity: this.friend_activity,
@@ -210,21 +199,6 @@ export class IndexView extends View<IIndexViewProps> {
             player: player.render(),
         });
 
-        const topbarMessage = document.querySelector('.topbar__message');
-        if ((navigator.onLine === true)) {
-            (<HTMLElement>topbarMessage).innerText = '';
-        } else {
-            (<HTMLElement>topbarMessage).innerText = 'Internet is unavailable';
-            this.runPeriodically(
-                () => {
-                    // TODO: поменять на вызов другой функции, типа healthcheck
-                    Request.get('/auth').then(() => {router.go(routerStore.dashboard)});
-                },
-                () => {
-                    return navigator.onLine !== true;
-                },
-                5000)
-        }
         this.addListeners();
     }
 }

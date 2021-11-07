@@ -6,6 +6,7 @@ import './topbar.scss';
 interface ITopbarComponentProps {
     authenticated: boolean;
     avatar: string;
+    offline: boolean;
 }
 
 export class Topbar extends Component<ITopbarComponentProps> {

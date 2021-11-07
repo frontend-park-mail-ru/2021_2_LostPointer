@@ -7,7 +7,9 @@
             placeholder='Search...'
         />
     </div>
-    <span class='topbar__message'></span>
+    {{#if offline}}
+        <span class='topbar__message'>Internet is unavailable</span>
+    {{/if}}
     <span class='topbar-icons'>
         <i class='topbar-icon fa-regular fa-bell'></i>
         <i

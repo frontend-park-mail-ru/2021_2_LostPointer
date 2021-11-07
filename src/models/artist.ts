@@ -21,6 +21,7 @@ export class ArtistModel extends Model<IArtistModel> {
         return new Promise<ArtistModel[]>((res) => {
             Request.get('/home/artists')
                 .then((response) => {
+                    sessionStorage.setItem('/home/artists', JSON.stringify(response));
                     const artists: Array<ArtistModel> = response.reduce(
                         (acc, elem) => {
                             acc.push(new ArtistModel(elem));
@@ -31,16 +32,28 @@ export class ArtistModel extends Model<IArtistModel> {
                     res(artists);
                 })
                 .catch(() => {
-                    const emptyArtist = new ArtistModel({
-                        id: 0,
-                        name: 'Loading artist name...',
-                        avatar: 'loading',
-                        video: '',
-                        albums: [],
-                        tracks: [],
-                    });
+                    const response = JSON.parse(sessionStorage.getItem('/home/artists'));
+                    if (response) {
+                        const artists: Array<ArtistModel> = response.reduce(
+                            (acc, elem) => {
+                                acc.push(new ArtistModel(elem));
+                                return acc;
+                            },
+                            []
+                        );
+                        res(artists);
+                    } else {
+                        const emptyArtist = new ArtistModel({
+                            id: 0,
+                            name: 'Loading artist name...',
+                            avatar: 'loading',
+                            video: '',
+                            albums: [],
+                            tracks: [],
+                        });
 
-                    res(Array.from({length: 4}, () => emptyArtist));
+                        res(Array.from({length: 4}, () => emptyArtist));
+                    }
                 });
         });
     }

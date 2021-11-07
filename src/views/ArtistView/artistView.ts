@@ -121,6 +121,7 @@ export class ArtistView extends View<IArtistViewProps> {
                 .set({
                     authenticated: this.authenticated,
                     avatar: this.userAvatar,
+                    offline: navigator.onLine !== true,
                 })
                 .render(),
             sidebar: this.sidebar,

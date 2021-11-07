@@ -56,6 +56,7 @@ export class ProfileView extends View<IProfileViewProps> {
                 this.topbar = new Topbar({
                     authenticated: this.authenticated,
                     avatar: user.getProps().small_avatar,
+                    offline: navigator.onLine !== true,
                 });
                 this.player = new PlayerComponent();
                 this.profileform = new ProfileForm(user.getProps());
@@ -275,6 +276,7 @@ export class ProfileView extends View<IProfileViewProps> {
                 .set({
                     authenticated: this.authenticated,
                     avatar: this.userAvatar,
+                    offline: navigator.onLine !== true,
                 })
                 .render(),
             sidebar: this.sidebar.render(),
