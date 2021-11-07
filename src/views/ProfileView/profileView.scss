@@ -6,7 +6,7 @@
   }
 
   &__title {
-    font-family: Montserrat;
+    font-family: Montserrat, sans-serif;
     color: aliceblue;
     font-size: 45px;
     font-weight: 400;
@@ -27,7 +27,7 @@
 
 .profile-form__msg, .profile-avatar__msg {
   visibility: hidden;
-  font-family: Montserrat;
+  font-family: Montserrat, sans-serif;
   font-size: 16px;
   text-align: center;
   list-style: disc inside;
@@ -70,7 +70,7 @@
     display: block;
     border-radius: 10px;
     border: 2px solid #3D3D3D;
-    font-family: Montserrat;
+    font-family: Montserrat, sans-serif;
     font-size: 16px;
     cursor: pointer;
 

@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@350&display=swap');
 
 .auth {
   &_page__placeholder-photo {
@@ -30,7 +29,7 @@
     }
 
     &__title {
-      font-family: Montserrat;
+      font-family: Montserrat, sans-serif;
       color: aliceblue;
       font-size: 45px;
       font-weight: 400;
@@ -39,7 +38,7 @@
     }
 
     &__description {
-      font-family: Montserrat;
+      font-family: Montserrat, sans-serif;
       color: aliceblue;
       font-size: 21px;
       font-weight: 400;
@@ -60,7 +59,7 @@
       display: flex;
       flex-direction: column;
       float: left;
-      font-family: Montserrat;
+      font-family: Montserrat, sans-serif;
       font-size: 16px;
       text-align: left;
       list-style: disc inside;
@@ -82,7 +81,7 @@
 
     &__fail_msg {
       visibility: hidden;
-      font-family: Montserrat;
+      font-family: Montserrat, sans-serif;
       font-size: 16px;
       text-align: center;
       list-style: disc inside;
@@ -104,7 +103,7 @@
 
     &__redirect {
       white-space: nowrap;
-      font-family: Montserrat;
+      font-family: Montserrat, sans-serif;
       font-size: 15px;
       color: #ffffff;
       text-align: right;
@@ -119,7 +118,7 @@
       height: 45px;
       border-radius: 10px;
       margin: 10px auto;
-      font-family: Montserrat;
+      font-family: Montserrat, sans-serif;
       font-weight: 200;
       color: #ffffff;
       font-size: 22px;
