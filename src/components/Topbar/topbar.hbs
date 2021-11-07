@@ -7,9 +7,16 @@
             placeholder='Search...'
         />
     </div>
+    <span class='topbar__message'></span>
     <span class='topbar-icons'>
         <i class='topbar-icon fa-regular fa-bell'></i>
-        <i class='topbar-icon fa-solid fa-gear'></i>
+        <i
+            class='topbar-icon fa-solid fa-gear'
+            {{#if authenticated}}
+                data-link
+                href='/profile'
+            {{/if}}
+        ></i>
         {{#if authenticated}}
             <i class='topbar-icon js-logout fa-solid fa-right-from-bracket'></i>
             <img
