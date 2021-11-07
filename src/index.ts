@@ -8,6 +8,7 @@ import ProfileView from 'views/ProfileView/profileView';
 import ArtistView from 'views/ArtistView/artistView';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import './static/css/fonts.css';
 
 class App {
     start() {

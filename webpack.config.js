@@ -44,6 +44,10 @@ module.exports = {
                 test: /\.(jpg|jpeg|png|svg|ico)$/,
                 loader: 'file-loader',
             },
+            {
+                test: /\.(ttf|eot|woff|woff2)$/,
+                type: "asset/resource",
+            },
         ],
     },
     plugins: [
