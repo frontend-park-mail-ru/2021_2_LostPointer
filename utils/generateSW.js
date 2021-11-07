@@ -3,6 +3,10 @@ const fs = require('fs');
 // const routerStore = require('../src/services/router/routerStore');
 
 const cachedUrl = [
+    // TODO: скачать шрифты и собирать их в сборке
+    'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;500;600;700;800&display=swap',
+    'https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;700;800&display=swap',
+    ' https://fonts.googleapis.com/css2?family=Oswald:wght@350&display=swap',
     '/', '/signup', '/signin',
     // ...Object.values(routerStore),
   glob.sync('./dist/*'),
