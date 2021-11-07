@@ -39,6 +39,7 @@ export class AlbumModel extends Model<IAlbumModel> {
                         artwork: 'loading',
                         tracksCount: 0,
                         tracksDuration: 0,
+                        album: false,
                     });
 
                     res(Array.from({length: 4}, () => emptyAlbum));

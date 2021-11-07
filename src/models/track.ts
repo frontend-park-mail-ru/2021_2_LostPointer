@@ -60,6 +60,7 @@ export class TrackModel extends Model<ITrackModel> {
                         artwork: 'loading',
                         tracksCount: 0,
                         tracksDuration: 0,
+                        album: false,
                     });
 
                     const emptyTrack = new TrackModel({
