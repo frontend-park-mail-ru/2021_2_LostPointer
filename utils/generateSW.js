@@ -6,7 +6,7 @@ const routerStore = routerStoreModule.default
 const cachedUrl = [
     ...Object.values(routerStore),
   glob.sync('./dist/*'),
-  glob.sync('./src/static/**/*.*'),
+  glob.sync('./src/static/**/*.*', {'ignore': ['./src/static/**/*.css']}),
 ].flat(Infinity).map((url) => {
   return url.replace('./dist', '').replace('./src', '');
 }).join('\',\'');
