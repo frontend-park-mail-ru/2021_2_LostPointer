@@ -25,7 +25,6 @@ interface IIndexViewProps {
 
 export class IndexView extends View<IIndexViewProps> {
     private authenticated: boolean;
-    private authHandler: (e) => void;
     private playButtonHandler: (e) => void;
 
     private top_albums: AlbumModel[];
@@ -160,7 +159,6 @@ export class IndexView extends View<IIndexViewProps> {
             .forEach((e) =>
                 e.removeEventListener('click', this.playButtonHandler)
             );
-        document.removeEventListener('click', this.authHandler);
         document
             .querySelector('.suggested-tracks-container')
             .removeEventListener('click', this.playButtonHandler);

@@ -2,7 +2,7 @@ import { View } from 'views/View/view';
 import Request from 'services/request/request';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import { Topbar } from 'components/Topbar/topbar';
+import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
 import { PlayerComponent } from 'components/Player/player';
 import { Sidebar } from 'components/Sidebar/sidebar';
 import { ICustomInput } from 'interfaces/CustomInput';
@@ -26,7 +26,6 @@ interface IProfileViewProps {
 
 export class ProfileView extends View<IProfileViewProps> {
     private authenticated: boolean;
-    private authHandler: (e) => void;
 
     private player: PlayerComponent;
     private sidebar: Sidebar;
@@ -38,7 +37,6 @@ export class ProfileView extends View<IProfileViewProps> {
     constructor(props?: IProfileViewProps) {
         super(props);
         this.isLoaded = false;
-        this.addHandlers();
     }
 
     didMount() {
@@ -217,7 +215,11 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     addListeners() {
-        document.addEventListener('click', this.authHandler);
+        if (this.authenticated) {
+            document
+                .querySelector('.js-logout')
+                .addEventListener('click', this.userLogout);
+        }
 
         const form = document.querySelector('.profile-form');
         const nicknameInput = form.querySelector('input[name="nickname"]');
@@ -247,22 +249,13 @@ export class ProfileView extends View<IProfileViewProps> {
         this.isLoaded = false;
     }
 
-    addHandlers() {
-        this.authHandler = (e) => {
-            if (
-                e.target.className === 'topbar-auth' &&
-                e.target.dataset.action === 'logout'
-            ) {
-                Request.post('/user/logout').then(() => {
-                    this.player.stop();
-                    this.authenticated = false;
-                    this.props.authenticated = false;
-                    this.player.clear();
-                    window.localStorage.removeItem('lastPlayedData');
-                    this.topbar.logout();
-                });
-            }
-        };
+    userLogout() {
+        Request.post('/user/logout').then(() => {
+            this.authenticated = false;
+            window.localStorage.removeItem('lastPlayedData');
+            TopbarComponent.logout();
+            router.go(routerStore.dashboard);
+        });
     }
 
     render() {

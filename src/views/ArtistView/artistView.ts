@@ -19,7 +19,6 @@ interface IArtistViewProps {
 
 export class ArtistView extends View<IArtistViewProps> {
     private authenticated: boolean;
-    private authHandler: (e) => void;
     private playButtonHandler: (e) => void;
 
     private sidebar: Sidebar;
@@ -32,7 +31,6 @@ export class ArtistView extends View<IArtistViewProps> {
     constructor(props?: IArtistViewProps) {
         super(props);
         this.isLoaded = false;
-        this.addHandlers();
     }
 
     didMount() {
@@ -79,6 +77,12 @@ export class ArtistView extends View<IArtistViewProps> {
     }
 
     addListeners() {
+        if (this.authenticated) {
+            document
+                .querySelector('.js-logout')
+                .addEventListener('click', this.userLogout);
+        }
+
         const video = document.querySelector('.artist__background-video');
         if (video) {
             video.addEventListener('ended', () => {
@@ -91,20 +95,14 @@ export class ArtistView extends View<IArtistViewProps> {
         this.isLoaded = false;
     }
 
-    addHandlers() {
-        this.authHandler = (e) => {
-            if (e.target.dataset.action === 'logout') {
-                Request.post('/user/logout').then(() => {
-                    player.stop();
-                    this.authenticated = false;
-                    this.props.authenticated = false;
-                    player.clear();
-                    window.localStorage.removeItem('lastPlayedData');
-                    this.topbar.logout();
-                });
-            }
-        };
-        document.addEventListener('click', this.authHandler);
+    userLogout() {
+        Request.post('/user/logout').then(() => {
+            player.stop();
+            this.authenticated = false;
+            player.clear();
+            window.localStorage.removeItem('lastPlayedData');
+            TopbarComponent.logout();
+        });
     }
 
     render() {
