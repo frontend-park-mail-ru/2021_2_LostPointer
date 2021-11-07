@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const port = process.env.PORT || 3000;
@@ -51,6 +52,21 @@ module.exports = {
         ],
     },
     plugins: [
+        new WebpackPwaManifest({
+            name: 'Lost Pointer Music',
+            short_name: 'LOSMusic',
+            description: 'Enjoy your favourite tracks with Lost Pointer Music!',
+            background_color: '#000000',
+            theme_color: '#000000',
+            crossorigin: 'use-credentials',
+            display: 'standalone',
+            icons: [
+                {
+                    src: path.resolve('src/static/img/sidebar_logo.png'),
+                    sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
+                }
+            ]
+        }),
         new MiniCssExtractPlugin({ filename: '[name].[fullhash:8].css' }),
         new HtmlWebpackPlugin({
             title: 'LostPointer',
