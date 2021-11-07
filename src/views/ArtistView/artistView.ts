@@ -6,6 +6,7 @@ import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
 import { SuggestedAlbums } from 'components/SugestedAlbums/suggestedAlbums';
 import { TrackList } from 'components/TrackList/tracklist';
 import { ArtistModel } from 'models/artist';
+import { UserModel } from 'models/user';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 
@@ -42,9 +43,9 @@ export class ArtistView extends View<IArtistViewProps> {
         }
         const artistId = match[1];
 
-        const auth = Request.get('/auth').then((response) => {
-            this.authenticated = response.status === 200;
-            this.userAvatar = response.avatar;
+        const auth = UserModel.auth().then((authResponse) => {
+            this.authenticated = authResponse.authenticated;
+            this.userAvatar = authResponse.avatar;
         });
 
         const artist = ArtistModel.getArtist(artistId).then((artist) => {

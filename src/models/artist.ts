@@ -72,6 +72,48 @@ export class ArtistModel extends Model<IArtistModel> {
                         []
                     );
                     res(new ArtistModel(response));
+                })
+                .catch(() => {
+                    const emptyArtist = new ArtistModel({
+                        id: 0,
+                        name: 'Loading artist name...',
+                        avatar: 'loading',
+                        video: '',
+                        albums: [],
+                        tracks: [],
+                    });
+
+                    const emptyAlbum = new AlbumModel({
+                        id: 0,
+                        title: 'Loading album name...',
+                        year: 0,
+                        artist: 'Loading artist name...',
+                        artwork: 'loading',
+                        tracksCount: 0,
+                        tracksDuration: 0,
+                        album: false,
+                    });
+
+                    const emptyTrack = new TrackModel({
+                        id: 0,
+                        title: 'Loading title...',
+                        artist: emptyArtist,
+                        album: emptyAlbum,
+                        explicit: false,
+                        genre: '',
+                        number: 0,
+                        file: '',
+                        listenCount: 0,
+                        duration: 0,
+                        lossless: false,
+                        cover: '',
+                        pos: 0,
+                    })
+
+                    emptyArtist.props.albums = Array.from({length: 4}, () => emptyAlbum);
+                    emptyArtist.props.tracks = Array.from({length: 4}, () => emptyTrack);
+
+                    res(emptyArtist);
                 });
         });
     }
