@@ -1,7 +1,6 @@
 const glob = require('glob');
 const fs = require('fs');
-const routerStoreModule = require('../src/services/router/routerStore.ts');
-const routerStore = routerStoreModule.default
+import routerStore from '../src/services/router/routerStore';
 
 const cachedUrl = [
     ...Object.values(routerStore),
