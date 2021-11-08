@@ -92,6 +92,7 @@ export class ProfileView extends View<IProfileViewProps> {
                 const avatar = document.querySelector('.profile-avatar__img');
                 if (typeof e.target.result === 'string') {
                     avatar.setAttribute('src', e.target.result);
+                    (<HTMLElement>avatar).style.display = 'block';
                     readFile = e.target.result;
                 }
             });
@@ -110,6 +111,7 @@ export class ProfileView extends View<IProfileViewProps> {
                     const smallAvatar =
                         document.querySelector('.topbar-profile__img');
                     smallAvatar.setAttribute('src', readFile);
+                    (<HTMLElement>smallAvatar).style.display = 'block';
                     msg.classList.remove('fail');
                     (<HTMLElement>msg).innerText = 'Changed successfully';
                     msg.classList.add('success', 'visible');
