@@ -8,8 +8,8 @@ export interface IAlbumModel {
     year: number;
     artist: string;
     artwork: string;
-    tracksCount: number;
-    tracksDuration: number;
+    tracks_count: number;
+    tracks_duration: number;
 }
 
 export class AlbumModel extends Model<IAlbumModel> {
@@ -49,8 +49,8 @@ export class AlbumModel extends Model<IAlbumModel> {
                             year: 0,
                             artist: 'Loading artist name...',
                             artwork: 'loading',
-                            tracksCount: 0,
-                            tracksDuration: 0,
+                            tracks_count: 0,
+                            tracks_duration: 0,
                             album: false,
                         });
 
@@ -61,6 +61,6 @@ export class AlbumModel extends Model<IAlbumModel> {
     }
 
     isSingle(): boolean {
-        return this.props.tracksCount === 1;
+        return this.props.tracks_count === 1;
     }
 }

@@ -102,8 +102,8 @@ export class ArtistModel extends Model<IArtistModel> {
                         year: 0,
                         artist: 'Loading artist name...',
                         artwork: 'loading',
-                        tracksCount: 0,
-                        tracksDuration: 0,
+                        tracks_count: 0,
+                        tracks_duration: 0,
                         album: false,
                     });
 
@@ -116,7 +116,7 @@ export class ArtistModel extends Model<IArtistModel> {
                         genre: '',
                         number: 0,
                         file: '',
-                        listenCount: 0,
+                        listen_count: 0,
                         duration: 0,
                         lossless: false,
                         cover: '',
