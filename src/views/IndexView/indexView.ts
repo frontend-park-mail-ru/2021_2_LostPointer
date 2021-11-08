@@ -13,6 +13,7 @@ import { AlbumModel } from 'models/album';
 import routerStore from 'services/router/routerStore';
 import router from 'services/router/router';
 import { View } from 'views/View/view';
+import disableBrokenImg from 'views/utils';
 
 import { UserModel } from 'models/user';
 
@@ -151,9 +152,15 @@ export class IndexView extends View<IIndexViewProps> {
             .forEach((e) =>
                 e.addEventListener('click', this.playButtonHandler)
             );
+        document.querySelectorAll('img').forEach(function(img){
+            img.addEventListener('error', disableBrokenImg);
+        })
     }
 
     unmount() {
+        document.querySelectorAll('img').forEach(function(img){
+            img.removeEventListener('error', disableBrokenImg);
+        })
         document
             .querySelectorAll('.track-list-item-play')
             .forEach((e) =>
