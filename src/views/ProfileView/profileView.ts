@@ -19,6 +19,7 @@ import { UserModel } from 'models/user';
 
 import ProfileTemplate from './profileView.hbs';
 import './profileView.scss';
+import disableBrokenImg from 'views/utils';
 
 interface IProfileViewProps {
     authenticated: boolean;
@@ -107,7 +108,7 @@ export class ProfileView extends View<IProfileViewProps> {
             .then((body) => {
                 if (body.status === 200) {
                     const smallAvatar =
-                        document.querySelector('.topbar-profile');
+                        document.querySelector('.topbar-profile__img');
                     smallAvatar.setAttribute('src', readFile);
                     msg.classList.remove('fail');
                     (<HTMLElement>msg).innerText = 'Changed successfully';
@@ -243,9 +244,16 @@ export class ProfileView extends View<IProfileViewProps> {
         );
         const fileInput = document.querySelector('input[name="file"]');
         fileInput.addEventListener('change', this.uploadAvatarFile.bind(this));
+
+        document.querySelectorAll('img').forEach(function(img){
+            img.addEventListener('error', disableBrokenImg);
+        });
     }
 
     unmount() {
+        document.querySelectorAll('img').forEach(function(img){
+            img.removeEventListener('error', disableBrokenImg);
+        });
         this.isLoaded = false;
     }
 

@@ -21,13 +21,15 @@
         ></i>
         {{#if authenticated}}
             <i class='topbar-icon js-logout fa-solid fa-right-from-bracket'></i>
-            <img
-                alt
-                class='topbar-profile'
-                data-link
-                href='/profile'
-                src='{{avatar}}'
-            />
+            <div class='topbar-profile'>
+                <img
+                    alt
+                    class='topbar-profile__img'
+                    data-link
+                    href='/profile'
+                    src='{{avatar}}'
+                />
+            </div>
         {{else}}
             <i class='topbar-icon fa-solid fa-right-to-bracket' data-link href='/signin'></i>
         {{/if}}

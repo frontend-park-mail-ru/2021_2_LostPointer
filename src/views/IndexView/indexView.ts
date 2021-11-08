@@ -154,13 +154,13 @@ export class IndexView extends View<IIndexViewProps> {
             );
         document.querySelectorAll('img').forEach(function(img){
             img.addEventListener('error', disableBrokenImg);
-        })
+        });
     }
 
     unmount() {
         document.querySelectorAll('img').forEach(function(img){
             img.removeEventListener('error', disableBrokenImg);
-        })
+        });
         document
             .querySelectorAll('.track-list-item-play')
             .forEach((e) =>

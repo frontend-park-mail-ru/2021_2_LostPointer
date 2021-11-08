@@ -93,13 +93,13 @@ export class ArtistView extends View<IArtistViewProps> {
 
         document.querySelectorAll('img').forEach(function(img){
             img.addEventListener('error', disableBrokenImg);
-        })
+        });
     }
 
     unmount() {
         document.querySelectorAll('img').forEach(function(img){
             img.removeEventListener('error', disableBrokenImg);
-        })
+        });
         this.isLoaded = false;
     }
 

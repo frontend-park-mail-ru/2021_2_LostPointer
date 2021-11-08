@@ -64,12 +64,18 @@
     cursor: pointer;
     margin-right: 40px;
     margin-top: 2px;
-    padding: 8px;
     height: 45px;
     border-radius: 30px;
-    object-fit: cover;
     margin-left: 50px;
     width: 45px;
+    background: linear-gradient(180deg, rgba(30, 30, 30, 0.5) 0%, rgba(30, 30, 30, 0.8) 100%);
+
+    &__img {
+      object-fit: cover;
+      height: 45px;
+      width: 45px;
+      border-radius: 30px;
+    }
   }
 
   &-auth {
