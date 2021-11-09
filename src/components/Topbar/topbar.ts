@@ -24,8 +24,9 @@ export class Topbar extends Component<ITopbarComponentProps> {
         button.classList.remove('js-logout', 'fa-right-from-bracket');
         button.classList.add('fa-right-to-bracket');
         button.nextSibling.remove();
+        button.removeAttribute('data-action');
         button.setAttribute('href', '/signin');
-        (<HTMLImageElement>document.querySelector('.topbar-profilee')).remove();
+        (<HTMLImageElement>document.querySelector('.topbar-profile')).remove();
     }
 }
 

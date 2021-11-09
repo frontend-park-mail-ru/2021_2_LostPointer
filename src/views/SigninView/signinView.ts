@@ -42,6 +42,10 @@ export class SigninView extends View<ISigninComponentProps> {
     }
 
     render() {
+        if (store.get('authenticated')) {
+            router.go('/');
+            return;
+        }
         document.getElementById('app').innerHTML = SigninComponentTemplate(
             this.props
         );
