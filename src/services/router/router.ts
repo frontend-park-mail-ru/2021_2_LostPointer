@@ -1,5 +1,7 @@
 import { PATH_ARG, PATH_SLASH } from 'store/regex';
 import { View } from 'src/views/View/view';
+import store from 'services/store/store';
+import routerStore from 'services/router/routerStore';
 
 interface IRoute {
     path: string;
@@ -49,6 +51,15 @@ class Router {
     }
 
     route(): void {
+        const path = window.location.pathname;
+        if (
+            store.get('authenticated') &&
+            (path === routerStore.signin || path === routerStore.signup)
+        ) {
+            this.go(routerStore.dashboard);
+            return;
+        }
+
         if (this.currentView && this.currentView.unmount) {
             this.currentView.unmount();
         }

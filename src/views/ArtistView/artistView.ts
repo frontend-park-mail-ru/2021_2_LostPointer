@@ -6,13 +6,13 @@ import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
 import { SuggestedAlbums } from 'components/SugestedAlbums/suggestedAlbums';
 import { TrackList } from 'components/TrackList/tracklist';
 import { ArtistModel } from 'models/artist';
-import { UserModel } from 'models/user';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import disableBrokenImg from 'views/utils';
 
 import ArtistTemplate from './artistView.hbs';
 import './artistView.scss';
+import store from 'services/store/store';
 
 interface IArtistViewProps {
     authenticated: boolean;
@@ -42,10 +42,8 @@ export class ArtistView extends View<IArtistViewProps> {
         }
         const artistId = match[1];
 
-        const auth = UserModel.auth().then((authResponse) => {
-            this.authenticated = authResponse.authenticated;
-            this.userAvatar = authResponse.avatar;
-        });
+        this.authenticated = store.get('authenticated');
+        this.userAvatar = store.get('avatar');
 
         const artist = ArtistModel.getArtist(artistId).then((artist) => {
             if (!artist) {
@@ -54,7 +52,7 @@ export class ArtistView extends View<IArtistViewProps> {
             this.artist = artist;
         });
 
-        Promise.all([auth, artist]).then(() => {
+        Promise.all([artist]).then(() => {
             this.topbar = TopbarComponent;
             this.sidebar = new Sidebar().render();
             this.albumList = new SuggestedAlbums({
@@ -91,13 +89,13 @@ export class ArtistView extends View<IArtistViewProps> {
             });
         }
 
-        document.querySelectorAll('img').forEach(function(img){
+        document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function(img){
+        document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
         this.isLoaded = false;
@@ -107,6 +105,7 @@ export class ArtistView extends View<IArtistViewProps> {
         Request.post('/user/logout').then(() => {
             player.stop();
             this.authenticated = false;
+            store.set('authenticated', false);
             player.clear();
             window.localStorage.removeItem('lastPlayedData');
             TopbarComponent.logout();

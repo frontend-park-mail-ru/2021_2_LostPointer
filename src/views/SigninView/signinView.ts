@@ -1,5 +1,4 @@
 import { SigninAuthForm } from 'components/SigninForm/signinform';
-import Request from 'services/request/request';
 import {
     addInputsEventListeners,
     CustomValidation,
@@ -17,7 +16,8 @@ import { View } from 'views/View/view';
 
 import SigninComponentTemplate from './signinView.hbs';
 import './signinView.scss';
-import {UserModel} from "models/user";
+import { UserModel } from 'models/user';
+import store from 'services/store/store';
 
 interface ISigninComponentProps {
     placeholder_img: string;
@@ -90,7 +90,12 @@ export class SigninView extends View<ISigninComponentProps> {
         })
             .then((body) => {
                 if (body.status === 200) {
-                    router.go(routerStore.dashboard);
+                    // TODO=Сделать ответ бэка полезным
+                    UserModel.auth().then((authResponse) => {
+                        store.set('authenticated', authResponse.authenticated);
+                        store.set('userAvatar', authResponse.avatar);
+                        router.go(routerStore.dashboard);
+                    });
                 } else {
                     const failMsg = event.target.querySelector(
                         '.auth-form__fail_msg'

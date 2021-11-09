@@ -1,12 +1,12 @@
 import { Sidebar } from 'components/Sidebar/sidebar';
 import { TopAlbums } from 'components/TopAlbums/topalbums';
 import Request from 'services/request/request';
-import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
+import TopbarComponent from 'components/Topbar/topbar';
 import { FriendActivity } from 'components/FriendActivity/friendactivity';
 import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
 import { TrackList } from 'components/TrackList/tracklist';
 import { SuggestedPlaylists } from 'components/SuggestedPlaylists/suggestedplaylists';
-import player, { PlayerComponent } from 'components/Player/player';
+import player from 'components/Player/player';
 import { TrackModel } from 'models/track';
 import { ArtistModel } from 'models/artist';
 import { AlbumModel } from 'models/album';
@@ -15,7 +15,7 @@ import router from 'services/router/router';
 import { View } from 'views/View/view';
 import disableBrokenImg from 'views/utils';
 
-import { UserModel } from 'models/user';
+import store from 'services/store/store';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
@@ -32,9 +32,7 @@ export class IndexView extends View<IIndexViewProps> {
     private suggested_artists: ArtistModel[];
     private track_list: TrackModel[];
     private suggested_playlists: SuggestedPlaylists;
-    private player: PlayerComponent;
     private sidebar: Sidebar;
-    private topbar: Topbar;
     private friend_activity: FriendActivity;
     private userAvatar: string;
 
@@ -44,10 +42,8 @@ export class IndexView extends View<IIndexViewProps> {
     }
 
     didMount() {
-        const auth = UserModel.auth().then((authResponse) => {
-            this.authenticated = authResponse.authenticated;
-            this.userAvatar = authResponse.avatar;
-        });
+        this.authenticated = store.get('authenticated');
+        this.userAvatar = store.get('userAvatar');
 
         const tracks = TrackModel.getHomepageTracks().then((tracks) => {
             this.track_list = tracks;
@@ -74,7 +70,7 @@ export class IndexView extends View<IIndexViewProps> {
             },
         ];
 
-        Promise.all([auth, tracks, artists, albums]).then(() => {
+        Promise.all([tracks, artists, albums]).then(() => {
             this.track_list = new TrackList({
                 title: 'Tracks of the Week',
                 tracks: this.track_list,
@@ -152,13 +148,13 @@ export class IndexView extends View<IIndexViewProps> {
             .forEach((e) =>
                 e.addEventListener('click', this.playButtonHandler)
             );
-        document.querySelectorAll('img').forEach(function(img){
+        document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function(img){
+        document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
         document
@@ -166,9 +162,14 @@ export class IndexView extends View<IIndexViewProps> {
             .forEach((e) =>
                 e.removeEventListener('click', this.playButtonHandler)
             );
-        document
-            .querySelector('.suggested-tracks-container')
-            .removeEventListener('click', this.playButtonHandler);
+        const suggestedTracksContainer = document.querySelector(
+            '.suggested-tracks-container'
+        );
+        if (suggestedTracksContainer)
+            suggestedTracksContainer.removeEventListener(
+                'click',
+                this.playButtonHandler
+            );
         this.isLoaded = false;
         player.unmount();
     }
@@ -177,6 +178,7 @@ export class IndexView extends View<IIndexViewProps> {
         Request.post('/user/logout').then(() => {
             player.stop();
             this.authenticated = false;
+            store.set('authenticated', false);
             player.clear();
             window.localStorage.removeItem('lastPlayedData');
             TopbarComponent.logout();
