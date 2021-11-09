@@ -3,13 +3,13 @@
     <div class='suggested-artists__container'>
         {{#each artists}}
             <div class='suggested-artist'>
-                <img
-                    alt
-                    class='suggested-artist__img'
-                    src='/static/artists/{{props.avatar}}_128px.webp'
-                    href='/artist/{{props.id}}'
-                    data-link
-                />
+                <a href='/artist/{{props.id}}'>
+                    <img
+                        alt
+                        class='suggested-artist__img'
+                        src='/static/artists/{{props.avatar}}_128px.webp'
+                    />
+                </a>
             </div>
         {{/each}}
     </div>

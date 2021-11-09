@@ -43,9 +43,14 @@ class App {
     }
 
     _dataLinkRoute(event) {
-        if (event.target.matches('[data-link]')) {
-            event.preventDefault();
-            router.go(event.target.getAttribute('href'));
+        event.preventDefault();
+        const target = event.target;
+        if (target.tagName === 'A') {
+            router.go(target.getAttribute('href'));
+        } else {
+            if (target.parentElement.tagName === 'A') {
+                router.go(target.parentElement.getAttribute('href'));
+            }
         }
     }
 
