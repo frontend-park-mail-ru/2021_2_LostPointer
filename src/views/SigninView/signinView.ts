@@ -69,7 +69,9 @@ export class SigninView extends View<ISigninComponentProps> {
 
     unmount() {
         const form = document.querySelector('.auth-form');
-        form.removeEventListener('submit', this.submitSigninForm);
+        if (form) {
+            form.removeEventListener('submit', this.submitSigninForm);
+        }
         removeInputsEventListeners(form);
     }
 

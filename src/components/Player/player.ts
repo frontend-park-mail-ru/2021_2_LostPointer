@@ -461,12 +461,18 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     update() {
-        document.getElementById('artist-name').innerHTML =
-            this.props.artist || '';
-        document.getElementById('track-name').innerHTML =
-            this.props.track || '';
-        document.getElementById('player-time-total').innerHTML =
-            this.props.total_time || '';
+        const artist = document.getElementById('artist-name');
+        if (artist) {
+            artist.innerHTML = this.props.artist || '';
+        }
+        const track = document.getElementById('track-name');
+        if (track) {
+            track.innerHTML = this.props.track || '';
+        }
+        const totalTime = document.getElementById('player-time-total');
+        if (totalTime) {
+            totalTime.innerHTML = this.props.total_time || '';
+        }
         const artwork = <HTMLImageElement>(
             document.getElementById('player-artwork')
         );

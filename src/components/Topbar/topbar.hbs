@@ -18,7 +18,9 @@
         ></i>
         {{#if authenticated}}
         </a>
-            <i class='topbar-icon js-logout fa-solid fa-right-from-bracket'></i>
+            <a id='signin-button'>
+                <i class='topbar-icon js-logout fa-solid fa-right-from-bracket'></i>
+            </a>
             <div class='topbar-profile'>
                 <a href='/profile'>
                 <img
@@ -29,7 +31,7 @@
                     </a>
             </div>
         {{else}}
-            <a href='/signin'>
+            <a href='/signin' id='signin-button'>
                 <i class='topbar-icon fa-solid fa-right-to-bracket'></i>
             </a>
         {{/if}}
