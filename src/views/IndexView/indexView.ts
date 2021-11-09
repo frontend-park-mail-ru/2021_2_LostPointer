@@ -13,6 +13,7 @@ import { AlbumModel } from 'models/album';
 import routerStore from 'services/router/routerStore';
 import router from 'services/router/router';
 import { View } from 'views/View/view';
+import disableBrokenImg from 'views/utils';
 
 import { UserModel } from 'models/user';
 
@@ -25,7 +26,6 @@ interface IIndexViewProps {
 
 export class IndexView extends View<IIndexViewProps> {
     private authenticated: boolean;
-    private authHandler: (e) => void;
     private playButtonHandler: (e) => void;
 
     private top_albums: AlbumModel[];
@@ -152,15 +152,20 @@ export class IndexView extends View<IIndexViewProps> {
             .forEach((e) =>
                 e.addEventListener('click', this.playButtonHandler)
             );
+        document.querySelectorAll('img').forEach(function(img){
+            img.addEventListener('error', disableBrokenImg);
+        });
     }
 
     unmount() {
+        document.querySelectorAll('img').forEach(function(img){
+            img.removeEventListener('error', disableBrokenImg);
+        });
         document
             .querySelectorAll('.track-list-item-play')
             .forEach((e) =>
                 e.removeEventListener('click', this.playButtonHandler)
             );
-        document.removeEventListener('click', this.authHandler);
         document
             .querySelector('.suggested-tracks-container')
             .removeEventListener('click', this.playButtonHandler);
@@ -188,6 +193,7 @@ export class IndexView extends View<IIndexViewProps> {
             topbar: TopbarComponent.set({
                 authenticated: this.authenticated,
                 avatar: this.userAvatar,
+                offline: navigator.onLine !== true,
             }).render(),
             sidebar: this.sidebar,
             friend_activity: this.friend_activity,
@@ -197,6 +203,7 @@ export class IndexView extends View<IIndexViewProps> {
             suggested_playlists: this.suggested_playlists,
             player: player.render(),
         });
+
         this.addListeners();
     }
 }

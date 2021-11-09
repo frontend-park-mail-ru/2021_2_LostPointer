@@ -2,6 +2,7 @@ import {AlbumModel} from 'models/album';
 import {Component} from 'components/Component/component';
 
 import SuggestedAlbumsTemplate from './suggestedAlbums.hbs';
+import './suggestedAlbums.scss';
 
 interface ISuggestedAlbums {
     albums: Array<AlbumModel>;

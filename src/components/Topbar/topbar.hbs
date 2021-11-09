@@ -7,22 +7,31 @@
             placeholder='Search...'
         />
     </div>
+    {{#if offline}}
+        <span class='topbar__message'>Internet is unavailable</span>
+    {{/if}}
     <span class='topbar-icons'>
         <i class='topbar-icon fa-regular fa-bell'></i>
-        <i class='topbar-icon fa-solid fa-gear'></i>
-        {{#if authenticated}}
-            <i class='topbar-icon js-logout fa-solid fa-right-from-bracket'></i>
-            <img
-                alt
-                class='topbar-profile'
+        <i
+            class='topbar-icon fa-solid fa-gear'
+            {{#if authenticated}}
                 data-link
                 href='/profile'
-                src='{{avatar}}'
-            />
+            {{/if}}
+        ></i>
+        {{#if authenticated}}
+            <i class='topbar-icon js-logout fa-solid fa-right-from-bracket'></i>
+            <div class='topbar-profile'>
+                <img
+                    alt
+                    class='topbar-profile__img'
+                    data-link
+                    href='/profile'
+                    src='{{avatar}}'
+                />
+            </div>
         {{else}}
-            <a href='/signin' data-link>
-                <i class='topbar-icon fa-solid fa-right-to-bracket'></i>
-            </a>
+            <i class='topbar-icon fa-solid fa-right-to-bracket' data-link href='/signin'></i>
         {{/if}}
     </span>
 </div>

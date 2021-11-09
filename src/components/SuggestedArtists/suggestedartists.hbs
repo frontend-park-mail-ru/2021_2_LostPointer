@@ -2,13 +2,15 @@
     <div class='suggested-artists__header'>Top Artists</div>
     <div class='suggested-artists__container'>
         {{#each artists}}
-            <img
-                alt
-                class='suggested-artist'
-                src='/static/artists/{{props.avatar}}_128px.webp'
-                href='/artist/{{props.id}}'
-                data-link
-            />
+            <div class='suggested-artist'>
+                <img
+                    alt
+                    class='suggested-artist__img'
+                    src='/static/artists/{{props.avatar}}_128px.webp'
+                    href='/artist/{{props.id}}'
+                    data-link
+                />
+            </div>
         {{/each}}
     </div>
 </div>

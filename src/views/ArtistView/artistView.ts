@@ -6,8 +6,10 @@ import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
 import { SuggestedAlbums } from 'components/SugestedAlbums/suggestedAlbums';
 import { TrackList } from 'components/TrackList/tracklist';
 import { ArtistModel } from 'models/artist';
+import { UserModel } from 'models/user';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
+import disableBrokenImg from 'views/utils';
 
 import ArtistTemplate from './artistView.hbs';
 import './artistView.scss';
@@ -18,7 +20,6 @@ interface IArtistViewProps {
 
 export class ArtistView extends View<IArtistViewProps> {
     private authenticated: boolean;
-    private authHandler: (e) => void;
     private playButtonHandler: (e) => void;
 
     private sidebar: Sidebar;
@@ -31,7 +32,6 @@ export class ArtistView extends View<IArtistViewProps> {
     constructor(props?: IArtistViewProps) {
         super(props);
         this.isLoaded = false;
-        this.addHandlers();
     }
 
     didMount() {
@@ -42,9 +42,9 @@ export class ArtistView extends View<IArtistViewProps> {
         }
         const artistId = match[1];
 
-        const auth = Request.get('/auth').then((response) => {
-            this.authenticated = response.status === 200;
-            this.userAvatar = response.avatar;
+        const auth = UserModel.auth().then((authResponse) => {
+            this.authenticated = authResponse.authenticated;
+            this.userAvatar = authResponse.avatar;
         });
 
         const artist = ArtistModel.getArtist(artistId).then((artist) => {
@@ -78,32 +78,39 @@ export class ArtistView extends View<IArtistViewProps> {
     }
 
     addListeners() {
+        if (this.authenticated) {
+            document
+                .querySelector('.js-logout')
+                .addEventListener('click', this.userLogout);
+        }
+
         const video = document.querySelector('.artist__background-video');
         if (video) {
             video.addEventListener('ended', () => {
                 video.classList.add('transition');
             });
         }
+
+        document.querySelectorAll('img').forEach(function(img){
+            img.addEventListener('error', disableBrokenImg);
+        });
     }
 
     unmount() {
+        document.querySelectorAll('img').forEach(function(img){
+            img.removeEventListener('error', disableBrokenImg);
+        });
         this.isLoaded = false;
     }
 
-    addHandlers() {
-        this.authHandler = (e) => {
-            if (e.target.dataset.action === 'logout') {
-                Request.post('/user/logout').then(() => {
-                    player.stop();
-                    this.authenticated = false;
-                    this.props.authenticated = false;
-                    player.clear();
-                    window.localStorage.removeItem('lastPlayedData');
-                    this.topbar.logout();
-                });
-            }
-        };
-        document.addEventListener('click', this.authHandler);
+    userLogout() {
+        Request.post('/user/logout').then(() => {
+            player.stop();
+            this.authenticated = false;
+            player.clear();
+            window.localStorage.removeItem('lastPlayedData');
+            TopbarComponent.logout();
+        });
     }
 
     render() {
@@ -120,6 +127,7 @@ export class ArtistView extends View<IArtistViewProps> {
                 .set({
                     authenticated: this.authenticated,
                     avatar: this.userAvatar,
+                    offline: navigator.onLine !== true,
                 })
                 .render(),
             sidebar: this.sidebar,

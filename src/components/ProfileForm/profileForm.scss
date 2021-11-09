@@ -9,14 +9,14 @@
 
   &__message {
     color: #FFFFFF;
-    font-family: Montserrat;
+    font-family: Montserrat, sans-serif;
     font-size: 18px;
     margin-left: 265px;
   }
 
   &__label {
     color: #FFFFFF;
-    font-family: Montserrat;
+    font-family: Montserrat, sans-serif;
     font-size: 16px;
     padding-left: 10px;
     text-align: right;
@@ -28,7 +28,7 @@
     display: flex;
     flex-direction: column;
     float: left;
-    font-family: Montserrat;
+    font-family: Montserrat, sans-serif;
     font-size: 16px;
     text-align: left;
     max-width: 320px;
@@ -56,7 +56,7 @@
     height: 45px;
     border-radius: 10px;
     margin: 10px auto;
-    font-family: Montserrat;
+    font-family: Montserrat, sans-serif;
     font-weight: 200;
     color: #FFFFFF;
     font-size: 22px;
@@ -67,5 +67,53 @@
     &:hover {
       transition: 0.5s ease-in-out;
     }
+  }
+}
+
+.profile-avatar {
+  margin: 50px;
+
+  &__block {
+    display: block;
+    width: 300px;
+    height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 50%;
+    background: linear-gradient(180deg, rgba(30, 30, 30, 0.5) 0%, rgba(30, 30, 30, 0.8) 100%);
+  }
+
+  &__img {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__input-btn {
+    color: #FFFFFF;
+    padding-left: 10px;
+    line-height: 40px;
+    width: 100px;
+    margin: 20px auto;
+    display: block;
+    border-radius: 10px;
+    border: 2px solid #3D3D3D;
+    font-family: Montserrat, sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+
+    &:hover, &:focus {
+      border-color: #CD0138;
+    }
+  }
+
+  &__input {
+    width: .1px;
+    height: .1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
   }
 }

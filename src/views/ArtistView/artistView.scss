@@ -1,7 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@350&display=swap');
-
-.__web-inspector-hide-shortcut__,
+__web-inspector-hide-shortcut__,
 .__web-inspector-hide-shortcut__ *,
 .__web-inspector-hidebefore-shortcut__::before,
 .__web-inspector-hideafter-shortcut__::after {
@@ -41,7 +38,7 @@
 
   &__description {
     font-size: 80px;
-    font-family: 'Montserrat';
+    font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     margin: 100px 0 80px 0;
   }
@@ -83,28 +80,4 @@
 .artist__content .track-list-item__name,
 .artist__content .track-list-item__artist {
   width: 400px;
-}
-
-.suggested-albums {
-  width: 380px;
-}
-
-.suggested-albums__header {
-  color: white;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  width: max-content;
-}
-
-.suggested-albums__container {
-  margin-top: 12px;
-}
-
-.suggested-album {
-  width: 105px;
-  height: 105px;
-  object-fit: cover;
-  cursor: pointer;
-  border-radius: 20px;
-  margin: 10px 0 10px 10px
 }
