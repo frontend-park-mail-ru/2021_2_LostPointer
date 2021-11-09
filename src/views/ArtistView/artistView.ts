@@ -10,7 +10,7 @@ import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import disableBrokenImg from 'views/utils';
 
-import store from 'services/store/store';
+import { playButtonHandler } from 'components/common';
 
 import ArtistTemplate from './artistView.hbs';
 import './artistView.scss';
@@ -22,7 +22,6 @@ interface IArtistViewProps {
 export class ArtistView extends View<IArtistViewProps> {
     private authenticated: boolean;
     private authHandler: (e) => void;
-    private playButtonHandler: (e) => void;
 
     private sidebar: Sidebar;
     private topbar: Topbar;
@@ -30,6 +29,7 @@ export class ArtistView extends View<IArtistViewProps> {
     private artist: ArtistModel;
     private trackList: TrackList;
     private albumList: SuggestedAlbums;
+    private firstTimePlayed = true;
 
     constructor(props?: IArtistViewProps) {
         super(props);
@@ -45,11 +45,6 @@ export class ArtistView extends View<IArtistViewProps> {
         }
         const artistId = match[1];
 
-        const auth = Request.get('/auth').then((response) => {
-            this.authenticated = response.status === 200;
-            this.userAvatar = response.avatar;
-        });
-
         const artist = ArtistModel.getArtist(artistId).then((artist) => {
             if (!artist) {
                 router.go(routerStore.dashboard);
@@ -57,7 +52,7 @@ export class ArtistView extends View<IArtistViewProps> {
             this.artist = artist;
         });
 
-        Promise.all([auth, artist]).then(() => {
+        Promise.all([artist]).then(() => {
             this.topbar = TopbarComponent;
             this.sidebar = new Sidebar().render();
             this.albumList = new SuggestedAlbums({
@@ -88,13 +83,13 @@ export class ArtistView extends View<IArtistViewProps> {
             });
         }
 
-        document.querySelectorAll('img').forEach(function(img){
+        document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function(img){
+        document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
         this.isLoaded = false;
@@ -132,42 +127,10 @@ export class ArtistView extends View<IArtistViewProps> {
         });
         this.addListeners();
 
-        this.playButtonHandler = (e) => {
-            if (e.target.className === 'track-list-item-play') {
-                if (!this.authenticated) {
-                    router.go(routerStore.signin);
-                    return;
-                }
-                if (e.target === store.get('nowPlaying')) {
-                    // Ставим на паузу/продолжаем воспр.
-                    player.toggle();
-                    return;
-                }
-                if (store.get('nowPlaying')) {
-                    // Переключили на другой трек
-                    const nowPlaying = store.get('nowPlaying');
-                    nowPlaying.dataset.playing = 'false';
-                    nowPlaying.src = '/static/img/play-outline.svg';
-                }
-
-                player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
-
-                e.target.dataset.playing = 'true';
-                player.setTrack({
-                    url: `/static/tracks/${e.target.dataset.url}`,
-                    cover: `/static/artworks/${e.target.dataset.cover}`,
-                    title: e.target.dataset.title,
-                    artist: e.target.dataset.artist,
-                    artist_id: e.target.dataset.artist_id,
-                    album: e.target.dataset.album,
-                });
-            }
-        };
-        player.setup(document.querySelectorAll('.track-list-item'));
         document
             .querySelectorAll('.track-list-item-play')
             .forEach((e) =>
-                e.addEventListener('click', this.playButtonHandler)
+                e.addEventListener('click', playButtonHandler.bind(this))
             );
     }
 }

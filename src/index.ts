@@ -31,10 +31,9 @@ class App {
 
     _enableServiceWorker() {
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js', { scope: '/' })
-                .then((registration) => {
-                    console.log('sw registration on scope:', registration.scope);
-                })
+            navigator.serviceWorker
+                .register('/sw.js', { scope: '/' })
+                .then()
                 .catch((err) => {
                     console.error(err);
                 });

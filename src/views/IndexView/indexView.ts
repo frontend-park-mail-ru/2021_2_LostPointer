@@ -10,8 +10,6 @@ import './indexView.scss';
 import store from 'services/store/store';
 import { Homepage } from 'components/Homepage/homepagecontent';
 import bus from 'services/eventbus/eventbus';
-import router from 'services/router/router';
-import routerStore from 'services/router/routerStore';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -52,48 +50,18 @@ export class IndexView extends View<IIndexViewProps> {
                 .addEventListener('click', this.userLogout);
         }
 
-        this.playButtonHandler = (e) => {
-            if (e.target.className === 'track-list-item-play') {
-                if (!this.authenticated) {
-                    router.go(routerStore.signin);
-                    return;
-                }
-                if (e.target === Player.nowPlaying) {
-                    // Ставим на паузу/продолжаем воспр.
-                    Player.toggle();
-                    return;
-                }
-                if (Player.nowPlaying) {
-                    // Переключили на другой трек
-                    Player.nowPlaying.dataset.playing = 'false';
-                    Player.nowPlaying.src = '/static/img/play-outline.svg';
-                }
-
-                Player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
-
-                e.target.dataset.playing = 'true';
-                Player.setTrack({
-                    url: `/static/tracks/${e.target.dataset.url}`,
-                    cover: `/static/artworks/${e.target.dataset.cover}`,
-                    title: e.target.dataset.title,
-                    artist: e.target.dataset.artist,
-                    artist_id: e.target.dataset.artist_id,
-                    album: e.target.dataset.album,
-                });
-            }
-        };
         document
             .querySelectorAll('.track-list-item-play')
             .forEach((e) =>
                 e.addEventListener('click', this.playButtonHandler)
             );
-        document.querySelectorAll('img').forEach(function(img){
+        document.querySelectorAll('img').forEach(function(img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function(img){
+        document.querySelectorAll('img').forEach(function(img) {
             img.removeEventListener('error', disableBrokenImg);
         });
         // document
@@ -137,7 +105,7 @@ export class IndexView extends View<IIndexViewProps> {
                 .set({
                     authenticated: store.get('authenticated'),
                     avatar: store.get('userAvatar'),
-                    offline: navigator.onLine !== true,
+                    offline: !navigator.onLine,
                 })
                 .render(),
             sidebar: this.sidebar,
