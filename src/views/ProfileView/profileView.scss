@@ -6,7 +6,7 @@
   }
 
   &__title {
-    font-family: Montserrat;
+    font-family: Montserrat, sans-serif;
     color: aliceblue;
     font-size: 45px;
     font-weight: 400;
@@ -27,7 +27,7 @@
 
 .profile-form__msg, .profile-avatar__msg {
   visibility: hidden;
-  font-family: Montserrat;
+  font-family: Montserrat, sans-serif;
   font-size: 16px;
   text-align: center;
   list-style: disc inside;
@@ -46,45 +46,4 @@
 
 .visible {
   visibility: visible;
-}
-
-.profile-avatar {
-  margin: 50px;
-
-  &__img {
-    display: block;
-    width: 300px;
-    height: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
-  &__input-btn {
-    color: #FFFFFF;
-    padding-left: 10px;
-    line-height: 40px;
-    width: 100px;
-    margin: 20px auto;
-    display: block;
-    border-radius: 10px;
-    border: 2px solid #3D3D3D;
-    font-family: Montserrat;
-    font-size: 16px;
-    cursor: pointer;
-
-    &:hover, &:focus {
-      border-color: #CD0138;
-    }
-  }
-
-  &__input {
-    width: .1px;
-    height: .1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
-  }
 }

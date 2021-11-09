@@ -1,9 +1,11 @@
 <div class='track-list-item'>
-    <img
-        alt
-        class='track-list-item__artwork'
-        src='/static/artworks/{{album.props.artwork}}_128px.webp'
-    />
+    <div class='track-list-item__artwork'>
+        <img
+            alt
+            class='track-list-item__artwork__img'
+            src='/static/artworks/{{album.props.artwork}}_128px.webp'
+        />
+    </div>
     <div class='track-list-item__name-container'>
         <div class='track-list-item__name'>{{title}}</div>
         <div

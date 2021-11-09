@@ -10,6 +10,7 @@ import { UserModel } from 'models/user';
 import store from 'services/store/store';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import './static/css/fonts.css';
 
 class App {
     start() {
@@ -22,6 +23,22 @@ class App {
             document.body.addEventListener('click', this._dataLinkRoute);
             router.route();
         });
+        this._enableServiceWorker();
+        this.initRoutes();
+        document.body.addEventListener('click', this._dataLinkRoute);
+        router.route();
+    }
+
+    _enableServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                .then((registration) => {
+                    console.log('sw registration on scope:', registration.scope);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        }
     }
 
     _dataLinkRoute(event) {

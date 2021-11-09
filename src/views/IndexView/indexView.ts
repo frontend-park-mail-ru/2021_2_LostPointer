@@ -3,6 +3,7 @@ import Request from 'services/request/request';
 import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
 import Player from 'components/Player/player';
 import { View } from 'views/View/view';
+import disableBrokenImg from 'views/utils';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
@@ -86,9 +87,15 @@ export class IndexView extends View<IIndexViewProps> {
             .forEach((e) =>
                 e.addEventListener('click', this.playButtonHandler)
             );
+        document.querySelectorAll('img').forEach(function(img){
+            img.addEventListener('error', disableBrokenImg);
+        });
     }
 
     unmount() {
+        document.querySelectorAll('img').forEach(function(img){
+            img.removeEventListener('error', disableBrokenImg);
+        });
         // document
         //     .querySelectorAll('.track-list-item-play')
         //     .forEach((e) =>
@@ -130,12 +137,14 @@ export class IndexView extends View<IIndexViewProps> {
                 .set({
                     authenticated: store.get('authenticated'),
                     avatar: store.get('userAvatar'),
+                    offline: navigator.onLine !== true,
                 })
                 .render(),
             sidebar: this.sidebar,
             content: this.homepageTemplate,
             player: Player.render(),
         });
+
         this.addListeners();
         this.homepage.addListeners();
 

@@ -8,6 +8,7 @@ import { TrackList } from 'components/TrackList/tracklist';
 import { ArtistModel } from 'models/artist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
+import disableBrokenImg from 'views/utils';
 
 import store from 'services/store/store';
 
@@ -86,9 +87,16 @@ export class ArtistView extends View<IArtistViewProps> {
                 video.classList.add('transition');
             });
         }
+
+        document.querySelectorAll('img').forEach(function(img){
+            img.addEventListener('error', disableBrokenImg);
+        });
     }
 
     unmount() {
+        document.querySelectorAll('img').forEach(function(img){
+            img.removeEventListener('error', disableBrokenImg);
+        });
         this.isLoaded = false;
     }
 
