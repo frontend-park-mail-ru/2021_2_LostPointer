@@ -2,6 +2,7 @@ import { Component } from 'components/Component/component';
 
 import TopbarTemplate from './topbar.hbs';
 import './topbar.scss';
+import router from 'services/router/router';
 
 interface ITopbarComponentProps {
     authenticated: boolean;
@@ -21,13 +22,15 @@ export class Topbar extends Component<ITopbarComponentProps> {
 
     logout() {
         const button = <HTMLImageElement>document.querySelector('.js-logout');
-        button.classList.remove('js-logout', 'fa-right-from-bracket');
-        button.classList.add('fa-right-to-bracket');
-        button.nextSibling.remove();
+        if (button) {
+            button.classList.remove('js-logout', 'fa-right-from-bracket');
+            button.classList.add('fa-right-to-bracket');
+        }
+
         document
             .getElementById('signin-button')
             .setAttribute('href', '/signin');
-        (<HTMLImageElement>document.querySelector('.topbar-profile')).remove();
+        router.go(window.location.pathname);
     }
 }
 

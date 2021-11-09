@@ -177,9 +177,9 @@ export class IndexView extends View<IIndexViewProps> {
     userLogout() {
         Request.post('/user/logout').then(() => {
             player.stop();
-            this.authenticated = false;
-            store.set('authenticated', false);
             player.clear();
+            store.set('authenticated', false);
+            this.authenticated = false;
             window.localStorage.removeItem('lastPlayedData');
             TopbarComponent.logout();
         });
