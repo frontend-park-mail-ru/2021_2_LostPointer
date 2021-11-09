@@ -1,5 +1,4 @@
 import { View } from 'views/View/view';
-import Request from 'services/request/request';
 import { Topbar } from 'components/Topbar/topbar';
 import { PlayerComponent } from 'components/Player/player';
 import { Sidebar } from 'components/Sidebar/sidebar';
@@ -37,7 +36,6 @@ export class ProfileView extends View<IProfileViewProps> {
     constructor(props?: IProfileViewProps) {
         super(props);
         this.isLoaded = false;
-        this.addHandlers();
     }
 
     didMount() {
@@ -99,8 +97,9 @@ export class ProfileView extends View<IProfileViewProps> {
             .updateSettings(formdata)
             .then((body) => {
                 if (body.status === 200) {
-                    const smallAvatar =
-                        document.querySelector('.topbar-profile__img');
+                    const smallAvatar = document.querySelector(
+                        '.topbar-profile__img'
+                    );
                     smallAvatar.setAttribute('src', readFile);
                     (<HTMLElement>smallAvatar).style.display = 'block';
                     msg.classList.remove('fail');
@@ -234,19 +233,17 @@ export class ProfileView extends View<IProfileViewProps> {
         const fileInput = document.querySelector('input[name="file"]');
         fileInput.addEventListener('change', this.uploadAvatarFile.bind(this));
 
-        document.querySelectorAll('img').forEach(function(img){
+        document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function(img){
+        document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
         this.isLoaded = false;
     }
-
-
 
     render() {
         if (!this.isLoaded) {
