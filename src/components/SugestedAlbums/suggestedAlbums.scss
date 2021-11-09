@@ -7,7 +7,7 @@
 
   &__header {
     color: white;
-    font-family: 'Montserrat', sans-serif;
+    font-family: Montserrat, sans-serif;
     font-weight: 700;
     width: max-content;
   }
@@ -18,7 +18,7 @@
   height: 105px;
   object-fit: cover;
   cursor: pointer;
-  background: linear-gradient(180deg, rgba(30, 30, 30, 0.5) 0%, rgba(30, 30, 30, 0.8) 100%);
+  background: linear-gradient(180deg, rgba(30 30 30 / 50%) 0%, rgba(30 30 30 / 80%) 100%);
   border-radius: 20px;
   margin: 10px 0 10px 10px;
   display: inline-block;

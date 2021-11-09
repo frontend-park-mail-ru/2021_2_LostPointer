@@ -1,5 +1,5 @@
 .friend-activity {
-  font-family: 'Montserrat', sans-serif;
+  font-family: Montserrat, sans-serif;
   font-weight: 700;
   color: white;
   display: flex;
@@ -45,7 +45,7 @@
   &-info-container {
     display: flex;
     flex-direction: column;
-    margin: auto 0 auto 0;
+    margin: auto 0;
     width: 100%;
   }
 }

@@ -1,4 +1,5 @@
 .auth {
+
   &_page__placeholder-photo {
     height: 100%;
     width: 100%;
@@ -6,6 +7,7 @@
   }
 
   &-page {
+
     &__placeholder {
       width: 50%;
       height: 100%;
@@ -54,6 +56,7 @@
     margin-top: 30px;
 
     &__invalidities {
+
       div.invalid {
         color: #ff4d5b;
         margin-bottom: 15px;
@@ -72,7 +75,7 @@
       text-align: center;
       list-style: disc inside;
       max-width: 350px;
-      margin: 10px 10px;
+      margin: 10px;
       color: #ff4d5b;
       display: block;
 

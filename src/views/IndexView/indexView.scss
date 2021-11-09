@@ -3,8 +3,18 @@
   margin: 0;
 }
 
-a, a:visited {
+a,
+a:visited {
   color: white;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #191919;
+  border-radius: 20px;
 }
 
 :root {
@@ -88,7 +98,7 @@ body {
 
 .more-friends {
   margin: auto 20px 15px;
-  background-color: rgb(56, 56, 56);
+  background-color: rgb(56 56 56);
   width: auto;
   height: 10%;
   border-radius: 20px;
@@ -101,15 +111,6 @@ body {
   margin: auto;
   width: fit-content;
   font-weight: 400;
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #191919;
-  border-radius: 20px;
 }
 
 .enabled {
