@@ -1,4 +1,5 @@
-auth {
+.auth {
+
   &_page__placeholder-photo {
     height: 100%;
     width: 100%;
@@ -6,6 +7,7 @@ auth {
   }
 
   &-page {
+
     &__placeholder {
       width: 50%;
       height: 100%;
@@ -84,7 +86,7 @@ auth {
       text-align: center;
       list-style: disc inside;
       max-width: 350px;
-      margin: 10px 10px;
+      margin: 10px;
       color: #ff4d5b;
       display: block;
 
