@@ -47,7 +47,7 @@ module.exports = {
             },
             {
                 test: /\.(ttf|eot|woff|woff2)$/,
-                type: "asset/resource",
+                type: 'asset/resource',
             },
         ],
     },
@@ -60,12 +60,13 @@ module.exports = {
             theme_color: '#000000',
             crossorigin: 'use-credentials',
             display: 'standalone',
+            orientation: 'portrait',
             icons: [
                 {
                     src: path.resolve('src/static/img/sidebar_logo.png'),
-                    sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
-                }
-            ]
+                    sizes: [96, 128, 192, 256, 384, 512], // multiple sizes
+                },
+            ],
         }),
         new StylelintPlugin({
             configFile: './.stylelintrс',

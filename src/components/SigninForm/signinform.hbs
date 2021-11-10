@@ -3,7 +3,7 @@
         {{{this}}}
     {{/each}}
     <div class='auth-form__fail_msg form__fail_msg'>
-        {{{fail_msg}}}
+        {{fail_msg}}
     </div>
     <div class='auth-form__buttons'>
         <input
@@ -12,12 +12,8 @@
             src='/static/img/signin.svg'
         />
         <div class='auth-form__redirect'>
-            <p>{{{p_redirect_msg}}}</p>
-            <a
-                data-link
-                href='/signup'
-                class='redirect-msg'
-            >{{{a_redirect_msg}}}</a>
+            <p>{{p_redirect_msg}}</p>
+            <a href='/signup' class='redirect-msg'>{{a_redirect_msg}}</a>
         </div>
     </div>
 </form>

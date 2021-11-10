@@ -12,14 +12,14 @@ import {
     nameValidityChecks,
     passwordValidityChecks,
 } from 'services/validation/validityChecks';
-import Request from 'services/request/request';
 import { ICustomInput } from 'interfaces/CustomInput';
 import routerStore from 'services/router/routerStore';
 import { View } from 'views/View/view';
 
 import SignupComponentTemplate from './signupView.hbs';
 import './signupView.scss';
-import {UserModel} from "models/user";
+import { UserModel } from 'models/user';
+import store from 'services/store/store';
 
 interface ISignupComponentProps {
     placeholder_img: string;
@@ -45,6 +45,10 @@ export class SignupView extends View<ISignupComponentProps> {
     }
 
     render() {
+        if (store.get('authenticated')) {
+            router.go('/');
+            return;
+        }
         document.getElementById('app').innerHTML = SignupComponentTemplate(
             this.props
         );
@@ -79,8 +83,10 @@ export class SignupView extends View<ISignupComponentProps> {
 
     unmount() {
         const form = document.querySelector('.auth-form');
-        form.removeEventListener('submit', this.submitSignupForm);
-        removeInputsEventListeners(form);
+        if (form) {
+            form.removeEventListener('submit', this.submitSignupForm);
+            removeInputsEventListeners(form);
+        }
     }
 
     submitSignupForm(event) {
@@ -108,7 +114,11 @@ export class SignupView extends View<ISignupComponentProps> {
         })
             .then((body) => {
                 if (body.status === 201) {
-                    router.go(routerStore.dashboard);
+                    UserModel.auth().then((authResponse) => {
+                        store.set('authenticated', authResponse.authenticated);
+                        store.set('userAvatar', authResponse.avatar);
+                        router.go(routerStore.dashboard);
+                    });
                 } else {
                     const failMsg = event.target.querySelector(
                         '.auth-form__fail_msg'

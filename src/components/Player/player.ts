@@ -238,15 +238,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
     removeEventListeners() {
         this.audio.removeEventListener('timeupdate', this.timeUpdateHandler);
-        document
-            .querySelector('.repeat')
-            .removeEventListener('click', this.buttonsHandler);
-        document
-            .querySelector('.shuffle')
-            .removeEventListener('click', this.buttonsHandler);
-        document
-            .querySelector('.mute')
-            .removeEventListener('click', this.buttonsHandler);
+        const repeat = document.querySelector('.repeat');
+        repeat.removeEventListener('click', this.buttonsHandler);
+        const shuffle = document.querySelector('.shuffle');
+        shuffle.removeEventListener('click', this.buttonsHandler);
+        const mute = document.querySelector('.mute');
+        mute.removeEventListener('click', this.buttonsHandler);
         window.removeEventListener('resize', this.resizeHandler);
         document
             .querySelector('.player__seekbar')
@@ -461,18 +458,26 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     update() {
-        document.getElementById('artist-name').innerHTML =
-            this.props.artist || '';
-        document.getElementById('track-name').innerHTML =
-            this.props.track || '';
-        document.getElementById('player-time-total').innerHTML =
-            this.props.total_time || '';
+        const artist = document.getElementById('artist-name');
+        if (artist) {
+            artist.innerHTML = this.props.artist || '';
+        }
+        const track = document.getElementById('track-name');
+        if (track) {
+            track.innerHTML = this.props.track || '';
+        }
+        const totalTime = document.getElementById('player-time-total');
+        if (totalTime) {
+            totalTime.innerHTML = this.props.total_time || '';
+        }
         const artwork = <HTMLImageElement>(
             document.getElementById('player-artwork')
         );
         if (this.props.hide_artwork) {
-            artwork.classList.add('hidden');
-            return;
+            if (artwork) {
+                artwork.classList.add('hidden');
+                return;
+            }
         }
         artwork.src = `${this.props.cover}_128px.webp`;
     }

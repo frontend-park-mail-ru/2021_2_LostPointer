@@ -3,6 +3,11 @@
   margin: 0;
 }
 
+a,
+a:visited {
+  color: white;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
