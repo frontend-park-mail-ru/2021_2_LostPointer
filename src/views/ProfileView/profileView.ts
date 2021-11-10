@@ -3,7 +3,7 @@ import Request from 'services/request/request';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
-import { PlayerComponent } from 'components/Player/player';
+import player, { PlayerComponent } from 'components/Player/player';
 import { Sidebar } from 'components/Sidebar/sidebar';
 import { ICustomInput } from 'interfaces/CustomInput';
 import { CustomValidation, isValidForm } from 'services/validation/validation';
@@ -28,6 +28,7 @@ interface IProfileViewProps {
 
 export class ProfileView extends View<IProfileViewProps> {
     private authenticated: boolean;
+    private playButtonHandler: (e) => void;
 
     private player: PlayerComponent;
     private sidebar: Sidebar;
@@ -57,7 +58,6 @@ export class ProfileView extends View<IProfileViewProps> {
                 avatar: user.getProps().small_avatar,
                 offline: navigator.onLine !== true,
             });
-            this.player = new PlayerComponent();
             this.profileform = new ProfileForm(user.getProps());
             this.isLoaded = true;
             this.render();
@@ -285,9 +285,45 @@ export class ProfileView extends View<IProfileViewProps> {
                 .render(),
             sidebar: this.sidebar.render(),
             profileform: this.profileform.render(),
-            player: this.player.render(),
+            player: player.render(),
         });
         this.addListeners();
+
+        this.playButtonHandler = (e) => {
+            if (e.target.className === 'track-list-item-play') {
+                if (!this.authenticated) {
+                    router.go(routerStore.signin);
+                    return;
+                }
+                if (e.target === player.nowPlaying) {
+                    // Ставим на паузу/продолжаем воспр.
+                    player.toggle();
+                    return;
+                }
+                if (player.nowPlaying) {
+                    // Переключили на другой трек
+                    player.nowPlaying.dataset.playing = 'false';
+                    player.nowPlaying.src = '/static/img/play-outline.svg';
+                }
+
+                player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
+
+                e.target.dataset.playing = 'true';
+                player.setTrack({
+                    url: `/static/tracks/${e.target.dataset.url}`,
+                    cover: `/static/artworks/${e.target.dataset.cover}`,
+                    title: e.target.dataset.title,
+                    artist: e.target.dataset.artist,
+                    album: e.target.dataset.album,
+                });
+            }
+        };
+        player.setup(document.querySelectorAll('.track-list-item'));
+        document
+            .querySelectorAll('.track-list-item-play')
+            .forEach((e) =>
+                e.addEventListener('click', this.playButtonHandler)
+            );
     }
 }
 
