@@ -43,7 +43,7 @@ export class ArtistView extends View<IArtistViewProps> {
         const artistId = match[1];
 
         this.authenticated = store.get('authenticated');
-        this.userAvatar = store.get('avatar');
+        this.userAvatar = store.get('userAvatar');
 
         const artist = ArtistModel.getArtist(artistId).then((artist) => {
             if (!artist) {
