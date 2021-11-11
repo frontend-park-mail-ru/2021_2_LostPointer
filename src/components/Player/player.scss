@@ -1,3 +1,18 @@
+.volume-current {
+  width: 50%;
+}
+
+.seekbar-current,
+.volume-current {
+  height: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.5s;
+  width: 0;
+  display: block;
+  background-color: white;
+}
+
 .player {
   display: flex;
   align-items: center;
@@ -39,7 +54,8 @@
     border-radius: 10px;
     cursor: pointer;
 
-    &__current, .volume-current {
+    &__current,
+    .volume-current {
       transition: 0.5s;
       width: 0;
       display: block;
@@ -60,7 +76,7 @@
     width: 30px;
     color: white;
     font-size: 17px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: Montserrat, sans-serif;
     font-weight: 400;
   }
 
@@ -75,7 +91,7 @@
   }
 
   &-track {
-    font-family: 'Montserrat', sans-serif;
+    font-family: Montserrat, sans-serif;
     color: white;
     width: 200px;
     text-overflow: ellipsis;
@@ -102,21 +118,6 @@
       }
     }
   }
-}
-
-.seekbar-current,
-.volume-current {
-  height: 5px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.5s;
-  width: 0;
-  display: block;
-  background-color: white;
-}
-
-.volume-current {
-  width: 50%;
 }
 
 .shuffle,

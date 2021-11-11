@@ -8,14 +8,14 @@
   }
 
   &__message {
-    color: #FFFFFF;
+    color: #ffffff;
     font-family: Montserrat, sans-serif;
     font-size: 18px;
     margin-left: 265px;
   }
 
   &__label {
-    color: #FFFFFF;
+    color: #ffffff;
     font-family: Montserrat, sans-serif;
     font-size: 16px;
     padding-left: 10px;
@@ -58,7 +58,7 @@
     margin: 10px auto;
     font-family: Montserrat, sans-serif;
     font-weight: 200;
-    color: #FFFFFF;
+    color: #ffffff;
     font-size: 22px;
     cursor: pointer;
     display: flex;
@@ -80,7 +80,7 @@
     margin-left: auto;
     margin-right: auto;
     border-radius: 50%;
-    background: linear-gradient(180deg, rgba(30, 30, 30, 0.5) 0%, rgba(30, 30, 30, 0.8) 100%);
+    background: linear-gradient(180deg, rgba(30 30 30 / 50%) 0%, rgba(30 30 30 / 80%) 100%);
   }
 
   &__img {
@@ -91,27 +91,28 @@
   }
 
   &__input-btn {
-    color: #FFFFFF;
+    color: #ffffff;
     padding-left: 10px;
     line-height: 40px;
     width: 100px;
     margin: 20px auto;
     display: block;
     border-radius: 10px;
-    border: 2px solid #3D3D3D;
+    border: 2px solid #3d3d3d;
     font-family: Montserrat, sans-serif;
     font-size: 16px;
     cursor: pointer;
 
-    &:hover, &:focus {
-      border-color: #CD0138;
+    &:hover,
+    &:focus {
+      border-color: #cd0138;
     }
   }
 
   &__input {
-    width: .1px;
-    height: .1px;
-    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0%;
     overflow: hidden;
     position: absolute;
     z-index: -1;

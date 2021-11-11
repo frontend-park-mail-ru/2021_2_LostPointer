@@ -14,26 +14,26 @@ import './static/css/fonts.css';
 
 class App {
     start() {
-        const auth = UserModel.auth().then((authResponse) => {
+        UserModel.auth().then((authResponse) => {
             store.set('authenticated', authResponse.authenticated);
             store.set('userAvatar', authResponse.avatar);
-        });
-        Promise.all([auth]).then(() => {
+            this._enableServiceWorker();
             this.initRoutes();
             document.body.addEventListener('click', this._dataLinkRoute);
             router.route();
         });
-        this._enableServiceWorker();
-        this.initRoutes();
-        document.body.addEventListener('click', this._dataLinkRoute);
-        router.route();
     }
 
     _enableServiceWorker() {
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker
                 .register('/sw.js', { scope: '/' })
-                .then()
+                .then((registration) => {
+                    console.log(
+                        'sw registration on scope:',
+                        registration.scope
+                    );
+                })
                 .catch((err) => {
                     console.error(err);
                 });
@@ -41,9 +41,15 @@ class App {
     }
 
     _dataLinkRoute(event) {
-        if (event.target.matches('[data-link]')) {
+        const target = event.target;
+        if (target.tagName === 'A') {
             event.preventDefault();
-            router.go(event.target.getAttribute('href'));
+            router.go(target.getAttribute('href'));
+        } else {
+            if (target.parentElement.tagName === 'A') {
+                event.preventDefault();
+                router.go(target.parentElement.getAttribute('href'));
+            }
         }
     }
 

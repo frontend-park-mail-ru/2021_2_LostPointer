@@ -8,11 +8,9 @@
     </div>
     <div class='track-list-item__name-container'>
         <div class='track-list-item__name'>{{title}}</div>
-        <div
-            class='track-list-item__artist'
-            href='/artist/{{artist.props.id}}'
-            data-link
-        >{{artist.props.name}}</div>
+        <a href='/artist/{{artist.props.id}}'>
+            <div class='track-list-item__artist'>{{artist.props.name}}</div>
+        </a>
     </div>
     <div class='track-list-item__ellipsis'>
         <img alt class='track-list-item-fav' src='/static/img/favorite.svg' />

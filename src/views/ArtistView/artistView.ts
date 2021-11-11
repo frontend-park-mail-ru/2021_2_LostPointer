@@ -1,6 +1,5 @@
 import { View } from 'views/View/view';
-import Request from 'services/request/request';
-import player from 'components/Player/player';
+
 import { Sidebar } from 'components/Sidebar/sidebar';
 import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
 import { SuggestedAlbums } from 'components/SugestedAlbums/suggestedAlbums';
@@ -21,20 +20,16 @@ interface IArtistViewProps {
 
 export class ArtistView extends View<IArtistViewProps> {
     private authenticated: boolean;
-    private authHandler: (e) => void;
 
     private sidebar: Sidebar;
     private topbar: Topbar;
-    private userAvatar: string;
     private artist: ArtistModel;
     private trackList: TrackList;
     private albumList: SuggestedAlbums;
-    private firstTimePlayed = true;
 
     constructor(props?: IArtistViewProps) {
         super(props);
         this.isLoaded = false;
-        this.addHandlers();
     }
 
     didMount() {
@@ -93,22 +88,6 @@ export class ArtistView extends View<IArtistViewProps> {
             img.removeEventListener('error', disableBrokenImg);
         });
         this.isLoaded = false;
-    }
-
-    addHandlers() {
-        this.authHandler = (e) => {
-            if (e.target.dataset.action === 'logout') {
-                Request.post('/user/logout').then(() => {
-                    player.stop();
-                    this.authenticated = false;
-                    this.props.authenticated = false;
-                    player.clear();
-                    window.localStorage.removeItem('lastPlayedData');
-                    this.topbar.logout();
-                });
-            }
-        };
-        document.addEventListener('click', this.authHandler);
     }
 
     render() {

@@ -8,11 +8,24 @@
 
   &__logo {
     cursor: pointer;
-    margin: 15px 8px 25px 8px;
+    margin: 15px 8px 25px;
   }
 
   &__icon {
+    display: flex;
+    justify-content: center;
     cursor: pointer;
     margin: 20px 10px 5px;
+
+    &__logo {
+      margin: 15px 10px 20px;
+      display: flex;
+      justify-content: center;
+
+      img {
+        height: 35px;
+        width: 35px;
+      }
+    }
   }
 }

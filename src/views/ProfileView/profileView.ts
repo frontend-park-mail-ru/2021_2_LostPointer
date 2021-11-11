@@ -17,6 +17,9 @@ import { UserModel } from 'models/user';
 import ProfileTemplate from './profileView.hbs';
 import './profileView.scss';
 import disableBrokenImg from 'views/utils';
+import store from 'services/store/store';
+import router from 'services/router/router';
+import routerStore from 'services/router/routerStore';
 
 interface IProfileViewProps {
     authenticated: boolean;
@@ -39,6 +42,12 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     didMount() {
+        if (!store.get('authenticated')) {
+            router.go(routerStore.signin);
+            return;
+        }
+        this.userAvatar = store.get('userAvatar');
+
         UserModel.getSettings().then((user) => {
             this.user = user;
             this.sidebar = new Sidebar();
@@ -246,6 +255,10 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     render() {
+        if (!navigator.onLine) {
+            router.go(routerStore.dashboard);
+            return;
+        }
         if (!this.isLoaded) {
             this.didMount();
             return;

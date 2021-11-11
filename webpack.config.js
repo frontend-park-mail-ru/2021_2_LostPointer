@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const StylelintPlugin = require('stylelint-webpack-plugin');
 
 const port = process.env.PORT || 3000;
 const src = path.join(__dirname, 'src');
@@ -46,7 +47,7 @@ module.exports = {
             },
             {
                 test: /\.(ttf|eot|woff|woff2)$/,
-                type: "asset/resource",
+                type: 'asset/resource',
             },
         ],
     },
@@ -59,12 +60,17 @@ module.exports = {
             theme_color: '#000000',
             crossorigin: 'use-credentials',
             display: 'standalone',
+            orientation: 'portrait',
             icons: [
                 {
                     src: path.resolve('src/static/img/sidebar_logo.png'),
-                    sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
-                }
-            ]
+                    sizes: [96, 128, 192, 256, 384, 512], // multiple sizes
+                },
+            ],
+        }),
+        new StylelintPlugin({
+            configFile: './.stylelintrс',
+            extensions: ['css', 'scss', 'sass'],
         }),
         new MiniCssExtractPlugin({ filename: '[name].[fullhash:8].css' }),
         new HtmlWebpackPlugin({
