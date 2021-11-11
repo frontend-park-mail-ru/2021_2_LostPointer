@@ -19,6 +19,11 @@ class App {
         UserModel.auth().then((authResponse) => {
             store.set('authenticated', authResponse.authenticated);
             store.set('userAvatar', authResponse.avatar);
+
+            if (authResponse.authenticated) {
+                UserModel.getSettings();
+            }
+
             this._enableServiceWorker();
             this.initRoutes();
             document.body.addEventListener('click', this._dataLinkRoute);

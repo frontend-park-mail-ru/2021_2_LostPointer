@@ -270,10 +270,6 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     render() {
-        if (!navigator.onLine) {
-            router.go(routerStore.dashboard);
-            return;
-        }
         if (!this.isLoaded) {
             this.didMount();
             return;
