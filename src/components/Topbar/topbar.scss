@@ -37,11 +37,21 @@
     }
   }
 
-  &__message {
-    width: 30%;
-    color: #ff4d5b;
-    font-family: Montserrat, sans-serif;
-    margin: 15px auto;
+  &__alert {
+    display: flex;
+    align-items: center;
+    background-color: #ff4d5b;
+    width: 15%;
+    border-radius: 50px;
+    opacity: 60%;
+
+    &-message {
+      color: white;
+      margin: 0 20px;
+      font-size: 20px;
+      font-style: normal;
+      font-family: Montserrat, sans-serif;
+    }
   }
 
   &-icons {
