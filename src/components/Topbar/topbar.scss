@@ -83,6 +83,12 @@
     width: 45px;
     background: linear-gradient(180deg, rgba(30 30 30 / 50%) 0%, rgba(30 30 30 / 80%) 100%);
 
+    & a {
+      width: 45px;
+      height: 45px;
+      display: block;
+    }
+
     &__img {
       object-fit: cover;
       height: 45px;
