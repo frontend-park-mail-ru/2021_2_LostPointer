@@ -11,6 +11,7 @@
     background-color: #191919;
     width: 30%;
     border-radius: 50px;
+    opacity: 60%;
 
     &-icon {
       color: grey;
@@ -37,17 +38,28 @@
     }
   }
 
-  &__message {
-    width: 30%;
-    color: #ff4d5b;
-    font-family: Montserrat, sans-serif;
-    margin: 15px auto;
+  &__alert {
+    display: flex;
+    align-items: center;
+    background-color: #ff4d5b;
+    width: 15%;
+    border-radius: 50px;
+    opacity: 60%;
+
+    &-message {
+      color: white;
+      display: table;
+      margin: 0 auto;
+      font-size: 20px;
+      font-style: normal;
+      font-family: Montserrat, sans-serif;
+    }
   }
 
   &-icons {
     padding: 5px 10px;
     height: 40px;
-    width: 180px;
+    width: 225px;
     display: flex;
     align-items: center;
     margin-right: 100px;
@@ -71,6 +83,12 @@
     margin-left: 50px;
     width: 45px;
     background: linear-gradient(180deg, rgba(30 30 30 / 50%) 0%, rgba(30 30 30 / 80%) 100%);
+
+    & a {
+      width: 45px;
+      height: 45px;
+      display: block;
+    }
 
     &__img {
       object-fit: cover;
