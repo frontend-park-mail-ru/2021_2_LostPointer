@@ -25,6 +25,7 @@ export class ArtistView extends View<IArtistViewProps> {
     private trackList: TrackList;
     private albumList: SuggestedAlbums;
     private firstTimePlayed: boolean;
+    private previousState: string;
 
     constructor(props?: IArtistViewProps) {
         super(props);
@@ -91,7 +92,8 @@ export class ArtistView extends View<IArtistViewProps> {
         document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
-        this.isLoaded = false;
+        this.previousState = document.getElementById('content').innerHTML;
+        // this.isLoaded = false;
     }
 
     render() {
@@ -99,15 +101,19 @@ export class ArtistView extends View<IArtistViewProps> {
             this.didMount();
             return;
         }
+        if (!this.previousState) {
+            this.previousState = ArtistTemplate({
+                name: this.artist.getProps().name,
+                video: this.artist.getProps().video,
+                artistAvatar: this.artist.getProps().avatar,
 
-        document.getElementById('content').innerHTML = ArtistTemplate({
-            name: this.artist.getProps().name,
-            video: this.artist.getProps().video,
-            artistAvatar: this.artist.getProps().avatar,
+                albumList: this.albumList,
+                trackList: this.trackList,
+            });
+        }
 
-            albumList: this.albumList,
-            trackList: this.trackList,
-        });
+        document.getElementById('content').innerHTML = this.previousState;
+
         this.addListeners();
 
         document

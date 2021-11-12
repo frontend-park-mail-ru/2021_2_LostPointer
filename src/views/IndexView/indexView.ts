@@ -17,7 +17,6 @@ interface IIndexViewProps {
 
 export class IndexView extends View<IIndexViewProps> {
     private authenticated: boolean;
-    private playButtonHandler: (e) => void;
     private sidebar: Sidebar;
     private topbar: Topbar;
 
@@ -52,11 +51,6 @@ export class IndexView extends View<IIndexViewProps> {
                 .addEventListener('click', this.userLogout);
         }
 
-        document
-            .querySelectorAll('.track-list-item-play')
-            .forEach((e) =>
-                e.addEventListener('click', this.playButtonHandler)
-            );
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
@@ -104,7 +98,6 @@ export class IndexView extends View<IIndexViewProps> {
                     content: this.homepageTemplate,
                     player: Player.render(),
                 });
-
                 Player.setEventListeners();
                 this.addListeners();
                 Player.setup(document.querySelectorAll('.track-list-item'));
