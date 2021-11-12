@@ -92,7 +92,6 @@ export class ArtistView extends View<IArtistViewProps> {
         document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
-        this.previousState = document.getElementById('content').innerHTML;
         // this.isLoaded = false;
     }
 
@@ -101,18 +100,15 @@ export class ArtistView extends View<IArtistViewProps> {
             this.didMount();
             return;
         }
-        if (!this.previousState) {
-            this.previousState = ArtistTemplate({
-                name: this.artist.getProps().name,
-                video: this.artist.getProps().video,
-                artistAvatar: this.artist.getProps().avatar,
 
-                albumList: this.albumList,
-                trackList: this.trackList,
-            });
-        }
+        document.getElementById('content').innerHTML = ArtistTemplate({
+            name: this.artist.getProps().name,
+            video: this.artist.getProps().video,
+            artistAvatar: this.artist.getProps().avatar,
 
-        document.getElementById('content').innerHTML = this.previousState;
+            albumList: this.albumList,
+            trackList: this.trackList,
+        });
 
         this.addListeners();
 
