@@ -10,14 +10,12 @@ const playButtonHandler = function (e) {
             router.go(routerStore.signin);
             return;
         }
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
         if (this.firstTimePlayed) {
             PlayerComponent.setup(
                 document.querySelectorAll('.track-list-item')
             );
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
             const prevView = store.get('playingView');
             if (prevView) {
                 prevView.reset();

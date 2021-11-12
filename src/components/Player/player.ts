@@ -307,8 +307,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             ? this.repeatToggle.classList.add('enabled')
             : this.repeatToggle.classList.remove('enabled');
 
-        this.setEventListeners();
-
         this.playlist = playlist;
         this.playlistIndices = [...Array(this.playlist.length).keys()];
     }
@@ -480,7 +478,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         const artist = document.getElementById('artist-name');
         if (artist) {
             artist.innerHTML = this.props.artist || '';
-            artist.setAttribute('href', `/artist/${String(this.props.artist_id)}`);
+            artist.setAttribute(
+                'href',
+                `/artist/${String(this.props.artist_id)}`
+            );
         }
         const track = document.getElementById('track-name');
         if (track) {

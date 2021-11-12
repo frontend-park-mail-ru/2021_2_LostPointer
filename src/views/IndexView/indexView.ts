@@ -92,7 +92,6 @@ export class IndexView extends View<IIndexViewProps> {
     render() {
         if (!this.isLoaded && !this.renderedOnce) {
             this.didMount().then(() => {
-                console.log('inserting into app');
                 document.getElementById('app').innerHTML = IndexTemplate({
                     topbar: this.topbar
                         .set({
@@ -106,6 +105,7 @@ export class IndexView extends View<IIndexViewProps> {
                     player: Player.render(),
                 });
 
+                Player.setEventListeners();
                 this.addListeners();
                 Player.setup(document.querySelectorAll('.track-list-item'));
                 Player.init();

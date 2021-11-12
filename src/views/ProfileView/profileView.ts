@@ -1,6 +1,5 @@
 import { View } from 'views/View/view';
 import { Topbar } from 'components/Topbar/topbar';
-import { PlayerComponent } from 'components/Player/player';
 import { Sidebar } from 'components/Sidebar/sidebar';
 import { ICustomInput } from 'interfaces/CustomInput';
 import { CustomValidation, isValidForm } from 'services/validation/validation';
@@ -29,7 +28,6 @@ export class ProfileView extends View<IProfileViewProps> {
     private authenticated: boolean;
     private authHandler: (e) => void;
 
-    private player: PlayerComponent;
     private sidebar: Sidebar;
     private topbar: Topbar;
     private profileform: ProfileForm;
@@ -56,7 +54,6 @@ export class ProfileView extends View<IProfileViewProps> {
                 avatar: user.getProps().small_avatar,
                 offline: !navigator.onLine,
             });
-            this.player = new PlayerComponent();
             this.profileform = new ProfileForm(user.getProps());
             this.isLoaded = true;
             this.render();
@@ -246,13 +243,13 @@ export class ProfileView extends View<IProfileViewProps> {
         const fileInput = document.querySelector('input[name="file"]');
         fileInput.addEventListener('change', this.uploadAvatarFile.bind(this));
 
-        document.querySelectorAll('img').forEach(function (img) {
+        document.querySelectorAll('img').forEach(function(img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function (img) {
+        document.querySelectorAll('img').forEach(function(img) {
             img.removeEventListener('error', disableBrokenImg);
         });
         this.isLoaded = false;
