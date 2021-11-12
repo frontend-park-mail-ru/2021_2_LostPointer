@@ -26,11 +26,16 @@ export class Homepage extends Component<IHomepageProps> {
     private top_albums: AlbumModel[];
     private suggested_artists: ArtistModel[];
     private track_list: TrackModel[];
-    private firstTimePlayed = true;
+    private firstTimePlayed: boolean;
 
     constructor() {
         super();
+        this.firstTimePlayed = true;
         this.addListeners();
+    }
+
+    reset() {
+        this.firstTimePlayed = true;
     }
 
     render() {

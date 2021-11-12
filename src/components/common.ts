@@ -18,7 +18,12 @@ const playButtonHandler = function (e) {
             );
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
+            const prevView = store.get('playingView');
+            if (prevView) {
+                prevView.reset();
+            }
             this.firstTimePlayed = false;
+            store.set('playingView', this);
         }
         if (e.target === store.get('nowPlaying')) {
             // Ставим на паузу/продолжаем воспр.

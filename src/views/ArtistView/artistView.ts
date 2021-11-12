@@ -19,17 +19,21 @@ interface IArtistViewProps {
 }
 
 export class ArtistView extends View<IArtistViewProps> {
-    private authenticated: boolean;
-
     private sidebar: Sidebar;
     private topbar: Topbar;
     private artist: ArtistModel;
     private trackList: TrackList;
     private albumList: SuggestedAlbums;
+    private firstTimePlayed: boolean;
 
     constructor(props?: IArtistViewProps) {
         super(props);
+        this.firstTimePlayed = true;
         this.isLoaded = false;
+    }
+
+    reset() {
+        this.firstTimePlayed = true;
     }
 
     didMount() {
