@@ -26,6 +26,7 @@ const playButtonHandler = function (e) {
             store.set('playingView', this);
         }
         if (e.target === store.get('nowPlaying')) {
+            PlayerComponent.toggle();
             // Ставим на паузу/продолжаем воспр.
             return;
         }

@@ -33,14 +33,16 @@ export class IndexView extends View<IIndexViewProps> {
     didMount() {
         this.topbar = TopbarComponent;
         this.sidebar = new Sidebar().render();
-
         this.homepage = new Homepage();
-        this.homepage.getData().then(() => {
-            this.homepageTemplate = this.homepage.render();
-            this.isLoaded = true;
-            this.render();
+
+        return new Promise((resolve) => {
+            this.homepage.getData().then(() => {
+                this.homepageTemplate = this.homepage.render();
+                this.isLoaded = true;
+                this.authenticated = store.get('authenticated');
+                resolve(true);
+            });
         });
-        this.authenticated = store.get('authenticated');
     }
 
     addListeners() {
@@ -55,13 +57,13 @@ export class IndexView extends View<IIndexViewProps> {
             .forEach((e) =>
                 e.addEventListener('click', this.playButtonHandler)
             );
-        document.querySelectorAll('img').forEach(function(img) {
+        document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function(img) {
+        document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
         // document
@@ -89,9 +91,29 @@ export class IndexView extends View<IIndexViewProps> {
 
     render() {
         if (!this.isLoaded && !this.renderedOnce) {
-            this.didMount();
-            return;
+            this.didMount().then(() => {
+                console.log('inserting into app');
+                document.getElementById('app').innerHTML = IndexTemplate({
+                    topbar: this.topbar
+                        .set({
+                            authenticated: store.get('authenticated'),
+                            avatar: store.get('userAvatar'),
+                            offline: !navigator.onLine,
+                        })
+                        .render(),
+                    sidebar: this.sidebar,
+                    content: this.homepageTemplate,
+                    player: Player.render(),
+                });
+
+                this.addListeners();
+                Player.setup(document.querySelectorAll('.track-list-item'));
+                Player.init();
+                bus.emit('home-rendered');
+                this.renderedOnce = true;
+            });
         }
+
         if (this.renderedOnce) {
             document.getElementById('content').innerHTML =
                 this.homepageTemplate;
@@ -99,27 +121,6 @@ export class IndexView extends View<IIndexViewProps> {
             bus.emit('home-rendered');
             return;
         }
-
-        document.getElementById('app').innerHTML = IndexTemplate({
-            topbar: this.topbar
-                .set({
-                    authenticated: store.get('authenticated'),
-                    avatar: store.get('userAvatar'),
-                    offline: !navigator.onLine,
-                })
-                .render(),
-            sidebar: this.sidebar,
-            content: this.homepageTemplate,
-            player: Player.render(),
-        });
-
-        this.addListeners();
-        this.homepage.addListeners();
-
-        Player.setup(document.querySelectorAll('.track-list-item'));
-        Player.init();
-        bus.emit('home-rendered');
-        this.renderedOnce = true;
     }
 }
 
