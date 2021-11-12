@@ -115,6 +115,10 @@ export class ProfileView extends View<IProfileViewProps> {
                     msg.classList.remove('fail');
                     (<HTMLElement>msg).innerText = 'Changed successfully';
                     msg.classList.add('success', 'visible');
+                    UserModel.auth().then((authData) => {
+                        store.set('userAvatar', authData.avatar);
+                        store.set('authenticated', authData.authenticated);
+                    });
                 } else {
                     msg.classList.remove('success');
                     (<HTMLElement>msg).innerText = body.message;
