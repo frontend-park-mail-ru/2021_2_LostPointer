@@ -1,11 +1,13 @@
 .topbar {
   justify-content: space-between;
+  align-items: center;
   display: flex;
   width: 100%;
   margin: 25px 10px;
 
   &__search {
     opacity: 60%;
+    height: 100%;
     display: flex;
     align-items: center;
     background-color: #191919;
@@ -40,19 +42,12 @@
   &__alert {
     display: flex;
     align-items: center;
+    justify-content: center;
     background-color: #ff4d5b;
-    width: 15%;
+    width: 35px;
+    height: 35px;
     border-radius: 50px;
     opacity: 60%;
-
-    &-message {
-      color: white;
-      display: table;
-      margin: 0 auto;
-      font-size: 20px;
-      font-style: normal;
-      font-family: Montserrat, sans-serif;
-    }
   }
 
   &-icons {
@@ -104,4 +99,40 @@
     padding: 8px;
     height: 45px;
   }
+}
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip::before,
+.tooltip::after {
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.tooltip::before {
+  background: #ff4d5b;
+  border-radius: 50px;
+  color: #ffffff;
+  content: attr(data-title);
+  font-family: Montserrat, sans-serif;
+  font-size: 14px;
+  padding: 6px 10px;
+  top: 40px;
+  white-space: nowrap;
+}
+
+.tooltip.fade::after,
+.tooltip.fade::before {
+  transform: translate3d(0, -10px, 0);
+  transition: all 0.15s ease-in-out;
+}
+
+.tooltip.fade:hover::after,
+.tooltip.fade:hover::before {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
 }
