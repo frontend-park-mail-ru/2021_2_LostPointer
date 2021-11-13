@@ -115,6 +115,10 @@ export class ProfileView extends View<IProfileViewProps> {
                     msg.classList.remove('fail');
                     (<HTMLElement>msg).innerText = 'Changed successfully';
                     msg.classList.add('success', 'visible');
+                    UserModel.auth().then((authData) => {
+                        store.set('userAvatar', authData.avatar);
+                        store.set('authenticated', authData.authenticated);
+                    });
                 } else {
                     msg.classList.remove('success');
                     (<HTMLElement>msg).innerText = body.message;
@@ -270,10 +274,6 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     render() {
-        if (!navigator.onLine) {
-            router.go(routerStore.dashboard);
-            return;
-        }
         if (!this.isLoaded) {
             this.didMount();
             return;

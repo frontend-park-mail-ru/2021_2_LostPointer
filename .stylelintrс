@@ -19,7 +19,7 @@
         "declaration-no-important": true,
         "declaration-colon-space-before": "never",
         "declaration-colon-space-after": "always-single-line",
-        "property-no-vendor-prefix": true,
+        "property-no-vendor-prefix": false,
         "value-no-vendor-prefix": true,
         "function-url-quotes": "always",
         "comment-whitespace-inside": "always",
@@ -31,6 +31,9 @@
         "media-feature-range-operator-space-after": "never",
         "media-feature-parentheses-space-inside": "never",
         "media-feature-colon-space-before": "never",
-        "media-feature-colon-space-after": "always"
+        "media-feature-colon-space-after": "always",
+        "alpha-value-notation": false,
+        "color-function-notation": false,
+        "property-no-unknown": false,
     }
 }
