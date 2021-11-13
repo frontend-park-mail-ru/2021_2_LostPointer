@@ -19,7 +19,7 @@
         "declaration-no-important": true,
         "declaration-colon-space-before": "never",
         "declaration-colon-space-after": "always-single-line",
-        "property-no-vendor-prefix": true,
+        "property-no-vendor-prefix": false,
         "value-no-vendor-prefix": true,
         "function-url-quotes": "always",
         "comment-whitespace-inside": "always",
@@ -34,5 +34,6 @@
         "media-feature-colon-space-after": "always",
         "alpha-value-notation": false,
         "color-function-notation": false,
+        "property-no-unknown": false,
     }
 }
