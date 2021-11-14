@@ -1,12 +1,12 @@
-import {View} from 'views/View/view';
+import { View } from 'views/View/view';
 import Request from 'services/request/request';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import {Topbar} from 'components/Topbar/topbar';
-import {PlayerComponent} from 'components/Player/player';
-import {Sidebar} from 'components/Sidebar/sidebar';
-import {ICustomInput} from 'interfaces/CustomInput';
-import {CustomValidation, isValidForm} from 'services/validation/validation';
+import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
+import player, { PlayerComponent } from 'components/Player/player';
+import { Sidebar } from 'components/Sidebar/sidebar';
+import { ICustomInput } from 'interfaces/CustomInput';
+import { CustomValidation, isValidForm } from 'services/validation/validation';
 import {
     confirmPasswordValidityChecks,
     emailValidityChecks,
@@ -14,11 +14,13 @@ import {
     passwordValidityChecks,
     simplePasswordValidityChecks,
 } from 'services/validation/validityChecks';
-import {ProfileForm} from 'components/ProfileForm/profileForm';
-import {UserModel} from 'models/user';
+import { ProfileForm } from 'components/ProfileForm/profileForm';
+import { UserModel } from 'models/user';
 
 import ProfileTemplate from './profileView.hbs';
 import './profileView.scss';
+import disableBrokenImg from 'views/utils';
+import store from 'services/store/store';
 
 interface IProfileViewProps {
     authenticated: boolean;
@@ -26,7 +28,7 @@ interface IProfileViewProps {
 
 export class ProfileView extends View<IProfileViewProps> {
     private authenticated: boolean;
-    private authHandler: (e) => void;
+    private playButtonHandler: (e) => void;
 
     private player: PlayerComponent;
     private sidebar: Sidebar;
@@ -38,32 +40,27 @@ export class ProfileView extends View<IProfileViewProps> {
     constructor(props?: IProfileViewProps) {
         super(props);
         this.isLoaded = false;
-        this.addHandlers();
     }
 
     didMount() {
-        UserModel.auth()
-            .then((authResponse) => {
-            this.authenticated = authResponse.authenticated;
-            if (!this.authenticated) {
-                router.go(routerStore.signin);
-                return;
-            }
-            this.userAvatar = authResponse.avatar;
+        this.authenticated = store.get('authenticated');
+        if (!this.authenticated) {
+            router.go(routerStore.signin);
+            return;
+        }
+        this.userAvatar = store.get('userAvatar');
 
-            UserModel.getSettings()
-                .then((user) => {
-                    this.user = user;
-                    this.sidebar = new Sidebar();
-                    this.topbar = new Topbar({
-                        authenticated: this.authenticated,
-                        avatar: user.getProps().small_avatar,
-                    })
-                    this.player = new PlayerComponent();
-                    this.profileform = new ProfileForm(user.getProps());
-                    this.isLoaded = true;
-                    this.render();
-                })
+        UserModel.getSettings().then((user) => {
+            this.user = user;
+            this.sidebar = new Sidebar();
+            this.topbar = new Topbar({
+                authenticated: this.authenticated,
+                avatar: user.getProps().small_avatar,
+                offline: navigator.onLine !== true,
+            });
+            this.profileform = new ProfileForm(user.getProps());
+            this.isLoaded = true;
+            this.render();
         });
     }
 
@@ -78,14 +75,23 @@ export class ProfileView extends View<IProfileViewProps> {
         const formdata = new FormData();
         formdata.append('avatar', file, file.name);
 
-        const ext = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase();
-        if (ext === 'gif' || ext === 'png' || ext === 'jpeg' || ext === 'jpg' || ext === 'webp') {
+        const ext = file.name
+            .substring(file.name.lastIndexOf('.') + 1)
+            .toLowerCase();
+        if (
+            ext === 'gif' ||
+            ext === 'png' ||
+            ext === 'jpeg' ||
+            ext === 'jpg' ||
+            ext === 'webp'
+        ) {
             const reader = new FileReader();
             reader.addEventListener('load', (e) => {
                 e.preventDefault();
                 const avatar = document.querySelector('.profile-avatar__img');
                 if (typeof e.target.result === 'string') {
                     avatar.setAttribute('src', e.target.result);
+                    (<HTMLElement>avatar).style.display = 'block';
                     readFile = e.target.result;
                 }
             });
@@ -97,14 +103,22 @@ export class ProfileView extends View<IProfileViewProps> {
             return;
         }
 
-        this.user.updateSettings(formdata)
+        this.user
+            .updateSettings(formdata)
             .then((body) => {
                 if (body.status === 200) {
-                    const smallAvatar = document.querySelector('.topbar-profile');
+                    const smallAvatar = document.querySelector(
+                        '.topbar-profile__img'
+                    );
                     smallAvatar.setAttribute('src', readFile);
+                    (<HTMLElement>smallAvatar).style.display = 'block';
                     msg.classList.remove('fail');
                     (<HTMLElement>msg).innerText = 'Changed successfully';
                     msg.classList.add('success', 'visible');
+                    UserModel.auth().then((authData) => {
+                        store.set('userAvatar', authData.avatar);
+                        store.set('authenticated', authData.authenticated);
+                    });
                 } else {
                     msg.classList.remove('success');
                     (<HTMLElement>msg).innerText = body.message;
@@ -121,40 +135,54 @@ export class ProfileView extends View<IProfileViewProps> {
     submitChangeProfileForm(event) {
         event.preventDefault();
 
-        const nicknameInput = event.target.querySelector('input[name="nickname"]');
+        const nicknameInput = event.target.querySelector(
+            'input[name="nickname"]'
+        );
         const emailInput = event.target.querySelector('input[name="email"]');
-        const oldPasswordInput = event.target.querySelector('input[name="old_password"]');
-        const passwordInput = event.target.querySelector('input[name="password"]');
-        const confirmPasswordInput = event.target.querySelector('input[name="confirm_password"]');
-        const invalidities = document.querySelector('.profile-form__invalidities');
+        const oldPasswordInput = event.target.querySelector(
+            'input[name="old_password"]'
+        );
+        const passwordInput = event.target.querySelector(
+            'input[name="password"]'
+        );
+        const confirmPasswordInput = event.target.querySelector(
+            'input[name="confirm_password"]'
+        );
+        const invalidities = document.querySelector(
+            '.profile-form__invalidities'
+        );
         const msg = event.target.querySelector('.profile-form__msg');
         invalidities.innerHTML = '';
         msg.innerHTML = '';
 
         let requiredInputsNumber = 2;
-        if (oldPasswordInput.value !== ''
-            || passwordInput.value !== ''
-            || confirmPasswordInput.value !== '') {
-            (<ICustomInput>oldPasswordInput).CustomValidation = new CustomValidation(
-                simplePasswordValidityChecks,
-                invalidities,
-            );
-            (<ICustomInput>passwordInput).CustomValidation = new CustomValidation(
-                passwordValidityChecks,
-                invalidities,
-            );
-            (<ICustomInput>confirmPasswordInput).CustomValidation = new CustomValidation(
-                confirmPasswordValidityChecks,
-                invalidities,
-            );
+        if (
+            oldPasswordInput.value !== '' ||
+            passwordInput.value !== '' ||
+            confirmPasswordInput.value !== ''
+        ) {
+            (<ICustomInput>oldPasswordInput).CustomValidation =
+                new CustomValidation(
+                    simplePasswordValidityChecks,
+                    invalidities
+                );
+            (<ICustomInput>passwordInput).CustomValidation =
+                new CustomValidation(passwordValidityChecks, invalidities);
+            (<ICustomInput>confirmPasswordInput).CustomValidation =
+                new CustomValidation(
+                    confirmPasswordValidityChecks,
+                    invalidities
+                );
             requiredInputsNumber = 5;
         } else {
             delete oldPasswordInput.CustomValidation;
             delete passwordInput.CustomValidation;
             delete confirmPasswordInput.CustomValidation;
             const userSettings = this.user.getProps();
-            if (userSettings.nickname == nicknameInput.value
-                && userSettings.email == emailInput.value) {
+            if (
+                userSettings.nickname == nicknameInput.value &&
+                userSettings.email == emailInput.value
+            ) {
                 return;
             }
         }
@@ -173,7 +201,8 @@ export class ProfileView extends View<IProfileViewProps> {
             formdata.append('new_password', passwordInput.value);
         }
 
-        this.user.updateSettings(formdata)
+        this.user
+            .updateSettings(formdata)
             .then((body) => {
                 if (body.status === 200) {
                     msg.classList.remove('fail');
@@ -193,46 +222,55 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     addListeners() {
-        document.addEventListener('click', this.authHandler);
+        if (this.authenticated) {
+            document
+                .querySelector('.js-logout')
+                .addEventListener('click', this.userLogout);
+        }
 
         const form = document.querySelector('.profile-form');
         const nicknameInput = form.querySelector('input[name="nickname"]');
         const emailInput = form.querySelector('input[name="email"]');
-        const invalidities = document.querySelector('.profile-form__invalidities');
+        const invalidities = document.querySelector(
+            '.profile-form__invalidities'
+        );
 
         (<ICustomInput>nicknameInput).CustomValidation = new CustomValidation(
             nameValidityChecks,
-            invalidities,
+            invalidities
         );
         (<ICustomInput>emailInput).CustomValidation = new CustomValidation(
             emailValidityChecks,
-            invalidities);
+            invalidities
+        );
 
-        form.addEventListener('submit', this.submitChangeProfileForm.bind(this));
+        form.addEventListener(
+            'submit',
+            this.submitChangeProfileForm.bind(this)
+        );
         const fileInput = document.querySelector('input[name="file"]');
         fileInput.addEventListener('change', this.uploadAvatarFile.bind(this));
+
+        document.querySelectorAll('img').forEach(function (img) {
+            img.addEventListener('error', disableBrokenImg);
+        });
     }
 
     unmount() {
+        document.querySelectorAll('img').forEach(function (img) {
+            img.removeEventListener('error', disableBrokenImg);
+        });
         this.isLoaded = false;
     }
 
-    addHandlers() {
-        this.authHandler = (e) => {
-            if (
-                e.target.className === 'topbar-auth' &&
-                e.target.dataset.action === 'logout'
-            ) {
-                Request.post('/user/logout').then(() => {
-                    this.player.stop();
-                    this.authenticated = false;
-                    this.props.authenticated = false;
-                    this.player.clear();
-                    window.localStorage.removeItem('lastPlayedData');
-                    this.topbar.logout();
-                });
-            }
-        };
+    userLogout() {
+        Request.post('/user/logout').then(() => {
+            this.authenticated = false;
+            store.set('authenticated', false);
+            window.localStorage.removeItem('lastPlayedData');
+            TopbarComponent.logout();
+            router.go(routerStore.dashboard);
+        });
     }
 
     render() {
@@ -246,13 +284,50 @@ export class ProfileView extends View<IProfileViewProps> {
                 .set({
                     authenticated: this.authenticated,
                     avatar: this.userAvatar,
+                    offline: navigator.onLine !== true,
                 })
                 .render(),
             sidebar: this.sidebar.render(),
             profileform: this.profileform.render(),
-            player: this.player.render(),
+            player: player.render(),
         });
         this.addListeners();
+
+        this.playButtonHandler = (e) => {
+            if (e.target.className === 'track-list-item-play') {
+                if (!this.authenticated) {
+                    router.go(routerStore.signin);
+                    return;
+                }
+                if (e.target === player.nowPlaying) {
+                    // Ставим на паузу/продолжаем воспр.
+                    player.toggle();
+                    return;
+                }
+                if (player.nowPlaying) {
+                    // Переключили на другой трек
+                    player.nowPlaying.dataset.playing = 'false';
+                    player.nowPlaying.src = '/static/img/play-outline.svg';
+                }
+
+                player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
+
+                e.target.dataset.playing = 'true';
+                player.setTrack({
+                    url: `/static/tracks/${e.target.dataset.url}`,
+                    cover: `/static/artworks/${e.target.dataset.cover}`,
+                    title: e.target.dataset.title,
+                    artist: e.target.dataset.artist,
+                    album: e.target.dataset.album,
+                });
+            }
+        };
+        player.setup(document.querySelectorAll('.track-list-item'));
+        document
+            .querySelectorAll('.track-list-item-play')
+            .forEach((e) =>
+                e.addEventListener('click', this.playButtonHandler)
+            );
     }
 }
 

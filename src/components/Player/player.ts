@@ -1,6 +1,9 @@
 import { Component } from 'components/Component/component';
 
+import Request from 'services/request/request';
+
 import PlayerTemplate from './player.hbs';
+import './player.scss';
 
 interface IPlayerComponentProps {
     recovered: boolean;
@@ -46,6 +49,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private playlistIndices: number[];
     private mute: HTMLImageElement;
     private shuffle: boolean;
+    private counted: boolean;
 
     constructor(props?: IPlayerComponentProps) {
         super(props);
@@ -121,6 +125,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
     setTrack(track): void {
         this.audio.pause();
+        this.counted = false;
         this.audio.src = track.url;
         this.props = {
             cover: track.cover,
@@ -233,15 +238,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
     removeEventListeners() {
         this.audio.removeEventListener('timeupdate', this.timeUpdateHandler);
-        document
-            .querySelector('.repeat')
-            .removeEventListener('click', this.buttonsHandler);
-        document
-            .querySelector('.shuffle')
-            .removeEventListener('click', this.buttonsHandler);
-        document
-            .querySelector('.mute')
-            .removeEventListener('click', this.buttonsHandler);
+        const repeat = document.querySelector('.repeat');
+        repeat.removeEventListener('click', this.buttonsHandler);
+        const shuffle = document.querySelector('.shuffle');
+        shuffle.removeEventListener('click', this.buttonsHandler);
+        const mute = document.querySelector('.mute');
+        mute.removeEventListener('click', this.buttonsHandler);
         window.removeEventListener('resize', this.resizeHandler);
         document
             .querySelector('.player__seekbar')
@@ -367,6 +369,18 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.props.playing = !this.props.playing;
         };
         this.timeUpdateHandler = () => {
+            if (
+                this.nowPlaying &&
+                this.audio.currentTime / this.audio.duration > 0.35 &&
+                !this.counted
+            ) {
+                Request.post(
+                    '/inc_listencount',
+                    JSON.stringify({ id: parseInt(this.nowPlaying.dataset.id) })
+                ).then(() => {
+                    this.counted = true;
+                });
+            }
             const seconds = this.audio.currentTime % 60 | 0;
             const zero = seconds < 10 ? '0' : '';
             this.seekbarCurrent.style.width = `${
@@ -421,13 +435,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             if (this.pos < this.playlist.length - 1) {
                 this.nowPlaying = this.playlist[
                     this.playlistIndices[++this.pos]
-                    ].querySelector('.track-list-item-play'); //TODO=Сделать плейлист компонентом + потом отрисовывать
+                ].querySelector('.track-list-item-play'); //TODO=Сделать плейлист компонентом + потом отрисовывать
                 allowed = true;
             }
         } else if (this.pos >= 1) {
             this.nowPlaying = this.playlist[
                 this.playlistIndices[--this.pos]
-                ].querySelector('.track-list-item-play');
+            ].querySelector('.track-list-item-play');
             allowed = true;
         }
         if (allowed) {
@@ -444,18 +458,26 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     update() {
-        document.getElementById('artist-name').innerHTML =
-            this.props.artist || '';
-        document.getElementById('track-name').innerHTML =
-            this.props.track || '';
-        document.getElementById('player-time-total').innerHTML =
-            this.props.total_time || '';
+        const artist = document.getElementById('artist-name');
+        if (artist) {
+            artist.innerHTML = this.props.artist || '';
+        }
+        const track = document.getElementById('track-name');
+        if (track) {
+            track.innerHTML = this.props.track || '';
+        }
+        const totalTime = document.getElementById('player-time-total');
+        if (totalTime) {
+            totalTime.innerHTML = this.props.total_time || '';
+        }
         const artwork = <HTMLImageElement>(
             document.getElementById('player-artwork')
         );
         if (this.props.hide_artwork) {
-            artwork.classList.add('hidden');
-            return;
+            if (artwork) {
+                artwork.classList.add('hidden');
+                return;
+            }
         }
         artwork.src = `${this.props.cover}_128px.webp`;
     }
@@ -463,8 +485,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     stop() {
         this.audio.pause();
         this.audio.src = null;
-        (<HTMLImageElement>document.querySelector('.player-play')).src =
-            '/static/img/play.svg'; //TODO=Почему хэндлер паузы это не отрабатывает - большой вопрос
+        const playButton = <HTMLImageElement>(
+            document.querySelector('.player-play')
+        );
+        if (playButton) {
+            playButton.src = '/static/img/play.svg'; //TODO=Почему хэндлер паузы это не отрабатывает - большой вопрос
+        }
         if (this.nowPlaying) {
             this.nowPlaying.src = '/static/img/play-outline.svg';
         }

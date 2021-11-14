@@ -1,0 +1,21 @@
+.suggested-playlists {
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
+
+  &__header {
+    color: white;
+    font-family: Montserrat, sans-serif;
+    font-weight: 700;
+    width: max-content;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    padding: 12px 0 0;
+    width: 100%;
+    height: 100%;
+  }
+}

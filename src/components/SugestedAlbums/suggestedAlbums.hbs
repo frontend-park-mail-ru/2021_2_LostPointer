@@ -1,0 +1,14 @@
+<div class='suggested-albums'>
+    <div class='suggested-albums__header'>Suggested Albums</div>
+    <div class='suggested-albums__container'>
+        {{#each albums}}
+            <div class='suggested-album'>
+                <img
+                        alt
+                        class='suggested-album__img'
+                        src='/static/artworks/{{props.artwork}}_128px.webp'
+                />
+            </div>
+        {{/each}}
+    </div>
+</div>

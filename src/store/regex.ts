@@ -8,3 +8,4 @@ export const LETTER = /[a-zA-Z]/g
 export const LOWERCASE_LETTER = /[a-z]/g
 export const UPPERCASE_LETTER = /[A-Z]/g
 export const SPECIAL_CHARACTER = /[@ !"#$%&'()*+,\-./:;<=>?[\\\]^_]/g
+

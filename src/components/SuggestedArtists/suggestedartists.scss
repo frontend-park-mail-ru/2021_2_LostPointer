@@ -1,0 +1,55 @@
+.suggested-artists {
+  width: 215px;
+
+  &__container {
+    padding-top: 12px;
+  }
+
+  &__header {
+    color: white;
+    font-family: Montserrat, sans-serif;
+    font-weight: 700;
+    width: max-content;
+  }
+}
+
+.suggested-artist {
+  width: 105px;
+  height: 105px;
+  object-fit: cover;
+  cursor: pointer;
+  background: linear-gradient(180deg, rgba(30 30 30 / 50%) 0%, rgba(30 30 30 / 80%) 100%);
+  display: inline-block;
+
+  &:nth-child(1),
+  &:nth-child(1) img {
+    border-radius: 20px 10px 10px;
+  }
+
+  &:nth-child(2),
+  &:nth-child(2) img {
+    border-radius: 10px 20px 10px 10px;
+  }
+
+  &:nth-child(3),
+  &:nth-child(3) img {
+    border-radius: 10px 10px 10px 20px;
+  }
+
+  &:nth-child(4),
+  &:nth-child(4) img {
+    border-radius: 10px 10px 20px;
+  }
+
+  &__img {
+    width: 105px;
+    height: 105px;
+  }
+}
+
+.artist {
+
+  &-name {
+    font-weight: 400;
+  }
+}

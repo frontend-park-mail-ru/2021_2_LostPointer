@@ -1,8 +1,9 @@
-import {Component} from 'components/Component/component';
-import {ProfileInputForm} from 'components/ProfileInputForm/profileInputForm';
+import { Component } from 'components/Component/component';
+import { ProfileInputForm } from 'components/ProfileInputForm/profileInputForm';
 import { InputFormComponent } from 'components/InputForm/inputform';
 
 import ProfileFormTemplate from './profileForm.hbs';
+import './profileForm.scss';
 
 interface IProfileFormProps {
     title: string;
@@ -12,7 +13,7 @@ interface IProfileFormProps {
 }
 
 export class ProfileForm extends Component<IProfileFormProps> {
-    private readonly data: IProfileFormProps
+    private readonly data: IProfileFormProps;
 
     constructor(props) {
         super(props);

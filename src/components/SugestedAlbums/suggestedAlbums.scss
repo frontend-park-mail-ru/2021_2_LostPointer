@@ -1,0 +1,31 @@
+.suggested-albums {
+  width: 380px;
+
+  &__container {
+    margin-top: 12px;
+  }
+
+  &__header {
+    color: white;
+    font-family: Montserrat, sans-serif;
+    font-weight: 700;
+    width: max-content;
+  }
+}
+
+.suggested-album {
+  width: 105px;
+  height: 105px;
+  object-fit: cover;
+  cursor: pointer;
+  background: linear-gradient(180deg, rgba(30 30 30 / 50%) 0%, rgba(30 30 30 / 80%) 100%);
+  border-radius: 20px;
+  margin: 10px 0 10px 10px;
+  display: inline-block;
+
+  &__img {
+    width: 105px;
+    height: 105px;
+    border-radius: 20px;
+  }
+}
