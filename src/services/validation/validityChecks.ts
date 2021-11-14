@@ -25,7 +25,7 @@ export const nameValidityChecks = [
         'Name needs to be at least 3 characters',
         (input) => input.value.length < 3,
     ),
-    new ValidityCheck('Name allows only letters and numbers', (input) => {
+    new ValidityCheck('Name allows only letters and numbers and \'_\'', (input) => {
         const illegalCharacters = input.value.match(NAME);
         return !illegalCharacters;
     }),
