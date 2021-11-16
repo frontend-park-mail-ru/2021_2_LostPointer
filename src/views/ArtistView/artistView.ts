@@ -137,7 +137,7 @@ export class ArtistView extends View<IArtistViewProps> {
         this.addListeners();
 
         this.playButtonHandler = (e) => {
-            if (e.target.className === 'track-list-item-play') {
+            if (e.target.className === 'track-play') {
                 if (!this.authenticated) {
                     router.go(routerStore.signin);
                     return;
@@ -165,9 +165,9 @@ export class ArtistView extends View<IArtistViewProps> {
                 });
             }
         };
-        player.setup(document.querySelectorAll('.track-list-item'));
+        player.setup(document.querySelectorAll('.track'));
         document
-            .querySelectorAll('.track-list-item-play')
+            .querySelectorAll('.track-play')
             .forEach((e) =>
                 e.addEventListener('click', this.playButtonHandler)
             );

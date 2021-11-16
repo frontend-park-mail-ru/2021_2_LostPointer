@@ -1,24 +1,22 @@
-<div class='track-list-item'>
-    <div class='track-list-item__artwork'>
+<div class='track'>
+    <div class='track__artwork'>
         <img
             alt
-            class='track-list-item__artwork__img'
+            class='track__artwork__img'
             src='/static/artworks/{{album.props.artwork}}_128px.webp'
         />
     </div>
-    <div class='track-list-item__container'>
-        <div class='track-list-item__container__name'>{{title}}</div>
+    <div class='track__container'>
+        <div class='track__container__name'>{{title}}</div>
         <a href='/artist/{{artist.props.id}}'>
-            <div
-                class='track-list-item__container__artist'
-            >{{artist.props.name}}</div>
+            <div class='track__container__artist'>{{artist.props.name}}</div>
         </a>
     </div>
-    <div class='track-list-item__ellipsis'>
-        <img alt class='track-list-item-fav' src='/static/img/favorite.svg' />
+    <div class='track__ellipsis'>
+        <img alt class='track-fav' src='/static/img/favorite.svg' />
         <img
             alt
-            class='track-list-item-play'
+            class='track-play'
             data-id='{{id}}'
             data-title='{{title}}'
             data-artist='{{artist.props.name}}'

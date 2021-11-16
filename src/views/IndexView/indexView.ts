@@ -115,7 +115,7 @@ export class IndexView extends View<IIndexViewProps> {
         }
 
         this.playButtonHandler = (e) => {
-            if (e.target.className === 'track-list-item-play') {
+            if (e.target.className === 'track-play') {
                 if (!this.authenticated) {
                     router.go(routerStore.signin);
                     return;
@@ -143,9 +143,9 @@ export class IndexView extends View<IIndexViewProps> {
                 });
             }
         };
-        player.setup(document.querySelectorAll('.track-list-item'));
+        player.setup(document.querySelectorAll('.track'));
         document
-            .querySelectorAll('.track-list-item-play')
+            .querySelectorAll('.track-play')
             .forEach((e) =>
                 e.addEventListener('click', this.playButtonHandler)
             );
@@ -159,7 +159,7 @@ export class IndexView extends View<IIndexViewProps> {
             img.removeEventListener('error', disableBrokenImg);
         });
         document
-            .querySelectorAll('.track-list-item-play')
+            .querySelectorAll('.track-play')
             .forEach((e) =>
                 e.removeEventListener('click', this.playButtonHandler)
             );

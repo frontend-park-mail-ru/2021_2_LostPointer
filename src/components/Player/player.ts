@@ -428,20 +428,20 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         const prev =
             this.nowPlaying ||
             this.playlist[this.playlistIndices[this.pos]].querySelector(
-                '.track-list-item-play'
+                '.track-play'
             );
         let allowed = false;
         if (next) {
             if (this.pos < this.playlist.length - 1) {
                 this.nowPlaying = this.playlist[
                     this.playlistIndices[++this.pos]
-                ].querySelector('.track-list-item-play'); //TODO=Сделать плейлист компонентом + потом отрисовывать
+                    ].querySelector('.track-play'); //TODO=Сделать плейлист компонентом + потом отрисовывать
                 allowed = true;
             }
         } else if (this.pos >= 1) {
             this.nowPlaying = this.playlist[
                 this.playlistIndices[--this.pos]
-            ].querySelector('.track-list-item-play');
+                ].querySelector('.track-play');
             allowed = true;
         }
         if (allowed) {
