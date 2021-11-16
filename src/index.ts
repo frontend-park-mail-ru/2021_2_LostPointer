@@ -4,6 +4,7 @@ import routerStore from 'services/router/routerStore';
 import IndexView from 'views/IndexView/indexView';
 import SigninView from 'views/SigninView/signinView';
 import SignupView from 'views/SignupView/signupView';
+import PlaylistView from 'views/PlaylistView/playlistView';
 import ProfileView from 'views/ProfileView/profileView';
 import ArtistView from 'views/ArtistView/artistView';
 
@@ -63,9 +64,10 @@ class App {
     initRoutes() {
         router
             .register(routerStore.artist, ArtistView)
+            .register(routerStore.playlist, PlaylistView)
+            .register(routerStore.profile, ProfileView)
             .register(routerStore.signin, SigninView)
             .register(routerStore.signup, SignupView)
-            .register(routerStore.profile, ProfileView)
             .register(routerStore.dashboard, IndexView)
             .start();
     }

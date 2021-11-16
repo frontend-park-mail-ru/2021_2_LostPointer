@@ -25,7 +25,7 @@ class Router {
 
     _pathToRegex(path: string): RegExp {
         return new RegExp(
-            `^${path.replace(PATH_SLASH, '\\/').replace(PATH_ARG, '(.+)')}$`
+            `^${path.replace(PATH_SLASH, '\\/').replace(PATH_ARG, '(.+)')}`
         );
     }
 
