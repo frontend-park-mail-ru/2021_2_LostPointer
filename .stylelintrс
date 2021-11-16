@@ -32,8 +32,8 @@
         "media-feature-parentheses-space-inside": "never",
         "media-feature-colon-space-before": "never",
         "media-feature-colon-space-after": "always",
-        "alpha-value-notation": false,
         "color-function-notation": false,
         "property-no-unknown": false,
+        "no-eol-whitespace": false,
     }
 }

@@ -14,6 +14,7 @@ import routerStore from 'services/router/routerStore';
 import router from 'services/router/router';
 import { View } from 'views/View/view';
 import disableBrokenImg from 'views/utils';
+import mobile from 'components/Mobile/mobile';
 
 import store from 'services/store/store';
 
@@ -204,6 +205,7 @@ export class IndexView extends View<IIndexViewProps> {
             track_list: this.track_list,
             suggested_playlists: this.suggested_playlists,
             player: player.render(),
+            mobile: mobile.render(),
         });
 
         this.addListeners();

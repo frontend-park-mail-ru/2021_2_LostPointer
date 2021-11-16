@@ -51,6 +51,10 @@
   }
 
   &-icons {
+    @media only screen and (max-width: 768px) {
+      display: none;
+    }
+
     padding: 5px 10px;
     height: 40px;
     width: 225px;
@@ -69,6 +73,10 @@
   }
 
   &-profile {
+    @media only screen and (max-width: 768px) {
+      display: none;
+    }
+    
     cursor: pointer;
     margin-right: 40px;
     margin-top: 2px;
@@ -108,7 +116,7 @@
 .tooltip::before,
 .tooltip::after {
   display: block;
-  opacity: 0;
+  opacity: 0%;
   pointer-events: none;
   position: absolute;
 }
@@ -133,6 +141,6 @@
 
 .tooltip.fade:hover::after,
 .tooltip.fade:hover::before {
-  opacity: 1;
+  opacity: 10%;
   transform: translate3d(0, 0, 0);
 }
