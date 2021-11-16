@@ -3,10 +3,46 @@
     <div class='main-layout'>
         {{{topbar}}}
         <div class='main-layout__content'>
-            <div class="playlist">
-                <div class="playlist__description">{{{title}}}</div>
-                <div class="playlist__content">
+            <div class='playlist'>
+                <div class='playlist__description'>
+                    <div class='playlist__description-avatar'></div>
+                    <div class='playlist__description-title'>{{{title}}}</div>
+                </div>
+                <div class='playlist__content'>
                     {{{trackList}}}
+                </div>
+            </div>
+            <div class='editwindow'>
+                <div class='editwindow__content'>
+                    <form class='editwindow__avatar' action='#' novalidate>
+                        <div class='editwindow__avatar-block'>
+                            <img class='editwindow__avatar-img' src='broken' />
+                        </div>
+                        <input
+                            type='file'
+                            name='file'
+                            id='file'
+                            accept='image/png, image/jpg, image/webp'
+                            class='editwindow__avatar-input'
+                        />
+                        <label for='file' class='editwindow__avatar-input-btn'>Upload file</label>
+                    </form>
+                    <form class='editwindow__form' action='#' novalidate>
+                        <div class='editwindow__form-title'>
+                            Information changing
+                        </div>
+                        {{#each inputs}}
+                            {{{this}}}
+                        {{/each}}
+                        <div class='editwindow__form-buttons'>
+                            <input
+                                class='editwindow__form-submit'
+                                type='image'
+                                src='/static/img/save.svg'
+                            />
+                        </div>
+                        <div class='editwindow__form-msg form__fail_msg'></div>
+                    </form>
                 </div>
             </div>
         </div>

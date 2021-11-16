@@ -12,6 +12,7 @@ import player from 'components/Player/player';
 
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
+import { InputFormComponent } from 'components/InputForm/inputform';
 
 interface IPlaylistViewProps {
     authenticated: boolean;
@@ -26,6 +27,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     private userAvatar: string;
     private playlist: PlaylistModel;
     private trackList: TrackList;
+    private inputs: Array<string>;
 
     constructor(props?: IPlaylistViewProps) {
         super(props);
@@ -58,9 +60,30 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                 title: 'Tracks',
                 tracks: props.tracks,
             }).render();
+            this.inputs = [
+                new InputFormComponent({
+                    class: 'editwindow__form-input',
+                    name: 'title',
+                    type: 'text',
+                    placeholder: 'Title',
+                    value: props.title,
+                }).render(),
+            ]
             this.isLoaded = true;
             this.render();
         });
+    }
+
+    displayEditWindow(event) {
+        const playlistEditWindow = document.querySelector('.editwindow');
+        (<HTMLElement>playlistEditWindow).style.display = 'block';
+        event.stopPropagation();
+    }
+    removeEditWindow(event) {
+        const playlistEditWindow = document.querySelector('.editwindow');
+        if (event.target == playlistEditWindow) {
+            (<HTMLElement>playlistEditWindow).style.display = 'none';
+        }
     }
 
     addListeners() {
@@ -69,6 +92,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                 .querySelector('.js-logout')
                 .addEventListener('click', this.userLogout);
         }
+
+        const playlistAvatar = document.querySelector('.playlist__description-avatar');
+        playlistAvatar.addEventListener('click', this.displayEditWindow);
+        window.addEventListener('click', this.removeEditWindow);
 
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
@@ -79,6 +106,9 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
+        window.removeEventListener('click', this.removeEditWindow);
+        const playlistAvatar = document.querySelector('.playlist__description-avatar');
+        playlistAvatar.removeEventListener('click', this.displayEditWindow);
         this.isLoaded = false;
     }
 
@@ -111,6 +141,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             sidebar: this.sidebar,
             trackList: this.trackList,
             player: player.render(),
+            inputs: this.inputs,
         });
         this.addListeners();
 

@@ -29,10 +29,141 @@
   }
 
   &__description {
-    font-size: 80px;
-    font-family: Montserrat, sans-serif;
-    font-weight: 700;
-    margin: 100px 0 80px;
+    display: flex;
+    align-items: center;
+
+    &-title {
+      font-size: 80px;
+      font-family: Montserrat, sans-serif;
+      font-weight: 700;
+      margin: 80px 20px;
+      display: inline-block;
+    }
+
+    &-avatar {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      margin: 10px;
+      background: linear-gradient(180deg, rgba(30, 30, 30, 0.5) 0%, rgba(30, 30, 30, 0.8) 100%);
+      border-radius: 20px;
+      display: inline-block;
+    }
+  }
+}
+
+.editwindow {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+
+  &__content {
+    background-color: #191919;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 20px;
+    width: 510px;
+    display: flex;
+  }
+
+  &__avatar {
+    display: block;
+
+    &-block {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      margin: 10px;
+      background: linear-gradient(180deg, rgba(30, 30, 30, 0.5) 0%, rgba(30, 30, 30, 0.8) 100%);
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    &-input {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0%;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+    }
+
+    &-input-btn {
+      color: #ffffff;
+      padding-left: 10px;
+      line-height: 40px;
+      width: 100px;
+      margin: 5px auto;
+      display: block;
+      border-radius: 10px;
+      border: 2px solid #3d3d3d;
+      font-family: Montserrat, sans-serif;
+      font-size: 16px;
+      cursor: pointer;
+
+      &:hover,
+      &:focus {
+        border-color: #cd0138;
+      }
+    }
+  }
+
+  &__form {
+    display: inline-block;
+    float: left;
+    color: white;
+
+    &-title {
+      font-size: 20px;
+      font-family: Montserrat, sans-serif;
+      font-weight: 700;
+      margin: 10px 30px;
+    }
+
+    &-input {
+      color: white;
+      width: 255px;
+      height: 50px;
+      border-radius: 10px;
+      border: 2px solid #3d3d3d;
+      background-color: #3d3d3d;
+      font-family: Montserrat, sans-serif;
+      font-size: 16px;
+      padding-left: 10px;
+      margin: 10px;
+
+      &:focus {
+        outline: none;
+        border-color: #cd0138;
+      }
+    }
+
+    &-buttons {
+      padding: 10px;
+      margin: 5px auto;
+    }
+
+    &-submit {
+      transition: 0.5s;
+      height: 45px;
+      border-radius: 10px;
+      font-family: Montserrat, sans-serif;
+      font-weight: 200;
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+
+      &:hover {
+        transition: 0.5s ease-in-out;
+      }
+    }
   }
 }
 
