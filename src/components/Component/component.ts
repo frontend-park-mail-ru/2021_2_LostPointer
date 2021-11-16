@@ -5,5 +5,5 @@ export abstract class Component<TProps> {
         this.props = { ...props };
     }
 
-    abstract render(): void;
+    abstract render(): void; //TODO=поменять на string
 }

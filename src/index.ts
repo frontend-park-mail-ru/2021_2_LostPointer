@@ -11,6 +11,7 @@ import store from 'services/store/store';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './static/css/fonts.css';
+import 'lostpointer-storybook/dist/uikit.css';
 
 class App {
     start() {
