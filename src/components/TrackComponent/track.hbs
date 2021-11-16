@@ -6,10 +6,12 @@
             src='/static/artworks/{{album.props.artwork}}_128px.webp'
         />
     </div>
-    <div class='track-list-item__name-container'>
-        <div class='track-list-item__name'>{{title}}</div>
+    <div class='track-list-item__container'>
+        <div class='track-list-item__container__name'>{{title}}</div>
         <a href='/artist/{{artist.props.id}}'>
-            <div class='track-list-item__artist'>{{artist.props.name}}</div>
+            <div
+                class='track-list-item__container__artist'
+            >{{artist.props.name}}</div>
         </a>
     </div>
     <div class='track-list-item__ellipsis'>

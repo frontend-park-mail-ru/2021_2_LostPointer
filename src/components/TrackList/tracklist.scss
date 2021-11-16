@@ -9,15 +9,10 @@
   &-item {
     display: flex;
     align-items: center;
-    width: 100%;
+    width: 92%;
     height: 60px;
-    margin: 25px;
-
-    @media only screen and (max-width: 768px) {
-      margin: 5px;
-    }
-
-    font-family: Montserrat, sans-serif;
+    padding: 15px 15px 0;
+    font-family: var(--font);
     color: white;
     overflow: hidden;
 
@@ -34,35 +29,36 @@
       }
     }
 
-    &__name-container {
+    &__container {
+      margin-left: 0;
       padding: 10px;
       display: flex;
       flex-direction: column;
-    }
+      width: 65%;
 
-    &__artist {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      vertical-align: bottom;
-      width: 290px;
-      font-weight: 600;
-      cursor: pointer;
+      &__artist {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: bottom;
+        font-weight: 600;
+        cursor: pointer;
+        width: 35vw;
 
-      &:hover {
-        text-decoration: underline;
+        &:hover {
+          text-decoration: underline;
+        }
       }
-    }
 
-    &__name {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      vertical-align: bottom;
-      width: 290px;
+      &__name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: bottom;
 
-      @media only screen and (max-width: 768px) {
-        width: 30vw;
+        @media only screen and (max-width: 768px) {
+          width: 30vw;
+        }
       }
     }
 
@@ -77,6 +73,8 @@
     }
 
     &__ellipsis {
+      margin-right: 0;
+      margin-left: auto;
       display: flex;
       border: 1px rgb(65 66 63) solid;
       border-radius: 50px;
