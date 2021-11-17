@@ -1,0 +1,27 @@
+.menu {
+  width: 300px;
+  background: rgb(30, 30, 30);
+  position: absolute;
+  display: none;
+  z-index: 1;
+  border-radius: 10px;
+
+  &-options {
+    list-style: none;
+    padding: 0;
+
+    .menu-option {
+      font-weight: 500;
+      color: #ffffff;
+      font-family: Montserrat, sans-serif;
+      font-size: 16px;
+      padding: 10px;
+      cursor: pointer;
+
+      &:hover {
+        background: rgb(20, 20, 20);
+        border-radius: 10px;
+      }
+    }
+  }
+}

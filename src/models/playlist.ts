@@ -129,4 +129,38 @@ export class PlaylistModel extends Model<IPlaylistModel> {
             }
         });
     }
+
+    static getUserPlaylists(): Promise<Array<PlaylistModel>> {
+        return new Promise<Array<PlaylistModel>>((res) => {
+            const response = JSON.parse(hardcoded_playlist);
+            if (response) {
+                const tracks: Array<TrackModel> = response.reduce(
+                    (acc, elem, index) => {
+                        elem.pos = index;
+                        const artist = new ArtistModel(elem.artist);
+                        const album = new AlbumModel(elem.album);
+                        elem.album = album;
+                        elem.artist = artist;
+                        acc.push(new TrackModel(elem));
+                        return acc;
+                    },
+                    []
+                );
+                res([
+                    new PlaylistModel({
+                        id: 123,
+                        title: 'test playlist 1',
+                        tracks: tracks,
+                        avatar: '/static/playlists/default_playlist_artwork_384px.webp',
+                    }),
+                    new PlaylistModel({
+                        id: 124,
+                        title: 'test playlist 2',
+                        tracks: tracks,
+                        avatar: '/static/playlists/default_playlist_artwork_384px.webp',
+                    }),
+                    ]);
+            }
+        });
+    }
 }

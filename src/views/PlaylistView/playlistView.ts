@@ -13,6 +13,7 @@ import player from 'components/Player/player';
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
 import { InputFormComponent } from 'components/InputForm/inputform';
+import { ContextMenu } from 'components/ContextMenu/contextMenu';
 
 interface IPlaylistViewProps {
     authenticated: boolean;
@@ -26,8 +27,12 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     private topbar: Topbar;
     private userAvatar: string;
     private playlist: PlaylistModel;
+    private userPlaylists: Array<PlaylistModel>;
     private trackList: TrackList;
     private inputs: Array<string>;
+    private contextMenu: ContextMenu;
+    private menuVisible: boolean;
+    private renderedMenu: HTMLElement;
 
     constructor(props?: IPlaylistViewProps) {
         super(props);
@@ -52,7 +57,11 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             this.playlist = playlist;
         });
 
-        Promise.all([playlist]).then(() => {
+        const userPlaylists = PlaylistModel.getUserPlaylists().then((playlists) => {
+            this.userPlaylists = playlists;
+        });
+
+        Promise.all([playlist, userPlaylists]).then(() => {
             this.topbar = TopbarComponent;
             this.sidebar = new Sidebar().render();
             const props = this.playlist.getProps();
@@ -69,6 +78,23 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                     value: props.title,
                 }).render(),
             ]
+            this.contextMenu = new ContextMenu({
+                options: [
+                    {
+                        class: 'js-playlist-create',
+                        value: 'Добавить в новый плейлист',
+                    },
+                    {
+                        class: 'js-playlist-track-remove',
+                        value: 'Удалить из текущего плейлиста',
+                    },
+                ].concat(this.userPlaylists.map((playlist) => {
+                    return {
+                        class: `js-playlist-track-add-${playlist.getProps().id}`,
+                        value: playlist.getProps().title,
+                    }
+                })),
+            });
             this.isLoaded = true;
             this.render();
         });
@@ -96,6 +122,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         const playlistAvatar = document.querySelector('.playlist__description-avatar');
         playlistAvatar.addEventListener('click', this.displayEditWindow);
         window.addEventListener('click', this.removeEditWindow);
+        window.addEventListener('click', this.hideContextMenu.bind(this));
+        document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
+            element.addEventListener('click', this.showContextMenu.bind(this));
+        })
 
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
@@ -106,6 +136,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
+        document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
+            element.removeEventListener('click', this.showContextMenu.bind(this));
+        })
+        window.removeEventListener('click', this.hideContextMenu.bind(this));
         window.removeEventListener('click', this.removeEditWindow);
         const playlistAvatar = document.querySelector('.playlist__description-avatar');
         playlistAvatar.removeEventListener('click', this.displayEditWindow);
@@ -121,6 +155,32 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             window.localStorage.removeItem('lastPlayedData');
             TopbarComponent.logout();
         });
+    }
+
+    toggleMenu(command) {
+        this.renderedMenu.style.display = command === 'show' ? 'block' : 'none';
+        this.menuVisible = !this.menuVisible;
+    }
+
+    setPosition({top, left}) {
+        this.renderedMenu.style.left = `${left}px`;
+        this.renderedMenu.style.top = `${top}px`;
+        this.toggleMenu('show');
+    }
+
+    hideContextMenu() {
+        if (this.menuVisible) {
+            this.toggleMenu('hide');
+        }
+    }
+
+    showContextMenu(event) {
+        const origin = {
+            left: event.pageX,
+            top: event.pageY
+        };
+        this.setPosition(origin);
+        event.stopPropagation();
     }
 
     render(): void {
@@ -142,8 +202,11 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             sidebar: this.sidebar,
             trackList: this.trackList,
             player: player.render(),
+            contextMenu: this.contextMenu.render(),
             inputs: this.inputs,
         });
+        this.renderedMenu = document.querySelector('.menu');
+        this.menuVisible = false;
         this.addListeners();
 
         this.playButtonHandler = (e) => {
