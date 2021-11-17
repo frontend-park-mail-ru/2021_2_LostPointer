@@ -153,6 +153,14 @@
         height: var(--mobile-player-seekbar-height);
         background-color: var(--player-seekbar-background);
         border-radius: var(--mobile-player-seekbar-radius);
+
+        &__elapsed {
+          position: absolute;
+          border-radius: var(--mobile-player-seekbar-radius);
+          height: var(--mobile-player-seekbar-height);
+          width: 50%;
+          background-color: var(--accent-color);
+        }
       }
 
       &__time {
