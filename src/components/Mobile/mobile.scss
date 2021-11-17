@@ -107,7 +107,7 @@
     }
 
     &__artwork {
-      margin: 8.5vh 0;
+      margin: 10vh 0;
       filter: drop-shadow(rgba(0, 0, 0, 30%) 0px 0px 1px) drop-shadow(rgba(0, 0, 0, 30%) 0px 0px 10px);
       max-width: 435px;
       max-height: 435px;
@@ -118,7 +118,7 @@
     &__controls {
       display: flex;
       justify-content: space-between;
-      width: 50vw;
+      width: 55vw;
 
       &__play {
         width: 75px;
@@ -132,6 +132,7 @@
       flex-direction: column;
       font-family: var(--font);
       width: -webkit-fill-available;
+      margin-bottom: 15px;
 
       &__artist {
         font-size: var(--artist-font-size);
@@ -161,6 +162,14 @@
         display: flex;
         font-family: var(--font);
       }
+    }
+
+    &__actions {
+      display: flex;
+      justify-content: space-between;
+      width: -webkit-fill-available;
+      color: var(--font-color);
+      font-size: var(--mobile-footer-icon-size);
     }
 
     &__hidden {
