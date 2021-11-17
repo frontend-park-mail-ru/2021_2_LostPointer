@@ -9,6 +9,13 @@
             <div class='mobile-player__now-playing__title'>Каждый раз</div>
             <div class='mobile-player__now-playing__artist'>Монеточка</div>
         </div>
+        <div class='mobile-player__progress'>
+            <div class='mobile-player__progress__bar'></div>
+            <div class='mobile-player__progress__time'>
+                <div class='mobile-player__progress__time__elapsed'>0:00</div>
+                <div class='mobile-player__progress__time__remaining'>3:59</div>
+            </div>
+        </div>
         <div class="mobile-player__controls">
             <img alt src="/static/img/skip.svg" id="player-skip-left"
                  class="player-skip-left{{# if left_disabled }} disabled{{/if}}">
@@ -17,6 +24,7 @@
             <img alt src="/static/img/skip.svg" id="player-skip-right"
                  class="player-skip-right{{# if right_disabled }} disabled{{/if}}">
         </div>
+        <div class='mobile-player__actions'></div>
     </div>
 </aside>
 <div class='mobile-footer'>

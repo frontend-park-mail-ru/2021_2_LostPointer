@@ -35,5 +35,6 @@
         "color-function-notation": false,
         "property-no-unknown": false,
         "no-eol-whitespace": false,
+        "length-zero-no-unit": false,
     }
 }

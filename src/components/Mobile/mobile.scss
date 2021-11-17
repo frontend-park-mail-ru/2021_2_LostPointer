@@ -7,9 +7,12 @@
   --chevron-hide-color: white;
   --chevron-hide-size: 25px;
   --player-hide-duration: 450ms;
-  --track-font-size: 30px;
+  --mobile-track-font-size: 30px;
+  --mobile-track-font-weight: 600;
   --artist-font-size: 20px;
   --mobile-footer-icon-size: 25px;
+  --mobile-player-seekbar-height: 4px;
+  --mobile-player-seekbar-radius: 2px;
 }
 
 .mobile {
@@ -104,6 +107,8 @@
     }
 
     &__artwork {
+      margin: 8.5vh 0;
+      filter: drop-shadow(rgba(0, 0, 0, 30%) 0px 0px 1px) drop-shadow(rgba(0, 0, 0, 30%) 0px 0px 10px);
       max-width: 435px;
       max-height: 435px;
       width: -webkit-fill-available;
@@ -121,11 +126,6 @@
       }
     }
 
-    &__hidden {
-      transition: ease-in-out var(--player-hide-duration);
-      top: 100vh;
-    }
-
     &__now-playing {
       display: flex;
       color: var(--font-color);
@@ -138,22 +138,34 @@
       }
 
       &__title {
-        font-size: var(--track-font-size);
+        font-weight: var(--mobile-track-font-weight);
+        font-size: var(--mobile-track-font-size);
       }
     }
 
-    &__topbar {
-      padding: 25px;
-      width: 75%;
-      color: var(--font-color);
-      font-weight: 400;
+    &__progress {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      width: -webkit-fill-available;
 
-      &__artist {
-        font-family: var(--font);
-        font-weight: 400;
+      &__bar {
+        height: var(--mobile-player-seekbar-height);
+        background-color: var(--player-seekbar-background);
+        border-radius: var(--mobile-player-seekbar-radius);
       }
+
+      &__time {
+        margin-top: 5px;
+        color: var(--font-color);
+        justify-content: space-between;
+        display: flex;
+        font-family: var(--font);
+      }
+    }
+
+    &__hidden {
+      transition: ease-in-out var(--player-hide-duration);
+      top: 100vh;
     }
   }
 }
