@@ -13,6 +13,7 @@ import disableBrokenImg from 'views/utils';
 import ArtistTemplate from './artistView.hbs';
 import './artistView.scss';
 import store from 'services/store/store';
+import mobile from 'components/Mobile/mobile';
 
 interface IArtistViewProps {
     authenticated: boolean;
@@ -133,6 +134,7 @@ export class ArtistView extends View<IArtistViewProps> {
             albumList: this.albumList,
             trackList: this.trackList,
             player: player.render(),
+            mobile: mobile.render(),
         });
         this.addListeners();
 

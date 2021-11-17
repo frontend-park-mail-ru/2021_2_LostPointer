@@ -113,6 +113,18 @@ export class IndexView extends View<IIndexViewProps> {
                 .querySelector('.js-logout')
                 .addEventListener('click', this.userLogout);
         }
+        const playerElement: HTMLElement =
+            document.querySelector('.mobile-player');
+        document
+            .querySelector('.mobile-player__close')
+            .addEventListener('click', () => {
+                playerElement.classList.add('mobile-player__hidden');
+            });
+        document
+            .querySelector('.mobile-footer__player')
+            .addEventListener('click', () => {
+                playerElement.classList.remove('mobile-player__hidden');
+            });
 
         this.playButtonHandler = (e) => {
             if (e.target.className === 'track-play') {

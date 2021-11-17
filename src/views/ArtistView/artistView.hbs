@@ -3,15 +3,24 @@
     <div class='main-layout'>
         {{{topbar}}}
         <div class='main-layout__content'>
-            <div class="artist__background-container" style="background: url({{{artistAvatar}}});">
-                <div class="overlay"></div>
+            <div
+                class='artist__background-container'
+                style='background: url({{{artistAvatar}}});'
+            >
+                <div class='overlay'></div>
                 {{#if video}}
-                    <video class="artist__background-video" autoplay="" muted="" src="{{{video}}}" poster="{{{artistAvatar}}}"></video>
+                    <video
+                        class='artist__background-video'
+                        autoplay=''
+                        muted=''
+                        src='{{{video}}}'
+                        poster='{{{artistAvatar}}}'
+                    ></video>
                 {{/if}}
             </div>
-            <div class="artist">
-                <div class="artist__description">{{{name}}}</div>
-                <div class="artist__content">
+            <div class='artist'>
+                <div class='artist__description'>{{{name}}}</div>
+                <div class='artist__content'>
                     {{{albumList}}}
                     {{{trackList}}}
                 </div>
@@ -20,3 +29,4 @@
     </div>
 </div>
 {{{player}}}
+{{{mobile}}}

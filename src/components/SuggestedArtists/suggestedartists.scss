@@ -1,17 +1,12 @@
 .suggested-artists {
-  width: 215px;
+  @media screen and (min-width: 768px) {
+    width: 215px;
+  }
 
   &__container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     padding-top: 12px;
-
-    @media screen and (max-width: 768px) {
-      display: flex;
-      width: 97vw;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
   }
 
   &__header {
@@ -28,7 +23,7 @@
   display: inline-block;
 
   & img {
-    border-radius: 55px;
+    border-radius: 20px;
   }
 
   @media screen and (min-width: 768px) {
@@ -55,8 +50,10 @@
   }
 
   &__img {
-    width: 105px;
-    height: 105px;
+    @media screen and (min-width: 768px) {
+      width: 105px;
+      height: 105px;
+    }
   }
 }
 
