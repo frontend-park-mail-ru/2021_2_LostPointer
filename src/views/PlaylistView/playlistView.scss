@@ -48,6 +48,13 @@
       background: linear-gradient(180deg, rgba(30, 30, 30, 0.5) 0%, rgba(30, 30, 30, 0.8) 100%);
       border-radius: 20px;
       display: inline-block;
+      cursor: pointer;
+    }
+
+    &-img {
+      width: 200px;
+      height: 200px;
+      border-radius: 20px;
     }
   }
 }
@@ -83,6 +90,12 @@
       background: linear-gradient(180deg, rgba(30, 30, 30, 0.5) 0%, rgba(30, 30, 30, 0.8) 100%);
       border-radius: 20px;
       display: inline-block;
+    }
+
+    &-img {
+      width: 200px;
+      height: 200px;
+      border-radius: 20px;
     }
 
     &-input {
@@ -173,5 +186,5 @@
 
 .playlist__content .track-list-item__name,
 .playlist__content .track-list-item__artist {
-  width: 400px;
+  width: 360px;
 }

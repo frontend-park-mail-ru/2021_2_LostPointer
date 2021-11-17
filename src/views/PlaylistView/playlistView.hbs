@@ -5,7 +5,9 @@
         <div class='main-layout__content'>
             <div class='playlist'>
                 <div class='playlist__description'>
-                    <div class='playlist__description-avatar'></div>
+                    <div class='playlist__description-avatar'>
+                        <img class='playlist__description-img' src='{{{avatar}}}' />
+                    </div>
                     <div class='playlist__description-title'>{{{title}}}</div>
                 </div>
                 <div class='playlist__content'>
@@ -16,7 +18,7 @@
                 <div class='editwindow__content'>
                     <form class='editwindow__avatar' action='#' novalidate>
                         <div class='editwindow__avatar-block'>
-                            <img class='editwindow__avatar-img' src='broken' />
+                            <img class='editwindow__avatar-img' src='{{{avatar}}}' />
                         </div>
                         <input
                             type='file'

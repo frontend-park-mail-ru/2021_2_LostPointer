@@ -96,6 +96,7 @@ export interface IPlaylistModel {
     id: number;
     title: string;
     tracks: Array<TrackModel>;
+    avatar: string,
 }
 
 export class PlaylistModel extends Model<IPlaylistModel> {
@@ -123,6 +124,7 @@ export class PlaylistModel extends Model<IPlaylistModel> {
                     id: parseInt(playlistId),
                     title: 'test playlist',
                     tracks: tracks,
+                    avatar: '/static/playlists/default_playlist_artwork_384px.webp',
                 }))
             }
         });
