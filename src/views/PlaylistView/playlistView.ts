@@ -158,8 +158,9 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     toggleMenu(command) {
-        this.renderedMenu.style.display = command === 'show' ? 'block' : 'none';
-        this.menuVisible = !this.menuVisible;
+        this.renderedMenu.style.visibility = command === 'show' ? 'visible' : 'hidden';
+        this.renderedMenu.style.opacity = command === 'show' ? '1' : '0';
+        this.menuVisible = command === 'show';
     }
 
     setPosition({top, left}) {

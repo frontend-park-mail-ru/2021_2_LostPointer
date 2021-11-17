@@ -2,9 +2,11 @@
   width: 300px;
   background: rgb(30, 30, 30);
   position: absolute;
-  display: none;
   z-index: 1;
   border-radius: 10px;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.2s linear;
 
   &-options {
     list-style: none;
