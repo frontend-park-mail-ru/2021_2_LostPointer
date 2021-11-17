@@ -115,15 +115,20 @@ export class IndexView extends View<IIndexViewProps> {
         }
         const playerElement: HTMLElement =
             document.querySelector('.mobile-player');
+        const mobileFooter: HTMLElement = document.querySelector(
+            '.mobile-footer__menu'
+        );
         document
             .querySelector('.mobile-player__close')
             .addEventListener('click', () => {
                 playerElement.classList.add('mobile-player__hidden');
+                mobileFooter.classList.remove('mobile-footer__menu__hidden');
             });
         document
             .querySelector('.mobile-footer__player')
             .addEventListener('click', () => {
                 playerElement.classList.remove('mobile-player__hidden');
+                mobileFooter.classList.add('mobile-footer__menu__hidden');
             });
 
         this.playButtonHandler = (e) => {

@@ -60,11 +60,16 @@
       }
 
       &__menu {
+        position: relative;
+        transition: ease-in-out var(--player-hide-duration);
         display: flex;
         justify-content: space-around;
         align-items: center;
         height: calc(var(--mobile-footer-height) / 2);
         font-size: var(--mobile-footer-icon-size);
+        z-index: 10;
+        background-color: var(--background-color);
+        top: 0vh;
 
         &__item {
           display: flex;
@@ -76,6 +81,12 @@
             align-content: center;
             vertical-align: center;
           }
+        }
+
+        &__hidden {
+          position: relative;
+          transition: ease-in-out var(--player-hide-duration);
+          top: 100vh;
         }
       }
     }
@@ -107,7 +118,7 @@
     }
 
     &__artwork {
-      margin: 10vh 0;
+      margin: 5vh 0;
       filter: drop-shadow(rgba(0, 0, 0, 30%) 0px 0px 1px) drop-shadow(rgba(0, 0, 0, 30%) 0px 0px 10px);
       max-width: 435px;
       max-height: 435px;
