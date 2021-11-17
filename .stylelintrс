@@ -20,7 +20,7 @@
         "declaration-colon-space-before": "never",
         "declaration-colon-space-after": "always-single-line",
         "property-no-vendor-prefix": false,
-        "value-no-vendor-prefix": true,
+        "value-no-vendor-prefix": false,
         "function-url-quotes": "always",
         "comment-whitespace-inside": "always",
         "comment-empty-line-before": "always",

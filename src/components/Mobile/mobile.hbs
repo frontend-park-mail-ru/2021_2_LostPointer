@@ -1,16 +1,22 @@
 <aside class='mobile-player'>
-    <i class='mobile-player__close fas fa-chevron-down'></i>
-    <img
-        class='mobile-player__artwork'
-        src='https://lostpointer.site/static/artworks/e8d30900-e884-469d-817b-a6d1f89dba13_384px.webp'
-    />
-    <div class="mobile-player__controls">
-        <img alt src="/static/img/skip.svg" id="player-skip-left"
-             class="player-skip-left{{# if left_disabled }} disabled{{/if}}">
-        <img alt src="/static/img/{{# if playing}}pause.svg{{ else }}play.svg{{/if}}"
-             class="mobile-player__controls__play player-play">
-        <img alt src="/static/img/skip.svg" id="player-skip-right"
-             class="player-skip-right{{# if right_disabled }} disabled{{/if}}">
+    <div class='mobile-player__container'>
+        <i class='mobile-player__close fas fa-chevron-down'></i>
+        <img
+            class='mobile-player__artwork'
+            src='https://lostpointer.site/static/artworks/e8d30900-e884-469d-817b-a6d1f89dba13_384px.webp'
+        />
+        <div class='mobile-player__now-playing'>
+            <div class='mobile-player__now-playing__title'>Каждый раз</div>
+            <div class='mobile-player__now-playing__artist'>Монеточка</div>
+        </div>
+        <div class="mobile-player__controls">
+            <img alt src="/static/img/skip.svg" id="player-skip-left"
+                 class="player-skip-left{{# if left_disabled }} disabled{{/if}}">
+            <img alt src="/static/img/{{# if playing}}pause.svg{{ else }}play.svg{{/if}}"
+                 class="mobile-player__controls__play player-play">
+            <img alt src="/static/img/skip.svg" id="player-skip-right"
+                 class="player-skip-right{{# if right_disabled }} disabled{{/if}}">
+        </div>
     </div>
 </aside>
 <div class='mobile-footer'>

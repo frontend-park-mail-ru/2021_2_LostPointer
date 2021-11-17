@@ -7,6 +7,9 @@
   --chevron-hide-color: white;
   --chevron-hide-size: 25px;
   --player-hide-duration: 450ms;
+  --track-font-size: 30px;
+  --artist-font-size: 20px;
+  --mobile-footer-icon-size: 25px;
 }
 
 .mobile {
@@ -20,7 +23,7 @@
       display: flex;
       flex-direction: column;
       margin-top: auto;
-      height: 80px;
+      height: var(--mobile-footer-height);
       width: 100%;
       background: var(--background-color);
 
@@ -28,7 +31,11 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
-        height: 50px;
+        height: calc(var(--mobile-footer-height) / 2);
+
+        &__container {
+          margin: 5px;
+        }
 
         &__progress {
           height: 2px;
@@ -52,6 +59,9 @@
       &__menu {
         display: flex;
         justify-content: space-around;
+        align-items: center;
+        height: calc(var(--mobile-footer-height) / 2);
+        font-size: var(--mobile-footer-icon-size);
 
         &__item {
           display: flex;
@@ -70,10 +80,6 @@
 
   &-player {
     transition: ease-in-out var(--player-hide-duration);
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: space-between;
     height: 100%;
     width: 100%;
     position: fixed;
@@ -81,6 +87,28 @@
     left: 0;
     z-index: 6;
     background: linear-gradient(#7c2c1b, #000000);
+
+    &__container {
+      height: -webkit-fill-available;
+      margin: 25px;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    &__close {
+      display: flex;
+      color: var(--chevron-hide-color);
+      font-size: var(--chevron-hide-size);
+    }
+
+    &__artwork {
+      max-width: 435px;
+      max-height: 435px;
+      width: -webkit-fill-available;
+      height: auto;
+    }
 
     &__controls {
       display: flex;
@@ -95,19 +123,23 @@
 
     &__hidden {
       transition: ease-in-out var(--player-hide-duration);
-      top: 1000px;
+      top: 100vh;
     }
 
-    &__artwork {
-      width: 80vw;
-      height: 80vw;
-    }
-
-    &__close {
+    &__now-playing {
       display: flex;
-      padding: 25px;
-      color: var(--chevron-hide-color);
-      font-size: var(--chevron-hide-size);
+      color: var(--font-color);
+      flex-direction: column;
+      font-family: var(--font);
+      width: -webkit-fill-available;
+
+      &__artist {
+        font-size: var(--artist-font-size);
+      }
+
+      &__title {
+        font-size: var(--track-font-size);
+      }
     }
 
     &__topbar {
