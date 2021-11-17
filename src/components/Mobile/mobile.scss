@@ -6,13 +6,14 @@
   --icon-size: 20px;
   --chevron-hide-color: white;
   --chevron-hide-size: 25px;
-  --player-hide-duration: 450ms;
+  --player-hide-duration: 350ms;
   --mobile-track-font-size: 30px;
   --mobile-track-font-weight: 600;
   --artist-font-size: 20px;
   --mobile-footer-icon-size: 25px;
   --mobile-player-seekbar-height: 4px;
   --mobile-player-seekbar-radius: 2px;
+  --mobile-player-artwork-max-width: 435px;
 }
 
 .mobile {
@@ -120,16 +121,14 @@
     &__artwork {
       margin: 5vh 0;
       filter: drop-shadow(rgba(0, 0, 0, 30%) 0px 0px 1px) drop-shadow(rgba(0, 0, 0, 30%) 0px 0px 10px);
-      max-width: 435px;
-      max-height: 435px;
-      width: -webkit-fill-available;
-      height: auto;
+      width: 100%;
+      max-width: var(--mobile-player-artwork-max-width);
     }
 
     &__controls {
       display: flex;
       justify-content: space-between;
-      width: 55vw;
+      width: 60vw;
 
       &__play {
         width: 75px;
