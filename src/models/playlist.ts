@@ -2,6 +2,8 @@ import { Model } from 'models/model';
 import { TrackModel } from 'models/track';
 import { ArtistModel } from 'models/artist';
 import { AlbumModel } from 'models/album';
+import Request, {IResponseBody} from 'services/request/request';
+import { ContentType } from 'services/request/requestUtils';
 
 const hardcoded_playlist = "[\n" +
     "    {\n" +
@@ -162,5 +164,31 @@ export class PlaylistModel extends Model<IPlaylistModel> {
                     ]);
             }
         });
+    }
+
+    updateInformation(formdata: FormData): Promise<IResponseBody> {
+        return new Promise<IResponseBody>((res) => {
+            Request.get(
+                '/csrf',
+            )
+                .then((csrfBody) => {
+                    if (csrfBody.status === 200) {
+                        const csrfToken = csrfBody.message;
+                        Request.patch(
+                            `/playlists/${this.getProps().id}`,
+                            formdata,
+                            ContentType.FORM,
+                            {
+                                'X-CSRF-Token': csrfToken,
+                            },
+                        ).then((body) => {
+                            if (body.status === 200) {
+                                this.props.title = String(formdata.get('title'));
+                            }
+                            res(body);
+                        })
+                    }
+                })
+        })
     }
 }

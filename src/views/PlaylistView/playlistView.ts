@@ -101,15 +101,58 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     displayEditWindow(event) {
+        if (!this.authenticated) {
+            return;
+        }
         const playlistEditWindow = document.querySelector('.editwindow');
         (<HTMLElement>playlistEditWindow).style.display = 'block';
         event.stopPropagation();
     }
     removeEditWindow(event) {
+        if (!this.authenticated) {
+            return;
+        }
         const playlistEditWindow = document.querySelector('.editwindow');
         if (event.target == playlistEditWindow) {
             (<HTMLElement>playlistEditWindow).style.display = 'none';
         }
+    }
+
+    submitChangePlaylistInfoForm(event) {
+        event.preventDefault();
+
+        const titleInput = event.target.querySelector('input[name="title"]');
+        const msg = event.target.querySelector('.editwindow__form-msg');
+        msg.innerHTML = '';
+        if (!titleInput.value) {
+            msg.innerHTML = 'Invalid title';
+            msg.classList.add('fail', 'visible');
+            return;
+        }
+        const formdata = new FormData();
+        formdata.append('title', titleInput.value);
+
+        this.playlist
+            .updateInformation(formdata)
+            .then((body) => {
+                if (body.status === 200) {
+                    msg.classList.remove('fail');
+                    msg.innerText = 'Changed successfully';
+                    msg.classList.add('success', 'visible');
+                    const title = document.querySelector('.playlist__description-title');
+                    (<HTMLElement>title).innerText = this.playlist.getProps().title;
+                } else {
+                    msg.classList.remove('success');
+                    msg.innerText = body.message;
+                    msg.classList.add('fail', 'visible');
+                }
+            })
+            .catch(() => {
+                msg.classList.remove('success');
+                msg.innerText = 'Profile changing failed';
+                msg.classList.add('fail', 'visible');
+            });
+
     }
 
     addListeners() {
@@ -119,9 +162,15 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                 .addEventListener('click', this.userLogout);
         }
 
+        const form = document.querySelector('.editwindow__form');
+        form.addEventListener(
+            'submit',
+            this.submitChangePlaylistInfoForm.bind(this)
+        );
+
         const playlistAvatar = document.querySelector('.playlist__description-avatar');
-        playlistAvatar.addEventListener('click', this.displayEditWindow);
-        window.addEventListener('click', this.removeEditWindow);
+        playlistAvatar.addEventListener('click', this.displayEditWindow.bind(this));
+        window.addEventListener('click', this.removeEditWindow.bind(this));
         window.addEventListener('click', this.hideContextMenu.bind(this));
         document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
             element.addEventListener('click', this.showContextMenu.bind(this));
@@ -140,9 +189,9 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             element.removeEventListener('click', this.showContextMenu.bind(this));
         })
         window.removeEventListener('click', this.hideContextMenu.bind(this));
-        window.removeEventListener('click', this.removeEditWindow);
+        window.removeEventListener('click', this.removeEditWindow.bind(this));
         const playlistAvatar = document.querySelector('.playlist__description-avatar');
-        playlistAvatar.removeEventListener('click', this.displayEditWindow);
+        playlistAvatar.removeEventListener('click', this.displayEditWindow.bind(this));
         this.isLoaded = false;
     }
 
@@ -170,12 +219,18 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     hideContextMenu() {
+        if (!this.authenticated) {
+            return;
+        }
         if (this.menuVisible) {
             this.toggleMenu('hide');
         }
     }
 
     showContextMenu(event) {
+        if (!this.authenticated) {
+            return;
+        }
         const origin = {
             left: event.pageX,
             top: event.pageY
