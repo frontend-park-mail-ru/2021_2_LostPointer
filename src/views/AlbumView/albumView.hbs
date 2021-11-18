@@ -1,21 +1,29 @@
-<div class='app__content' style='z-index: -0; background-color: {{{color.artwork_color}}}'>
+<div class='app__content'> <!--style='z-index: -0; background-color: {{{album.artwork_color}}}'-->
     {{{sidebar}}}
     <div class='main-layout'>
         {{{topbar}}}
         <div class='main-layout__content'>
-            <div class="album__background-container" style="background: url({{{artWork}}});">
+            <div class="album__background-container" style="background: black"  >
                 <div class="overlay"
-                     style='  background: linear-gradient(to bottom, rgba(255 255 255 / 0%), {{{color.artwork_color}}}'></div>
+                     style='  background: linear-gradient(to top, rgba(255 255 255 / 0%), {{{album.artwork_color}}}'></div>
             </div>
             <div class="album">
                 <div class="album__description">
-                    {{{title}}}
-                    <div class="album__properties">
-                        {{#if tracksCount}}
-                            tracks count: {{{tracksCount}}} | tracks duration: {{{tracksDuration}}}
+                    <div class='album__description-avatar'>
+                        <img class='album__description-img' src='{{{artWork}}}'/>
+                    </div>
+                    <div class='album__description-title'>
+                        <div class="album__description-properties" style='font-size: 20px'>album</div>
+                        {{{title}}}
+                        <div class="album__description-properties">
+                            {{#if tracksCount}}
+                                <img src='{{{album}}}'/>
+                                <a href='/artist/{{album.artist.id}}'>{{album.artist.name}}</a>
+                                &#8226; {{{album.year}}} &#8226; tracks count: {{{tracksCount}}}, {{{tracksDurationMin}}} min {{{tracksDurationSec}}} sec
                             {{else}}
-                            Loading album properties...
-                        {{/if}}
+                                Loading album properties...
+                            {{/if}}
+                        </div>
                     </div>
                 </div>
                 <div class="album__content">

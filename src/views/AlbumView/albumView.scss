@@ -29,13 +29,42 @@
   }
 
   &__description {
-    font-size: 80px;
-    font-family: Montserrat, sans-serif;
-    font-weight: 700;
-    margin: 100px 0 80px;
+    display: flex;
+    align-items: center;
+
+    &-title {
+      font-size: 80px;
+      font-family: Montserrat, sans-serif;
+      font-weight: 700;
+      margin: 80px 20px;
+      display: inline-block;
+    }
+
+    &-properties {
+      font-size: 25px;
+      display: block;
+      font-weight: 500;
+    }
+
+    &-avatar {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      background: linear-gradient(180deg, rgba(30, 30, 30, 0.5) 0%, rgba(30, 30, 30, 0.8) 100%);
+      border-radius: 20px;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    &-img {
+      width: 200px;
+      height: 200px;
+      border-radius: 20px;
+    }
   }
 
   &__properties {
+    margin: 0 10px;
     font-size: 30px;
     font-family: Montserrat, sans-serif;
     font-weight: 500;
@@ -57,11 +86,10 @@
   width: 100%;
 }
 
-.artist__content .track-list {
+.album__content .track-list {
   width: 600px;
 }
 
-.artist__content .track-list-item__name,
-.artist__content .track-list-item__artist {
+.album__content .track-list-item__name {
   width: 400px;
 }

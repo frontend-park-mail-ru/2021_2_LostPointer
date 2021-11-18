@@ -123,8 +123,9 @@ export class AlbumView extends View<IAlbumViewProps> {
             trackList: this.trackList,
             player: player.render(),
             tracksCount: this.album.getProps().tracks_count,
-            tracksDuration: (this.album.getProps().tracks_duration / 60).toFixed(1),
-            color: this.album.getProps(),
+            tracksDurationMin: Math.floor((this.album.getProps().tracks_duration / 60)),
+            tracksDurationSec: Math.floor((this.album.getProps().tracks_duration % 60)),
+            album: this.album.getProps(),
         });
         this.addListeners();
 
