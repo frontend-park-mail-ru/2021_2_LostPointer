@@ -108,27 +108,22 @@ export class PlaylistModel extends Model<IPlaylistModel> {
 
     static getPlaylist(playlistId: string): Promise<PlaylistModel> | Promise<null> {
         return new Promise<PlaylistModel>((res) => {
-            const response = JSON.parse(hardcoded_playlist);
-            if (response) {
-                const tracks: Array<TrackModel> = response.reduce(
-                    (acc, elem, index) => {
-                        elem.pos = index;
-                        const artist = new ArtistModel(elem.artist);
-                        const album = new AlbumModel(elem.album);
-                        elem.album = album;
-                        elem.artist = artist;
-                        acc.push(new TrackModel(elem));
-                        return acc;
-                    },
-                    []
-                );
-                res(new PlaylistModel({
-                    id: parseInt(playlistId),
-                    title: 'test playlist',
-                    tracks: tracks,
-                    avatar: '/static/playlists/default_playlist_artwork_384px.webp',
-                }))
-            }
+            Request.get(`/playlists/${playlistId}`)
+                .then((response) => {
+                    response.tracks = response.tracks.reduce(
+                        (acc, elem, index) => {
+                            elem.pos = index;
+                            const artist = new ArtistModel(elem.artist);
+                            const album = new AlbumModel(elem.album);
+                            elem.album = album;
+                            elem.artist = artist;
+                            acc.push(new TrackModel(elem));
+                            return acc;
+                        },
+                        []
+                    );
+                    res(new PlaylistModel(response));
+                });
         });
     }
 
