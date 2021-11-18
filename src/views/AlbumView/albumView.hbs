@@ -1,0 +1,28 @@
+<div class='app__content' style='z-index: -0; background-color: {{{color.artwork_color}}}'>
+    {{{sidebar}}}
+    <div class='main-layout'>
+        {{{topbar}}}
+        <div class='main-layout__content'>
+            <div class="album__background-container" style="background: url({{{artWork}}});">
+                <div class="overlay"
+                     style='  background: linear-gradient(to bottom, rgba(255 255 255 / 0%), {{{color.artwork_color}}}'></div>
+            </div>
+            <div class="album">
+                <div class="album__description">
+                    {{{title}}}
+                    <div class="album__properties">
+                        {{#if tracksCount}}
+                            tracks count: {{{tracksCount}}} | tracks duration: {{{tracksDuration}}}
+                            {{else}}
+                            Loading album properties...
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="album__content">
+                    {{{trackList}}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{{player}}}
