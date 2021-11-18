@@ -3,9 +3,7 @@ import Request from 'services/request/request';
 import player from 'components/Player/player';
 import { Sidebar } from 'components/Sidebar/sidebar';
 import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
-import { SuggestedAlbums } from 'components/SugestedAlbums/suggestedAlbums';
 import { TrackList } from 'components/TrackList/tracklist';
-import { ArtistModel } from 'models/artist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import disableBrokenImg from 'views/utils';
@@ -26,7 +24,6 @@ export class AlbumView extends View<IAlbumViewProps> {
     private sidebar: Sidebar;
     private topbar: Topbar;
     private userAvatar: string;
-    private artist: ArtistModel;
     private album: AlbumModel;
     private trackList: TrackList;
 
