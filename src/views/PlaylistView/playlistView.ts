@@ -9,11 +9,11 @@ import store from 'services/store/store';
 import disableBrokenImg from 'views/utils';
 import Request from 'services/request/request';
 import player from 'components/Player/player';
+import { InputFormComponent } from 'components/InputForm/inputform';
+import { ContextMenu } from 'components/ContextMenu/contextMenu';
 
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
-import { InputFormComponent } from 'components/InputForm/inputform';
-import { ContextMenu } from 'components/ContextMenu/contextMenu';
 
 
 // TODO стили сообщения в окне обновления информации
@@ -127,6 +127,71 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         }
     }
 
+    uploadAvatarFile(event) {
+        event.preventDefault();
+
+        const file = event.target.files[0];
+        let readFile = null;
+        const msg = document.querySelector('.editwindow__form-msg');
+        (<HTMLElement>msg).innerText = '';
+
+        const formdata = new FormData();
+        formdata.append('title', this.playlist.getProps().title);
+        formdata.append('artwork', file, file.name);
+
+        const ext = file.name
+            .substring(file.name.lastIndexOf('.') + 1)
+            .toLowerCase();
+        if (
+            ext === 'gif' ||
+            ext === 'png' ||
+            ext === 'jpeg' ||
+            ext === 'jpg' ||
+            ext === 'webp'
+        ) {
+            const reader = new FileReader();
+            reader.addEventListener('load', (e) => {
+                e.preventDefault();
+                const avatar = document.querySelector('.editwindow__avatar-img');
+                if (typeof e.target.result === 'string') {
+                    avatar.setAttribute('src', e.target.result);
+                    (<HTMLElement>avatar).style.display = 'block';
+                    readFile = e.target.result;
+                }
+            });
+            reader.readAsDataURL(file);
+        } else {
+            msg.classList.remove('success');
+            (<HTMLElement>msg).innerText = 'Invalid file';
+            msg.classList.add('fail', 'visible');
+            return;
+        }
+
+        this.playlist
+            .updateInformation(formdata)
+            .then((body) => {
+                if (body.status === 200) {
+                    const avatar = document.querySelector(
+                        '.playlist__description-img'
+                    );
+                    avatar.setAttribute('src', readFile);
+                    (<HTMLElement>avatar).style.display = 'block';
+                    msg.classList.remove('fail');
+                    (<HTMLElement>msg).innerText = 'Changed successfully';
+                    msg.classList.add('success', 'visible');
+                } else {
+                    msg.classList.remove('success');
+                    (<HTMLElement>msg).innerText = body.message;
+                    msg.classList.add('fail', 'visible');
+                }
+            })
+            .catch(() => {
+                msg.classList.remove('success');
+                (<HTMLElement>msg).innerText = 'Artwork changing failed';
+                msg.classList.add('fail', 'visible');
+            });
+    }
+
     submitChangePlaylistInfoForm(event) {
         event.preventDefault();
 
@@ -176,6 +241,8 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             'submit',
             this.submitChangePlaylistInfoForm.bind(this)
         );
+        const fileInput = document.querySelector('input[name="file"]');
+        fileInput.addEventListener('change', this.uploadAvatarFile.bind(this));
 
         const playlistAvatar = document.querySelector('.playlist__description-avatar');
         playlistAvatar.addEventListener('click', this.displayEditWindow.bind(this));
