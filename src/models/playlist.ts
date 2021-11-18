@@ -98,7 +98,7 @@ export interface IPlaylistModel {
     id: number;
     title: string;
     tracks: Array<TrackModel>;
-    avatar: string,
+    artwork: string,
 }
 
 export class PlaylistModel extends Model<IPlaylistModel> {
@@ -150,13 +150,13 @@ export class PlaylistModel extends Model<IPlaylistModel> {
                         id: 123,
                         title: 'test playlist 1',
                         tracks: tracks,
-                        avatar: '/static/playlists/default_playlist_artwork_384px.webp',
+                        artwork: '/static/playlists/default_playlist_artwork_384px.webp',
                     }),
                     new PlaylistModel({
                         id: 124,
                         title: 'test playlist 2',
                         tracks: tracks,
-                        avatar: '/static/playlists/default_playlist_artwork_384px.webp',
+                        artwork: '/static/playlists/default_playlist_artwork_384px.webp',
                     }),
                     ]);
             }

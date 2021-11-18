@@ -324,7 +324,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
 
         document.getElementById('app').innerHTML = PlaylistTemplate({
             title: this.playlist.getProps().title,
-            avatar: this.playlist.getProps().avatar,
+            avatar: this.playlist.getProps().artwork,
             topbar: this.topbar
                 .set({
                     authenticated: this.authenticated,
