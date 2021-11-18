@@ -233,13 +233,27 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     removeTrackFromPlaylist() {
-        const playlistid = this.playlist.getProps().id;
+        const playlistId = this.playlist.getProps().id;
         const trackId = parseInt(sessionStorage.getItem('trackId_in_trackList'));
 
-        PlaylistModel.removeTrack(playlistid, trackId)
+        PlaylistModel.removeTrack(playlistId, trackId)
             .then((response) => {
                 if (response.status === 200) {
                     // TODO удаляем трек из списка
+                }
+            });
+    }
+
+    addTrackToPlaylist(event) {
+        const playlistId = parseInt(event.target.getAttribute('data-id'));
+        const trackId = parseInt(sessionStorage.getItem('trackId_in_trackList'));
+
+        PlaylistModel.addTrack(playlistId, trackId)
+            .then((response) => {
+                if (response.status === 201) {
+                    // TODO показываем уведомление
+                } else if (response.status === 400) {
+                    // TODO показываем уведомление
                 }
             });
     }
@@ -269,6 +283,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
 
         const removeTrackFromPlaylistBtn = document.querySelector('.js-playlist-track-remove');
         removeTrackFromPlaylistBtn.addEventListener('click', this.removeTrackFromPlaylist.bind(this));
+        const addTrackToPlaylistBtns = document.querySelectorAll('.js-playlist-track-add');
+        addTrackToPlaylistBtns.forEach((button) => {
+            button.addEventListener('click', this.addTrackToPlaylist.bind(this));
+        });
 
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
@@ -282,6 +300,14 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
             element.removeEventListener('click', this.showContextMenu.bind(this));
         })
+
+        const removeTrackFromPlaylistBtn = document.querySelector('.js-playlist-track-remove');
+        removeTrackFromPlaylistBtn.removeEventListener('click', this.removeTrackFromPlaylist.bind(this));
+        const addTrackToPlaylistBtns = document.querySelectorAll('.js-playlist-track-add');
+        addTrackToPlaylistBtns.forEach((button) => {
+            button.removeEventListener('click', this.addTrackToPlaylist.bind(this));
+        });
+
         window.removeEventListener('click', this.hideContextMenu.bind(this));
         window.removeEventListener('click', this.removeEditWindow.bind(this));
         const playlistAvatar = document.querySelector('.playlist__description-avatar');

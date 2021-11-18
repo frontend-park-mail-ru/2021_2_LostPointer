@@ -62,6 +62,21 @@ export class PlaylistModel extends Model<IPlaylistModel> {
         });
     }
 
+    static addTrack(playlistId: number, trackId: number): Promise<IResponseBody> {
+        return new Promise<IResponseBody>((res) => {
+            Request.post(
+                '/playlist/track',
+                JSON.stringify({
+                    playlist_id: playlistId,
+                    track_id: trackId,
+                }),
+                ContentType.JSON,
+            ).then((body) => {
+                res(body);
+            });
+        });
+    }
+
     static removeTrack(playlistId: number, trackId: number): Promise<IResponseBody> {
         return new Promise<IResponseBody>((res) => {
             Request.delete(
@@ -73,8 +88,8 @@ export class PlaylistModel extends Model<IPlaylistModel> {
                 ContentType.JSON,
             ).then((body) => {
                 res(body);
-            })
-        })
+            });
+        });
     }
 
     updateInformation(formdata: FormData): Promise<IResponseBody> {
