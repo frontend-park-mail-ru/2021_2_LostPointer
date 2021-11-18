@@ -62,12 +62,14 @@ export class Request {
     ) {
         const myHeaders = new Headers();
         if (
-            !!requestBody &&
-            (
+            !!requestBody
+                // потому что FormData сам проставляет нужный content type
+                && contentType !== ContentType.FORM
+            && (
                 RequestMethods.POST === requestMethod
                 || RequestMethods.PUT === requestMethod
                 || RequestMethods.DELETE === requestMethod
-                || RequestMethods.PATCH === requestMethod
+                || RequestMethods.PATCH
             )
         ) {
             myHeaders.append('Content-Type', contentType);

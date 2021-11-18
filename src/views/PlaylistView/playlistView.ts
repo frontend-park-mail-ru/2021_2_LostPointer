@@ -258,6 +258,23 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             });
     }
 
+    createNewPlaylist(event) {
+        const trackId = parseInt(sessionStorage.getItem('trackId_in_trackList'));
+
+        const formdata = new FormData();
+        formdata.append('title', 'New playlist');
+
+        PlaylistModel.createPlaylist(formdata)
+            .then(({id}) => {
+                PlaylistModel.addTrack(id, trackId)
+                    .then((response) => {
+                        if (response.status === 201) {
+                            router.go(`${routerStore.playlist}/${id}`);
+                        }
+                    });
+            });
+    }
+
     addListeners() {
         if (this.authenticated) {
             document
@@ -281,6 +298,8 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             element.addEventListener('click', this.showContextMenu.bind(this));
         })
 
+        const createPlaylistBtn = document.querySelector('.js-playlist-create');
+        createPlaylistBtn.addEventListener('click', this.createNewPlaylist.bind(this))
         const removeTrackFromPlaylistBtn = document.querySelector('.js-playlist-track-remove');
         removeTrackFromPlaylistBtn.addEventListener('click', this.removeTrackFromPlaylist.bind(this));
         const addTrackToPlaylistBtns = document.querySelectorAll('.js-playlist-track-add');
@@ -301,6 +320,8 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             element.removeEventListener('click', this.showContextMenu.bind(this));
         })
 
+        const createPlaylistBtn = document.querySelector('.js-playlist-create');
+        createPlaylistBtn.removeEventListener('click', this.createNewPlaylist.bind(this))
         const removeTrackFromPlaylistBtn = document.querySelector('.js-playlist-track-remove');
         removeTrackFromPlaylistBtn.removeEventListener('click', this.removeTrackFromPlaylist.bind(this));
         const addTrackToPlaylistBtns = document.querySelectorAll('.js-playlist-track-add');

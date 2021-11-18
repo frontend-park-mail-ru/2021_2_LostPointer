@@ -62,6 +62,18 @@ export class PlaylistModel extends Model<IPlaylistModel> {
         });
     }
 
+    static createPlaylist(formdata: FormData): Promise<IPlaylistModel> {
+        return new Promise<IPlaylistModel>((res) => {
+           Request.post(
+               '/playlists',
+               formdata,
+               ContentType.FORM,
+           ).then((playlist) => {
+               res(playlist);
+           })
+        });
+    }
+
     static addTrack(playlistId: number, trackId: number): Promise<IResponseBody> {
         return new Promise<IResponseBody>((res) => {
             Request.post(
