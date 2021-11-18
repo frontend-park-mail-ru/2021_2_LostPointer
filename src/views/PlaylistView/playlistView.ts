@@ -136,6 +136,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         (<HTMLElement>msg).innerText = '';
 
         const formdata = new FormData();
+        // FIXME костыль - потому что бэк обнуляет title, если его не передавать в запросе
         formdata.append('title', this.playlist.getProps().title);
         formdata.append('artwork', file, file.name);
 

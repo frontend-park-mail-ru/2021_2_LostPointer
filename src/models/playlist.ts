@@ -110,6 +110,8 @@ export class PlaylistModel extends Model<IPlaylistModel> {
         return new Promise<PlaylistModel>((res) => {
             Request.get(`/playlists/${playlistId}`)
                 .then((response) => {
+                    // FIXME костыль, потому что бэк не возвращает id
+                    response.id = playlistId;
                     response.tracks = response.tracks.reduce(
                         (acc, elem, index) => {
                             elem.pos = index;
