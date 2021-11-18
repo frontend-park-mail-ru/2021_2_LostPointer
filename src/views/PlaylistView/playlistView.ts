@@ -15,6 +15,15 @@ import './playlistView.scss';
 import { InputFormComponent } from 'components/InputForm/inputform';
 import { ContextMenu } from 'components/ContextMenu/contextMenu';
 
+
+// TODO стили сообщения в окне обновления информации
+// TODO анимация появления контекстного меню, как у подписи к значку оффлайна
+// TODO координаты контекстного меню, привязанные к координатам кнопки, а не курсора
+// TODO центрировать список песен
+// TODO градиент на фоне
+// TODO service worker
+// TODO не отправлять запрос, если значение title не меняется
+
 interface IPlaylistViewProps {
     authenticated: boolean;
 }
