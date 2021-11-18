@@ -18,11 +18,11 @@ export class PlaylistModel extends Model<IPlaylistModel> {
         super(props);
     }
 
-    static getPlaylist(playlistId: string): Promise<PlaylistModel> | Promise<null> {
+    static getPlaylist(playlistId: number): Promise<PlaylistModel> | Promise<null> {
         return new Promise<PlaylistModel>((res) => {
             Request.get(`/playlists/${playlistId}`)
                 .then((response) => {
-                    // FIXME костыль, потому что бэк не возвращает id
+                    // FIXME костыль - потому что бэк не возвращает id
                     response.id = playlistId;
                     response.tracks = response.tracks.reduce(
                         (acc, elem, index) => {
@@ -48,6 +48,10 @@ export class PlaylistModel extends Model<IPlaylistModel> {
                     const playlists: Array<PlaylistModel> = response.playlists.reduce(
                         (acc, elem, index) => {
                             elem.pos = index;
+                            // FIXME костыль - потому что бэк может возвращать айдишник в поле playlist_id
+                            if (!elem.id) {
+                                elem.id = elem.playlist_id;
+                            }
                             acc.push(new PlaylistModel(elem));
                             return acc;
                         },
@@ -56,6 +60,21 @@ export class PlaylistModel extends Model<IPlaylistModel> {
                     res(playlists);
                 });
         });
+    }
+
+    static removeTrack(playlistId: number, trackId: number): Promise<IResponseBody> {
+        return new Promise<IResponseBody>((res) => {
+            Request.delete(
+                '/playlist/track',
+                JSON.stringify({
+                    playlist_id: playlistId,
+                    track_id: trackId,
+                }),
+                ContentType.JSON,
+            ).then((body) => {
+                res(body);
+            })
+        })
     }
 
     updateInformation(formdata: FormData): Promise<IResponseBody> {

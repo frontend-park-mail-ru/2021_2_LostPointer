@@ -44,10 +44,12 @@ export class Request {
         );
     }
 
-    delete(path: string) {
+    delete(path: string, requestBody?: BodyInit, contentType?: string) {
         return this._fetchRequest(
             this._createURL(this.backendDomain, path),
-            RequestMethods.DELETE
+            RequestMethods.DELETE,
+            requestBody,
+            contentType
         );
     }
 
@@ -61,8 +63,12 @@ export class Request {
         const myHeaders = new Headers();
         if (
             !!requestBody &&
-            (RequestMethods.POST === requestMethod ||
-                RequestMethods.PUT === requestMethod)
+            (
+                RequestMethods.POST === requestMethod
+                || RequestMethods.PUT === requestMethod
+                || RequestMethods.DELETE === requestMethod
+                || RequestMethods.PATCH === requestMethod
+            )
         ) {
             myHeaders.append('Content-Type', contentType);
         }

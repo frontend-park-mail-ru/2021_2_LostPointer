@@ -5,6 +5,7 @@ import './contextMenu.scss';
 
 interface IContextMenuOption {
     class: string,
+    dataId: string,
     value: string
 }
 
