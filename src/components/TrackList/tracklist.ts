@@ -17,19 +17,23 @@ export class TrackList extends Component<ITrackListProps> {
     constructor(props?) {
         super(props);
         this.title = this.props.title;
-        this.trackComponents = this.props.tracks.reduce((acc, item) => {
-            acc.push(new TrackComponent(item.getProps()).render());
-            return acc;
-        }, []);
+        if (this.props.tracks) {
+            this.trackComponents = this.props.tracks.reduce((acc, item) => {
+                acc.push(new TrackComponent(item.getProps()).render());
+                return acc;
+            }, []);
+        }
     }
 
     set(props: ITrackListProps): this {
         this.props = props;
         this.title = this.props.title;
-        this.trackComponents = this.props.tracks.reduce((acc, item) => {
-            acc.push(new TrackComponent(item.getProps()).render());
-            return acc;
-        }, []);
+        if (this.props.tracks) {
+            this.trackComponents = this.props.tracks.reduce((acc, item) => {
+                acc.push(new TrackComponent(item.getProps()).render());
+                return acc;
+            }, []);
+        }
         return this;
     }
 

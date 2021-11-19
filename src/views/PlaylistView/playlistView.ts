@@ -24,7 +24,6 @@ import './playlistView.scss';
 // TODO удалить лишнюю статику
 // TODO! включить контекстное меню во всех вьюхах
 // TODO! добавить кнопку + на dashboard для создания пустого плейлиста
-// TODO! не удалять плейлист при удалении последнего трека
 // TODO адаптировать под мобилку
 // TODO функционал удаления аватары
 
@@ -250,16 +249,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                         }), 1
                     );
 
-                    if (this.playlist.getProps().tracks.length === 0) {
-                        PlaylistModel.removePlaylist(playlistId)
-                            .then((deleteResponse) => {
-                                if (deleteResponse.status === 200) {
-                                    router.go(routerStore.dashboard);
-                                }
-                            });
-                    } else {
-                        this.render();
-                    }
+                    this.render();
                 }
             });
     }

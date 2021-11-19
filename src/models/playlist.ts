@@ -31,18 +31,20 @@ export class PlaylistModel extends Model<IPlaylistModel> {
 
                     // FIXME костыль - потому что бэк не возвращает id
                     response.id = playlistId;
-                    response.tracks = response.tracks.reduce(
-                        (acc, elem, index) => {
-                            elem.pos = index;
-                            const artist = new ArtistModel(elem.artist);
-                            const album = new AlbumModel(elem.album);
-                            elem.album = album;
-                            elem.artist = artist;
-                            acc.push(new TrackModel(elem));
-                            return acc;
-                        },
-                        []
-                    );
+                    if (response.tracks) {
+                        response.tracks = response.tracks.reduce(
+                            (acc, elem, index) => {
+                                elem.pos = index;
+                                const artist = new ArtistModel(elem.artist);
+                                const album = new AlbumModel(elem.album);
+                                elem.album = album;
+                                elem.artist = artist;
+                                acc.push(new TrackModel(elem));
+                                return acc;
+                            },
+                            []
+                        );
+                    }
                     res(new PlaylistModel(response));
                 });
         });
