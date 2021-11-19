@@ -111,7 +111,7 @@ export class IndexView extends View<IIndexViewProps> {
                     {
                         class: 'js-playlist-create',
                         dataId: null,
-                        value: 'Добавить в новый плейлист',
+                        value: 'Add to the new playlist',
                     },
                 ].concat(this.userPlaylists.map((playlist) => {
                     return {

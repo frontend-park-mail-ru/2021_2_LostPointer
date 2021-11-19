@@ -100,12 +100,12 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                     {
                         class: 'js-playlist-create',
                         dataId: null,
-                        value: 'Добавить в новый плейлист',
+                        value: 'Add to the new playlist',
                     },
                     {
                         class: 'js-playlist-track-remove',
                         dataId: null,
-                        value: 'Удалить из текущего плейлиста',
+                        value: 'Remove from the current playlist',
                     },
                 ].concat(this.userPlaylists.map((playlist) => {
                     return {
