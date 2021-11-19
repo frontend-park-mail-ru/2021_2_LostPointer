@@ -17,7 +17,6 @@ import './playlistView.scss';
 
 
 // TODO анимация появления контекстного меню, как у подписи к значку оффлайна
-// TODO! координаты контекстного меню, привязанные к координатам кнопки, а не курсора
 // TODO градиент на фоне
 // TODO! service worker
 // TODO не отправлять запрос, если значение title не меняется
@@ -28,7 +27,6 @@ import './playlistView.scss';
 // TODO! добавить кнопку удаления плейлиста
 // TODO! не удалять плейлист при удалении последнего трека
 // TODO адаптировать под мобилку
-// TODO! выровнять компоненты в окошке изменения
 // TODO функционал удаления аватары
 
 interface IPlaylistViewProps {
@@ -394,9 +392,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         if (!this.authenticated) {
             return;
         }
+        const rect = event.target.getBoundingClientRect();
         const origin = {
-            left: event.pageX,
-            top: event.pageY
+            left: rect.left + 10,
+            top: rect.top + 10,
         };
         sessionStorage.setItem('trackId_in_trackList', event.target.getAttribute('data-id'));
         this.setPosition(origin);
