@@ -130,6 +130,11 @@ export class IndexView extends View<IIndexViewProps> {
         event.preventDefault();
         event.stopPropagation();
 
+        if (!this.authenticated) {
+            router.go(routerStore.signin);
+            return;
+        }
+
         const formdata = new FormData();
         formdata.append('title', 'New playlist');
 

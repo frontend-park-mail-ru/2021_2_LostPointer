@@ -30,6 +30,8 @@ import './playlistView.scss';
 // TODO удалить лишнюю статику
 // TODO адаптировать под мобилку
 // TODO функционал удаления аватары
+// TODO! градиент
+// TODO! удаление аватары плейлиста
 
 interface IPlaylistViewProps {
     authenticated: boolean;
@@ -153,8 +155,6 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         (<HTMLElement>msg).innerText = '';
 
         const formdata = new FormData();
-        // FIXME костыль - потому что бэк обнуляет title, если его не передавать в запросе
-        formdata.append('title', this.playlist.getProps().title);
         formdata.append('artwork', file, file.name);
 
         const ext = file.name

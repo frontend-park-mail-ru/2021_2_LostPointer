@@ -29,8 +29,6 @@ export class PlaylistModel extends Model<IPlaylistModel> {
                         return;
                     }
 
-                    // FIXME костыль - потому что бэк не возвращает id
-                    response.id = playlistId;
                     if (response.tracks) {
                         response.tracks = response.tracks.reduce(
                             (acc, elem, index) => {
@@ -54,7 +52,6 @@ export class PlaylistModel extends Model<IPlaylistModel> {
         return new Promise<Array<PlaylistModel>>((res) => {
             Request.get('/playlists')
                 .then((response) => {
-                    // FIXME костыль - потому что бэк без авторизации отвечает {}
                     if (!response.playlists) {
                         res([]);
                         return;
@@ -63,10 +60,6 @@ export class PlaylistModel extends Model<IPlaylistModel> {
                     const playlists: Array<PlaylistModel> = response.playlists.reduce(
                         (acc, elem, index) => {
                             elem.pos = index;
-                            // FIXME костыль - потому что бэк может возвращать айдишник в поле playlist_id
-                            if (!elem.id) {
-                                elem.id = elem.playlist_id;
-                            }
                             acc.push(new PlaylistModel(elem));
                             return acc;
                         },
