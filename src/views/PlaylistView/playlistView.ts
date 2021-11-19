@@ -133,7 +133,9 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         }
 
         const msg = document.querySelector('.editwindow__form-msg');
-        (<HTMLElement>msg).innerText = '';
+        if (msg) {
+            (<HTMLElement>msg).innerText = '';
+        }
     }
 
     uploadAvatarFile(event) {
@@ -307,8 +309,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         if (event.target == deleteBtn) {
             return;
         }
-        (<HTMLElement>deleteBtn).innerText = 'Delete';
-        deleteBtn.classList.remove('confirm');
+        if (deleteBtn) {
+            (<HTMLElement>deleteBtn).innerText = 'Delete';
+            deleteBtn.classList.remove('confirm');
+        }
     }
 
     addListeners() {
@@ -333,7 +337,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         playlistAvatar.addEventListener('click', this.displayEditWindow.bind(this));
         window.addEventListener('click', this.removeEditWindow.bind(this));
         window.addEventListener('click', this.hideContextMenu.bind(this));
-        window.addEventListener('click', (this.deleteButtonReset.bind(this)));
+        window.addEventListener('click', this.deleteButtonReset.bind(this));
         document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
             element.addEventListener('click', this.showContextMenu.bind(this));
         })
@@ -372,7 +376,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             button.removeEventListener('click', this.addTrackToPlaylist.bind(this));
         });
 
-        window.removeEventListener('click', (this.deleteButtonReset.bind(this)));
+        window.removeEventListener('click', this.deleteButtonReset.bind(this));
         window.removeEventListener('click', this.hideContextMenu.bind(this));
         window.removeEventListener('click', this.removeEditWindow.bind(this));
         const playlistAvatar = document.querySelector('.playlist__description-avatar');
