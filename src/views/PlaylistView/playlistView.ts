@@ -47,6 +47,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     private contextMenu: ContextMenu;
     private menuVisible: boolean;
     private renderedMenu: HTMLElement;
+    private selectedTrackId: number;
 
     constructor(props?: IPlaylistViewProps) {
         super(props);
@@ -239,7 +240,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
 
     removeTrackFromPlaylist() {
         const playlistId = this.playlist.getProps().id;
-        const trackId = parseInt(sessionStorage.getItem('trackId_in_trackList'));
+        const trackId = this.selectedTrackId;
 
         PlaylistModel.removeTrack(playlistId, trackId)
             .then((response) => {
@@ -266,7 +267,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
 
     addTrackToPlaylist(event) {
         const playlistId = parseInt(event.target.getAttribute('data-id'));
-        const trackId = parseInt(sessionStorage.getItem('trackId_in_trackList'));
+        const trackId = this.selectedTrackId;
 
         PlaylistModel.addTrack(playlistId, trackId)
             .then((response) => {
@@ -279,7 +280,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     createNewPlaylist(event) {
-        const trackId = parseInt(sessionStorage.getItem('trackId_in_trackList'));
+        const trackId = this.selectedTrackId;
 
         const formdata = new FormData();
         formdata.append('title', 'New playlist');
@@ -397,7 +398,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             left: rect.left + 10,
             top: rect.top + 10,
         };
-        sessionStorage.setItem('trackId_in_trackList', event.target.getAttribute('data-id'));
+        this.selectedTrackId = parseInt(event.target.getAttribute('data-id'));
         this.setPosition(origin);
         event.stopPropagation();
     }
