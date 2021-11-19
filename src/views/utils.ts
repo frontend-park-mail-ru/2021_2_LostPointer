@@ -23,6 +23,7 @@ export function hideContextMenu() {
 
 export function showContextMenu(event) {
     if (!this.authenticated) {
+        router.go(routerStore.signin);
         return;
     }
     this.selectedTrackId = parseInt(event.target.getAttribute('data-id'));
