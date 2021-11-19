@@ -292,6 +292,26 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             });
     }
 
+    deleteButtonClick(event) {
+        if ((<HTMLElement>event.target).classList.contains('confirm')) {
+            PlaylistModel.removePlaylist(this.playlist.getProps().id)
+                .then(() => {
+                    router.go(routerStore.dashboard);
+                });
+        } else {
+            (<HTMLElement>event.target).innerText = 'Sure?';
+            (<HTMLElement>event.target).classList.add('confirm');
+        }
+    }
+    deleteButtonReset(event) {
+        const deleteBtn = document.querySelector('.playlist__description-delete');
+        if (event.target == deleteBtn) {
+            return;
+        }
+        (<HTMLElement>deleteBtn).innerText = 'Delete';
+        deleteBtn.classList.remove('confirm');
+    }
+
     addListeners() {
         if (this.authenticated) {
             document
@@ -300,17 +320,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         }
 
         const deleteBtn = document.querySelector('.playlist__description-delete');
-        deleteBtn.addEventListener('click', ((event) => {
-            if ((<HTMLElement>event.target).classList.contains('confirm')) {
-                PlaylistModel.removePlaylist(this.playlist.getProps().id)
-                    .then(() => {
-                        router.go(routerStore.dashboard);
-                    });
-            } else {
-                (<HTMLElement>event.target).innerText = 'Sure?';
-                (<HTMLElement>event.target).classList.add('confirm');
-            }
-        }));
+        deleteBtn.addEventListener('click', (this.deleteButtonClick.bind(this)));
 
         const form = document.querySelector('.editwindow__form');
         form.addEventListener(
@@ -324,14 +334,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         playlistAvatar.addEventListener('click', this.displayEditWindow.bind(this));
         window.addEventListener('click', this.removeEditWindow.bind(this));
         window.addEventListener('click', this.hideContextMenu.bind(this));
-        window.addEventListener('click', ((event) => {
-            const deleteBtn = document.querySelector('.playlist__description-delete');
-            if (event.target == deleteBtn) {
-                return;
-            }
-            (<HTMLElement>deleteBtn).innerText = 'Delete';
-            deleteBtn.classList.remove('confirm');
-        }));
+        window.addEventListener('click', (this.deleteButtonReset.bind(this)));
         document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
             element.addEventListener('click', this.showContextMenu.bind(this));
         })
@@ -358,6 +361,9 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             element.removeEventListener('click', this.showContextMenu.bind(this));
         })
 
+        const deleteBtn = document.querySelector('.playlist__description-delete');
+        deleteBtn.removeEventListener('click', (this.deleteButtonClick.bind(this)));
+
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
         createPlaylistBtn.removeEventListener('click', this.createNewPlaylist.bind(this))
         const removeTrackFromPlaylistBtn = document.querySelector('.js-playlist-track-remove');
@@ -367,6 +373,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             button.removeEventListener('click', this.addTrackToPlaylist.bind(this));
         });
 
+        window.removeEventListener('click', (this.deleteButtonReset.bind(this)));
         window.removeEventListener('click', this.hideContextMenu.bind(this));
         window.removeEventListener('click', this.removeEditWindow.bind(this));
         const playlistAvatar = document.querySelector('.playlist__description-avatar');
