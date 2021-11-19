@@ -52,6 +52,12 @@ export class PlaylistModel extends Model<IPlaylistModel> {
         return new Promise<Array<PlaylistModel>>((res) => {
             Request.get('/playlists')
                 .then((response) => {
+                    // FIXME костыль - потому что бэк без авторизации отвечает {}
+                    if (!response.playlists) {
+                        res([]);
+                        return;
+                    }
+
                     const playlists: Array<PlaylistModel> = response.playlists.reduce(
                         (acc, elem, index) => {
                             elem.pos = index;
