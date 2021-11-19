@@ -30,7 +30,6 @@ import './playlistView.scss';
 // TODO адаптировать под мобилку
 // TODO! выровнять компоненты в окошке изменения
 // TODO функционал удаления аватары
-// TODO! добавить ховер при наведении на аватару
 
 interface IPlaylistViewProps {
     authenticated: boolean;

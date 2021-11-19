@@ -49,6 +49,7 @@
       background: linear-gradient(180deg, rgba(30, 30, 30, 0.5) 0%, rgba(30, 30, 30, 0.8) 100%);
       border-radius: 20px;
       cursor: pointer;
+      position: relative;
     }
 
     &-img {
@@ -56,6 +57,33 @@
       height: 200px;
       border-radius: 20px;
       object-fit: cover;
+      position: absolute;
+    }
+
+    &-edit {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background-color: rgba(0, 0, 0, 0.8);
+      text-align: center;
+      opacity: 0;
+
+      &-img {
+        height: 50px;
+        width: 50px;
+        margin: 70px 0 0;
+      }
+
+      &-msg {
+        margin: 30px;
+        color: white;
+        font-family: Montserrat, sans-serif;
+        font-weight: 700;
+      }
+    }
+
+    &-edit:hover {
+      opacity: 100%;
     }
   }
 }
