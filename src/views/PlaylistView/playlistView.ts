@@ -23,7 +23,7 @@ import './playlistView.scss';
 // TODO градиент на фоне
 // TODO service worker
 // TODO не отправлять запрос, если значение title не меняется
-// TODO удалять треки из плейлиста в this.playlist при удалении из текущего плейлиста, а также удалять трек из треклиста
+// TODO удалять треки из треклиста
 // TODO выводить сообщение об успешном/неуспешном добавлении трека в плейлист
 
 interface IPlaylistViewProps {
@@ -242,6 +242,12 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             .then((response) => {
                 if (response.status === 200) {
                     // TODO удаляем трек из списка
+
+                    this.playlist.getProps().tracks.splice(
+                        this.playlist.getProps().tracks.findIndex((track) => {
+                            return track.getProps().id === trackId
+                        }), 1
+                    );
 
                     if (this.playlist.getProps().tracks.length === 1) {
                         PlaylistModel.removePlaylist(playlistId)
