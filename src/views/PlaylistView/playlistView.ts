@@ -128,9 +128,13 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             return;
         }
         const playlistEditWindow = document.querySelector('.editwindow');
+
         if (event.target == playlistEditWindow) {
             (<HTMLElement>playlistEditWindow).style.display = 'none';
         }
+
+        const msg = document.querySelector('.editwindow__form-msg');
+        (<HTMLElement>msg).innerText = '';
     }
 
     uploadAvatarFile(event) {
