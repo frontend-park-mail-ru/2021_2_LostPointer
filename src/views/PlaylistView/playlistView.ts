@@ -24,9 +24,8 @@ import './playlistView.scss';
 
 
 // TODO service worker
-// TODO адаптировать под мобилку
-// TODO! градиент
-// TODO! удаление аватары плейлиста
+// TODO градиент
+// TODO удаление аватары плейлиста
 
 interface IPlaylistViewProps {
     authenticated: boolean;
