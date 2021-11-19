@@ -15,7 +15,7 @@
   &__content {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   &__suggested-tracks-container {
@@ -37,17 +37,17 @@
       font-family: Montserrat, sans-serif;
       font-weight: 700;
       margin: 80px 20px;
-      display: inline-block;
+      width: 55%;
+      text-align: center;
     }
 
     &-avatar {
       width: 200px;
       height: 200px;
       object-fit: cover;
-      margin: 10px;
+      margin: 10px 100px;
       background: linear-gradient(180deg, rgba(30, 30, 30, 0.5) 0%, rgba(30, 30, 30, 0.8) 100%);
       border-radius: 20px;
-      display: inline-block;
       cursor: pointer;
     }
 
@@ -114,7 +114,7 @@
       padding-left: 10px;
       line-height: 40px;
       width: 100px;
-      margin: 5px auto;
+      margin: 5px auto 0;
       display: block;
       border-radius: 10px;
       border: 2px solid #3d3d3d;
@@ -152,7 +152,7 @@
       font-family: Montserrat, sans-serif;
       font-size: 16px;
       padding-left: 10px;
-      margin: 10px;
+      margin: 40px 10px;
 
       &:focus {
         outline: none;
@@ -172,8 +172,8 @@
     }
 
     &-buttons {
-      padding: 10px;
-      margin: 5px auto;
+      padding: 10px 10px 0;
+      margin: 34px 0 0;
     }
 
     &-submit {
