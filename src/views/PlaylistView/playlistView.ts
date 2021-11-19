@@ -23,7 +23,6 @@ import './playlistView.scss';
 // TODO градиент на фоне
 // TODO service worker
 // TODO не отправлять запрос, если значение title не меняется
-// TODO удалять треки из треклиста
 // TODO выводить сообщение об успешном/неуспешном добавлении трека в плейлист
 
 interface IPlaylistViewProps {
@@ -79,7 +78,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             this.trackList = new TrackList({
                 title: 'Tracks',
                 tracks: props.tracks,
-            }).render();
+            });
             this.inputs = [
                 new InputFormComponent({
                     class: 'editwindow__form-input',
@@ -241,21 +240,21 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         PlaylistModel.removeTrack(playlistId, trackId)
             .then((response) => {
                 if (response.status === 200) {
-                    // TODO удаляем трек из списка
-
                     this.playlist.getProps().tracks.splice(
                         this.playlist.getProps().tracks.findIndex((track) => {
                             return track.getProps().id === trackId
                         }), 1
                     );
 
-                    if (this.playlist.getProps().tracks.length === 1) {
+                    if (this.playlist.getProps().tracks.length === 0) {
                         PlaylistModel.removePlaylist(playlistId)
                             .then((deleteResponse) => {
                                 if (deleteResponse.status === 200) {
                                     router.go(routerStore.dashboard);
                                 }
                             });
+                    } else {
+                        this.render();
                     }
                 }
             });
@@ -415,7 +414,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                 })
                 .render(),
             sidebar: this.sidebar,
-            trackList: this.trackList,
+            trackList: this.trackList.set({
+                title: 'Tracks',
+                tracks: this.playlist.getProps().tracks,
+            }).render(),
             player: player.render(),
             contextMenu: this.contextMenu.render(),
             inputs: this.inputs,

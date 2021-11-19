@@ -14,7 +14,7 @@ export class TrackList extends Component<ITrackListProps> {
     private title: string
     private trackComponents: Array<TrackComponent>;
 
-    constructor(props) {
+    constructor(props?) {
         super(props);
         this.title = this.props.title;
         this.trackComponents = this.props.tracks.reduce((acc, item) => {
@@ -22,6 +22,17 @@ export class TrackList extends Component<ITrackListProps> {
             return acc;
         }, []);
     }
+
+    set(props: ITrackListProps): this {
+        this.props = props;
+        this.title = this.props.title;
+        this.trackComponents = this.props.tracks.reduce((acc, item) => {
+            acc.push(new TrackComponent(item.getProps()).render());
+            return acc;
+        }, []);
+        return this;
+    }
+
     render() {
         return TracklistTemplate({
             title: this.title,
