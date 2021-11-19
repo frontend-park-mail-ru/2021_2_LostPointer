@@ -1,12 +1,12 @@
+.pl-link {
+  border-radius: inherit;
+}
+
 .suggested-playlists {
   display: flex;
   flex-direction: column;
   align-content: space-between;
   width: 300px;
-
-  & a {
-    border-radius: inherit;
-  }
 
   &__header {
     color: white;
