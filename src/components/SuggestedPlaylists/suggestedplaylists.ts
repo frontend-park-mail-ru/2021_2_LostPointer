@@ -3,9 +3,10 @@ import { SuggestedPlaylist } from '../Playlist/suggestedplaylist';
 
 import SuggestedPlaylistsTemplate from './suggestedplaylists.hbs';
 import './suggestedplaylists.scss';
+import { PlaylistModel } from 'models/playlist';
 
 interface ISuggestedPlaylistsProps {
-    playlists: Array<any>;
+    playlists: Array<PlaylistModel>;
 }
 
 export class SuggestedPlaylists extends Component<ISuggestedPlaylistsProps> {

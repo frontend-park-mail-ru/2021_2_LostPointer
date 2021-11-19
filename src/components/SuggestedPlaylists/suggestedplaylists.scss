@@ -2,6 +2,11 @@
   display: flex;
   flex-direction: column;
   align-content: space-between;
+  width: 300px;
+
+  & a {
+    border-radius: inherit;
+  }
 
   &__header {
     color: white;

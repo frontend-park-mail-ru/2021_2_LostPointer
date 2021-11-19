@@ -1,8 +1,10 @@
 <div class='suggested-playlist'>
-    <img
-        alt
-        class='suggested-playlist-artwork'
-        src='/static/img/{{cover}}.webp'
-    />
+    <a href='/playlist/{{id}}'>
+        <img
+            alt
+            class='suggested-playlist-artwork'
+            src='{{artwork}}'
+        />
+    </a>
     <div class='suggested-playlist-name'>{{title}}</div>
 </div>

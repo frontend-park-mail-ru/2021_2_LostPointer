@@ -24,6 +24,7 @@ import './playlistView.scss';
 // TODO service worker
 // TODO не отправлять запрос, если значение title не меняется
 // TODO выводить сообщение об успешном/неуспешном добавлении трека в плейлист
+// TODO удалить лишнюю статику
 
 interface IPlaylistViewProps {
     authenticated: boolean;

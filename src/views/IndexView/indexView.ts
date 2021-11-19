@@ -19,6 +19,7 @@ import store from 'services/store/store';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
+import { PlaylistModel } from 'models/playlist';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -31,7 +32,7 @@ export class IndexView extends View<IIndexViewProps> {
     private top_albums: AlbumModel[];
     private suggested_artists: ArtistModel[];
     private track_list: TrackModel[];
-    private suggested_playlists: SuggestedPlaylists;
+    private suggested_playlists: PlaylistModel[];
     private sidebar: Sidebar;
     private friend_activity: FriendActivity;
     private userAvatar: string;
@@ -54,6 +55,9 @@ export class IndexView extends View<IIndexViewProps> {
         const albums = AlbumModel.getHomepageAlbums().then((albums) => {
             this.top_albums = albums;
         });
+        const playlists = PlaylistModel.getUserPlaylists().then((playlists) => {
+            this.suggested_playlists = playlists;
+        })
 
         const predefinedPlaylists = [
             {
@@ -70,13 +74,13 @@ export class IndexView extends View<IIndexViewProps> {
             },
         ];
 
-        Promise.all([tracks, artists, albums]).then(() => {
+        Promise.all([tracks, artists, albums, playlists]).then(() => {
             this.track_list = new TrackList({
                 title: 'Tracks of the Week',
                 tracks: this.track_list,
             }).render();
             this.suggested_playlists = new SuggestedPlaylists({
-                playlists: predefinedPlaylists,
+                playlists: this.suggested_playlists,
             }).render();
             this.sidebar = new Sidebar().render();
 

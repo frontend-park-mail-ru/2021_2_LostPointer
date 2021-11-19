@@ -4,16 +4,18 @@ import SuggestedPlaylistTemplate from './suggestedplaylist.hbs';
 import './suggestedplaylist.scss';
 
 interface ISuggestedPlaylistProps {
-    cover: string;
+    artwork: string;
     title: string;
+    id: number;
 }
 
 export class SuggestedPlaylist extends Component<ISuggestedPlaylistProps> {
     constructor(props) {
         super(props);
         this.props = {
-            cover: props.cover,
-            title: props.title,
+            artwork: props.props.artwork,
+            title: props.props.title,
+            id: props.props.id,
         };
     }
 
