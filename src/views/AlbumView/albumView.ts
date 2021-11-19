@@ -1,17 +1,17 @@
 import { View } from 'views/View/view';
+import { Sidebar } from 'components/Sidebar/sidebar';
+import { AlbumModel } from 'models/album';
+import { TrackList } from 'components/TrackList/tracklist';
+import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
 import Request from 'services/request/request';
 import player from 'components/Player/player';
-import { Sidebar } from 'components/Sidebar/sidebar';
-import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
-import { TrackList } from 'components/TrackList/tracklist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import disableBrokenImg from 'views/utils';
 
+import disableBrokenImg from 'views/utils';
 import AlbumTemplate from './albumView.hbs';
 import './albumView.scss';
 import store from 'services/store/store';
-import { AlbumModel } from 'models/album';
 
 interface IAlbumViewProps {
     authenticated: boolean;
@@ -68,13 +68,6 @@ export class AlbumView extends View<IAlbumViewProps> {
             document
                 .querySelector('.js-logout')
                 .addEventListener('click', this.userLogout);
-        }
-
-        const video = document.querySelector('.artist__background-video');
-        if (video) {
-            video.addEventListener('ended', () => {
-                video.classList.add('transition');
-            });
         }
 
         document.querySelectorAll('img').forEach(function(img) {
