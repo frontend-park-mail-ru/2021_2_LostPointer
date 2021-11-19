@@ -18,8 +18,7 @@ import './playlistView.scss';
 
 // TODO анимация появления контекстного меню, как у подписи к значку оффлайна
 // TODO градиент на фоне
-// TODO! service worker
-// TODO не отправлять запрос, если значение title не меняется
+// TODO service worker
 // TODO выводить сообщение об успешном/неуспешном добавлении трека в плейлист
 // TODO удалить лишнюю статику
 // TODO! включить контекстное меню во всех вьюхах
@@ -211,6 +210,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             msg.classList.add('fail', 'visible');
             return;
         }
+        if (titleInput.value === this.playlist.getProps().title) {
+            return;
+        }
+
         const formdata = new FormData();
         formdata.append('title', titleInput.value);
 
