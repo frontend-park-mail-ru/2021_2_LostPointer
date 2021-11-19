@@ -4,6 +4,8 @@ import { ArtistModel } from 'models/artist';
 import { AlbumModel } from 'models/album';
 import Request, {IResponseBody} from 'services/request/request';
 import { ContentType } from 'services/request/requestUtils';
+import router from 'services/router/router';
+import routerStore from 'services/router/routerStore';
 
 
 export interface IPlaylistModel {
@@ -22,6 +24,11 @@ export class PlaylistModel extends Model<IPlaylistModel> {
         return new Promise<PlaylistModel>((res) => {
             Request.get(`/playlists/${playlistId}`)
                 .then((response) => {
+                    if (response.status) {
+                        res(null);
+                        return;
+                    }
+
                     // FIXME костыль - потому что бэк не возвращает id
                     response.id = playlistId;
                     response.tracks = response.tracks.reduce(
@@ -98,6 +105,16 @@ export class PlaylistModel extends Model<IPlaylistModel> {
                     track_id: trackId,
                 }),
                 ContentType.JSON,
+            ).then((body) => {
+                res(body);
+            });
+        });
+    }
+
+    static removePlaylist(playlistId: number): Promise<IResponseBody> {
+        return new Promise<IResponseBody>((res) => {
+            Request.delete(
+                `/playlists/${playlistId}`,
             ).then((body) => {
                 res(body);
             });
