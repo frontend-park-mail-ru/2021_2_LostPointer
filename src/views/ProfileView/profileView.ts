@@ -19,7 +19,7 @@ import { UserModel } from 'models/user';
 
 import ProfileTemplate from './profileView.hbs';
 import './profileView.scss';
-import disableBrokenImg from 'views/utils';
+import { disableBrokenImg } from 'views/utils';
 import store from 'services/store/store';
 
 interface IProfileViewProps {

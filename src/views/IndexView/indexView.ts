@@ -13,13 +13,20 @@ import { AlbumModel } from 'models/album';
 import routerStore from 'services/router/routerStore';
 import router from 'services/router/router';
 import { View } from 'views/View/view';
-import disableBrokenImg from 'views/utils';
+import {
+    addTrackToPlaylist,
+    createNewPlaylist,
+    disableBrokenImg, hideContextMenu,
+    removeTrackFromPlaylist,
+    showContextMenu,
+} from 'views/utils';
 
 import store from 'services/store/store';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
 import { PlaylistModel } from 'models/playlist';
+import { ContextMenu } from 'components/ContextMenu/contextMenu';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -36,6 +43,11 @@ export class IndexView extends View<IIndexViewProps> {
     private sidebar: Sidebar;
     private friend_activity: FriendActivity;
     private userAvatar: string;
+    private contextMenu: ContextMenu;
+    private userPlaylists: Array<PlaylistModel>;
+    private selectedTrackId: number;
+    private menuVisible: boolean;
+    private renderedMenu: HTMLElement;
 
     constructor(props?: IIndexViewProps) {
         super(props);
@@ -59,7 +71,11 @@ export class IndexView extends View<IIndexViewProps> {
             this.suggested_playlists = playlists;
         })
 
-        Promise.all([tracks, artists, albums, playlists]).then(() => {
+        const userPlaylists = PlaylistModel.getUserPlaylists().then((playlists) => {
+            this.userPlaylists = playlists;
+        });
+
+        Promise.all([tracks, artists, albums, playlists, userPlaylists]).then(() => {
             this.track_list = new TrackList({
                 title: 'Tracks of the Week',
                 tracks: this.track_list,
@@ -90,9 +106,37 @@ export class IndexView extends View<IIndexViewProps> {
                     },
                 ],
             }).render();
+            this.contextMenu = new ContextMenu({
+                options: [
+                    {
+                        class: 'js-playlist-create',
+                        dataId: null,
+                        value: 'Добавить в новый плейлист',
+                    },
+                ].concat(this.userPlaylists.map((playlist) => {
+                    return {
+                        class: `js-playlist-track-add`,
+                        dataId: playlist.getProps().id,
+                        value: playlist.getProps().title,
+                    }
+                })),
+            });
             this.isLoaded = true;
             this.render();
         });
+    }
+
+    createPlaylist(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const formdata = new FormData();
+        formdata.append('title', 'New playlist');
+
+        PlaylistModel.createPlaylist(formdata)
+            .then(({id}) => {
+                router.go(`${routerStore.playlist}/${id}`);
+            });
     }
 
     addListeners() {
@@ -103,18 +147,18 @@ export class IndexView extends View<IIndexViewProps> {
         }
 
         const createPlaylistBtn = document.querySelector('.pl-link[href="/playlist/0"]');
-        createPlaylistBtn.addEventListener('click', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            const formdata = new FormData();
-            formdata.append('title', 'New playlist');
-
-            PlaylistModel.createPlaylist(formdata)
-                .then(({id}) => {
-                    router.go(`${routerStore.playlist}/${id}`);
-                });
+        createPlaylistBtn.addEventListener('click', this.createPlaylist.bind(this));
+        const createPlaylistContextMenuBtn = document.querySelector('.js-playlist-create');
+        createPlaylistContextMenuBtn.addEventListener('click', createNewPlaylist.bind(this))
+        const addTrackToPlaylistBtns = document.querySelectorAll('.js-playlist-track-add');
+        addTrackToPlaylistBtns.forEach((button) => {
+            button.addEventListener('click', addTrackToPlaylist.bind(this));
         });
+
+        document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
+            element.addEventListener('click', showContextMenu.bind(this));
+        })
+        window.addEventListener('click', hideContextMenu.bind(this));
 
         this.playButtonHandler = (e) => {
             if (e.target.className === 'track-list-item-play') {
@@ -165,6 +209,22 @@ export class IndexView extends View<IIndexViewProps> {
             .forEach((e) =>
                 e.removeEventListener('click', this.playButtonHandler)
             );
+
+        document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
+            element.removeEventListener('click', showContextMenu.bind(this));
+        })
+        window.removeEventListener('click', hideContextMenu.bind(this));
+
+        const createPlaylistBtn = document.querySelector('.pl-link[href="/playlist/0"]');
+        createPlaylistBtn.removeEventListener('click', this.createPlaylist.bind(this));
+
+        const createPlaylistContextMenuBtn = document.querySelector('.js-playlist-create');
+        createPlaylistContextMenuBtn.removeEventListener('click', createNewPlaylist.bind(this))
+        const addTrackToPlaylistBtns = document.querySelectorAll('.js-playlist-track-add');
+        addTrackToPlaylistBtns.forEach((button) => {
+            button.removeEventListener('click', addTrackToPlaylist.bind(this));
+        });
+
         const suggestedTracksContainer = document.querySelector(
             '.suggested-tracks-container'
         );
@@ -207,7 +267,10 @@ export class IndexView extends View<IIndexViewProps> {
             track_list: this.track_list,
             suggested_playlists: this.suggested_playlists,
             player: player.render(),
+            contextMenu: this.contextMenu.render(),
         });
+        this.renderedMenu = document.querySelector('.menu');
+        this.menuVisible = false;
 
         this.addListeners();
     }

@@ -6,7 +6,14 @@ import { PlaylistModel } from 'models/playlist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import store from 'services/store/store';
-import disableBrokenImg from 'views/utils';
+import {
+    addTrackToPlaylist,
+    createNewPlaylist,
+    disableBrokenImg,
+    hideContextMenu,
+    removeTrackFromPlaylist,
+    showContextMenu,
+} from 'views/utils';
 import Request from 'services/request/request';
 import player from 'components/Player/player';
 import { InputFormComponent } from 'components/InputForm/inputform';
@@ -21,7 +28,6 @@ import './playlistView.scss';
 // TODO service worker
 // TODO выводить сообщение об успешном/неуспешном добавлении трека в плейлист
 // TODO удалить лишнюю статику
-// TODO! включить контекстное меню во всех вьюхах
 // TODO адаптировать под мобилку
 // TODO функционал удаления аватары
 
@@ -244,55 +250,6 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             });
     }
 
-    removeTrackFromPlaylist() {
-        const playlistId = this.playlist.getProps().id;
-        const trackId = this.selectedTrackId;
-
-        PlaylistModel.removeTrack(playlistId, trackId)
-            .then((response) => {
-                if (response.status === 200) {
-                    this.playlist.getProps().tracks.splice(
-                        this.playlist.getProps().tracks.findIndex((track) => {
-                            return track.getProps().id === trackId
-                        }), 1
-                    );
-
-                    this.render();
-                }
-            });
-    }
-
-    addTrackToPlaylist(event) {
-        const playlistId = parseInt(event.target.getAttribute('data-id'));
-        const trackId = this.selectedTrackId;
-
-        PlaylistModel.addTrack(playlistId, trackId)
-            .then((response) => {
-                if (response.status === 201) {
-                    // TODO показываем уведомление
-                } else if (response.status === 400) {
-                    // TODO показываем уведомление
-                }
-            });
-    }
-
-    createNewPlaylist(event) {
-        const trackId = this.selectedTrackId;
-
-        const formdata = new FormData();
-        formdata.append('title', 'New playlist');
-
-        PlaylistModel.createPlaylist(formdata)
-            .then(({id}) => {
-                PlaylistModel.addTrack(id, trackId)
-                    .then((response) => {
-                        if (response.status === 201) {
-                            router.go(`${routerStore.playlist}/${id}`);
-                        }
-                    });
-            });
-    }
-
     deleteButtonClick(event) {
         if ((<HTMLElement>event.target).classList.contains('confirm')) {
             PlaylistModel.removePlaylist(this.playlist.getProps().id)
@@ -336,19 +293,19 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         const playlistAvatar = document.querySelector('.playlist__description-avatar');
         playlistAvatar.addEventListener('click', this.displayEditWindow.bind(this));
         window.addEventListener('click', this.removeEditWindow.bind(this));
-        window.addEventListener('click', this.hideContextMenu.bind(this));
+        window.addEventListener('click', hideContextMenu.bind(this));
         window.addEventListener('click', this.deleteButtonReset.bind(this));
         document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
-            element.addEventListener('click', this.showContextMenu.bind(this));
+            element.addEventListener('click', showContextMenu.bind(this));
         })
 
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
-        createPlaylistBtn.addEventListener('click', this.createNewPlaylist.bind(this))
+        createPlaylistBtn.addEventListener('click', createNewPlaylist.bind(this))
         const removeTrackFromPlaylistBtn = document.querySelector('.js-playlist-track-remove');
-        removeTrackFromPlaylistBtn.addEventListener('click', this.removeTrackFromPlaylist.bind(this));
+        removeTrackFromPlaylistBtn.addEventListener('click', removeTrackFromPlaylist.bind(this));
         const addTrackToPlaylistBtns = document.querySelectorAll('.js-playlist-track-add');
         addTrackToPlaylistBtns.forEach((button) => {
-            button.addEventListener('click', this.addTrackToPlaylist.bind(this));
+            button.addEventListener('click', addTrackToPlaylist.bind(this));
         });
 
         document.querySelectorAll('img').forEach(function (img) {
@@ -361,23 +318,23 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             img.removeEventListener('error', disableBrokenImg);
         });
         document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
-            element.removeEventListener('click', this.showContextMenu.bind(this));
+            element.removeEventListener('click', showContextMenu.bind(this));
         })
 
         const deleteBtn = document.querySelector('.playlist__description-delete');
         deleteBtn.removeEventListener('click', (this.deleteButtonClick.bind(this)));
 
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
-        createPlaylistBtn.removeEventListener('click', this.createNewPlaylist.bind(this))
+        createPlaylistBtn.removeEventListener('click', createNewPlaylist.bind(this))
         const removeTrackFromPlaylistBtn = document.querySelector('.js-playlist-track-remove');
-        removeTrackFromPlaylistBtn.removeEventListener('click', this.removeTrackFromPlaylist.bind(this));
+        removeTrackFromPlaylistBtn.removeEventListener('click', removeTrackFromPlaylist.bind(this));
         const addTrackToPlaylistBtns = document.querySelectorAll('.js-playlist-track-add');
         addTrackToPlaylistBtns.forEach((button) => {
-            button.removeEventListener('click', this.addTrackToPlaylist.bind(this));
+            button.removeEventListener('click', addTrackToPlaylist.bind(this));
         });
 
         window.removeEventListener('click', this.deleteButtonReset.bind(this));
-        window.removeEventListener('click', this.hideContextMenu.bind(this));
+        window.removeEventListener('click', hideContextMenu.bind(this));
         window.removeEventListener('click', this.removeEditWindow.bind(this));
         const playlistAvatar = document.querySelector('.playlist__description-avatar');
         playlistAvatar.removeEventListener('click', this.displayEditWindow.bind(this));
@@ -393,41 +350,6 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             window.localStorage.removeItem('lastPlayedData');
             TopbarComponent.logout();
         });
-    }
-
-    toggleMenu(command) {
-        this.renderedMenu.style.visibility = command === 'show' ? 'visible' : 'hidden';
-        this.renderedMenu.style.opacity = command === 'show' ? '1' : '0';
-        this.menuVisible = command === 'show';
-    }
-
-    setPosition({top, left}) {
-        this.renderedMenu.style.left = `${left}px`;
-        this.renderedMenu.style.top = `${top}px`;
-        this.toggleMenu('show');
-    }
-
-    hideContextMenu() {
-        if (!this.authenticated) {
-            return;
-        }
-        if (this.menuVisible) {
-            this.toggleMenu('hide');
-        }
-    }
-
-    showContextMenu(event) {
-        if (!this.authenticated) {
-            return;
-        }
-        const rect = event.target.getBoundingClientRect();
-        const origin = {
-            left: rect.left + 10,
-            top: rect.top + 10,
-        };
-        this.selectedTrackId = parseInt(event.target.getAttribute('data-id'));
-        this.setPosition(origin);
-        event.stopPropagation();
     }
 
     render(): void {
