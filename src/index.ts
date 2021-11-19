@@ -57,6 +57,11 @@ class App {
             if (target.parentElement.tagName === 'A') {
                 event.preventDefault();
                 router.go(target.parentElement.getAttribute('href'));
+            } else {
+                if (target.parentElement.parentElement.tagName === 'A') {
+                    event.preventDefault();
+                    router.go(target.parentElement.parentElement.getAttribute('href'));
+                }
             }
         }
     }

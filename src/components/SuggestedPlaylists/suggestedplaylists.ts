@@ -12,9 +12,17 @@ interface ISuggestedPlaylistsProps {
 export class SuggestedPlaylists extends Component<ISuggestedPlaylistsProps> {
     constructor(props) {
         super(props);
-        this.props.playlists = props.playlists.map((pl) => ({
-            playlist: new SuggestedPlaylist(pl).render(),
-        }));
+        this.props.playlists = props.playlists.map((pl) => (
+            new SuggestedPlaylist(pl).render()
+        ));
+        this.props.playlists.push(new SuggestedPlaylist({
+            props: {
+                    artwork: '',
+                    title: 'Create new...',
+                    id: 0,
+                }
+            }).render()
+        );
     }
 
     render() {

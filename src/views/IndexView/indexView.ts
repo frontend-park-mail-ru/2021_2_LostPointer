@@ -59,21 +59,6 @@ export class IndexView extends View<IIndexViewProps> {
             this.suggested_playlists = playlists;
         })
 
-        const predefinedPlaylists = [
-            {
-                cover: 'yur',
-                title: 'Jail Mix',
-            },
-            {
-                cover: 'albina',
-                title: 'Resine Working Mix Extended',
-            },
-            {
-                cover: 'starboy',
-                title: 'Workout Mix 2',
-            },
-        ];
-
         Promise.all([tracks, artists, albums, playlists]).then(() => {
             this.track_list = new TrackList({
                 title: 'Tracks of the Week',
@@ -116,6 +101,20 @@ export class IndexView extends View<IIndexViewProps> {
                 .querySelector('.js-logout')
                 .addEventListener('click', this.userLogout);
         }
+
+        const createPlaylistBtn = document.querySelector('.pl-link[href="/playlist/0"]');
+        createPlaylistBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const formdata = new FormData();
+            formdata.append('title', 'New playlist');
+
+            PlaylistModel.createPlaylist(formdata)
+                .then(({id}) => {
+                    router.go(`${routerStore.playlist}/${id}`);
+                });
+        });
 
         this.playButtonHandler = (e) => {
             if (e.target.className === 'track-list-item-play') {
