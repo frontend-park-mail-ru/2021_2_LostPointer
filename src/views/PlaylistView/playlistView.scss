@@ -32,13 +32,38 @@
     display: flex;
     align-items: center;
 
+    &-text_block {
+      margin: 80px 20px;
+      width: 55%;
+    }
+
     &-title {
       font-size: 80px;
       font-family: Montserrat, sans-serif;
       font-weight: 700;
-      margin: 80px 20px;
-      width: 55%;
-      text-align: center;
+    }
+
+    &-text {
+      font-family: Montserrat, sans-serif;
+      font-weight: 700;
+      position: absolute;
+    }
+
+    &-delete {
+      font-family: Montserrat, sans-serif;
+      text-align: right;
+      color: #3d3d3d;
+      margin-left: 94%;
+      cursor: pointer;
+    }
+
+    &-delete.confirm {
+      color: #cd0138;
+      text-decoration: underline;
+    }
+
+    &-delete:hover {
+      color: #cd0138;
     }
 
     &-avatar {

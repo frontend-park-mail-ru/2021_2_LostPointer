@@ -24,7 +24,6 @@ import './playlistView.scss';
 // TODO удалить лишнюю статику
 // TODO! включить контекстное меню во всех вьюхах
 // TODO! добавить кнопку + на dashboard для создания пустого плейлиста
-// TODO! добавить кнопку удаления плейлиста
 // TODO! не удалять плейлист при удалении последнего трека
 // TODO адаптировать под мобилку
 // TODO функционал удаления аватары
@@ -303,6 +302,19 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                 .addEventListener('click', this.userLogout);
         }
 
+        const deleteBtn = document.querySelector('.playlist__description-delete');
+        deleteBtn.addEventListener('click', ((event) => {
+            if ((<HTMLElement>event.target).classList.contains('confirm')) {
+                PlaylistModel.removePlaylist(this.playlist.getProps().id)
+                    .then(() => {
+                        router.go(routerStore.dashboard);
+                    });
+            } else {
+                (<HTMLElement>event.target).innerText = 'Sure?';
+                (<HTMLElement>event.target).classList.add('confirm');
+            }
+        }));
+
         const form = document.querySelector('.editwindow__form');
         form.addEventListener(
             'submit',
@@ -315,6 +327,14 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         playlistAvatar.addEventListener('click', this.displayEditWindow.bind(this));
         window.addEventListener('click', this.removeEditWindow.bind(this));
         window.addEventListener('click', this.hideContextMenu.bind(this));
+        window.addEventListener('click', ((event) => {
+            const deleteBtn = document.querySelector('.playlist__description-delete');
+            if (event.target == deleteBtn) {
+                return;
+            }
+            (<HTMLElement>deleteBtn).innerText = 'Delete';
+            deleteBtn.classList.remove('confirm');
+        }));
         document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
             element.addEventListener('click', this.showContextMenu.bind(this));
         })
