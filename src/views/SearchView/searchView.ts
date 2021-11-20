@@ -13,6 +13,8 @@ import { ArtistModel } from 'models/artist';
 import SearchViewTemplate from './searchView.hbs';
 import './searchView.scss';
 import { TrackList } from 'components/TrackList/tracklist';
+import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
+import { SuggestedAlbums } from 'components/SugestedAlbums/suggestedAlbums';
 
 interface ISearchViewData {
     tracks: string;
@@ -23,8 +25,6 @@ interface ISearchViewData {
 interface ISearchViewProps {
     authenticated: boolean;
 }
-
-const REQUEST_DELTA = 500;
 
 export class SearchView extends View<ISearchViewProps> {
     private authenticated: boolean;
@@ -106,14 +106,31 @@ export class SearchView extends View<ISearchViewProps> {
     }
 
     update() {
-        this.data.tracks = new TrackList({
-            title: 'Tracks',
-            tracks: this.tracks,
-        }).render();
+        this.data.tracks =
+            this.tracks.length !== 0
+                ? new TrackList({
+                      title: 'Tracks',
+                      tracks: this.tracks,
+                  }).render()
+                : [];
+        this.data.artists =
+            this.artists.length !== 0
+                ? new SuggestedArtists({
+                      artists: this.artists,
+                  }).render()
+                : [];
+        this.data.albums =
+            this.albums.length !== 0
+                ? new SuggestedAlbums({
+                      albums: this.albums,
+                  }).render()
+                : [];
         const content = document.querySelector('.main-layout__content');
 
         content.innerHTML = SearchViewTemplate({
             tracks: this.data.tracks,
+            artists: this.data.artists,
+            albums: this.data.albums,
         });
         player.setup(document.querySelectorAll('.track-list-item'));
 
