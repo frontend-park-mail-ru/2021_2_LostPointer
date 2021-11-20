@@ -66,6 +66,8 @@ export class SearchView extends View<ISearchViewProps> {
                         if (response.tracks) {
                             this.tracks = response.tracks.reduce(
                                 (acc, elem) => {
+                                    elem.album = new AlbumModel(elem.album);
+                                    elem.artist = new ArtistModel(elem.artist);
                                     acc.push(new TrackModel(elem));
                                     return acc;
                                 },
