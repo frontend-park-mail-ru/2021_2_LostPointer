@@ -1,8 +1,25 @@
+:root {
+  --ui-border-radius: 10px;
+}
+
 .search__content {
   display: grid;
   grid-template-columns: 550px auto;
+
+  &__albums-header {
+    padding: 12px 0;
+    color: white;
+    font-family: Montserrat, sans-serif;
+    font-weight: 700;
+    width: max-content;
+  }
 }
 
 .listen-now__top-albums {
-  width: 85vw;
+  width: 90vw;
+  margin: 0 0 15px;
+}
+
+.suggested-artist img {
+  border-radius: var(--ui-border-radius);
 }

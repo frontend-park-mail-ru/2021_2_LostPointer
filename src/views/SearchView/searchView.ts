@@ -5,7 +5,6 @@ import { View } from 'views/View/view';
 import disableBrokenImg from 'views/utils';
 
 import store from 'services/store/store';
-import indexView from 'views/IndexView/indexView';
 import { TrackModel } from 'models/track';
 import { AlbumModel } from 'models/album';
 import { ArtistModel } from 'models/artist';
@@ -16,6 +15,9 @@ import { TopAlbums } from 'components/TopAlbums/topalbums';
 
 import SearchViewTemplate from './searchView.hbs';
 import './searchView.scss';
+import IndexTemplate from 'views/IndexView/indexView.hbs';
+import TopbarComponent from 'components/Topbar/topbar';
+import sidebar from 'components/Sidebar/sidebar';
 
 const SEARCH_TIMEOUT = 200;
 
@@ -106,7 +108,15 @@ export class SearchView extends View<ISearchViewProps> {
     render() {
         const app = document.getElementById('app');
         if (app.innerHTML == '') {
-            indexView.render(); //TODO=Поправить этот КОШМАР
+            document.getElementById('app').innerHTML = IndexTemplate({
+                topbar: TopbarComponent.set({
+                    authenticated: store.get('authenticated'),
+                    avatar: store.get('userAvatar'),
+                    offline: !navigator.onLine,
+                }).render(),
+                sidebar: sidebar.render(),
+                player: player.render(),
+            });
         }
         document.querySelector('.main-layout__content').innerHTML = '';
         this.addListeners();

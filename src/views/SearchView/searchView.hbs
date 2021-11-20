@@ -1,5 +1,14 @@
 <div class='search__content'>
-    {{{tracks}}}
-    {{{artists}}}
-    {{{albums}}}
+    <div>
+        {{{tracks}}}
+    </div>
+    <div>
+        {{{artists}}}
+    </div>
+    {{#if albums}}
+        <div>
+            <div class='search__content__albums-header'>Albums</div>
+            {{{albums}}}
+        </div>
+    {{/if}}
 </div>

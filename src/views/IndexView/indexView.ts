@@ -138,14 +138,13 @@ export class IndexView extends View<IIndexViewProps> {
     render() {
         if (!this.isLoaded) {
             this.didMount();
-            return;
         }
 
         document.getElementById('app').innerHTML = IndexTemplate({
             topbar: TopbarComponent.set({
                 authenticated: this.authenticated,
                 avatar: this.userAvatar,
-                offline: navigator.onLine !== true,
+                offline: !navigator.onLine,
             }).render(),
             sidebar: this.sidebar,
             friend_activity: this.friend_activity,
