@@ -270,7 +270,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             return;
         }
         if (deleteBtn) {
-            (<HTMLElement>deleteBtn).innerText = 'Delete';
+            (<HTMLElement>deleteBtn).innerText = 'Delete playlist';
             deleteBtn.classList.remove('confirm');
         }
     }
