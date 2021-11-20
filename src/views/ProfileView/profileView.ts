@@ -2,7 +2,8 @@ import { View } from 'views/View/view';
 import Request from 'services/request/request';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
+import TopbarComponent from 'components/Topbar/topbar';
+import topbar, { Topbar } from 'components/Topbar/topbar';
 import player, { PlayerComponent } from 'components/Player/player';
 import { Sidebar } from 'components/Sidebar/sidebar';
 import { ICustomInput } from 'interfaces/CustomInput';
@@ -53,7 +54,7 @@ export class ProfileView extends View<IProfileViewProps> {
         UserModel.getSettings().then((user) => {
             this.user = user;
             this.sidebar = new Sidebar();
-            this.topbar = new Topbar({
+            this.topbar = topbar.set({
                 authenticated: this.authenticated,
                 avatar: user.getProps().small_avatar,
                 offline: navigator.onLine !== true,

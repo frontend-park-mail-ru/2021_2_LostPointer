@@ -205,7 +205,7 @@ export class IndexView extends View<IIndexViewProps> {
             suggested_playlists: this.suggested_playlists,
             player: player.render(),
         });
-
+        TopbarComponent.didMount();
         this.addListeners();
     }
 }

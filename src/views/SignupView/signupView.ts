@@ -46,7 +46,7 @@ export class SignupView extends View<ISignupComponentProps> {
 
     render() {
         if (store.get('authenticated')) {
-            router.go('/');
+            router.go(routerStore.dashboard);
             return;
         }
         document.getElementById('app').innerHTML = SignupComponentTemplate(

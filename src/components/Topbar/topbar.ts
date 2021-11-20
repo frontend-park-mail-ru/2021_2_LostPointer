@@ -3,6 +3,7 @@ import { Component } from 'components/Component/component';
 import TopbarTemplate from './topbar.hbs';
 import './topbar.scss';
 import router from 'services/router/router';
+import routerStore from 'services/router/routerStore';
 
 interface ITopbarComponentProps {
     authenticated: boolean;
@@ -11,6 +12,19 @@ interface ITopbarComponentProps {
 }
 
 export class Topbar extends Component<ITopbarComponentProps> {
+    constructor() {
+        super();
+    }
+
+    didMount() {
+        const searchField = document.querySelector('.topbar__search-input');
+        searchField.addEventListener('focus', () => {
+            if (window.location.pathname != routerStore.search) {
+                router.go(routerStore.search);
+            }
+        });
+    }
+
     render() {
         return TopbarTemplate(this.props);
     }
