@@ -211,10 +211,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 'nexttrack',
                 this.switchTrackHandler
             );
-            this.audio.addEventListener('timeupdate', this.timeUpdateHandler);
-            this.audio.addEventListener('pause', this.pauseHandler);
-            this.audio.addEventListener('play', this.playHandler);
-            this.audio.addEventListener('ended', this.endedHandler);
 
             this.globalPlayButtonHandler = (e) => {
                 const target = <HTMLImageElement>e.target;
@@ -249,6 +245,11 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             };
             document.addEventListener('click', this.globalPlayButtonHandler);
         }
+
+        this.audio.addEventListener('timeupdate', this.timeUpdateHandler);
+        this.audio.addEventListener('pause', this.pauseHandler);
+        this.audio.addEventListener('play', this.playHandler);
+        this.audio.addEventListener('ended', this.endedHandler);
 
         document
             .querySelector('.repeat')
