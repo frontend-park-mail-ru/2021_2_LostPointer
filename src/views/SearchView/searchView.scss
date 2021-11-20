@@ -1,4 +1,8 @@
-* {
-  user-select: none;
-  margin: 0;
+.search__content {
+  display: grid;
+  grid-template-columns: 550px auto;
+}
+
+.listen-now__top-albums {
+  width: 85vw;
 }

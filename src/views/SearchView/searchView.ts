@@ -10,11 +10,14 @@ import { TrackModel } from 'models/track';
 import { AlbumModel } from 'models/album';
 import { ArtistModel } from 'models/artist';
 
-import SearchViewTemplate from './searchView.hbs';
-import './searchView.scss';
 import { TrackList } from 'components/TrackList/tracklist';
 import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
-import { SuggestedAlbums } from 'components/SugestedAlbums/suggestedAlbums';
+import { TopAlbums } from 'components/TopAlbums/topalbums';
+
+import SearchViewTemplate from './searchView.hbs';
+import './searchView.scss';
+
+const SEARCH_TIMEOUT = 200;
 
 interface ISearchViewData {
     tracks: string;
@@ -30,7 +33,7 @@ export class SearchView extends View<ISearchViewProps> {
     private authenticated: boolean;
 
     private userAvatar: string;
-    private timestamp: number;
+    private searchTimer: any; //TODO=Поправить
     private data: ISearchViewData;
     private tracks: TrackModel[];
     private artists: ArtistModel[];
@@ -53,37 +56,42 @@ export class SearchView extends View<ISearchViewProps> {
     }
 
     addListeners() {
-        this.timestamp;
+        this.searchTimer;
         document
             .querySelector('.topbar__search-input')
             .addEventListener('input', (e) => {
                 const text = (<HTMLInputElement>e.target).value;
-                Request.get(`/music/search?text=${text}`)
-                    .then((response) => {
-                        this.tracks = response.tracks
-                            ? response.tracks.reduce((acc, elem) => {
-                                  elem.album = new AlbumModel(elem.album);
-                                  elem.artist = new ArtistModel(elem.artist);
-                                  acc.push(new TrackModel(elem));
-                                  return acc;
-                              }, [])
-                            : [];
-                        this.albums = response.albums
-                            ? response.albums.reduce((acc, elem) => {
-                                  acc.push(new AlbumModel(elem));
-                                  return acc;
-                              }, [])
-                            : [];
-                        this.artists = response.artists
-                            ? response.artists.reduce((acc, elem) => {
-                                  acc.push(new ArtistModel(elem));
-                                  return acc;
-                              }, [])
-                            : [];
-                    })
-                    .then(() => {
-                        this.update();
-                    });
+                clearTimeout(this.searchTimer);
+                this.searchTimer = setTimeout(() => {
+                    Request.get(`/music/search?text=${text}`)
+                        .then((response) => {
+                            this.tracks = response.tracks
+                                ? response.tracks.reduce((acc, elem) => {
+                                      elem.album = new AlbumModel(elem.album);
+                                      elem.artist = new ArtistModel(
+                                          elem.artist
+                                      );
+                                      acc.push(new TrackModel(elem));
+                                      return acc;
+                                  }, [])
+                                : [];
+                            this.albums = response.albums
+                                ? response.albums.reduce((acc, elem) => {
+                                      acc.push(new AlbumModel(elem));
+                                      return acc;
+                                  }, [])
+                                : [];
+                            this.artists = response.artists
+                                ? response.artists.reduce((acc, elem) => {
+                                      acc.push(new ArtistModel(elem));
+                                      return acc;
+                                  }, [])
+                                : [];
+                        })
+                        .then(() => {
+                            this.update();
+                        });
+                }, SEARCH_TIMEOUT);
             });
     }
 
@@ -93,7 +101,6 @@ export class SearchView extends View<ISearchViewProps> {
         });
 
         this.isLoaded = false;
-        player.unmount();
     }
 
     render() {
@@ -121,7 +128,7 @@ export class SearchView extends View<ISearchViewProps> {
                 : [];
         this.data.albums =
             this.albums.length !== 0
-                ? new SuggestedAlbums({
+                ? new TopAlbums({
                       albums: this.albums,
                   }).render()
                 : [];

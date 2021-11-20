@@ -112,21 +112,16 @@ export class IndexView extends View<IIndexViewProps> {
 
         player.setup(document.querySelectorAll('.track-list-item'));
 
-        document.querySelectorAll('img').forEach(function(img) {
+        document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function(img) {
+        document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
-
-        const suggestedTracksContainer = document.querySelector(
-            '.suggested-tracks-container'
-        );
         this.isLoaded = false;
-        player.unmount();
     }
 
     userLogout() {
