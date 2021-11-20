@@ -11,7 +11,8 @@ export interface IPlaylistModel {
     id: number;
     title: string;
     tracks: Array<TrackModel>;
-    artwork: string,
+    artwork: string;
+    artwork_color: string;
 }
 
 export class PlaylistModel extends Model<IPlaylistModel> {
@@ -121,7 +122,7 @@ export class PlaylistModel extends Model<IPlaylistModel> {
         });
     }
 
-    updateInformation(formdata: FormData): Promise<IResponseBody> {
+    updateInformation(formdata: FormData): Promise<IResponseBody> | Promise<IPlaylistModel> {
         return new Promise<IResponseBody>((res) => {
             Request.get(
                 '/csrf',
@@ -150,7 +151,7 @@ export class PlaylistModel extends Model<IPlaylistModel> {
         });
     }
 
-    deleteAvatar(): Promise<IResponseBody> {
+    deleteAvatar(): Promise<IResponseBody> | Promise<IPlaylistModel> {
         return new Promise<IResponseBody>((res) => {
             const formdata = new FormData();
             formdata.append('id', String(this.props.id));

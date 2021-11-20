@@ -12,6 +12,15 @@
   margin-left: 25px;
   width: 100%;
 
+  &__background-container {
+    position: absolute;
+    top: -200px;
+    left: 0;
+    z-index: -1;
+    height: 800px;
+    width: 100%;
+  }
+
   &__content {
     display: flex;
     flex-direction: row;
@@ -51,7 +60,7 @@
     &-delete {
       font-family: Montserrat, sans-serif;
       text-align: right;
-      color: #3d3d3d;
+      color: #cd0138;
       margin-left: 94%;
       cursor: pointer;
     }
@@ -59,10 +68,6 @@
     &-delete.confirm {
       color: #cd0138;
       text-decoration: underline;
-    }
-
-    &-delete:hover {
-      color: #cd0138;
     }
 
     &-avatar {
@@ -91,6 +96,7 @@
       background-color: rgba(0, 0, 0, 0.8);
       text-align: center;
       opacity: 0;
+      border-radius: 20px;
 
       &-img {
         height: 50px;

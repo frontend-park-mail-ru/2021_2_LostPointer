@@ -25,7 +25,6 @@ import './playlistView.scss';
 
 // TODO service worker
 // TODO подразбить на компоненты
-// TODO градиент
 // TODO почистить дубликаты кода (также в других вьюхах)
 // TODO формировать formdata внутри модели (также в других вьюхах)
 
@@ -198,7 +197,8 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                     const deleteAvatarBtn = document.querySelector('.editwindow__avatar-delete');
                     (<HTMLElement>deleteAvatarBtn).style.display = 'block';
 
-                    // TODO тут обновлять градиент
+                    const backgroundOverlay = document.querySelector('.playlist__background-container');
+                    (<HTMLElement>backgroundOverlay).style.backgroundImage = `linear-gradient(to bottom, ${body.artwork_color}, black)`;
                 } else {
                     msg.classList.remove('success');
                     (<HTMLElement>msg).innerText = body.message;
@@ -305,7 +305,8 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                     (<HTMLElement>msg).innerText = 'Changed successfully';
                     msg.classList.add('success', 'visible');
 
-                    // TODO тут обновлять градиент
+                    const backgroundOverlay = document.querySelector('.playlist__background-container');
+                    (<HTMLElement>backgroundOverlay).style.backgroundImage = `linear-gradient(to bottom, ${body.artwork_color}, black)`;
                 } else {
                     msg.classList.remove('success');
                     (<HTMLElement>msg).innerText = body.message;
@@ -438,7 +439,8 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         if (this.playlist.getProps().artwork === DEFAULT_ARTWORK) {
             (<HTMLElement>deleteAvatarBtn).style.display = 'none';
         }
-
+        const backgroundOverlay = document.querySelector('.playlist__background-container');
+        (<HTMLElement>backgroundOverlay).style.backgroundImage = `linear-gradient(to bottom, ${this.playlist.getProps().artwork_color}, black)`;
         this.addListeners();
 
         this.playButtonHandler = (e) => {
