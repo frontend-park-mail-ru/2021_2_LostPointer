@@ -55,14 +55,15 @@
     &-text {
       font-family: Montserrat, sans-serif;
       font-weight: 700;
+      margin: 5px;
     }
 
     &-delete {
       font-family: Montserrat, sans-serif;
-      text-align: right;
       color: #cd0138;
-      margin-left: 94%;
       cursor: pointer;
+      width: 120px;
+      margin: 5px;
     }
 
     &-delete.confirm {
