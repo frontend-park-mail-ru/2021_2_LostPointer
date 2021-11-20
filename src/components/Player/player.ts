@@ -111,7 +111,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             const json = JSON.parse(data);
             json.playing = false;
             this.props = json;
-            this.audio.currentTime = this.props.playerCurrentTime;
+            this.audio.currentTime = this.props.playerCurrentTime || 0;
             this.audio.src = this.props.url;
             this.props.right_disabled = true;
             this.props.left_disabled = true;
