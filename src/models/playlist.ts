@@ -138,8 +138,11 @@ export class PlaylistModel extends Model<IPlaylistModel> {
                                 'X-CSRF-Token': csrfToken,
                             },
                         ).then((body) => {
-                            if (body.status === 200) {
-                                this.props.title = String(formdata.get('title'));
+                            // при успехе ответ возвращает только artwork
+                            if (body.artwork_color || body.artwork_color == '') {
+                                if (formdata.get('title')) {
+                                    this.props.title = String(formdata.get('title'));
+                                }
                             }
                             res(body);
                         })

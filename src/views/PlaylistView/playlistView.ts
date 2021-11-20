@@ -182,7 +182,8 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         this.playlist
             .updateInformation(formdata)
             .then((body) => {
-                if (body.status === 200) {
+                // при успехе ответ возвращает только artwork, без status
+                if (!body.status) {
                     const avatar = document.querySelector(
                         '.playlist__description-img'
                     );
@@ -191,6 +192,8 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                     msg.classList.remove('fail');
                     (<HTMLElement>msg).innerText = 'Changed successfully';
                     msg.classList.add('success', 'visible');
+
+                    // TODO тут обновлять градиент
                 } else {
                     msg.classList.remove('success');
                     (<HTMLElement>msg).innerText = body.message;
@@ -225,7 +228,8 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         this.playlist
             .updateInformation(formdata)
             .then((body) => {
-                if (body.status === 200) {
+                // при успехе ответ возвращает только artwork, без status
+                if (!body.status) {
                     msg.classList.remove('fail');
                     msg.innerText = 'Changed successfully';
                     msg.classList.add('success', 'visible');
