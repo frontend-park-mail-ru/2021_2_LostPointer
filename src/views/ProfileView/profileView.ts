@@ -4,7 +4,7 @@ import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import TopbarComponent from 'components/Topbar/topbar';
 import topbar, { Topbar } from 'components/Topbar/topbar';
-import player, { PlayerComponent } from 'components/Player/player';
+import player from 'components/Player/player';
 import { Sidebar } from 'components/Sidebar/sidebar';
 import { ICustomInput } from 'interfaces/CustomInput';
 import { CustomValidation, isValidForm } from 'services/validation/validation';
@@ -28,10 +28,6 @@ interface IProfileViewProps {
 }
 
 export class ProfileView extends View<IProfileViewProps> {
-    private authenticated: boolean;
-    private playButtonHandler: (e) => void;
-
-    private player: PlayerComponent;
     private sidebar: Sidebar;
     private topbar: Topbar;
     private profileform: ProfileForm;
@@ -44,8 +40,7 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     didMount() {
-        this.authenticated = store.get('authenticated');
-        if (!this.authenticated) {
+        if (!store.get('authenticated')) {
             router.go(routerStore.signin);
             return;
         }
@@ -55,7 +50,7 @@ export class ProfileView extends View<IProfileViewProps> {
             this.user = user;
             this.sidebar = new Sidebar();
             this.topbar = topbar.set({
-                authenticated: this.authenticated,
+                authenticated: store.get('authenticated'),
                 avatar: user.getProps().small_avatar,
                 offline: navigator.onLine !== true,
             });
@@ -223,7 +218,7 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     addListeners() {
-        if (this.authenticated) {
+        if (store.get('authenticated')) {
             document
                 .querySelector('.js-logout')
                 .addEventListener('click', this.userLogout);
@@ -266,7 +261,6 @@ export class ProfileView extends View<IProfileViewProps> {
 
     userLogout() {
         Request.post('/user/logout').then(() => {
-            this.authenticated = false;
             store.set('authenticated', false);
             window.localStorage.removeItem('lastPlayedData');
             TopbarComponent.logout();
@@ -283,7 +277,7 @@ export class ProfileView extends View<IProfileViewProps> {
         document.getElementById('app').innerHTML = ProfileTemplate({
             topbar: this.topbar
                 .set({
-                    authenticated: this.authenticated,
+                    authenticated: store.get('authenticated'),
                     avatar: this.userAvatar,
                     offline: navigator.onLine !== true,
                 })
@@ -294,41 +288,7 @@ export class ProfileView extends View<IProfileViewProps> {
         });
         this.addListeners();
 
-        this.playButtonHandler = (e) => {
-            if (e.target.className === 'track-list-item-play') {
-                if (!this.authenticated) {
-                    router.go(routerStore.signin);
-                    return;
-                }
-                if (e.target === player.nowPlaying) {
-                    // Ставим на паузу/продолжаем воспр.
-                    player.toggle();
-                    return;
-                }
-                if (player.nowPlaying) {
-                    // Переключили на другой трек
-                    player.nowPlaying.dataset.playing = 'false';
-                    player.nowPlaying.src = '/static/img/play-outline.svg';
-                }
-
-                player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
-
-                e.target.dataset.playing = 'true';
-                player.setTrack({
-                    url: `/static/tracks/${e.target.dataset.url}`,
-                    cover: `/static/artworks/${e.target.dataset.cover}`,
-                    title: e.target.dataset.title,
-                    artist: e.target.dataset.artist,
-                    album: e.target.dataset.album,
-                });
-            }
-        };
         player.setup(document.querySelectorAll('.track-list-item'));
-        document
-            .querySelectorAll('.track-list-item-play')
-            .forEach((e) =>
-                e.addEventListener('click', this.playButtonHandler)
-            );
     }
 }
 

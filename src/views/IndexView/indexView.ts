@@ -10,8 +10,6 @@ import player from 'components/Player/player';
 import { TrackModel } from 'models/track';
 import { ArtistModel } from 'models/artist';
 import { AlbumModel } from 'models/album';
-import routerStore from 'services/router/routerStore';
-import router from 'services/router/router';
 import { View } from 'views/View/view';
 import disableBrokenImg from 'views/utils';
 
@@ -26,7 +24,6 @@ interface IIndexViewProps {
 
 export class IndexView extends View<IIndexViewProps> {
     private authenticated: boolean;
-    private playButtonHandler: (e) => void;
 
     private top_albums: AlbumModel[];
     private suggested_artists: ArtistModel[];
@@ -113,63 +110,21 @@ export class IndexView extends View<IIndexViewProps> {
                 .addEventListener('click', this.userLogout);
         }
 
-        this.playButtonHandler = (e) => {
-            if (e.target.className === 'track-list-item-play') {
-                if (!this.authenticated) {
-                    router.go(routerStore.signin);
-                    return;
-                }
-                if (e.target === player.nowPlaying) {
-                    // Ставим на паузу/продолжаем воспр.
-                    player.toggle();
-                    return;
-                }
-                if (player.nowPlaying) {
-                    // Переключили на другой трек
-                    player.nowPlaying.dataset.playing = 'false';
-                    player.nowPlaying.src = '/static/img/play-outline.svg';
-                }
-
-                player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
-
-                e.target.dataset.playing = 'true';
-                player.setTrack({
-                    url: `/static/tracks/${e.target.dataset.url}`,
-                    cover: `/static/artworks/${e.target.dataset.cover}`,
-                    title: e.target.dataset.title,
-                    artist: e.target.dataset.artist,
-                    album: e.target.dataset.album,
-                });
-            }
-        };
         player.setup(document.querySelectorAll('.track-list-item'));
-        document
-            .querySelectorAll('.track-list-item-play')
-            .forEach((e) =>
-                e.addEventListener('click', this.playButtonHandler)
-            );
-        document.querySelectorAll('img').forEach(function (img) {
+
+        document.querySelectorAll('img').forEach(function(img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function (img) {
+        document.querySelectorAll('img').forEach(function(img) {
             img.removeEventListener('error', disableBrokenImg);
         });
-        document
-            .querySelectorAll('.track-list-item-play')
-            .forEach((e) =>
-                e.removeEventListener('click', this.playButtonHandler)
-            );
+
         const suggestedTracksContainer = document.querySelector(
             '.suggested-tracks-container'
         );
-        if (suggestedTracksContainer)
-            suggestedTracksContainer.removeEventListener(
-                'click',
-                this.playButtonHandler
-            );
         this.isLoaded = false;
         player.unmount();
     }

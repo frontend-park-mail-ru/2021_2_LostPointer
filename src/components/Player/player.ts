@@ -4,6 +4,9 @@ import Request from 'services/request/request';
 
 import PlayerTemplate from './player.hbs';
 import './player.scss';
+import routerStore from 'services/router/routerStore';
+import router from 'services/router/router';
+import store from 'services/store/store';
 
 interface IPlayerComponentProps {
     recovered: boolean;
@@ -26,6 +29,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     playlist: HTMLElement[];
     nowPlaying: HTMLImageElement;
     currentHandler: EventListenerOrEventListenerObject;
+    private isLoaded: boolean;
     private audio: HTMLAudioElement;
     private firstTime: boolean;
     private gotSeekPos: boolean;
@@ -50,6 +54,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private mute: HTMLImageElement;
     private shuffle: boolean;
     private counted: boolean;
+    private globalPlayButtonHandler: EventListenerOrEventListenerObject;
 
     constructor(props?: IPlayerComponentProps) {
         super(props);
@@ -69,6 +74,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.gotSeekPos = false;
         this.gotVolPos = false;
         this.props.playing = false;
+        this.isLoaded = false;
     }
 
     seek(xPos) {
@@ -179,23 +185,71 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     setEventListeners() {
-        this.audio.addEventListener('loadedmetadata', () => {
-            const totalSeconds = this.audio.duration % 60 | 0;
-            const zero = totalSeconds < 10 ? '0' : '';
+        if (!this.isLoaded) {
+            this.audio.addEventListener('loadedmetadata', () => {
+                const totalSeconds = this.audio.duration % 60 | 0;
+                const zero = totalSeconds < 10 ? '0' : '';
 
-            this.props.current_time = '0:00';
-            this.props.total_time = `${
-                (this.audio.duration / 60) | 0
-            }:${zero}${totalSeconds}`;
-            this.props.playing = !this.firstTime;
+                this.props.current_time = '0:00';
+                this.props.total_time = `${
+                    (this.audio.duration / 60) | 0
+                }:${zero}${totalSeconds}`;
+                this.props.playing = !this.firstTime;
 
-            this.firstTime = false;
-            this.saveLastPlayed();
-            this.update();
-            document
-                .querySelector('.player-artwork')
-                .classList.remove('hidden');
-        });
+                this.firstTime = false;
+                this.saveLastPlayed();
+                this.update();
+                document
+                    .querySelector('.player-artwork')
+                    .classList.remove('hidden');
+            });
+            navigator.mediaSession.setActionHandler(
+                'previoustrack',
+                this.switchTrackHandler
+            );
+            navigator.mediaSession.setActionHandler(
+                'nexttrack',
+                this.switchTrackHandler
+            );
+            this.audio.addEventListener('timeupdate', this.timeUpdateHandler);
+            this.audio.addEventListener('pause', this.pauseHandler);
+            this.audio.addEventListener('play', this.playHandler);
+            this.audio.addEventListener('ended', this.endedHandler);
+
+            this.globalPlayButtonHandler = (e) => {
+                const target = <HTMLImageElement>e.target;
+                if (target.className === 'track-list-item-play') {
+                    if (!store.get('authenticated')) {
+                        router.go(routerStore.signin);
+                        return;
+                    }
+                    if (target === this.nowPlaying) {
+                        // Ставим на паузу/продолжаем воспр.
+                        this.toggle();
+                        return;
+                    }
+                    if (this.nowPlaying) {
+                        // Переключили на другой трек
+                        this.nowPlaying.dataset.playing = 'false';
+                        this.nowPlaying.src = '/static/img/play-outline.svg';
+                    }
+
+                    this.setPos(parseInt(target.dataset.pos, 10), target);
+
+                    target.dataset.playing = 'true';
+                    target.src = '/static/img/pause-outline.svg';
+                    this.setTrack({
+                        url: `/static/tracks/${target.dataset.url}`,
+                        cover: `/static/artworks/${target.dataset.cover}`,
+                        title: target.dataset.title,
+                        artist: target.dataset.artist,
+                        album: target.dataset.album,
+                    });
+                }
+            };
+            document.addEventListener('click', this.globalPlayButtonHandler);
+        }
+
         document
             .querySelector('.repeat')
             .addEventListener('click', this.buttonsHandler);
@@ -205,7 +259,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         document
             .querySelector('.mute')
             .addEventListener('click', this.buttonsHandler);
+
         window.addEventListener('resize', this.resizeHandler);
+
         document
             .querySelector('.player__seekbar')
             .addEventListener('click', this.seekbarHandler);
@@ -215,10 +271,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         document
             .querySelector('.player-play')
             .addEventListener('click', this.playButtonHandler);
-        this.audio.addEventListener('timeupdate', this.timeUpdateHandler);
-        this.audio.addEventListener('pause', this.pauseHandler);
-        this.audio.addEventListener('play', this.playHandler);
-        this.audio.addEventListener('ended', this.endedHandler);
+
         document
             .querySelector('.player-skip-left')
             .addEventListener('click', this.arrowKeysHandler);
@@ -226,14 +279,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             .querySelector('.player-skip-right')
             .addEventListener('click', this.arrowKeysHandler);
 
-        navigator.mediaSession.setActionHandler(
-            'previoustrack',
-            this.switchTrackHandler
-        );
-        navigator.mediaSession.setActionHandler(
-            'nexttrack',
-            this.switchTrackHandler
-        );
+        this.isLoaded = true;
     }
 
     removeEventListeners() {
