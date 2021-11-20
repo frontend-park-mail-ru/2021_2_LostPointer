@@ -24,6 +24,7 @@ import './playlistView.scss';
 
 
 // TODO service worker
+// TODO переразбить компоненты
 // TODO градиент
 // TODO удаление аватары плейлиста
 
