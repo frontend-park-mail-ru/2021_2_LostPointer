@@ -4,9 +4,8 @@ import { ArtistModel } from 'models/artist';
 import { AlbumModel } from 'models/album';
 import Request, {IResponseBody} from 'services/request/request';
 import { ContentType } from 'services/request/requestUtils';
-import router from 'services/router/router';
-import routerStore from 'services/router/routerStore';
 
+export const DEFAULT_ARTWORK = '/static/playlists/default_playlist_artwork_384px.webp';
 
 export interface IPlaylistModel {
     id: number;
@@ -145,9 +144,28 @@ export class PlaylistModel extends Model<IPlaylistModel> {
                                 }
                             }
                             res(body);
-                        })
+                        });
                     }
                 });
+        });
+    }
+
+    deleteAvatar(): Promise<IResponseBody> {
+        return new Promise<IResponseBody>((res) => {
+            const formdata = new FormData();
+            formdata.append('id', String(this.props.id));
+
+            Request.delete(
+                `/playlist/artwork`,
+                formdata,
+                ContentType.FORM,
+            ).then((body) => {
+                // при успехе ответ возвращает только artwork
+                if (body.artwork_color ) {
+                    this.props.artwork = DEFAULT_ARTWORK;
+                }
+                res(body);
+            });
         });
     }
 }

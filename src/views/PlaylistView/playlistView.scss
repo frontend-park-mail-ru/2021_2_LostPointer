@@ -150,6 +150,18 @@
       height: 200px;
       border-radius: 20px;
       object-fit: cover;
+      position: absolute;
+    }
+
+    &-delete {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      background-color: rgba(0, 0, 0, 0.8);
+      border-radius: 50%;
+      margin: 10px 10px 10px 165px;
+      cursor: pointer;
+      display: block;
     }
 
     &-input {

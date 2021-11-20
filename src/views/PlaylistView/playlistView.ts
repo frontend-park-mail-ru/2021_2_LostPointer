@@ -2,7 +2,7 @@ import { View } from 'views/View/view';
 import { Sidebar } from 'components/Sidebar/sidebar';
 import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
 import { TrackList } from 'components/TrackList/tracklist';
-import { PlaylistModel } from 'models/playlist';
+import { DEFAULT_ARTWORK, PlaylistModel } from 'models/playlist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import store from 'services/store/store';
@@ -24,9 +24,10 @@ import './playlistView.scss';
 
 
 // TODO service worker
-// TODO переразбить компоненты
+// TODO подразбить на компоненты
 // TODO градиент
-// TODO удаление аватары плейлиста
+// TODO почистить дубликаты кода (также в других вьюхах)
+// TODO формировать formdata внутри модели (также в других вьюхах)
 
 interface IPlaylistViewProps {
     authenticated: boolean;
@@ -194,6 +195,9 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                     (<HTMLElement>msg).innerText = 'Changed successfully';
                     msg.classList.add('success', 'visible');
 
+                    const deleteAvatarBtn = document.querySelector('.editwindow__avatar-delete');
+                    (<HTMLElement>deleteAvatarBtn).style.display = 'block';
+
                     // TODO тут обновлять градиент
                 } else {
                     msg.classList.remove('success');
@@ -271,12 +275,59 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         }
     }
 
+    deleteAvatar(event) {
+        const msg = document.querySelector('.editwindow__form-msg');
+        msg.innerHTML = '';
+
+        this.playlist
+            .deleteAvatar()
+            .then((body) => {
+                // при успехе ответ возвращает только artwork, без status
+                if (!body.status) {
+                    const avatarInEditWindow = document.querySelector('.editwindow__avatar-img');
+                    avatarInEditWindow.setAttribute(
+                        'src',
+                        this.playlist.getProps().artwork,
+                    );
+
+                    const avatar = document.querySelector(
+                        '.playlist__description-img'
+                    );
+                    avatar.setAttribute(
+                        'src',
+                        this.playlist.getProps().artwork,
+                    );
+
+                    const deleteAvatarBtn = document.querySelector('.editwindow__avatar-delete');
+                    (<HTMLElement>deleteAvatarBtn).style.display = 'none';
+
+                    msg.classList.remove('fail');
+                    (<HTMLElement>msg).innerText = 'Changed successfully';
+                    msg.classList.add('success', 'visible');
+
+                    // TODO тут обновлять градиент
+                } else {
+                    msg.classList.remove('success');
+                    (<HTMLElement>msg).innerText = body.message;
+                    msg.classList.add('fail', 'visible');
+                }
+            })
+            .catch(() => {
+                msg.classList.remove('success');
+                (<HTMLElement>msg).innerText = 'Artwork resetting failed';
+                msg.classList.add('fail', 'visible');
+            });
+    }
+
     addListeners() {
         if (this.authenticated) {
             document
                 .querySelector('.js-logout')
                 .addEventListener('click', this.userLogout);
         }
+
+        const deleteAvatarBtn = document.querySelector('.editwindow__avatar-delete');
+        deleteAvatarBtn.addEventListener('click', this.deleteAvatar.bind(this));
 
         const deleteBtn = document.querySelector('.playlist__description-delete');
         deleteBtn.addEventListener('click', (this.deleteButtonClick.bind(this)));
@@ -335,6 +386,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         window.removeEventListener('click', this.deleteButtonReset.bind(this));
         window.removeEventListener('click', hideContextMenu.bind(this));
         window.removeEventListener('click', this.removeEditWindow.bind(this));
+
+        const deleteAvatarBtn = document.querySelector('.editwindow__avatar-delete');
+        deleteAvatarBtn.removeEventListener('click', this.deleteAvatar.bind(this));
+
         const playlistAvatar = document.querySelector('.playlist__description-avatar');
         playlistAvatar.removeEventListener('click', this.displayEditWindow.bind(this));
         this.isLoaded = false;
@@ -378,6 +433,12 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         });
         this.renderedMenu = document.querySelector('.menu');
         this.menuVisible = false;
+
+        const deleteAvatarBtn = document.querySelector('.editwindow__avatar-delete');
+        if (this.playlist.getProps().artwork === DEFAULT_ARTWORK) {
+            (<HTMLElement>deleteAvatarBtn).style.display = 'none';
+        }
+
         this.addListeners();
 
         this.playButtonHandler = (e) => {
