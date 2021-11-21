@@ -70,7 +70,8 @@ export class SearchView extends View<ISearchViewProps> {
                     Request.get(`/music/search?text=${text}`)
                         .then((response) => {
                             this.tracks = response.tracks
-                                ? response.tracks.reduce((acc, elem) => {
+                                ? response.tracks.reduce((acc, elem, index) => {
+                                      elem.pos = index;
                                       elem.album = new AlbumModel(elem.album);
                                       elem.artist = new ArtistModel(
                                           elem.artist

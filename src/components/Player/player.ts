@@ -456,7 +456,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.arrowKeysHandler = (e) => {
             if (!(<HTMLImageElement>e.target).classList.contains('disabled')) {
                 this.switchTrack(
-                    (e.target as HTMLElement).classList.contains(
+                    (<HTMLElement>e.target).classList.contains(
                         'player-skip-right'
                     )
                 );
