@@ -124,7 +124,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.audio.src = this.props.file;
             this.props.right_disabled = true;
             this.props.left_disabled = true;
-            document.title = `${this.props.track} · ${this.props.artist}`;
+            document.title = `${this.props.track} · ${this.props.artist.props.name}`;
             this.props.hide_artwork = false;
             this.props.recovered = true;
             this.audio.preload = 'metadata';
@@ -152,7 +152,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             artist: artist || track.artist,
             file: this.audio.src,
         } as IPlayerComponentProps;
-        document.title = `${track.title} · ${track.artist}`;
+        document.title = `${this.props.track} · ${this.props.artist.props.name}`;
 
         navigator.mediaSession.metadata = new MediaMetadata({
             title: track.title,
