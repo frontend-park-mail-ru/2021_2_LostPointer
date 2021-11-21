@@ -40,6 +40,7 @@ export class SearchView extends View<ISearchViewProps> {
     private tracks: TrackModel[];
     private artists: ArtistModel[];
     private albums: AlbumModel[];
+    private noResults: boolean;
 
     constructor(props?: ISearchViewProps) {
         super(props);
@@ -49,6 +50,7 @@ export class SearchView extends View<ISearchViewProps> {
             albums: null,
             artists: null,
         };
+        this.noResults = false;
     }
 
     didMount() {
@@ -142,12 +144,18 @@ export class SearchView extends View<ISearchViewProps> {
                       albums: this.albums,
                   }).render()
                 : [];
-        const content = document.querySelector('.main-layout__content');
 
+        this.noResults =
+            this.data.albums.length +
+                this.data.artists.length +
+                this.data.tracks.length ===
+            0;
+        const content = document.querySelector('.main-layout__content');
         content.innerHTML = SearchViewTemplate({
             tracks: this.data.tracks,
             artists: this.data.artists,
             albums: this.data.albums,
+            not_found: this.noResults,
         });
         player.setup(document.querySelectorAll('.track-list-item'));
 

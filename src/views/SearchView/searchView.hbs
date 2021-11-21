@@ -1,14 +1,24 @@
-<div class='search__content'>
-    <div>
-        {{{tracks}}}
+{{#if not_found}}
+    <div class='search__content__not-found'>
+        <img
+            class='search__content__not-found__image'
+            src='src/static/img/not-found.webp'
+        />
+        <div>No results</div>
     </div>
-    <div>
-        {{{artists}}}
-    </div>
-    {{#if albums}}
+{{else}}
+    <div class='search__content'>
         <div>
-            <div class='search__content__albums-header'>Albums</div>
-            {{{albums}}}
+            {{{tracks}}}
         </div>
-    {{/if}}
-</div>
+        <div>
+            {{{artists}}}
+        </div>
+        {{#if albums}}
+            <div>
+                <div class='search__content__albums-header'>Albums</div>
+                {{{albums}}}
+            </div>
+        {{/if}}
+    </div>
+{{/if}}
