@@ -28,7 +28,10 @@ export class TrackModel extends Model<ITrackModel> {
         return new Promise((res) => {
             Request.get('/home/tracks')
                 .then((response) => {
-                    sessionStorage.setItem('/home/tracks', JSON.stringify(response));
+                    sessionStorage.setItem(
+                        '/home/tracks',
+                        JSON.stringify(response)
+                    );
                     const tracks: Array<TrackModel> = response.reduce(
                         (acc, elem, index) => {
                             elem.pos = index;
@@ -44,7 +47,9 @@ export class TrackModel extends Model<ITrackModel> {
                     res(tracks);
                 })
                 .catch(() => {
-                    const response = JSON.parse(sessionStorage.getItem('/home/tracks'));
+                    const response = JSON.parse(
+                        sessionStorage.getItem('/home/tracks')
+                    );
                     if (response) {
                         const tracks: Array<TrackModel> = response.reduce(
                             (acc, elem, index) => {
@@ -94,11 +99,27 @@ export class TrackModel extends Model<ITrackModel> {
                             lossless: false,
                             cover: '',
                             pos: 0,
-                        })
+                        });
 
-                        res(Array.from({length: 3}, () => emptyTrack));
+                        res(Array.from({ length: 3 }, () => emptyTrack));
                     }
                 });
+        });
+    }
+
+    static getAlbumTracks(id: string): Promise<TrackModel[]> | Promise<[]> {
+        return new Promise((resolve) => {
+            Request.get(`/album/${id}`).then((response) => {
+                const tracks = response.tracks.reduce((acc, elem, idx) => {
+                    elem.pos = idx;
+                    elem.album = new AlbumModel(response);
+                    elem.artist = new ArtistModel(response.artist);
+                    const track = new TrackModel(elem);
+                    acc.push(track);
+                    return acc;
+                }, []);
+                resolve(tracks);
+            });
         });
     }
 }

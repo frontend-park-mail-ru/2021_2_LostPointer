@@ -14,7 +14,10 @@
                     Track{{#if props.album}}s{{/if}}
                 </div>
                 <div class='top-album__wrapper'>
-                    <i class='top-album__play fa-solid fa-play'></i>
+                    <i
+                        data-id='{{props.id}}'
+                        class='top-album__play fa-solid fa-play'
+                    ></i>
                     <div class='top-album__description__title'>
                         <div class='top-album__artist'>
                             {{props.artist}}

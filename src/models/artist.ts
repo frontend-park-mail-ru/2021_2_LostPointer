@@ -1,15 +1,15 @@
 import { Model } from 'models/model';
 import Request from 'services/request/request';
-import {TrackModel} from 'models/track';
-import {AlbumModel} from 'models/album';
+import { TrackModel } from 'models/track';
+import { AlbumModel } from 'models/album';
 
 export interface IArtistModel {
     id: number;
     name: string;
-    avatar: string;
-    video: string;
-    albums: Array<AlbumModel>;
-    tracks: Array<TrackModel>;
+    avatar?: string;
+    video?: string;
+    albums?: Array<AlbumModel>;
+    tracks?: Array<TrackModel>;
 }
 
 export class ArtistModel extends Model<IArtistModel> {
@@ -21,7 +21,10 @@ export class ArtistModel extends Model<IArtistModel> {
         return new Promise<ArtistModel[]>((res) => {
             Request.get('/home/artists')
                 .then((response) => {
-                    sessionStorage.setItem('/home/artists', JSON.stringify(response));
+                    sessionStorage.setItem(
+                        '/home/artists',
+                        JSON.stringify(response)
+                    );
                     const artists: Array<ArtistModel> = response.reduce(
                         (acc, elem) => {
                             acc.push(new ArtistModel(elem));
@@ -32,7 +35,9 @@ export class ArtistModel extends Model<IArtistModel> {
                     res(artists);
                 })
                 .catch(() => {
-                    const response = JSON.parse(sessionStorage.getItem('/home/artists'));
+                    const response = JSON.parse(
+                        sessionStorage.getItem('/home/artists')
+                    );
                     if (response) {
                         const artists: Array<ArtistModel> = response.reduce(
                             (acc, elem) => {
@@ -52,7 +57,7 @@ export class ArtistModel extends Model<IArtistModel> {
                             tracks: [],
                         });
 
-                        res(Array.from({length: 4}, () => emptyArtist));
+                        res(Array.from({ length: 4 }, () => emptyArtist));
                     }
                 });
         });
@@ -121,10 +126,16 @@ export class ArtistModel extends Model<IArtistModel> {
                         lossless: false,
                         cover: '',
                         pos: 0,
-                    })
+                    });
 
-                    emptyArtist.props.albums = Array.from({length: 4}, () => emptyAlbum);
-                    emptyArtist.props.tracks = Array.from({length: 4}, () => emptyTrack);
+                    emptyArtist.props.albums = Array.from(
+                        { length: 4 },
+                        () => emptyAlbum
+                    );
+                    emptyArtist.props.tracks = Array.from(
+                        { length: 4 },
+                        () => emptyTrack
+                    );
 
                     res(emptyArtist);
                 });

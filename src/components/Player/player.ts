@@ -7,17 +7,20 @@ import './player.scss';
 import routerStore from 'services/router/routerStore';
 import router from 'services/router/router';
 import store from 'services/store/store';
+import { TrackModel } from 'models/track';
+import { TrackList } from 'components/TrackList/tracklist';
+import { ArtistModel } from 'models/artist';
 
 interface IPlayerComponentProps {
     recovered: boolean;
     total_time: string;
     current_time: string;
     playing: boolean;
-    artist: string;
+    artist: ArtistModel;
     track: string;
     left_disabled: boolean;
     right_disabled: boolean;
-    url: string;
+    file: string;
     playerCurrentTime: number;
     cover: string;
     playButton: HTMLImageElement;
@@ -118,7 +121,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             json.playing = false;
             this.props = json;
             this.audio.currentTime = this.props.playerCurrentTime || 0;
-            this.audio.src = this.props.url;
+            this.audio.src = this.props.file;
             this.props.right_disabled = true;
             this.props.left_disabled = true;
             document.title = `${this.props.track} · ${this.props.artist}`;
@@ -130,16 +133,25 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     setTrack(track): void {
+        let artist: ArtistModel = null;
+        if (typeof track.artist === 'string') {
+            // Костыль
+            artist = new ArtistModel({
+                id: track.artistId,
+                name: track.artist,
+            });
+        }
         this.audio.pause();
         this.counted = false;
-        this.audio.src = track.url;
+        this.audio.src = `/static/tracks/${track.file}`;
         this.props = {
-            cover: track.cover,
+            cover: `/static/artworks/${
+                track.cover || track.album.props.artwork
+            }`,
             track: track.title,
-            artist: track.artist,
-            url: track.url,
+            artist: artist || track.artist,
+            file: this.audio.src,
         } as IPlayerComponentProps;
-
         document.title = `${track.title} · ${track.artist}`;
 
         navigator.mediaSession.metadata = new MediaMetadata({
@@ -214,6 +226,17 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
             this.globalPlayButtonHandler = (e) => {
                 const target = <HTMLImageElement>e.target;
+                if (target.classList.contains('top-album__play')) {
+                    TrackModel.getAlbumTracks(target.dataset.id).then(
+                        (tracks) => {
+                            this.playlist = new TrackList({ tracks }).render();
+                            this.setup(this.playlist);
+                            this.setPos(0);
+                            this.setTrack(tracks[0].props);
+                        }
+                    );
+                    return;
+                }
                 if (target.className === 'track-list-item-play') {
                     if (!store.get('authenticated')) {
                         router.go(routerStore.signin);
@@ -234,13 +257,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
                     target.dataset.playing = 'true';
                     target.src = '/static/img/pause-outline.svg';
-                    this.setTrack({
-                        url: `/static/tracks/${target.dataset.url}`,
-                        cover: `/static/artworks/${target.dataset.cover}`,
-                        title: target.dataset.title,
-                        artist: target.dataset.artist,
-                        album: target.dataset.album,
-                    });
+                    this.setTrack(target.dataset);
                 }
             };
             document.addEventListener('click', this.globalPlayButtonHandler);
@@ -494,20 +511,14 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         if (allowed) {
             prev.src = '/static/img/play-outline.svg';
             this.nowPlaying.src = '/static/img/pause-outline.svg';
-            this.setTrack({
-                url: `/static/tracks/${this.nowPlaying.dataset.url}`,
-                cover: `/static/artworks/${this.nowPlaying.dataset.cover}`,
-                title: this.nowPlaying.dataset.title,
-                artist: this.nowPlaying.dataset.artist,
-                album: this.nowPlaying.dataset.album,
-            });
+            this.setTrack(this.nowPlaying.dataset);
         }
     }
 
     update() {
         const artist = document.getElementById('artist-name');
         if (artist) {
-            artist.innerHTML = this.props.artist || '';
+            artist.innerHTML = this.props.artist.props.name || '';
         }
         const track = document.getElementById('track-name');
         if (track) {
@@ -552,11 +563,11 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             total_time: '',
             current_time: '',
             playing: false,
-            artist: '',
+            artist: new ArtistModel(),
             track: '',
             left_disabled: true,
             right_disabled: true,
-            url: '',
+            file: '',
             playerCurrentTime: 0,
             cover: '',
             playButton: null,
@@ -568,7 +579,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.update();
     }
 
-    setPos(pos: number, element: HTMLImageElement) {
+    setPos(pos: number, element?: HTMLImageElement) {
         this.pos = pos;
         this.nowPlaying = element;
     }
