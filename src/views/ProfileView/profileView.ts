@@ -286,6 +286,7 @@ export class ProfileView extends View<IProfileViewProps> {
             profileform: this.profileform.render(),
             player: player.render(),
         });
+        topbar.didMount();
         this.addListeners();
 
         player.setup(document.querySelectorAll('.track-list-item'));

@@ -2,7 +2,8 @@ import { View } from 'views/View/view';
 import Request from 'services/request/request';
 import player from 'components/Player/player';
 import { Sidebar } from 'components/Sidebar/sidebar';
-import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
+import TopbarComponent from 'components/Topbar/topbar';
+import topbar, { Topbar } from 'components/Topbar/topbar';
 import { SuggestedAlbums } from 'components/SugestedAlbums/suggestedAlbums';
 import { TrackList } from 'components/TrackList/tracklist';
 import { ArtistModel } from 'models/artist';
@@ -88,13 +89,13 @@ export class ArtistView extends View<IArtistViewProps> {
             });
         }
 
-        document.querySelectorAll('img').forEach(function(img) {
+        document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function(img) {
+        document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
         this.isLoaded = false;
@@ -134,6 +135,7 @@ export class ArtistView extends View<IArtistViewProps> {
             player: player.render(),
         });
         this.addListeners();
+        topbar.didMount();
 
         player.setup(document.querySelectorAll('.track-list-item'));
     }
