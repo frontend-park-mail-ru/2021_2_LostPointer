@@ -95,19 +95,24 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                     value: props.title,
                 }).render(),
             ]
-            this.contextMenu = new ContextMenu({
-                options: [
-                    {
-                        class: 'js-playlist-create',
-                        dataId: null,
-                        value: 'Add to the new playlist',
-                    },
+            const options = [
+                {
+                    class: 'js-playlist-create',
+                    dataId: null,
+                    value: 'Add to the new playlist',
+                },
+            ]
+            if (this.playlist.getProps().is_own) {
+                options.push(
                     {
                         class: 'js-playlist-track-remove',
                         dataId: null,
                         value: 'Remove from the current playlist',
-                    },
-                ].concat(this.userPlaylists.map((playlist) => {
+                    }
+                )
+            }
+            this.contextMenu = new ContextMenu({
+                options: options.concat(this.userPlaylists.map((playlist) => {
                     return {
                         class: `js-playlist-track-add`,
                         dataId: playlist.getProps().id,
@@ -121,7 +126,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     displayEditWindow(event) {
-        if (!this.authenticated) {
+        if (!this.authenticated || !this.playlist.getProps().is_own) {
             return;
         }
         const playlistEditWindow = document.querySelector('.editwindow');
@@ -146,6 +151,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
 
     uploadAvatarFile(event) {
         event.preventDefault();
+
+        if (!this.playlist.getProps().is_own) {
+            return;
+        }
 
         const file = event.target.files[0];
         let readFile = null;
@@ -218,6 +227,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     submitChangePlaylistInfoForm(event) {
         event.preventDefault();
 
+        if (!this.playlist.getProps().is_own) {
+            return;
+        }
+
         const titleInput = event.target.querySelector('input[name="title"]');
         const msg = event.target.querySelector('.editwindow__form-msg');
         msg.innerHTML = '';
@@ -257,6 +270,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     deleteButtonClick(event) {
+        if (!this.playlist.getProps().is_own) {
+            return;
+        }
+
         if ((<HTMLElement>event.target).classList.contains('confirm')) {
             PlaylistModel.removePlaylist(this.playlist.getProps().id)
                 .then(() => {
@@ -268,6 +285,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         }
     }
     deleteButtonReset(event) {
+        if (!this.playlist.getProps().is_own) {
+            return;
+        }
+
         const deleteBtn = document.querySelector('.playlist__description-delete');
         if (event.target == deleteBtn) {
             return;
@@ -279,6 +300,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     deleteAvatar(event) {
+        if (!this.playlist.getProps().is_own) {
+            return;
+        }
+
         const msg = document.querySelector('.editwindow__form-msg');
         msg.innerHTML = '';
 
@@ -330,33 +355,38 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                 .addEventListener('click', this.userLogout);
         }
 
-        const deleteAvatarBtn = document.querySelector('.editwindow__avatar-delete');
-        deleteAvatarBtn.addEventListener('click', this.deleteAvatar.bind(this));
+        if (this.playlist.getProps().is_own) {
+            const deleteAvatarBtn = document.querySelector('.editwindow__avatar-delete');
+            deleteAvatarBtn.addEventListener('click', this.deleteAvatar.bind(this));
 
-        const deleteBtn = document.querySelector('.playlist__description-delete');
-        deleteBtn.addEventListener('click', (this.deleteButtonClick.bind(this)));
+            const deleteBtn = document.querySelector('.playlist__description-delete');
+            deleteBtn.addEventListener('click', (this.deleteButtonClick.bind(this)));
 
-        const form = document.querySelector('.editwindow__form');
-        form.addEventListener(
-            'submit',
-            this.submitChangePlaylistInfoForm.bind(this)
-        );
-        const fileInput = document.querySelector('input[name="file"]');
-        fileInput.addEventListener('change', this.uploadAvatarFile.bind(this));
+            const form = document.querySelector('.editwindow__form');
+            form.addEventListener(
+                'submit',
+                this.submitChangePlaylistInfoForm.bind(this)
+            );
+            const fileInput = document.querySelector('input[name="file"]');
+            fileInput.addEventListener('change', this.uploadAvatarFile.bind(this));
 
-        const playlistAvatar = document.querySelector('.playlist__description-avatar');
-        playlistAvatar.addEventListener('click', this.displayEditWindow.bind(this));
-        window.addEventListener('click', this.removeEditWindow.bind(this));
+            const playlistAvatar = document.querySelector('.playlist__description-avatar');
+            playlistAvatar.addEventListener('click', this.displayEditWindow.bind(this));
+            window.addEventListener('click', this.removeEditWindow.bind(this));
+            window.addEventListener('click', this.deleteButtonReset.bind(this));
+
+            const removeTrackFromPlaylistBtn = document.querySelector('.js-playlist-track-remove');
+            removeTrackFromPlaylistBtn.addEventListener('click', removeTrackFromPlaylist.bind(this));
+        }
+
         window.addEventListener('click', hideContextMenu.bind(this));
-        window.addEventListener('click', this.deleteButtonReset.bind(this));
         document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
             element.addEventListener('click', showContextMenu.bind(this));
         })
 
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
         createPlaylistBtn.addEventListener('click', createNewPlaylist.bind(this))
-        const removeTrackFromPlaylistBtn = document.querySelector('.js-playlist-track-remove');
-        removeTrackFromPlaylistBtn.addEventListener('click', removeTrackFromPlaylist.bind(this));
+
         const addTrackToPlaylistBtns = document.querySelectorAll('.js-playlist-track-add');
         addTrackToPlaylistBtns.forEach((button) => {
             button.addEventListener('click', addTrackToPlaylist.bind(this));
@@ -375,27 +405,41 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             element.removeEventListener('click', showContextMenu.bind(this));
         })
 
-        const deleteBtn = document.querySelector('.playlist__description-delete');
-        deleteBtn.removeEventListener('click', (this.deleteButtonClick.bind(this)));
+        if (this.playlist && this.playlist.getProps().is_own) {
+            const removeTrackFromPlaylistBtn = document.querySelector('.js-playlist-track-remove');
+            removeTrackFromPlaylistBtn.removeEventListener('click', removeTrackFromPlaylist.bind(this));
+
+            window.removeEventListener('click', this.deleteButtonReset.bind(this));
+            window.removeEventListener('click', this.removeEditWindow.bind(this));
+
+            const playlistAvatar = document.querySelector('.playlist__description-avatar');
+            playlistAvatar.removeEventListener('click', this.displayEditWindow.bind(this));
+
+            const fileInput = document.querySelector('input[name="file"]');
+            fileInput.removeEventListener('change', this.uploadAvatarFile.bind(this));
+
+            const form = document.querySelector('.editwindow__form');
+            form.removeEventListener(
+                'submit',
+                this.submitChangePlaylistInfoForm.bind(this)
+            );
+
+            const deleteBtn = document.querySelector('.playlist__description-delete');
+            deleteBtn.removeEventListener('click', (this.deleteButtonClick.bind(this)));
+
+            const deleteAvatarBtn = document.querySelector('.editwindow__avatar-delete');
+            deleteAvatarBtn.removeEventListener('click', this.deleteAvatar.bind(this));
+        }
 
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
         createPlaylistBtn.removeEventListener('click', createNewPlaylist.bind(this))
-        const removeTrackFromPlaylistBtn = document.querySelector('.js-playlist-track-remove');
-        removeTrackFromPlaylistBtn.removeEventListener('click', removeTrackFromPlaylist.bind(this));
         const addTrackToPlaylistBtns = document.querySelectorAll('.js-playlist-track-add');
         addTrackToPlaylistBtns.forEach((button) => {
             button.removeEventListener('click', addTrackToPlaylist.bind(this));
         });
 
-        window.removeEventListener('click', this.deleteButtonReset.bind(this));
         window.removeEventListener('click', hideContextMenu.bind(this));
-        window.removeEventListener('click', this.removeEditWindow.bind(this));
 
-        const deleteAvatarBtn = document.querySelector('.editwindow__avatar-delete');
-        deleteAvatarBtn.removeEventListener('click', this.deleteAvatar.bind(this));
-
-        const playlistAvatar = document.querySelector('.playlist__description-avatar');
-        playlistAvatar.removeEventListener('click', this.displayEditWindow.bind(this));
         this.isLoaded = false;
     }
 
@@ -419,6 +463,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         document.getElementById('app').innerHTML = PlaylistTemplate({
             title: this.playlist.getProps().title,
             avatar: this.playlist.getProps().artwork,
+            is_own: this.playlist.getProps().is_own,
             topbar: this.topbar
                 .set({
                     authenticated: this.authenticated,
@@ -439,7 +484,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         this.menuVisible = false;
 
         const deleteAvatarBtn = document.querySelector('.editwindow__avatar-delete');
-        if (this.playlist.getProps().artwork === DEFAULT_ARTWORK) {
+        if (this.playlist.getProps().is_own && this.playlist.getProps().artwork === DEFAULT_ARTWORK) {
             (<HTMLElement>deleteAvatarBtn).style.display = 'none';
         }
         const backgroundOverlay = document.querySelector('.playlist__background-container');

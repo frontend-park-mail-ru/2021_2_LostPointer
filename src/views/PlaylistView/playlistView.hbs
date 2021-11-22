@@ -9,12 +9,14 @@
                 <div class='playlist__description'>
                     <div class='playlist__description-avatar'>
                         <img class='playlist__description-img' src='{{{avatar}}}' />
-                        <div class='playlist__description-edit'>
-                            <img class='playlist__description-edit-img' src='/static/img/edit.svg' />
-                            <div class='playlist__description-edit-msg'>
-                                Edit
+                        {{#if is_own}}
+                            <div class='playlist__description-edit'>
+                                <img class='playlist__description-edit-img' src='/static/img/edit.svg' />
+                                <div class='playlist__description-edit-msg'>
+                                    Edit
+                                </div>
                             </div>
-                        </div>
+                        {{/if}}
                     </div>
                     <div class='playlist__description-text_block'>
                         <div class='playlist__description-text'>
@@ -23,9 +25,11 @@
                         <div class='playlist__description-title'>
                             {{{title}}}
                         </div>
-                        <div class='playlist__description-delete'>
-                            Delete playlist
-                        </div>
+                        {{#if is_own}}
+                            <div class='playlist__description-delete'>
+                                Delete playlist
+                            </div>
+                        {{/if}}
                     </div>
                 </div>
                 <div class='playlist__content'>
@@ -33,42 +37,44 @@
                 </div>
             </div>
             {{{contextMenu}}}
-            <div class='editwindow'>
-                <div class='editwindow__content'>
-                    <form class='editwindow__avatar' action='#' novalidate>
-                        <div class='editwindow__avatar-block'>
-                            <img class='editwindow__avatar-img' src='{{{avatar}}}' />
-                            <div class='editwindow__avatar-delete'>
-                                <img src='/static/img/delete.svg'/>
+            {{#if is_own}}
+                <div class='editwindow'>
+                    <div class='editwindow__content'>
+                        <form class='editwindow__avatar' action='#' novalidate>
+                            <div class='editwindow__avatar-block'>
+                                <img class='editwindow__avatar-img' src='{{{avatar}}}' />
+                                <div class='editwindow__avatar-delete'>
+                                    <img src='/static/img/delete.svg'/>
+                                </div>
                             </div>
-                        </div>
-                        <input
-                            type='file'
-                            name='file'
-                            id='file'
-                            accept='image/png, image/jpg, image/webp'
-                            class='editwindow__avatar-input'
-                        />
-                        <label for='file' class='editwindow__avatar-input-btn'>Upload file</label>
-                    </form>
-                    <form class='editwindow__form' action='#' novalidate>
-                        <div class='editwindow__form-title'>
-                            Edit Details
-                        </div>
-                        {{#each inputs}}
-                            {{{this}}}
-                        {{/each}}
-                        <div class='editwindow__form-msg form__fail_msg'></div>
-                        <div class='editwindow__form-buttons'>
                             <input
-                                class='editwindow__form-submit'
-                                type='image'
-                                src='/static/img/save.svg'
+                                type='file'
+                                name='file'
+                                id='file'
+                                accept='image/png, image/jpg, image/webp'
+                                class='editwindow__avatar-input'
                             />
-                        </div>
-                    </form>
+                            <label for='file' class='editwindow__avatar-input-btn'>Upload file</label>
+                        </form>
+                        <form class='editwindow__form' action='#' novalidate>
+                            <div class='editwindow__form-title'>
+                                Edit Details
+                            </div>
+                            {{#each inputs}}
+                                {{{this}}}
+                            {{/each}}
+                            <div class='editwindow__form-msg form__fail_msg'></div>
+                            <div class='editwindow__form-buttons'>
+                                <input
+                                    class='editwindow__form-submit'
+                                    type='image'
+                                    src='/static/img/save.svg'
+                                />
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            {{/if}}
         </div>
     </div>
 </div>

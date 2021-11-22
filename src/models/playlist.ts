@@ -14,6 +14,7 @@ export interface IPlaylistModel {
     artwork: string;
     artwork_color: string;
     is_public: boolean;
+    is_own: boolean;
 }
 
 export class PlaylistModel extends Model<IPlaylistModel> {
