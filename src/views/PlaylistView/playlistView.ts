@@ -112,7 +112,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                 )
             }
             this.contextMenu = new ContextMenu({
-                options: options.concat(this.userPlaylists.map((playlist) => {
+                options: options.concat(this.userPlaylists.filter((playlist) => {
+                    return playlist.getProps().is_own;
+                })
+                    .map((playlist) => {
                     return {
                         class: `js-playlist-track-add`,
                         dataId: playlist.getProps().id,

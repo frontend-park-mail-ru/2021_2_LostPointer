@@ -88,7 +88,10 @@ export class ArtistView extends View<IArtistViewProps> {
                         dataId: null,
                         value: 'Add to the new playlist',
                     },
-                ].concat(this.userPlaylists.map((playlist) => {
+                ].concat(this.userPlaylists.filter((playlist) => {
+                    return playlist.getProps().is_own;
+                })
+                    .map((playlist) => {
                     return {
                         class: `js-playlist-track-add`,
                         dataId: playlist.getProps().id,
