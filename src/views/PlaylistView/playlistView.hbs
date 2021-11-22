@@ -63,7 +63,13 @@
                             {{#each inputs}}
                                 {{{this}}}
                             {{/each}}
-                            <div class='editwindow__form-msg form__fail_msg'></div>
+                            <div class='editwindow__form-public'>
+                                <label>Public playlist</label>
+                                <div class='editwindow__form-switch'>
+                                    <input type='checkbox'>
+                                    <span class='slider round'></span>
+                                </div>
+                            </div>
                             <div class='editwindow__form-buttons'>
                                 <input
                                     class='editwindow__form-submit'
@@ -71,6 +77,7 @@
                                     src='/static/img/save.svg'
                                 />
                             </div>
+                            <div class='editwindow__form-msg form__fail_msg'></div>
                         </form>
                     </div>
                 </div>
