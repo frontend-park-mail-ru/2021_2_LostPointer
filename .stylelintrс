@@ -35,5 +35,6 @@
         "alpha-value-notation": false,
         "color-function-notation": false,
         "property-no-unknown": false,
+        "no-eol-whitespace": false,
     }
 }

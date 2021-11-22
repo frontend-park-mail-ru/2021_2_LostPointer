@@ -82,6 +82,7 @@ export class IndexView extends View<IIndexViewProps> {
             }).render();
             this.suggested_artists = new SuggestedArtists({
                 artists: this.suggested_artists,
+                extraRounded: true,
             }).render();
 
             this.friend_activity = new FriendActivity({
