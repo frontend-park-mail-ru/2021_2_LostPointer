@@ -143,6 +143,7 @@ export class SearchView extends View<ISearchViewProps> {
             this.albums.length !== 0
                 ? new TopAlbums({
                       albums: this.albums,
+                      compact: true,
                   }).render()
                 : [];
 
