@@ -31,6 +31,8 @@ import './playlistView.scss';
 // TODO переместить кнопку удаления в окошко редактирования
 // TODO при пустом треклисте удалять его из верстки
 
+// TODO переключение на главной своих и чужих плейлистов
+
 interface IPlaylistViewProps {
     authenticated: boolean;
 }
@@ -267,7 +269,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             })
             .catch(() => {
                 msg.classList.remove('success');
-                msg.innerText = 'Profile changing failed';
+                msg.innerText = 'Playlist changing failed';
                 msg.classList.add('fail', 'visible');
             });
     }
@@ -351,6 +353,40 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             });
     }
 
+    togglePublicity(event) {
+        const formdata = new FormData();
+        if (event.target.checked) {
+            formdata.append('is_public', 'true');
+        } else {
+            formdata.append('is_public', 'false');
+        }
+        const msg = document.querySelector('.editwindow__form-msg');
+        msg.innerHTML = '';
+
+        this.playlist
+            .updateInformation(formdata)
+            .then((body) => {
+                // при успехе ответ возвращает только artwork, без status
+                if (!body.status) {
+                    msg.classList.remove('fail');
+                    (<HTMLElement>msg).innerText = 'Changed successfully';
+                    msg.classList.add('success', 'visible');
+                    const title = document.querySelector('.playlist__description-title');
+                    (<HTMLElement>title).innerText = this.playlist.getProps().title;
+                } else {
+                    msg.classList.remove('success');
+                    (<HTMLElement>msg).innerText = body.message;
+                    msg.classList.add('fail', 'visible');
+                }
+            })
+            .catch(() => {
+                msg.classList.remove('success');
+                (<HTMLElement>msg).innerText = 'Playlist changing failed';
+                msg.classList.add('fail', 'visible');
+            });
+
+    }
+
     addListeners() {
         if (this.authenticated) {
             document
@@ -361,6 +397,9 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         if (this.playlist.getProps().is_own) {
             const deleteAvatarBtn = document.querySelector('.editwindow__avatar-delete');
             deleteAvatarBtn.addEventListener('click', this.deleteAvatar.bind(this));
+
+            const publicityCheckbox = document.querySelector('.editwindow__form-switch input');
+            publicityCheckbox.addEventListener('click', this.togglePublicity.bind(this))
 
             const deleteBtn = document.querySelector('.playlist__description-delete');
             deleteBtn.addEventListener('click', (this.deleteButtonClick.bind(this)));
@@ -467,6 +506,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             title: this.playlist.getProps().title,
             avatar: this.playlist.getProps().artwork,
             is_own: this.playlist.getProps().is_own,
+            is_public: this.playlist.getProps().is_public,
             topbar: this.topbar
                 .set({
                     authenticated: this.authenticated,

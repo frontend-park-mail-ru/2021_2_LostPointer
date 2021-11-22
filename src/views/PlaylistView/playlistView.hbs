@@ -64,11 +64,11 @@
                                 {{{this}}}
                             {{/each}}
                             <div class='editwindow__form-public'>
-                                <label>Public playlist</label>
-                                <div class='editwindow__form-switch'>
-                                    <input type='checkbox'>
-                                    <span class='slider round'></span>
-                                </div>
+                                <label class='editwindow__form-label'>Public playlist</label>
+                                <label class='editwindow__form-switch'>
+                                    <input type='checkbox' {{#if is_public}}checked{{/if}}>
+                                    <span class='slider'></span>
+                                </label>
                             </div>
                             <div class='editwindow__form-buttons'>
                                 <input

@@ -207,16 +207,16 @@
 
     &-public {
       width: 200px;
+    }
 
-      label {
-        color: #ffffff;
-        font-family: Montserrat, sans-serif;
-        font-size: 16px;
-        padding-left: 10px;
-        text-align: right;
-        width: 150px;
-        top: 20px;
-      }
+    &-label {
+      color: #ffffff;
+      font-family: Montserrat, sans-serif;
+      font-size: 16px;
+      padding-left: 10px;
+      text-align: right;
+      width: 150px;
+      top: 20px;
     }
 
     &-switch {
