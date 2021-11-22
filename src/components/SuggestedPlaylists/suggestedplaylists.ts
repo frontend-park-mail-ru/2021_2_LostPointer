@@ -20,6 +20,7 @@ export class SuggestedPlaylists extends Component<ISuggestedPlaylistsProps> {
                     artwork: '',
                     title: 'Create new...',
                     id: 0,
+                    is_public: false,
                 }
             }).render()
         );

@@ -7,6 +7,7 @@ interface ISuggestedPlaylistProps {
     artwork: string;
     title: string;
     id: number;
+    is_public: boolean;
 }
 
 export class SuggestedPlaylist extends Component<ISuggestedPlaylistProps> {
@@ -16,6 +17,7 @@ export class SuggestedPlaylist extends Component<ISuggestedPlaylistProps> {
             artwork: props.props.artwork,
             title: props.props.title,
             id: props.props.id,
+            is_public: props.props.is_public,
         };
     }
 

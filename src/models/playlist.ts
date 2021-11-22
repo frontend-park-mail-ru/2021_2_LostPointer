@@ -13,6 +13,7 @@ export interface IPlaylistModel {
     tracks: Array<TrackModel>;
     artwork: string;
     artwork_color: string;
+    is_public: boolean;
 }
 
 export class PlaylistModel extends Model<IPlaylistModel> {

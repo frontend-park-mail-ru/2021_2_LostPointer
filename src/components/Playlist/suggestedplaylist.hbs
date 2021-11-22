@@ -5,6 +5,13 @@
             class='suggested-playlist-artwork'
             src='{{artwork}}'
         />
-        <div class='suggested-playlist-name'>{{title}}</div>
+        <div class='suggested-playlist-name'>
+            {{title}}
+        </div>
+        {{#if is_public}}
+            <div class='suggested-playlist-public_icon'>
+                <img src='/static/img/public.svg'/>
+            </div>
+        {{/if}}
     </div>
 </a>
