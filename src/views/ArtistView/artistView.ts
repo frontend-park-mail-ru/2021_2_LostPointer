@@ -1,5 +1,4 @@
 import { View } from 'views/View/view';
-import Request from 'services/request/request';
 import player from 'components/Player/player';
 import { Sidebar } from 'components/Sidebar/sidebar';
 import TopbarComponent from 'components/Topbar/topbar';
@@ -53,7 +52,6 @@ export class ArtistView extends View<IArtistViewProps> {
         });
 
         Promise.all([artist]).then(() => {
-            this.topbar = TopbarComponent;
             this.sidebar = new Sidebar().render();
             this.albumList = new SuggestedAlbums({
                 albums: this.artist.getProps().albums,
@@ -76,12 +74,6 @@ export class ArtistView extends View<IArtistViewProps> {
     }
 
     addListeners() {
-        if (this.authenticated) {
-            document
-                .querySelector('.js-logout')
-                .addEventListener('click', this.userLogout);
-        }
-
         const video = document.querySelector('.artist__background-video');
         if (video) {
             video.addEventListener('ended', () => {
@@ -101,17 +93,6 @@ export class ArtistView extends View<IArtistViewProps> {
         this.isLoaded = false;
     }
 
-    userLogout() {
-        Request.post('/user/logout').then(() => {
-            player.stop();
-            this.authenticated = false;
-            store.set('authenticated', false);
-            player.clear();
-            window.localStorage.removeItem('lastPlayedData');
-            TopbarComponent.logout();
-        });
-    }
-
     render() {
         if (!this.isLoaded) {
             this.didMount();
@@ -122,18 +103,17 @@ export class ArtistView extends View<IArtistViewProps> {
             name: this.artist.getProps().name,
             video: this.artist.getProps().video,
             artistAvatar: this.artist.getProps().avatar,
-            topbar: this.topbar
-                .set({
-                    authenticated: this.authenticated,
-                    avatar: this.userAvatar,
-                    offline: navigator.onLine !== true,
-                })
-                .render(),
+            topbar: TopbarComponent.set({
+                authenticated: this.authenticated,
+                avatar: this.userAvatar,
+                offline: navigator.onLine !== true,
+            }).render(),
             sidebar: this.sidebar,
             albumList: this.albumList,
             trackList: this.trackList,
             player: player.render(),
         });
+        TopbarComponent.addHandlers();
         this.addListeners();
         topbar.didMount();
 

@@ -1,9 +1,7 @@
 import { View } from 'views/View/view';
-import Request from 'services/request/request';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import TopbarComponent from 'components/Topbar/topbar';
-import topbar, { Topbar } from 'components/Topbar/topbar';
 import player from 'components/Player/player';
 import { Sidebar } from 'components/Sidebar/sidebar';
 import { ICustomInput } from 'interfaces/CustomInput';
@@ -29,7 +27,6 @@ interface IProfileViewProps {
 
 export class ProfileView extends View<IProfileViewProps> {
     private sidebar: Sidebar;
-    private topbar: Topbar;
     private profileform: ProfileForm;
     private userAvatar: string;
     private user: UserModel;
@@ -49,7 +46,7 @@ export class ProfileView extends View<IProfileViewProps> {
         UserModel.getSettings().then((user) => {
             this.user = user;
             this.sidebar = new Sidebar();
-            this.topbar = topbar.set({
+            TopbarComponent.set({
                 authenticated: store.get('authenticated'),
                 avatar: user.getProps().small_avatar,
                 offline: !navigator.onLine,
@@ -218,12 +215,6 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     addListeners() {
-        if (store.get('authenticated')) {
-            document
-                .querySelector('.js-logout')
-                .addEventListener('click', this.userLogout);
-        }
-
         const form = document.querySelector('.profile-form');
         const nicknameInput = form.querySelector('input[name="nickname"]');
         const emailInput = form.querySelector('input[name="email"]');
@@ -259,15 +250,6 @@ export class ProfileView extends View<IProfileViewProps> {
         this.isLoaded = false;
     }
 
-    userLogout() {
-        Request.post('/user/logout').then(() => {
-            store.set('authenticated', false);
-            window.localStorage.removeItem('lastPlayedData');
-            TopbarComponent.logout();
-            router.go(routerStore.dashboard);
-        });
-    }
-
     render() {
         if (!this.isLoaded) {
             this.didMount();
@@ -275,18 +257,16 @@ export class ProfileView extends View<IProfileViewProps> {
         }
 
         document.getElementById('app').innerHTML = ProfileTemplate({
-            topbar: this.topbar
-                .set({
-                    authenticated: store.get('authenticated'),
-                    avatar: this.userAvatar,
-                    offline: !navigator.onLine,
-                })
-                .render(),
+            topbar: TopbarComponent.set({
+                authenticated: store.get('authenticated'),
+                avatar: this.userAvatar,
+                offline: !navigator.onLine,
+            }).render(),
             sidebar: this.sidebar.render(),
             profileform: this.profileform.render(),
             player: player.render(),
         });
-        topbar.didMount();
+        TopbarComponent.addHandlers();
         this.addListeners();
 
         player.setup(document.querySelectorAll('.track-list-item'));

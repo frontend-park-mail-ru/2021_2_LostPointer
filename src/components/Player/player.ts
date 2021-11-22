@@ -524,7 +524,11 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     update() {
         const artist = document.getElementById('artist-name');
         if (artist) {
-            artist.innerHTML = this.props.artist.props.name || '';
+            try {
+                artist.innerHTML = this.props.artist.props.name || '';
+            } catch {
+                artist.innerHTML = '';
+            }
         }
         const track = document.getElementById('track-name');
         if (track) {

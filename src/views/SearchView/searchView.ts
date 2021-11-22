@@ -120,6 +120,7 @@ export class SearchView extends View<ISearchViewProps> {
                 sidebar: sidebar.render(),
                 player: player.render(),
             });
+            TopbarComponent.addHandlers();
         }
         document.querySelector('.main-layout__content').innerHTML = '';
         this.addListeners();

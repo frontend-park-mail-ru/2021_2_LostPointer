@@ -4,6 +4,9 @@ import TopbarTemplate from './topbar.hbs';
 import './topbar.scss';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
+import Request from 'services/request/request';
+import player from 'components/Player/player';
+import store from 'services/store/store';
 
 interface ITopbarComponentProps {
     authenticated: boolean;
@@ -34,17 +37,41 @@ export class Topbar extends Component<ITopbarComponentProps> {
         return this;
     }
 
-    logout() {
-        const button = <HTMLImageElement>document.querySelector('.js-logout');
-        if (button) {
-            button.classList.remove('js-logout', 'fa-right-from-bracket');
-            button.classList.add('fa-right-to-bracket');
-        }
+    addHandlers() {
+        if (store.get('authenticated')) {
+            document
+                .querySelector('.js-logout')
+                .addEventListener('click', function logoutHandler() {
+                    Request.post('/user/logout').then(() => {
+                        player.stop();
+                        player.clear();
+                        store.set('authenticated', false);
+                        window.localStorage.removeItem('lastPlayedData');
+                        const button = <HTMLImageElement>(
+                            document.querySelector('.js-logout')
+                        );
 
-        document
-            .getElementById('signin-button')
-            .setAttribute('href', '/signin');
-        router.go(window.location.pathname);
+                        if (button) {
+                            button.classList.remove(
+                                'js-logout',
+                                'fa-right-from-bracket'
+                            );
+                            button.classList.add('fa-right-to-bracket');
+                        }
+
+                        document
+                            .getElementById('signin-button')
+                            .setAttribute('href', '/signin');
+                        document.querySelector('.topbar-profile').remove();
+                        if (
+                            window.location.pathname !== routerStore.dashboard
+                        ) {
+                            router.go(routerStore.dashboard);
+                        }
+                    });
+                    this.removeEventListener('click', logoutHandler);
+                });
+        }
     }
 }
 

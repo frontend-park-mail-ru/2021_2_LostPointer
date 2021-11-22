@@ -1,6 +1,5 @@
 import { Sidebar } from 'components/Sidebar/sidebar';
 import { TopAlbums } from 'components/TopAlbums/topalbums';
-import Request from 'services/request/request';
 import TopbarComponent from 'components/Topbar/topbar';
 import { FriendActivity } from 'components/FriendActivity/friendactivity';
 import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
@@ -105,12 +104,7 @@ export class IndexView extends View<IIndexViewProps> {
     }
 
     addListeners() {
-        if (this.authenticated) {
-            document
-                .querySelector('.js-logout')
-                .addEventListener('click', this.userLogout);
-        }
-
+        TopbarComponent.addHandlers();
         player.setup(document.querySelectorAll('.track-list-item'));
 
         document.querySelectorAll('img').forEach(function (img) {
@@ -123,17 +117,6 @@ export class IndexView extends View<IIndexViewProps> {
             img.removeEventListener('error', disableBrokenImg);
         });
         this.isLoaded = false;
-    }
-
-    userLogout() {
-        Request.post('/user/logout').then(() => {
-            player.stop();
-            player.clear();
-            store.set('authenticated', false);
-            this.authenticated = false;
-            window.localStorage.removeItem('lastPlayedData');
-            TopbarComponent.logout();
-        });
     }
 
     render() {
