@@ -52,7 +52,7 @@ export class ProfileView extends View<IProfileViewProps> {
             this.topbar = topbar.set({
                 authenticated: store.get('authenticated'),
                 avatar: user.getProps().small_avatar,
-                offline: navigator.onLine !== true,
+                offline: !navigator.onLine,
             });
             this.profileform = new ProfileForm(user.getProps());
             this.isLoaded = true;
@@ -279,7 +279,7 @@ export class ProfileView extends View<IProfileViewProps> {
                 .set({
                     authenticated: store.get('authenticated'),
                     avatar: this.userAvatar,
-                    offline: navigator.onLine !== true,
+                    offline: !navigator.onLine,
                 })
                 .render(),
             sidebar: this.sidebar.render(),

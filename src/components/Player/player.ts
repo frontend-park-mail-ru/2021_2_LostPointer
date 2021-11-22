@@ -327,6 +327,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     setup(playlist) {
+        if (typeof playlist === 'string') {
+            //TODO=Возможно убрать костыль
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(playlist, 'text/html');
+            playlist = doc.querySelectorAll('.track-list-item');
+        }
         this.seekbarCurrent = document.querySelector('.seekbar-current');
         this.currentVolume = document.querySelector('.volume-current');
         this.mute = document.querySelector('.mute');
@@ -357,6 +363,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
         this.playlist = playlist;
         this.playlistIndices = [...Array(this.playlist.length).keys()];
+
+        console.log(this.playlist, this.playlistIndices);
     }
 
     render() {
