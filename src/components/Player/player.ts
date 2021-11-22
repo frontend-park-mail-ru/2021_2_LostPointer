@@ -363,8 +363,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
         this.playlist = playlist;
         this.playlistIndices = [...Array(this.playlist.length).keys()];
-
-        console.log(this.playlist, this.playlistIndices);
     }
 
     render() {
