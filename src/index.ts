@@ -62,7 +62,9 @@ class App {
             } else {
                 if (target.parentElement.parentElement.tagName === 'A') {
                     event.preventDefault();
-                    router.go(target.parentElement.parentElement.getAttribute('href'));
+                    router.go(
+                        target.parentElement.parentElement.getAttribute('href')
+                    );
                 }
             }
         }
@@ -76,8 +78,8 @@ class App {
             .register(routerStore.profile, ProfileView)
             .register(routerStore.signin, SigninView)
             .register(routerStore.signup, SignupView)
-            .register(routerStore.dashboard, IndexView)
             .register(routerStore.search, SearchView)
+            .register(routerStore.dashboard, IndexView)
             .start();
     }
 }

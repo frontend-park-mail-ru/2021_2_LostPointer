@@ -5,8 +5,8 @@ const routerStore = {
     profile: '/profile',
     signin: '/signin',
     signup: '/signup',
-    dashboard: '/',
     search: '/search',
+    dashboard: '/',
 };
 
 export default routerStore;

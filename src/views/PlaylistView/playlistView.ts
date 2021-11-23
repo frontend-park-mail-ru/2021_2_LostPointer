@@ -48,7 +48,6 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     private contextMenu: ContextMenu;
     private menuVisible: boolean;
     private renderedMenu: HTMLElement;
-    private selectedTrackId: number;
 
     constructor(props?: IPlaylistViewProps) {
         super(props);
