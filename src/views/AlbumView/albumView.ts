@@ -3,11 +3,10 @@ import { Sidebar } from 'components/Sidebar/sidebar';
 import { AlbumModel } from 'models/album';
 import { TrackList } from 'components/TrackList/tracklist';
 import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
-import Request from 'services/request/request';
 import player from 'components/Player/player';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import disableBrokenImg from 'views/utils';
+import { disableBrokenImg } from 'views/utils';
 
 import store from 'services/store/store';
 
@@ -65,33 +64,16 @@ export class AlbumView extends View<IAlbumViewProps> {
     }
 
     addListeners() {
-        if (this.authenticated) {
-            document
-                .querySelector('.js-logout')
-                .addEventListener('click', this.userLogout);
-        }
-
-        document.querySelectorAll('img').forEach(function(img) {
+        document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function(img) {
+        document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
         this.isLoaded = false;
-    }
-
-    userLogout() {
-        Request.post('/user/logout').then(() => {
-            player.stop();
-            this.authenticated = false;
-            store.set('authenticated', false);
-            player.clear();
-            window.localStorage.removeItem('lastPlayedData');
-            TopbarComponent.logout();
-        });
     }
 
     render() {
@@ -109,13 +91,20 @@ export class AlbumView extends View<IAlbumViewProps> {
                     offline: !navigator.onLine,
                 })
                 .render(),
-            artWork: '/static/artworks/' + this.album.getProps().artwork + '_512px.webp',
+            artWork:
+                '/static/artworks/' +
+                this.album.getProps().artwork +
+                '_512px.webp',
             title: this.album.getProps().title,
             trackList: this.trackList,
             player: player.render(),
             tracksCount: this.album.getProps().tracks_count,
-            tracksDurationMin: Math.floor((this.album.getProps().tracks_duration / 60)),
-            tracksDurationSec: Math.floor((this.album.getProps().tracks_duration % 60)),
+            tracksDurationMin: Math.floor(
+                this.album.getProps().tracks_duration / 60
+            ),
+            tracksDurationSec: Math.floor(
+                this.album.getProps().tracks_duration % 60
+            ),
             album: this.album.getProps(),
         });
         this.addListeners();
@@ -153,7 +142,7 @@ export class AlbumView extends View<IAlbumViewProps> {
         document
             .querySelectorAll('.track-list-item-play')
             .forEach((e) =>
-                e.addEventListener('click', this.playButtonHandler),
+                e.addEventListener('click', this.playButtonHandler)
             );
     }
 }

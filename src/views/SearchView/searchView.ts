@@ -2,7 +2,7 @@ import Request from 'services/request/request';
 import player from 'components/Player/player';
 import { View } from 'views/View/view';
 
-import disableBrokenImg from 'views/utils';
+import { disableBrokenImg } from 'views/utils';
 
 import store from 'services/store/store';
 import { TrackModel } from 'models/track';

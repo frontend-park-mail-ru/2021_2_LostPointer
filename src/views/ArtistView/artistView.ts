@@ -2,13 +2,18 @@ import { View } from 'views/View/view';
 import player from 'components/Player/player';
 import { Sidebar } from 'components/Sidebar/sidebar';
 import TopbarComponent from 'components/Topbar/topbar';
-import topbar from 'components/Topbar/topbar';
 import { SuggestedAlbums } from 'components/SugestedAlbums/suggestedAlbums';
 import { TrackList } from 'components/TrackList/tracklist';
 import { ArtistModel } from 'models/artist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import { addTrackToPlaylist, createNewPlaylist, disableBrokenImg, hideContextMenu, showContextMenu } from 'views/utils';
+import {
+    addTrackToPlaylist,
+    createNewPlaylist,
+    disableBrokenImg,
+    hideContextMenu,
+    showContextMenu,
+} from 'views/utils';
 import { ContextMenu } from 'components/ContextMenu/contextMenu';
 import { PlaylistModel } from 'models/playlist';
 
@@ -24,7 +29,6 @@ export class ArtistView extends View<IArtistViewProps> {
     private authenticated: boolean;
 
     private sidebar: Sidebar;
-    private topbar: Topbar;
     private userAvatar: string;
     private artist: ArtistModel;
     private trackList: TrackList;
@@ -57,9 +61,11 @@ export class ArtistView extends View<IArtistViewProps> {
             this.artist = artist;
         });
 
-        const userPlaylists = PlaylistModel.getUserPlaylists().then((playlists) => {
-            this.userPlaylists = playlists;
-        });
+        const userPlaylists = PlaylistModel.getUserPlaylists().then(
+            (playlists) => {
+                this.userPlaylists = playlists;
+            }
+        );
 
         Promise.all([artist, userPlaylists]).then(() => {
             this.sidebar = new Sidebar().render();
@@ -85,16 +91,19 @@ export class ArtistView extends View<IArtistViewProps> {
                         dataId: null,
                         value: 'Add to the new playlist',
                     },
-                ].concat(this.userPlaylists.filter((playlist) => {
-                    return playlist.getProps().is_own;
-                })
-                    .map((playlist) => {
-                    return {
-                        class: `js-playlist-track-add`,
-                        dataId: playlist.getProps().id,
-                        value: playlist.getProps().title,
-                    }
-                })),
+                ].concat(
+                    this.userPlaylists
+                        .filter((playlist) => {
+                            return playlist.getProps().is_own;
+                        })
+                        .map((playlist) => {
+                            return {
+                                class: `js-playlist-track-add`,
+                                dataId: playlist.getProps().id,
+                                value: playlist.getProps().title,
+                            };
+                        })
+                ),
             });
             this.isLoaded = true;
             this.render();
@@ -110,15 +119,22 @@ export class ArtistView extends View<IArtistViewProps> {
         }
 
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
-        createPlaylistBtn.addEventListener('click', createNewPlaylist.bind(this))
-        const addTrackToPlaylistBtns = document.querySelectorAll('.js-playlist-track-add');
+        createPlaylistBtn.addEventListener(
+            'click',
+            createNewPlaylist.bind(this)
+        );
+        const addTrackToPlaylistBtns = document.querySelectorAll(
+            '.js-playlist-track-add'
+        );
         addTrackToPlaylistBtns.forEach((button) => {
             button.addEventListener('click', addTrackToPlaylist.bind(this));
         });
 
-        document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
-            element.addEventListener('click', showContextMenu.bind(this));
-        })
+        document
+            .querySelectorAll('.track-list-item-playlist')
+            .forEach((element) => {
+                element.addEventListener('click', showContextMenu.bind(this));
+            });
         window.addEventListener('click', hideContextMenu.bind(this));
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
@@ -129,14 +145,24 @@ export class ArtistView extends View<IArtistViewProps> {
         document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
-        document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
-            element.removeEventListener('click', showContextMenu.bind(this));
-        })
+        document
+            .querySelectorAll('.track-list-item-playlist')
+            .forEach((element) => {
+                element.removeEventListener(
+                    'click',
+                    showContextMenu.bind(this)
+                );
+            });
         window.removeEventListener('click', hideContextMenu.bind(this));
 
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
-        createPlaylistBtn.removeEventListener('click', createNewPlaylist.bind(this))
-        const addTrackToPlaylistBtns = document.querySelectorAll('.js-playlist-track-add');
+        createPlaylistBtn.removeEventListener(
+            'click',
+            createNewPlaylist.bind(this)
+        );
+        const addTrackToPlaylistBtns = document.querySelectorAll(
+            '.js-playlist-track-add'
+        );
         addTrackToPlaylistBtns.forEach((button) => {
             button.removeEventListener('click', addTrackToPlaylist.bind(this));
         });
@@ -169,7 +195,7 @@ export class ArtistView extends View<IArtistViewProps> {
         this.menuVisible = false;
         TopbarComponent.addHandlers();
         this.addListeners();
-        topbar.didMount();
+        TopbarComponent.didMount();
 
         player.setup(document.querySelectorAll('.track-list-item'));
     }

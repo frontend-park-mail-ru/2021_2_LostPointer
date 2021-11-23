@@ -10,11 +10,13 @@ import { TrackModel } from 'models/track';
 import { ArtistModel } from 'models/artist';
 import { AlbumModel } from 'models/album';
 import { View } from 'views/View/view';
+import router from 'services/router/router';
+import routerStore from 'services/router/routerStore';
 import {
     addTrackToPlaylist,
     createNewPlaylist,
-    disableBrokenImg, hideContextMenu,
-    removeTrackFromPlaylist,
+    disableBrokenImg,
+    hideContextMenu,
     showContextMenu,
 } from 'views/utils';
 
@@ -64,65 +66,72 @@ export class IndexView extends View<IIndexViewProps> {
         });
         const playlists = PlaylistModel.getUserPlaylists().then((playlists) => {
             this.suggested_playlists = playlists;
-        })
-
-        const userPlaylists = PlaylistModel.getUserPlaylists().then((playlists) => {
-            this.userPlaylists = playlists;
         });
 
-        Promise.all([tracks, artists, albums, playlists, userPlaylists]).then(() => {
-            this.track_list = new TrackList({
-                title: 'Tracks of the Week',
-                tracks: this.track_list,
-            }).render();
-            this.suggested_playlists = new SuggestedPlaylists({
-                playlists: this.suggested_playlists,
-            }).render();
-            this.sidebar = new Sidebar().render();
+        const userPlaylists = PlaylistModel.getUserPlaylists().then(
+            (playlists) => {
+                this.userPlaylists = playlists;
+            }
+        );
 
-            this.top_albums = new TopAlbums({
-                albums: this.top_albums,
-            }).render();
-            this.suggested_artists = new SuggestedArtists({
-                artists: this.suggested_artists,
-                extraRounded: true,
-            }).render();
+        Promise.all([tracks, artists, albums, playlists, userPlaylists]).then(
+            () => {
+                this.track_list = new TrackList({
+                    title: 'Tracks of the Week',
+                    tracks: this.track_list,
+                }).render();
+                this.suggested_playlists = new SuggestedPlaylists({
+                    playlists: this.suggested_playlists,
+                }).render();
+                this.sidebar = new Sidebar().render();
 
-            this.friend_activity = new FriendActivity({
-                friends: [
-                    {
-                        img: 'default_avatar_150px',
-                        nickname: 'Frank Sinatra',
-                        listening_to: 'Strangers in the Night',
-                    },
-                    {
-                        img: 'default_avatar_150px',
-                        nickname: 'Земфира',
-                        listening_to: 'Трафик',
-                    },
-                ],
-            }).render();
-            this.contextMenu = new ContextMenu({
-                options: [
-                    {
-                        class: 'js-playlist-create',
-                        dataId: null,
-                        value: 'Add to the new playlist',
-                    },
-                ].concat(this.userPlaylists.filter((playlist) => {
-                    return playlist.getProps().is_own;
-                })
-                    .map((playlist) => {
-                    return {
-                        class: `js-playlist-track-add`,
-                        dataId: playlist.getProps().id,
-                        value: playlist.getProps().title,
-                    }
-                })),
-            });
-            this.isLoaded = true;
-            this.render();
-        });
+                this.top_albums = new TopAlbums({
+                    albums: this.top_albums,
+                }).render();
+                this.suggested_artists = new SuggestedArtists({
+                    artists: this.suggested_artists,
+                    extraRounded: true,
+                }).render();
+
+                this.friend_activity = new FriendActivity({
+                    friends: [
+                        {
+                            img: 'default_avatar_150px',
+                            nickname: 'Frank Sinatra',
+                            listening_to: 'Strangers in the Night',
+                        },
+                        {
+                            img: 'default_avatar_150px',
+                            nickname: 'Земфира',
+                            listening_to: 'Трафик',
+                        },
+                    ],
+                }).render();
+                this.contextMenu = new ContextMenu({
+                    options: [
+                        {
+                            class: 'js-playlist-create',
+                            dataId: null,
+                            value: 'Add to the new playlist',
+                        },
+                    ].concat(
+                        this.userPlaylists
+                            .filter((playlist) => {
+                                return playlist.getProps().is_own;
+                            })
+                            .map((playlist) => {
+                                return {
+                                    class: `js-playlist-track-add`,
+                                    dataId: playlist.getProps().id,
+                                    value: playlist.getProps().title,
+                                };
+                            })
+                    ),
+                });
+                this.isLoaded = true;
+                this.render();
+            }
+        );
     }
 
     createPlaylist(event) {
@@ -137,27 +146,40 @@ export class IndexView extends View<IIndexViewProps> {
         const formdata = new FormData();
         formdata.append('title', 'New playlist');
 
-        PlaylistModel.createPlaylist(formdata)
-            .then(({id}) => {
-                router.go(`${routerStore.playlist}/${id}`);
-            });
+        PlaylistModel.createPlaylist(formdata).then(({ id }) => {
+            router.go(`${routerStore.playlist}/${id}`);
+        });
     }
 
     addListeners() {
         TopbarComponent.addHandlers();
 
-        const createPlaylistBtn = document.querySelector('.pl-link[href="/playlist/0"]');
-        createPlaylistBtn.addEventListener('click', this.createPlaylist.bind(this));
-        const createPlaylistContextMenuBtn = document.querySelector('.js-playlist-create');
-        createPlaylistContextMenuBtn.addEventListener('click', createNewPlaylist.bind(this))
-        const addTrackToPlaylistBtns = document.querySelectorAll('.js-playlist-track-add');
+        const createPlaylistBtn = document.querySelector(
+            '.pl-link[href="/playlist/0"]'
+        );
+        createPlaylistBtn.addEventListener(
+            'click',
+            this.createPlaylist.bind(this)
+        );
+        const createPlaylistContextMenuBtn = document.querySelector(
+            '.js-playlist-create'
+        );
+        createPlaylistContextMenuBtn.addEventListener(
+            'click',
+            createNewPlaylist.bind(this)
+        );
+        const addTrackToPlaylistBtns = document.querySelectorAll(
+            '.js-playlist-track-add'
+        );
         addTrackToPlaylistBtns.forEach((button) => {
             button.addEventListener('click', addTrackToPlaylist.bind(this));
         });
 
-        document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
-            element.addEventListener('click', showContextMenu.bind(this));
-        })
+        document
+            .querySelectorAll('.track-list-item-playlist')
+            .forEach((element) => {
+                element.addEventListener('click', showContextMenu.bind(this));
+            });
         window.addEventListener('click', hideContextMenu.bind(this));
 
         player.setup(document.querySelectorAll('.track-list-item'));
@@ -172,16 +194,33 @@ export class IndexView extends View<IIndexViewProps> {
             img.removeEventListener('error', disableBrokenImg);
         });
         this.isLoaded = false;
-        document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
-            element.removeEventListener('click', showContextMenu.bind(this));
-        })
+        document
+            .querySelectorAll('.track-list-item-playlist')
+            .forEach((element) => {
+                element.removeEventListener(
+                    'click',
+                    showContextMenu.bind(this)
+                );
+            });
         window.removeEventListener('click', hideContextMenu.bind(this));
-        const createPlaylistBtn = document.querySelector('.pl-link[href="/playlist/0"]');
-        createPlaylistBtn.removeEventListener('click', this.createPlaylist.bind(this));
+        const createPlaylistBtn = document.querySelector(
+            '.pl-link[href="/playlist/0"]'
+        );
+        createPlaylistBtn.removeEventListener(
+            'click',
+            this.createPlaylist.bind(this)
+        );
 
-        const createPlaylistContextMenuBtn = document.querySelector('.js-playlist-create');
-        createPlaylistContextMenuBtn.removeEventListener('click', createNewPlaylist.bind(this))
-        const addTrackToPlaylistBtns = document.querySelectorAll('.js-playlist-track-add');
+        const createPlaylistContextMenuBtn = document.querySelector(
+            '.js-playlist-create'
+        );
+        createPlaylistContextMenuBtn.removeEventListener(
+            'click',
+            createNewPlaylist.bind(this)
+        );
+        const addTrackToPlaylistBtns = document.querySelectorAll(
+            '.js-playlist-track-add'
+        );
         addTrackToPlaylistBtns.forEach((button) => {
             button.removeEventListener('click', addTrackToPlaylist.bind(this));
         });
