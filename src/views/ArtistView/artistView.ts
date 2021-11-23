@@ -52,8 +52,6 @@ export class ArtistView extends View<IArtistViewProps> {
         }
         const artistId = match[1];
 
-        this.userAvatar = store.get('userAvatar');
-
         const artist = ArtistModel.getArtist(artistId).then((artist) => {
             if (!artist) {
                 router.go(routerStore.dashboard);
@@ -182,7 +180,7 @@ export class ArtistView extends View<IArtistViewProps> {
             artistAvatar: this.artist.getProps().avatar,
             topbar: TopbarComponent.set({
                 authenticated: store.get('authenticated'),
-                avatar: this.userAvatar,
+                avatar: store.get('userAvatar'),
                 offline: navigator.onLine !== true,
             }).render(),
             sidebar: this.sidebar,

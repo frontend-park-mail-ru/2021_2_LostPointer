@@ -41,7 +41,6 @@ export class ProfileView extends View<IProfileViewProps> {
             router.go(routerStore.signin);
             return;
         }
-        this.userAvatar = store.get('userAvatar');
 
         UserModel.getSettings().then((user) => {
             this.user = user;
@@ -259,7 +258,7 @@ export class ProfileView extends View<IProfileViewProps> {
         document.getElementById('app').innerHTML = ProfileTemplate({
             topbar: TopbarComponent.set({
                 authenticated: store.get('authenticated'),
-                avatar: this.userAvatar,
+                avatar: store.get('userAvatar'),
                 offline: !navigator.onLine,
             }).render(),
             sidebar: this.sidebar.render(),

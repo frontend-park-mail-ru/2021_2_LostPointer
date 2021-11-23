@@ -54,12 +54,10 @@ export class SearchView extends View<ISearchViewProps> {
     }
 
     didMount() {
-        this.userAvatar = store.get('userAvatar');
         this.isLoaded = true;
     }
 
     addListeners() {
-        this.searchTimer;
         document
             .querySelector('.topbar__search-input')
             .addEventListener('input', (e) => {

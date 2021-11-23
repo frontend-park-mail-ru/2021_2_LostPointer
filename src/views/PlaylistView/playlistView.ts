@@ -37,7 +37,6 @@ interface IPlaylistViewProps {
 
 export class PlaylistView extends View<IPlaylistViewProps> {
     private authenticated: boolean;
-    private playButtonHandler: (e) => void;
 
     private sidebar: Sidebar;
     private topbar: Topbar;
@@ -63,9 +62,6 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             router.go(routerStore.dashboard);
         }
         const playlistId = parseInt(match[1]);
-
-        this.authenticated = store.get('authenticated');
-        this.userAvatar = store.get('userAvatar');
 
         const playlist = PlaylistModel.getPlaylist(playlistId).then(
             (playlist) => {
@@ -134,7 +130,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     displayEditWindow(event) {
-        if (!this.authenticated || !this.playlist.getProps().is_own) {
+        if (!store.get('authenticated') || !this.playlist.getProps().is_own) {
             return;
         }
         const playlistEditWindow = document.querySelector('.editwindow');
@@ -143,7 +139,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     removeEditWindow(event) {
-        if (!this.authenticated) {
+        if (!store.get('authenticated')) {
             return;
         }
         const playlistEditWindow = document.querySelector('.editwindow');
@@ -595,8 +591,8 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             is_public: this.playlist.getProps().is_public,
             topbar: this.topbar
                 .set({
-                    authenticated: this.authenticated,
-                    avatar: this.userAvatar,
+                    authenticated: store.get('authenticated'),
+                    avatar: store.get('userAvatar'),
                     offline: !navigator.onLine,
                 })
                 .render(),
@@ -633,41 +629,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         }, black)`;
         this.addListeners();
 
-        this.playButtonHandler = (e) => {
-            if (e.target.className === 'track-list-item-play') {
-                if (!this.authenticated) {
-                    router.go(routerStore.signin);
-                    return;
-                }
-                if (e.target === player.nowPlaying) {
-                    // Ставим на паузу/продолжаем воспр.
-                    player.toggle();
-                    return;
-                }
-                if (player.nowPlaying) {
-                    // Переключили на другой трек
-                    player.nowPlaying.dataset.playing = 'false';
-                    player.nowPlaying.src = '/static/img/play-outline.svg';
-                }
-
-                player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
-
-                e.target.dataset.playing = 'true';
-                player.setTrack({
-                    url: `/static/tracks/${e.target.dataset.url}`,
-                    cover: `/static/artworks/${e.target.dataset.cover}`,
-                    title: e.target.dataset.title,
-                    artist: e.target.dataset.artist,
-                    album: e.target.dataset.album,
-                });
-            }
-        };
         player.setup(document.querySelectorAll('.track-list-item'));
-        document
-            .querySelectorAll('.track-list-item-play')
-            .forEach((e) =>
-                e.addEventListener('click', this.playButtonHandler)
-            );
     }
 }
 

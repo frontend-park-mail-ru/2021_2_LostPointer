@@ -19,7 +19,6 @@ interface IAlbumViewProps {
 
 export class AlbumView extends View<IAlbumViewProps> {
     private authenticated: boolean;
-    private playButtonHandler: (e) => void;
 
     private sidebar: Sidebar;
     private topbar: Topbar;
@@ -39,9 +38,6 @@ export class AlbumView extends View<IAlbumViewProps> {
             router.go(routerStore.dashboard);
         }
         const albumId = match[1];
-
-        this.authenticated = store.get('authenticated');
-        this.userAvatar = store.get('userAvatar');
 
         const album = AlbumModel.getAlbum(albumId).then((album) => {
             if (!album) {
@@ -64,13 +60,13 @@ export class AlbumView extends View<IAlbumViewProps> {
     }
 
     addListeners() {
-        document.querySelectorAll('img').forEach(function (img) {
+        document.querySelectorAll('img').forEach(function(img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function (img) {
+        document.querySelectorAll('img').forEach(function(img) {
             img.removeEventListener('error', disableBrokenImg);
         });
         this.isLoaded = false;
@@ -86,8 +82,8 @@ export class AlbumView extends View<IAlbumViewProps> {
             sidebar: this.sidebar,
             topbar: this.topbar
                 .set({
-                    authenticated: this.authenticated,
-                    avatar: this.userAvatar,
+                    authenticated: store.get('authenticated'),
+                    avatar: store.get('userAvatar'),
                     offline: !navigator.onLine,
                 })
                 .render(),
@@ -109,41 +105,7 @@ export class AlbumView extends View<IAlbumViewProps> {
         });
         this.addListeners();
 
-        this.playButtonHandler = (e) => {
-            if (e.target.className === 'track-list-item-play') {
-                if (!this.authenticated) {
-                    router.go(routerStore.signin);
-                    return;
-                }
-                if (e.target === player.nowPlaying) {
-                    // Ставим на паузу/продолжаем воспр.
-                    player.toggle();
-                    return;
-                }
-                if (player.nowPlaying) {
-                    // Переключили на другой трек
-                    player.nowPlaying.dataset.playing = 'false';
-                    player.nowPlaying.src = '/static/img/play-outline.svg';
-                }
-
-                player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
-
-                e.target.dataset.playing = 'true';
-                player.setTrack({
-                    url: `/static/tracks/${e.target.dataset.url}`,
-                    cover: `/static/artworks/${e.target.dataset.cover}`,
-                    title: e.target.dataset.title,
-                    artist: e.target.dataset.artist,
-                    album: e.target.dataset.album,
-                });
-            }
-        };
         player.setup(document.querySelectorAll('.track-list-item'));
-        document
-            .querySelectorAll('.track-list-item-play')
-            .forEach((e) =>
-                e.addEventListener('click', this.playButtonHandler)
-            );
     }
 }
 

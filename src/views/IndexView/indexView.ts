@@ -41,20 +41,19 @@ export class IndexView extends View<IIndexViewProps> {
     private sidebar: Sidebar;
     private friend_activity: FriendActivity;
     private userAvatar: string;
-    private contextMenu: ContextMenu;
+    private contextMenu: string;
     private userPlaylists: Array<PlaylistModel>;
-    private selectedTrackId: number;
     private menuVisible: boolean;
     private renderedMenu: HTMLElement;
+    private renderCount: number;
 
     constructor(props?: IIndexViewProps) {
         super(props);
         this.isLoaded = false;
+        this.renderCount = 0;
     }
 
     didMount() {
-        this.userAvatar = store.get('userAvatar');
-
         const tracks = TrackModel.getHomepageTracks().then((tracks) => {
             this.track_list = tracks;
         });
@@ -127,7 +126,7 @@ export class IndexView extends View<IIndexViewProps> {
                                 };
                             })
                     ),
-                });
+                }).render();
                 this.isLoaded = true;
                 this.render();
             }
@@ -138,7 +137,7 @@ export class IndexView extends View<IIndexViewProps> {
         event.preventDefault();
         event.stopPropagation();
 
-        if (!this.authenticated) {
+        if (!store.get('authenticated')) {
             router.go(routerStore.signin);
             return;
         }
@@ -231,12 +230,13 @@ export class IndexView extends View<IIndexViewProps> {
     render() {
         if (!this.isLoaded) {
             this.didMount();
+            return;
         }
 
         document.getElementById('app').innerHTML = IndexTemplate({
             topbar: TopbarComponent.set({
                 authenticated: store.get('authenticated'),
-                avatar: this.userAvatar,
+                avatar: store.get('userAvatar'),
                 offline: !navigator.onLine,
             }).render(),
             sidebar: this.sidebar,
@@ -246,7 +246,7 @@ export class IndexView extends View<IIndexViewProps> {
             track_list: this.track_list,
             suggested_playlists: this.suggested_playlists,
             player: player.render(),
-            contextMenu: this.contextMenu.render(),
+            contextMenu: this.contextMenu,
         });
         TopbarComponent.addHandlers();
         TopbarComponent.didMount();
