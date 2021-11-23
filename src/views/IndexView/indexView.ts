@@ -10,12 +10,20 @@ import { TrackModel } from 'models/track';
 import { ArtistModel } from 'models/artist';
 import { AlbumModel } from 'models/album';
 import { View } from 'views/View/view';
-import disableBrokenImg from 'views/utils';
+import {
+    addTrackToPlaylist,
+    createNewPlaylist,
+    disableBrokenImg, hideContextMenu,
+    removeTrackFromPlaylist,
+    showContextMenu,
+} from 'views/utils';
 
 import store from 'services/store/store';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
+import { PlaylistModel } from 'models/playlist';
+import { ContextMenu } from 'components/ContextMenu/contextMenu';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -27,10 +35,15 @@ export class IndexView extends View<IIndexViewProps> {
     private top_albums: AlbumModel[];
     private suggested_artists: ArtistModel[];
     private track_list: TrackModel[];
-    private suggested_playlists: SuggestedPlaylists;
+    private suggested_playlists: PlaylistModel[];
     private sidebar: Sidebar;
     private friend_activity: FriendActivity;
     private userAvatar: string;
+    private contextMenu: ContextMenu;
+    private userPlaylists: Array<PlaylistModel>;
+    private selectedTrackId: number;
+    private menuVisible: boolean;
+    private renderedMenu: HTMLElement;
 
     constructor(props?: IIndexViewProps) {
         super(props);
@@ -49,29 +62,21 @@ export class IndexView extends View<IIndexViewProps> {
         const albums = AlbumModel.getHomepageAlbums().then((albums) => {
             this.top_albums = albums;
         });
+        const playlists = PlaylistModel.getUserPlaylists().then((playlists) => {
+            this.suggested_playlists = playlists;
+        })
 
-        const predefinedPlaylists = [
-            {
-                cover: 'yur',
-                title: 'Jail Mix',
-            },
-            {
-                cover: 'albina',
-                title: 'Resine Working Mix Extended',
-            },
-            {
-                cover: 'starboy',
-                title: 'Workout Mix 2',
-            },
-        ];
+        const userPlaylists = PlaylistModel.getUserPlaylists().then((playlists) => {
+            this.userPlaylists = playlists;
+        });
 
-        Promise.all([tracks, artists, albums]).then(() => {
+        Promise.all([tracks, artists, albums, playlists, userPlaylists]).then(() => {
             this.track_list = new TrackList({
                 title: 'Tracks of the Week',
                 tracks: this.track_list,
             }).render();
             this.suggested_playlists = new SuggestedPlaylists({
-                playlists: predefinedPlaylists,
+                playlists: this.suggested_playlists,
             }).render();
             this.sidebar = new Sidebar().render();
 
@@ -97,13 +102,64 @@ export class IndexView extends View<IIndexViewProps> {
                     },
                 ],
             }).render();
+            this.contextMenu = new ContextMenu({
+                options: [
+                    {
+                        class: 'js-playlist-create',
+                        dataId: null,
+                        value: 'Add to the new playlist',
+                    },
+                ].concat(this.userPlaylists.filter((playlist) => {
+                    return playlist.getProps().is_own;
+                })
+                    .map((playlist) => {
+                    return {
+                        class: `js-playlist-track-add`,
+                        dataId: playlist.getProps().id,
+                        value: playlist.getProps().title,
+                    }
+                })),
+            });
             this.isLoaded = true;
             this.render();
         });
     }
 
+    createPlaylist(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!this.authenticated) {
+            router.go(routerStore.signin);
+            return;
+        }
+
+        const formdata = new FormData();
+        formdata.append('title', 'New playlist');
+
+        PlaylistModel.createPlaylist(formdata)
+            .then(({id}) => {
+                router.go(`${routerStore.playlist}/${id}`);
+            });
+    }
+
     addListeners() {
         TopbarComponent.addHandlers();
+
+        const createPlaylistBtn = document.querySelector('.pl-link[href="/playlist/0"]');
+        createPlaylistBtn.addEventListener('click', this.createPlaylist.bind(this));
+        const createPlaylistContextMenuBtn = document.querySelector('.js-playlist-create');
+        createPlaylistContextMenuBtn.addEventListener('click', createNewPlaylist.bind(this))
+        const addTrackToPlaylistBtns = document.querySelectorAll('.js-playlist-track-add');
+        addTrackToPlaylistBtns.forEach((button) => {
+            button.addEventListener('click', addTrackToPlaylist.bind(this));
+        });
+
+        document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
+            element.addEventListener('click', showContextMenu.bind(this));
+        })
+        window.addEventListener('click', hideContextMenu.bind(this));
+
         player.setup(document.querySelectorAll('.track-list-item'));
 
         document.querySelectorAll('img').forEach(function (img) {
@@ -115,6 +171,21 @@ export class IndexView extends View<IIndexViewProps> {
         document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
+        this.isLoaded = false;
+        document.querySelectorAll('.track-list-item-playlist').forEach((element) => {
+            element.removeEventListener('click', showContextMenu.bind(this));
+        })
+        window.removeEventListener('click', hideContextMenu.bind(this));
+        const createPlaylistBtn = document.querySelector('.pl-link[href="/playlist/0"]');
+        createPlaylistBtn.removeEventListener('click', this.createPlaylist.bind(this));
+
+        const createPlaylistContextMenuBtn = document.querySelector('.js-playlist-create');
+        createPlaylistContextMenuBtn.removeEventListener('click', createNewPlaylist.bind(this))
+        const addTrackToPlaylistBtns = document.querySelectorAll('.js-playlist-track-add');
+        addTrackToPlaylistBtns.forEach((button) => {
+            button.removeEventListener('click', addTrackToPlaylist.bind(this));
+        });
+
         this.isLoaded = false;
     }
 
@@ -136,9 +207,13 @@ export class IndexView extends View<IIndexViewProps> {
             track_list: this.track_list,
             suggested_playlists: this.suggested_playlists,
             player: player.render(),
+            contextMenu: this.contextMenu.render(),
         });
         TopbarComponent.addHandlers();
         TopbarComponent.didMount();
+        this.renderedMenu = document.querySelector('.menu');
+        this.menuVisible = false;
+
         this.addListeners();
     }
 }

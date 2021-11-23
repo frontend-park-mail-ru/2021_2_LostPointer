@@ -44,10 +44,12 @@ export class Request {
         );
     }
 
-    delete(path: string) {
+    delete(path: string, requestBody?: BodyInit, contentType?: string) {
         return this._fetchRequest(
             this._createURL(this.backendDomain, path),
-            RequestMethods.DELETE
+            RequestMethods.DELETE,
+            requestBody,
+            contentType
         );
     }
 
@@ -60,9 +62,15 @@ export class Request {
     ) {
         const myHeaders = new Headers();
         if (
-            !!requestBody &&
-            (RequestMethods.POST === requestMethod ||
-                RequestMethods.PUT === requestMethod)
+            !!requestBody
+                // потому что FormData сам проставляет нужный content type
+                && contentType !== ContentType.FORM
+            && (
+                RequestMethods.POST === requestMethod
+                || RequestMethods.PUT === requestMethod
+                || RequestMethods.DELETE === requestMethod
+                || RequestMethods.PATCH
+            )
         ) {
             myHeaders.append('Content-Type', contentType);
         }

@@ -81,7 +81,7 @@ export class UserModel extends Model<IUserModel> {
                         Request.patch(
                             '/user/settings',
                             formdata,
-                            ContentType.JSON,
+                            ContentType.FORM,
                             {
                                 'X-CSRF-Token': csrfToken,
                             },

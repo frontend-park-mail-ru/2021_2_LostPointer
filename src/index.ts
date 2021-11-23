@@ -4,6 +4,7 @@ import routerStore from 'services/router/routerStore';
 import IndexView from 'views/IndexView/indexView';
 import SigninView from 'views/SigninView/signinView';
 import SignupView from 'views/SignupView/signupView';
+import PlaylistView from 'views/PlaylistView/playlistView';
 import ProfileView from 'views/ProfileView/profileView';
 import ArtistView from 'views/ArtistView/artistView';
 import SearchView from 'views/SearchView/searchView';
@@ -58,6 +59,11 @@ class App {
             if (target.parentElement.tagName === 'A') {
                 event.preventDefault();
                 router.go(target.parentElement.getAttribute('href'));
+            } else {
+                if (target.parentElement.parentElement.tagName === 'A') {
+                    event.preventDefault();
+                    router.go(target.parentElement.parentElement.getAttribute('href'));
+                }
             }
         }
     }
@@ -66,9 +72,10 @@ class App {
         router
             .register(routerStore.artist, ArtistView)
             .register(routerStore.album, AlbumView)
+            .register(routerStore.playlist, PlaylistView)
+            .register(routerStore.profile, ProfileView)
             .register(routerStore.signin, SigninView)
             .register(routerStore.signup, SignupView)
-            .register(routerStore.profile, ProfileView)
             .register(routerStore.dashboard, IndexView)
             .register(routerStore.search, SearchView)
             .start();
