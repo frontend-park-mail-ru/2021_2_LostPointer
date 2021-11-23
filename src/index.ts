@@ -7,6 +7,7 @@ import SignupView from 'views/SignupView/signupView';
 import ProfileView from 'views/ProfileView/profileView';
 import ArtistView from 'views/ArtistView/artistView';
 import SearchView from 'views/SearchView/searchView';
+import AlbumView from 'views/AlbumView/albumView';
 
 import { UserModel } from 'models/user';
 
@@ -64,6 +65,7 @@ class App {
     initRoutes() {
         router
             .register(routerStore.artist, ArtistView)
+            .register(routerStore.album, AlbumView)
             .register(routerStore.signin, SigninView)
             .register(routerStore.signup, SignupView)
             .register(routerStore.profile, ProfileView)
