@@ -28,22 +28,24 @@ export class TrackModel extends Model<ITrackModel> {
         return new Promise((res) => {
             Request.get('/home/tracks')
                 .then((response) => {
+                    if (response && response.status === 500) {
+                        res([]);
+                    }
                     sessionStorage.setItem(
                         '/home/tracks',
                         JSON.stringify(response)
                     );
-                    const tracks: Array<TrackModel> = response.reduce(
-                        (acc, elem, index) => {
-                            elem.pos = index;
-                            const artist = new ArtistModel(elem.artist);
-                            const album = new AlbumModel(elem.album);
-                            elem.album = album;
-                            elem.artist = artist;
-                            acc.push(new TrackModel(elem));
-                            return acc;
-                        },
-                        []
-                    );
+                    const tracks: Array<TrackModel> = response
+                        ? response.reduce((acc, elem, index) => {
+                              elem.pos = index;
+                              const artist = new ArtistModel(elem.artist);
+                              const album = new AlbumModel(elem.album);
+                              elem.album = album;
+                              elem.artist = artist;
+                              acc.push(new TrackModel(elem));
+                              return acc;
+                          }, [])
+                        : [];
                     res(tracks);
                 })
                 .catch(() => {
@@ -51,18 +53,17 @@ export class TrackModel extends Model<ITrackModel> {
                         sessionStorage.getItem('/home/tracks')
                     );
                     if (response) {
-                        const tracks: Array<TrackModel> = response.reduce(
-                            (acc, elem, index) => {
-                                elem.pos = index;
-                                const artist = new ArtistModel(elem.artist);
-                                const album = new AlbumModel(elem.album);
-                                elem.album = album;
-                                elem.artist = artist;
-                                acc.push(new TrackModel(elem));
-                                return acc;
-                            },
-                            []
-                        );
+                        const tracks: Array<TrackModel> = response
+                            ? response.reduce((acc, elem, index) => {
+                                  elem.pos = index;
+                                  const artist = new ArtistModel(elem.artist);
+                                  const album = new AlbumModel(elem.album);
+                                  elem.album = album;
+                                  elem.artist = artist;
+                                  acc.push(new TrackModel(elem));
+                                  return acc;
+                              }, [])
+                            : [];
                         res(tracks);
                     } else {
                         const emptyArtist = new ArtistModel({
@@ -110,14 +111,16 @@ export class TrackModel extends Model<ITrackModel> {
     static getAlbumTracks(id: string): Promise<TrackModel[]> | Promise<[]> {
         return new Promise((resolve) => {
             Request.get(`/album/${id}`).then((response) => {
-                const tracks = response.tracks.reduce((acc, elem, idx) => {
-                    elem.pos = idx;
-                    elem.album = new AlbumModel(response);
-                    elem.artist = new ArtistModel(response.artist);
-                    const track = new TrackModel(elem);
-                    acc.push(track);
-                    return acc;
-                }, []);
+                const tracks = response
+                    ? response.tracks.reduce((acc, elem, idx) => {
+                          elem.pos = idx;
+                          elem.album = new AlbumModel(response);
+                          elem.artist = new ArtistModel(response.artist);
+                          const track = new TrackModel(elem);
+                          acc.push(track);
+                          return acc;
+                      }, [])
+                    : [];
                 resolve(tracks);
             });
         });

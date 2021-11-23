@@ -21,17 +21,19 @@ export class ArtistModel extends Model<IArtistModel> {
         return new Promise<ArtistModel[]>((res) => {
             Request.get('/home/artists')
                 .then((response) => {
+                    if (response && response.status === 500) {
+                        res([]);
+                    }
                     sessionStorage.setItem(
                         '/home/artists',
                         JSON.stringify(response)
                     );
-                    const artists: Array<ArtistModel> = response.reduce(
-                        (acc, elem) => {
-                            acc.push(new ArtistModel(elem));
-                            return acc;
-                        },
-                        []
-                    );
+                    const artists: Array<ArtistModel> = response
+                        ? response.reduce((acc, elem) => {
+                              acc.push(new ArtistModel(elem));
+                              return acc;
+                          }, [])
+                        : [];
                     res(artists);
                 })
                 .catch(() => {
@@ -39,13 +41,15 @@ export class ArtistModel extends Model<IArtistModel> {
                         sessionStorage.getItem('/home/artists')
                     );
                     if (response) {
-                        const artists: Array<ArtistModel> = response.reduce(
-                            (acc, elem) => {
-                                acc.push(new ArtistModel(elem));
-                                return acc;
-                            },
-                            []
-                        );
+                        if (response.status === 500) {
+                            res([]);
+                        }
+                        const artists: Array<ArtistModel> = response
+                            ? response.reduce((acc, elem) => {
+                                  acc.push(new ArtistModel(elem));
+                                  return acc;
+                              }, [])
+                            : [];
                         res(artists);
                     } else {
                         const emptyArtist = new ArtistModel({
@@ -71,24 +75,22 @@ export class ArtistModel extends Model<IArtistModel> {
                         return res(null);
                     }
 
-                    response.tracks = response.tracks.reduce(
-                        (acc, elem, index) => {
-                            elem.pos = index;
-                            const album = new AlbumModel(elem.album);
-                            elem.album = album;
-                            acc.push(new TrackModel(elem));
-                            return acc;
-                        },
-                        []
-                    );
-                    response.albums = response.albums.reduce(
-                        (acc, elem, index) => {
-                            elem.pos = index;
-                            acc.push(new AlbumModel(elem));
-                            return acc;
-                        },
-                        []
-                    );
+                    response.tracks = response
+                        ? response.tracks.reduce((acc, elem, index) => {
+                              elem.pos = index;
+                              const album = new AlbumModel(elem.album);
+                              elem.album = album;
+                              acc.push(new TrackModel(elem));
+                              return acc;
+                          }, [])
+                        : [];
+                    response.albums = response
+                        ? response.albums.reduce((acc, elem, index) => {
+                              elem.pos = index;
+                              acc.push(new AlbumModel(elem));
+                              return acc;
+                          }, [])
+                        : [];
                     res(new ArtistModel(response));
                 })
                 .catch(() => {

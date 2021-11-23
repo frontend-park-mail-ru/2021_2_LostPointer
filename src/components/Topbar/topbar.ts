@@ -62,12 +62,15 @@ export class Topbar extends Component<ITopbarComponentProps> {
                         document
                             .getElementById('signin-button')
                             .setAttribute('href', '/signin');
-                        document.querySelector('.topbar-profile').remove();
-                        if (
-                            window.location.pathname !== routerStore.dashboard
-                        ) {
-                            router.go(routerStore.dashboard);
+                        const ava = document.querySelector('.topbar-profile');
+                        if (ava) {
+                            ava.remove();
                         }
+                        // if (
+                        //     window.location.pathname !== routerStore.dashboard
+                        // ) {
+                        //     router.go(routerStore.dashboard);
+                        // }
                     });
                     this.removeEventListener('click', logoutHandler);
                 });

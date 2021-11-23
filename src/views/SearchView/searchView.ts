@@ -54,7 +54,6 @@ export class SearchView extends View<ISearchViewProps> {
     }
 
     didMount() {
-        this.authenticated = store.get('authenticated');
         this.userAvatar = store.get('userAvatar');
         this.isLoaded = true;
     }

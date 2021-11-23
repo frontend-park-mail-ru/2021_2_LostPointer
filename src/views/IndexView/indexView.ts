@@ -38,7 +38,6 @@ export class IndexView extends View<IIndexViewProps> {
     }
 
     didMount() {
-        this.authenticated = store.get('authenticated');
         this.userAvatar = store.get('userAvatar');
 
         const tracks = TrackModel.getHomepageTracks().then((tracks) => {
@@ -126,7 +125,7 @@ export class IndexView extends View<IIndexViewProps> {
 
         document.getElementById('app').innerHTML = IndexTemplate({
             topbar: TopbarComponent.set({
-                authenticated: this.authenticated,
+                authenticated: store.get('authenticated'),
                 avatar: this.userAvatar,
                 offline: !navigator.onLine,
             }).render(),

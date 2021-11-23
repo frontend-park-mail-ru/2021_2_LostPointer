@@ -41,7 +41,6 @@ export class ArtistView extends View<IArtistViewProps> {
         }
         const artistId = match[1];
 
-        this.authenticated = store.get('authenticated');
         this.userAvatar = store.get('userAvatar');
 
         const artist = ArtistModel.getArtist(artistId).then((artist) => {
@@ -104,7 +103,7 @@ export class ArtistView extends View<IArtistViewProps> {
             video: this.artist.getProps().video,
             artistAvatar: this.artist.getProps().avatar,
             topbar: TopbarComponent.set({
-                authenticated: this.authenticated,
+                authenticated: store.get('authenticated'),
                 avatar: this.userAvatar,
                 offline: navigator.onLine !== true,
             }).render(),

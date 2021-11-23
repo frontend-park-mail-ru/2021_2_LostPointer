@@ -21,26 +21,30 @@ export class AlbumModel extends Model<IAlbumModel> {
         return new Promise((res) => {
             Request.get('/home/albums')
                 .then((response) => {
-                    sessionStorage.setItem('/home/albums', JSON.stringify(response));
-                    const albums: Array<AlbumModel> = response.reduce(
-                        (acc, elem) => {
-                            acc.push(new AlbumModel(elem));
-                            return acc;
-                        },
-                        []
+                    sessionStorage.setItem(
+                        '/home/albums',
+                        JSON.stringify(response)
                     );
+
+                    const albums = response
+                        ? response.reduce((acc, elem) => {
+                              acc.push(new AlbumModel(elem));
+                              return acc;
+                          }, [])
+                        : [];
                     res(albums);
                 })
                 .catch(() => {
-                    const response = JSON.parse(sessionStorage.getItem('/home/albums'));
+                    const response = JSON.parse(
+                        sessionStorage.getItem('/home/albums')
+                    );
                     if (response) {
-                        const albums: Array<AlbumModel> = response.reduce(
-                            (acc, elem) => {
-                                acc.push(new AlbumModel(elem));
-                                return acc;
-                            },
-                            []
-                        );
+                        const albums: Array<AlbumModel> = response
+                            ? response.reduce((acc, elem) => {
+                                  acc.push(new AlbumModel(elem));
+                                  return acc;
+                              }, [])
+                            : [];
                         res(albums);
                     } else {
                         const emptyAlbum = new AlbumModel({
@@ -54,7 +58,7 @@ export class AlbumModel extends Model<IAlbumModel> {
                             album: false,
                         });
 
-                        res(Array.from({length: 4}, () => emptyAlbum));
+                        res(Array.from({ length: 4 }, () => emptyAlbum));
                     }
                 });
         });
