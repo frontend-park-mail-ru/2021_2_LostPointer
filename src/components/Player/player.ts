@@ -183,7 +183,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         if (this.props.right_disabled) {
             right.classList.add('disabled');
         }
-        this.audio.play().then(() => (this.props.playing = true));
+        this.audio.play().then(() => {
+            this.props.playing = true;
+            document.getElementById('player-artwork').style.display = ''; //TODO=Разобраться, откуда display:none
+        });
     }
 
     unmount() {
