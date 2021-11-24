@@ -228,6 +228,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             );
 
             this.globalPlayButtonHandler = (e) => {
+                e.preventDefault();
                 const target = <HTMLImageElement>e.target;
                 if (target.classList.contains('top-album__play')) {
                     TrackModel.getAlbumTracks(target.dataset.id).then(
