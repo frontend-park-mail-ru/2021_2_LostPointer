@@ -3,6 +3,8 @@ import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import store from 'services/store/store';
 
+let selectedTrackId: number;
+
 export function disableBrokenImg(event) {
     event.target.style.display = 'none';
 }
@@ -28,7 +30,7 @@ export function showContextMenu(event) {
         router.go(routerStore.signin);
         return;
     }
-    this.selectedTrackId = parseInt(event.target.getAttribute('data-id'));
+    selectedTrackId = parseInt(event.target.getAttribute('data-id'));
     const rect = event.target.getBoundingClientRect();
     this.renderedMenu.style.left = `${rect.left + 10}px`;
     this.renderedMenu.style.top = `${rect.top + 10}px`;
@@ -38,7 +40,7 @@ export function showContextMenu(event) {
 
 export function addTrackToPlaylist(event) {
     const playlistId = parseInt(event.target.getAttribute('data-id'));
-    const trackId = this.selectedTrackId;
+    const trackId = selectedTrackId;
 
     PlaylistModel.addTrack(playlistId, trackId).then((response) => {
         if (response.status === 201) {
@@ -50,7 +52,7 @@ export function addTrackToPlaylist(event) {
 }
 
 export function createNewPlaylist() {
-    const trackId = this.selectedTrackId;
+    const trackId = selectedTrackId;
 
     const formdata = new FormData();
     formdata.append('title', 'New playlist');
@@ -66,7 +68,7 @@ export function createNewPlaylist() {
 
 export function removeTrackFromPlaylist() {
     const playlistId = this.playlist.getProps().id;
-    const trackId = this.selectedTrackId;
+    const trackId = selectedTrackId;
 
     PlaylistModel.removeTrack(playlistId, trackId).then((response) => {
         if (response.status === 200) {

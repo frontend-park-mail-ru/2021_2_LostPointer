@@ -2,22 +2,23 @@ import Request from 'services/request/request';
 import player from 'components/Player/player';
 import { View } from 'views/View/view';
 
-import { disableBrokenImg } from 'views/utils';
+import { addTrackToPlaylist, createNewPlaylist, disableBrokenImg, hideContextMenu, showContextMenu } from 'views/utils';
 
 import store from 'services/store/store';
 import { TrackModel } from 'models/track';
 import { AlbumModel } from 'models/album';
 import { ArtistModel } from 'models/artist';
-
 import { TrackList } from 'components/TrackList/tracklist';
 import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
 import { TopAlbums } from 'components/TopAlbums/topalbums';
+import TopbarComponent from 'components/Topbar/topbar';
+import sidebar from 'components/Sidebar/sidebar';
+import { PlaylistModel } from 'models/playlist';
+import { ContextMenu } from 'components/ContextMenu/contextMenu';
 
 import SearchViewTemplate from './searchView.hbs';
 import './searchView.scss';
 import IndexTemplate from 'views/IndexView/indexView.hbs';
-import TopbarComponent from 'components/Topbar/topbar';
-import sidebar from 'components/Sidebar/sidebar';
 
 const SEARCH_TIMEOUT = 200;
 
@@ -41,6 +42,10 @@ export class SearchView extends View<ISearchViewProps> {
     private artists: ArtistModel[];
     private albums: AlbumModel[];
     private noResults: boolean;
+    private userPlaylists: Array<PlaylistModel>;
+    private contextMenu: ContextMenu;
+    private menuVisible: boolean;
+    private renderedMenu: HTMLElement;
 
     constructor(props?: ISearchViewProps) {
         super(props);
@@ -54,10 +59,61 @@ export class SearchView extends View<ISearchViewProps> {
     }
 
     didMount() {
+        const userPlaylists = PlaylistModel.getUserPlaylists().then(
+            (playlists) => {
+                this.userPlaylists = playlists;
+            }
+        );
+
+        Promise.all([userPlaylists]).then(() => {
+            const options = [
+                {
+                    class: 'js-playlist-create',
+                    dataId: null,
+                    value: 'Add to the new playlist',
+                },
+            ];
+            this.contextMenu = new ContextMenu({
+                options: options.concat(
+                    this.userPlaylists
+                        .filter((playlist) => {
+                            return playlist.getProps().is_own;
+                        })
+                        .map((playlist) => {
+                            return {
+                                class: `js-playlist-track-add`,
+                                dataId: playlist.getProps().id,
+                                value: playlist.getProps().title,
+                            };
+                        })
+                ),
+            });
+        });
+
         this.isLoaded = true;
     }
 
     addListeners() {
+        window.addEventListener('click', hideContextMenu.bind(this));
+        // document
+        //     .querySelectorAll('.track-list-item-playlist')
+        //     .forEach((element) => {
+        //         element.addEventListener('click', showContextMenu.bind(this));
+        //     });
+
+        // const createPlaylistBtn = document.querySelector('.js-playlist-create');
+        // createPlaylistBtn.addEventListener(
+        //     'click',
+        //     createNewPlaylist.bind(this)
+        // );
+
+        // const addTrackToPlaylistBtns = document.querySelectorAll(
+        //     '.js-playlist-track-add'
+        // );
+        // addTrackToPlaylistBtns.forEach((button) => {
+        //     button.addEventListener('click', addTrackToPlaylist.bind(this));
+        // });
+
         document
             .querySelector('.topbar__search-input')
             .addEventListener('input', (e) => {
@@ -113,10 +169,34 @@ export class SearchView extends View<ISearchViewProps> {
             img.removeEventListener('error', disableBrokenImg);
         });
 
+        // document
+        //     .querySelectorAll('.track-list-item-playlist')
+        //     .forEach((element) => {
+        //         element.removeEventListener(
+        //             'click',
+        //             showContextMenu.bind(this)
+        //         );
+        //     });
+        // const createPlaylistBtn = document.querySelector('.js-playlist-create');
+        // createPlaylistBtn.removeEventListener(
+        //     'click',
+        //     createNewPlaylist.bind(this)
+        // );
+        // const addTrackToPlaylistBtns = document.querySelectorAll(
+        //     '.js-playlist-track-add'
+        // );
+        // addTrackToPlaylistBtns.forEach((button) => {
+        //     button.removeEventListener('click', addTrackToPlaylist.bind(this));
+        // });
+
+        window.removeEventListener('click', hideContextMenu.bind(this));
+
         this.isLoaded = false;
     }
 
     render() {
+        this.didMount()
+
         const app = document.getElementById('app');
         if (app.innerHTML == '') {
             document.getElementById('app').innerHTML = IndexTemplate({
@@ -127,14 +207,26 @@ export class SearchView extends View<ISearchViewProps> {
                 }).render(),
                 sidebar: sidebar.render(),
                 player: player.render(),
+                contextMenu: this.contextMenu.render(),
             });
             TopbarComponent.addHandlers();
         }
         document.querySelector('.main-layout__content').innerHTML = '';
+        this.renderedMenu = document.querySelector('.menu');
+        this.menuVisible = false;
         this.addListeners();
     }
 
     update() {
+        document
+            .querySelectorAll('.track-list-item-playlist')
+            .forEach((element) => {
+                element.removeEventListener(
+                    'click',
+                    showContextMenu.bind(this)
+                );
+            });
+
         this.data.tracks =
             this.tracks.length !== 0
                 ? new TrackList({
@@ -169,7 +261,11 @@ export class SearchView extends View<ISearchViewProps> {
             not_found: this.noResults,
         });
         player.setup(document.querySelectorAll('.track-list-item'));
-
+        document
+            .querySelectorAll('.track-list-item-playlist')
+            .forEach((element) => {
+                element.addEventListener('click', showContextMenu.bind(this));
+            });
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
