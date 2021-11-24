@@ -31,7 +31,7 @@ interface IIndexViewProps {
     authenticated: boolean;
 }
 
-export class IndexView extends View<IIndexViewProps> {
+class IndexView extends View<IIndexViewProps> {
     private authenticated: boolean;
 
     private top_albums: AlbumModel[];
