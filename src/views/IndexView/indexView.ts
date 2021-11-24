@@ -151,8 +151,6 @@ export class IndexView extends View<IIndexViewProps> {
     }
 
     addListeners() {
-        TopbarComponent.addHandlers();
-
         const createPlaylistBtn = document.querySelector(
             '.pl-link[href="/playlist/0"]'
         );

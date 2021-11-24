@@ -1,6 +1,6 @@
 import { View } from 'views/View/view';
 import { Sidebar } from 'components/Sidebar/sidebar';
-import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
+import TopbarComponent from 'components/Topbar/topbar';
 import { TrackList } from 'components/TrackList/tracklist';
 import { DEFAULT_ARTWORK, PlaylistModel } from 'models/playlist';
 import router from 'services/router/router';
@@ -39,7 +39,6 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     private authenticated: boolean;
 
     private sidebar: Sidebar;
-    private topbar: Topbar;
     private userAvatar: string;
     private playlist: PlaylistModel;
     private userPlaylists: Array<PlaylistModel>;
@@ -78,7 +77,6 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         );
 
         Promise.all([playlist, userPlaylists]).then(() => {
-            this.topbar = TopbarComponent;
             this.sidebar = new Sidebar().render();
             const props = this.playlist.getProps();
             this.trackList = new TrackList({
@@ -588,13 +586,11 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             avatar: this.playlist.getProps().artwork,
             is_own: this.playlist.getProps().is_own,
             is_public: this.playlist.getProps().is_public,
-            topbar: this.topbar
-                .set({
-                    authenticated: store.get('authenticated'),
-                    avatar: store.get('userAvatar'),
-                    offline: !navigator.onLine,
-                })
-                .render(),
+            topbar: TopbarComponent.set({
+                authenticated: store.get('authenticated'),
+                avatar: store.get('userAvatar'),
+                offline: !navigator.onLine,
+            }).render(),
             sidebar: this.sidebar,
             trackList: this.trackList
                 .set({
@@ -606,6 +602,8 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             contextMenu: this.contextMenu.render(),
             inputs: this.inputs,
         });
+        TopbarComponent.addHandlers();
+        TopbarComponent.didMount();
         this.renderedMenu = document.querySelector('.menu');
         this.menuVisible = false;
 

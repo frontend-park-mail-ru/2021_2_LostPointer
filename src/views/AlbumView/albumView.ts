@@ -2,7 +2,7 @@ import { View } from 'views/View/view';
 import { Sidebar } from 'components/Sidebar/sidebar';
 import { AlbumModel } from 'models/album';
 import { TrackList } from 'components/TrackList/tracklist';
-import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
+import TopbarComponent from 'components/Topbar/topbar';
 import player from 'components/Player/player';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
@@ -21,7 +21,6 @@ export class AlbumView extends View<IAlbumViewProps> {
     private authenticated: boolean;
 
     private sidebar: Sidebar;
-    private topbar: Topbar;
     private userAvatar: string;
     private album: AlbumModel;
     private trackList: TrackList;
@@ -47,7 +46,6 @@ export class AlbumView extends View<IAlbumViewProps> {
         });
 
         Promise.all([album]).then(() => {
-            this.topbar = TopbarComponent;
             this.sidebar = new Sidebar().render();
             const props = this.album.getProps();
             this.trackList = new TrackList({
@@ -60,13 +58,13 @@ export class AlbumView extends View<IAlbumViewProps> {
     }
 
     addListeners() {
-        document.querySelectorAll('img').forEach(function(img) {
+        document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function(img) {
+        document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
         this.isLoaded = false;
@@ -80,13 +78,11 @@ export class AlbumView extends View<IAlbumViewProps> {
 
         document.getElementById('app').innerHTML = AlbumTemplate({
             sidebar: this.sidebar,
-            topbar: this.topbar
-                .set({
-                    authenticated: store.get('authenticated'),
-                    avatar: store.get('userAvatar'),
-                    offline: !navigator.onLine,
-                })
-                .render(),
+            topbar: TopbarComponent.set({
+                authenticated: store.get('authenticated'),
+                avatar: store.get('userAvatar'),
+                offline: !navigator.onLine,
+            }).render(),
             artWork:
                 '/static/artworks/' +
                 this.album.getProps().artwork +
@@ -103,6 +99,8 @@ export class AlbumView extends View<IAlbumViewProps> {
             ),
             album: this.album.getProps(),
         });
+        TopbarComponent.addHandlers();
+        TopbarComponent.didMount();
         this.addListeners();
 
         player.setup(document.querySelectorAll('.track-list-item'));
