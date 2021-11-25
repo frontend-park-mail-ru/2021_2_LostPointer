@@ -19,7 +19,7 @@ import store from 'services/store/store';
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
 import { PlaylistModel } from 'models/playlist';
-import playlistsContextMenu, { PlaylistsContextMenu } from 'components/ContextMenu/playlistsContextMenu';
+import playlistsContextMenu, { PlaylistsContextMenu } from 'components/PlaylistsContextMenu/playlistsContextMenu';
 
 interface IIndexViewProps {
     authenticated: boolean;

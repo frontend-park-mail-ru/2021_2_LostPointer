@@ -12,7 +12,7 @@ import { TopAlbums } from 'components/TopAlbums/topalbums';
 import TopbarComponent from 'components/Topbar/topbar';
 import sidebar from 'components/Sidebar/sidebar';
 import { PlaylistModel } from 'models/playlist';
-import playlistsContextMenu, { PlaylistsContextMenu } from 'components/ContextMenu/playlistsContextMenu';
+import playlistsContextMenu, { PlaylistsContextMenu } from 'components/PlaylistsContextMenu/playlistsContextMenu';
 
 import SearchViewTemplate from './searchView.hbs';
 import './searchView.scss';

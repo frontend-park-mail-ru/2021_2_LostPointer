@@ -8,7 +8,7 @@ import { ArtistModel } from 'models/artist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { disableBrokenImg } from 'views/utils';
-import playlistsContextMenu, { PlaylistsContextMenu } from 'components/ContextMenu/playlistsContextMenu';
+import playlistsContextMenu, { PlaylistsContextMenu } from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import { PlaylistModel } from 'models/playlist';
 
 import ArtistTemplate from './artistView.hbs';

@@ -6,6 +6,7 @@ import { PlaylistModel } from 'models/playlist';
 import store from 'services/store/store';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
+import { IResponseBody } from 'services/request/request';
 
 interface IContextMenuOption {
     class: string,
@@ -117,20 +118,19 @@ export class PlaylistsContextMenu extends Component<IContextMenuProps> {
         });
     }
 
-    removeTrackFromPlaylist(playlist) {
-        const playlistId = playlist.getProps().id;
-
-        PlaylistModel.removeTrack(playlistId, this.selectedTrackId).then((response) => {
-            if (response.status === 200) {
-                playlist.getProps().tracks.splice(
-                    playlist.getProps().tracks.findIndex((track) => {
-                        return track.getProps().id === this.selectedTrackId;
-                    }),
-                    1
-                );
-                // TODO перерендеривать снаружи
-                // this.render();
-            }
+    removeTrackFromPlaylist(playlist): Promise<IResponseBody> {
+        return new Promise<IResponseBody>((res) => {
+            PlaylistModel.removeTrack(playlist.getProps().id, this.selectedTrackId).then((response) => {
+                if (response.status === 200) {
+                    playlist.getProps().tracks.splice(
+                        playlist.getProps().tracks.findIndex((track) => {
+                            return track.getProps().id === this.selectedTrackId;
+                        }),
+                        1
+                    );
+                }
+                res(response);
+            });
         });
     }
 }

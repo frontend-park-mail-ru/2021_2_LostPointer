@@ -9,14 +9,13 @@ import store from 'services/store/store';
 import { disableBrokenImg } from 'views/utils';
 import player from 'components/Player/player';
 import { InputFormComponent } from 'components/InputForm/inputform';
-import playlistsContextMenu, { PlaylistsContextMenu } from 'components/ContextMenu/playlistsContextMenu';
+import playlistsContextMenu, { PlaylistsContextMenu } from 'components/PlaylistsContextMenu/playlistsContextMenu';
 
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
 
 // TODO service worker
 // TODO валидация
-// TODO при пустом треклисте удалять его из верстки
 // TODO переключение на главной своих и чужих плейлистов
 // TODO создатель плейлиста на странице плейлиста
 // TODO opengraph
@@ -372,6 +371,37 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             });
     }
 
+    removeTrack() {
+        this.contextMenu.removeTrackFromPlaylist(this.playlist)
+            .then((response) => {
+                if (response.status === 200) {
+                    this.trackList.set({
+                        title: 'Tracks',
+                        tracks: this.playlist.getProps().tracks,
+                    });
+                    const trackList = document.querySelector('.playlist__content');
+                    document
+                        .querySelectorAll('.track-list-item-playlist')
+                        .forEach((element) => {
+                            element.removeEventListener(
+                                'click',
+                                this.contextMenu.showContextMenu.bind(this.contextMenu)
+                            );
+                        });
+                    trackList.innerHTML = this.trackList.render();
+                    document
+                        .querySelectorAll('.track-list-item-playlist')
+                        .forEach((element) => {
+                            element.addEventListener(
+                                'click',
+                                this.contextMenu.showContextMenu.bind(this.contextMenu)
+                            );
+                        });
+                }
+            });
+
+    }
+
     addListeners() {
         if (this.playlist.getProps().is_own) {
             const deleteAvatarBtn = document.querySelector(
@@ -424,7 +454,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             );
             removeTrackFromPlaylistBtn.addEventListener(
                 'click',
-                this.contextMenu.removeTrackFromPlaylist.bind(this.contextMenu, this.playlist)
+                this.removeTrack.bind(this)
             );
         }
 
@@ -474,7 +504,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             );
             removeTrackFromPlaylistBtn.removeEventListener(
                 'click',
-                this.contextMenu.removeTrackFromPlaylist.bind(this.contextMenu, this.playlist)
+                this.removeTrack.bind(this)
             );
 
             window.removeEventListener(
