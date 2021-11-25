@@ -1,5 +1,5 @@
 import { View } from 'views/View/view';
-import { Sidebar } from 'components/Sidebar/sidebar';
+import sidebar from 'components/Sidebar/sidebar';
 import TopbarComponent from 'components/Topbar/topbar';
 import { TrackList } from 'components/TrackList/tracklist';
 import { DEFAULT_ARTWORK, PlaylistModel } from 'models/playlist';
@@ -14,19 +14,17 @@ import playlistsContextMenu, { PlaylistsContextMenu } from 'components/Playlists
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
 
-// TODO service worker
+// TODO service worker (для альбома и поиска?)
 // TODO переключение на главной своих и чужих плейлистов
 // TODO создатель плейлиста на странице плейлиста
 // TODO opengraph
+// TODO генерация ссылки для шеринга
 
 interface IPlaylistViewProps {
     authenticated: boolean;
 }
 
 export class PlaylistView extends View<IPlaylistViewProps> {
-    private authenticated: boolean;
-
-    private sidebar: Sidebar;
     private userAvatar: string;
     private playlist: PlaylistModel;
     private userPlaylists: Array<PlaylistModel>;
@@ -64,7 +62,6 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         );
 
         Promise.all([playlist, userPlaylists]).then(() => {
-            this.sidebar = new Sidebar().render();
             const props = this.playlist.getProps();
             this.trackList = new TrackList({
                 title: 'Tracks',
@@ -585,7 +582,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                 avatar: store.get('userAvatar'),
                 offline: !navigator.onLine,
             }).render(),
-            sidebar: this.sidebar,
+            sidebar: sidebar.render(),
             trackList: this.trackList
                 .set({
                     title: 'Tracks',

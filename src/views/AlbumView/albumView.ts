@@ -1,5 +1,5 @@
 import { View } from 'views/View/view';
-import { Sidebar } from 'components/Sidebar/sidebar';
+import sidebar from 'components/Sidebar/sidebar';
 import { AlbumModel } from 'models/album';
 import { TrackList } from 'components/TrackList/tracklist';
 import TopbarComponent from 'components/Topbar/topbar';
@@ -20,9 +20,6 @@ interface IAlbumViewProps {
 }
 
 export class AlbumView extends View<IAlbumViewProps> {
-    private authenticated: boolean;
-
-    private sidebar: Sidebar;
     private userAvatar: string;
     private album: AlbumModel;
     private trackList: TrackList;
@@ -56,7 +53,6 @@ export class AlbumView extends View<IAlbumViewProps> {
         );
 
         Promise.all([album, userPlaylists]).then(() => {
-            this.sidebar = new Sidebar().render();
             const props = this.album.getProps();
             this.trackList = new TrackList({
                 title: 'Tracks',
@@ -132,7 +128,7 @@ export class AlbumView extends View<IAlbumViewProps> {
         }
 
         document.getElementById('app').innerHTML = AlbumTemplate({
-            sidebar: this.sidebar,
+            sidebar: sidebar.render(),
             topbar: TopbarComponent.set({
                 authenticated: store.get('authenticated'),
                 avatar: store.get('userAvatar'),

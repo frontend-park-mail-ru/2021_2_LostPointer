@@ -1,6 +1,6 @@
 import { View } from 'views/View/view';
 import player from 'components/Player/player';
-import { Sidebar } from 'components/Sidebar/sidebar';
+import sidebar from 'components/Sidebar/sidebar';
 import TopbarComponent from 'components/Topbar/topbar';
 import { SuggestedAlbums } from 'components/SugestedAlbums/suggestedAlbums';
 import { TrackList } from 'components/TrackList/tracklist';
@@ -20,9 +20,6 @@ interface IArtistViewProps {
 }
 
 export class ArtistView extends View<IArtistViewProps> {
-    private authenticated: boolean;
-
-    private sidebar: Sidebar;
     private userAvatar: string;
     private artist: ArtistModel;
     private trackList: TrackList;
@@ -57,7 +54,6 @@ export class ArtistView extends View<IArtistViewProps> {
         );
 
         Promise.all([artist, userPlaylists]).then(() => {
-            this.sidebar = new Sidebar().render();
             this.albumList = new SuggestedAlbums({
                 albums: this.artist.getProps().albums,
             }).render();
@@ -155,7 +151,7 @@ export class ArtistView extends View<IArtistViewProps> {
                 avatar: store.get('userAvatar'),
                 offline: navigator.onLine !== true,
             }).render(),
-            sidebar: this.sidebar,
+            sidebar: sidebar.render(),
             albumList: this.albumList,
             trackList: this.trackList,
             player: player.render(),

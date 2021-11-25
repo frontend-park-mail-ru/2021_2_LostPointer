@@ -1,4 +1,4 @@
-import { Sidebar } from 'components/Sidebar/sidebar';
+import sidebar from 'components/Sidebar/sidebar';
 import { TopAlbums } from 'components/TopAlbums/topalbums';
 import TopbarComponent from 'components/Topbar/topbar';
 import { FriendActivity } from 'components/FriendActivity/friendactivity';
@@ -26,13 +26,10 @@ interface IIndexViewProps {
 }
 
 class IndexView extends View<IIndexViewProps> {
-    private authenticated: boolean;
-
     private top_albums: AlbumModel[];
     private suggested_artists: ArtistModel[];
     private track_list: TrackModel[];
     private suggested_playlists: PlaylistModel[];
-    private sidebar: Sidebar;
     private friend_activity: FriendActivity;
     private userAvatar: string;
     private contextMenu: PlaylistsContextMenu;
@@ -74,7 +71,6 @@ class IndexView extends View<IIndexViewProps> {
                 this.suggested_playlists = new SuggestedPlaylists({
                     playlists: this.suggested_playlists,
                 }).render();
-                this.sidebar = new Sidebar().render();
 
                 this.top_albums = new TopAlbums({
                     albums: this.top_albums,
@@ -217,7 +213,7 @@ class IndexView extends View<IIndexViewProps> {
                 avatar: store.get('userAvatar'),
                 offline: !navigator.onLine,
             }).render(),
-            sidebar: this.sidebar,
+            sidebar: sidebar.render(),
             friend_activity: this.friend_activity,
             top_albums: this.top_albums,
             suggested_artists: this.suggested_artists,

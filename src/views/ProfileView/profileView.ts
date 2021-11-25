@@ -3,7 +3,7 @@ import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import TopbarComponent from 'components/Topbar/topbar';
 import player from 'components/Player/player';
-import { Sidebar } from 'components/Sidebar/sidebar';
+import sidebar from 'components/Sidebar/sidebar';
 import { ICustomInput } from 'interfaces/CustomInput';
 import { CustomValidation, isValidForm } from 'services/validation/validation';
 import {
@@ -26,7 +26,6 @@ interface IProfileViewProps {
 }
 
 export class ProfileView extends View<IProfileViewProps> {
-    private sidebar: Sidebar;
     private profileform: ProfileForm;
     private userAvatar: string;
     private user: UserModel;
@@ -44,7 +43,6 @@ export class ProfileView extends View<IProfileViewProps> {
 
         UserModel.getSettings().then((user) => {
             this.user = user;
-            this.sidebar = new Sidebar();
             TopbarComponent.set({
                 authenticated: store.get('authenticated'),
                 avatar: user.getProps().small_avatar,
@@ -260,7 +258,7 @@ export class ProfileView extends View<IProfileViewProps> {
                 avatar: store.get('userAvatar'),
                 offline: !navigator.onLine,
             }).render(),
-            sidebar: this.sidebar.render(),
+            sidebar: sidebar.render(),
             profileform: this.profileform.render(),
             player: player.render(),
         });
