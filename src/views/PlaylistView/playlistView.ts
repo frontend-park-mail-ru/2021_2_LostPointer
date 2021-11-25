@@ -166,6 +166,9 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         const formdata = new FormData();
         formdata.append('artwork', file, file.name);
 
+        // FIXME костыль, потому что бэк присваивает is_public значение false, если он не указан в запросе
+        formdata.append('is_public', (this.playlist.getProps().is_public.toString()));
+
         const ext = file.name
             .substring(file.name.lastIndexOf('.') + 1)
             .toLowerCase();
@@ -255,6 +258,9 @@ export class PlaylistView extends View<IPlaylistViewProps> {
 
         const formdata = new FormData();
         formdata.append('title', titleInput.value);
+
+        // FIXME костыль, потому что бэк присваивает is_public значение false, если он не указан в запросе
+        formdata.append('is_public', (this.playlist.getProps().is_public.toString()));
 
         this.playlist
             .updateInformation(formdata)

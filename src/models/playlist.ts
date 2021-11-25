@@ -146,7 +146,7 @@ export class PlaylistModel extends Model<IPlaylistModel> {
                                     this.props.title = String(formdata.get('title'));
                                 }
                                 if (formdata.get('is_public') === 'true' || formdata.get('is_public') === 'false') {
-                                    this.props.is_public = !!formdata.get('is_public');
+                                    this.props.is_public = (formdata.get('is_public') === 'true');
                                 }
                             }
                             res(body);
