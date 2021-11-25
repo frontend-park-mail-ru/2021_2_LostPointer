@@ -15,7 +15,6 @@ import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
 
 // TODO service worker
-// TODO валидация
 // TODO переключение на главной своих и чужих плейлистов
 // TODO создатель плейлиста на странице плейлиста
 // TODO opengraph
@@ -208,8 +207,8 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         const titleInput = event.target.querySelector('input[name="title"]');
         const msg = event.target.querySelector('.editwindow__form-msg');
         msg.innerHTML = '';
-        if (!titleInput.value) {
-            msg.innerHTML = 'Invalid title';
+        if (!titleInput.value || titleInput.value.length < 4 || titleInput.value.length > 30) {
+            msg.innerHTML = 'The length of title must be from 3 to 30 characters';
             msg.classList.add('fail', 'visible');
             return;
         }
