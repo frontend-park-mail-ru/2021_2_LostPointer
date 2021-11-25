@@ -72,7 +72,10 @@ export class PlaylistModel extends Model<IPlaylistModel> {
         });
     }
 
-    static createPlaylist(formdata: FormData): Promise<IPlaylistModel> {
+    static createPlaylist(title: string): Promise<IPlaylistModel> {
+        const formdata = new FormData();
+        formdata.append('title', title);
+
         return new Promise<IPlaylistModel>((res) => {
            Request.post(
                '/playlists',
@@ -124,7 +127,22 @@ export class PlaylistModel extends Model<IPlaylistModel> {
         });
     }
 
-    updateInformation(formdata: FormData): Promise<IResponseBody> | Promise<IPlaylistModel> {
+    updateInformation(
+        title?: string,
+        is_public?: boolean,
+        artwork?: any,
+    ): Promise<IResponseBody> | Promise<IPlaylistModel> {
+        const formdata = new FormData();
+        if (title != null) {
+            formdata.append('title', title);
+        }
+        if (is_public != null) {
+            formdata.append('is_public', is_public.toString());
+        }
+        if (artwork != null) {
+            formdata.append('artwork', artwork, artwork.name);
+        }
+
         return new Promise<IResponseBody>((res) => {
             Request.get(
                 '/csrf',
@@ -142,11 +160,11 @@ export class PlaylistModel extends Model<IPlaylistModel> {
                         ).then((body) => {
                             // при успехе ответ возвращает только artwork
                             if (body.artwork_color || body.artwork_color == '') {
-                                if (formdata.get('title')) {
-                                    this.props.title = String(formdata.get('title'));
+                                if (title != null) {
+                                    this.props.title = title;
                                 }
-                                if (formdata.get('is_public') === 'true' || formdata.get('is_public') === 'false') {
-                                    this.props.is_public = (formdata.get('is_public') === 'true');
+                                if (is_public != null) {
+                                    this.props.is_public = is_public;
                                 }
                             }
                             res(body);

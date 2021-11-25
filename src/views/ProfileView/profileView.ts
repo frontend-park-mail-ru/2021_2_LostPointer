@@ -64,9 +64,6 @@ export class ProfileView extends View<IProfileViewProps> {
         const msg = document.querySelector('.profile-avatar__msg');
         (<HTMLElement>msg).innerText = '';
 
-        const formdata = new FormData();
-        formdata.append('avatar', file, file.name);
-
         const ext = file.name
             .substring(file.name.lastIndexOf('.') + 1)
             .toLowerCase();
@@ -96,7 +93,13 @@ export class ProfileView extends View<IProfileViewProps> {
         }
 
         this.user
-            .updateSettings(formdata)
+            .updateSettings(
+                null,
+                null,
+                null,
+                null,
+                file,
+            )
             .then((body) => {
                 if (body.status === 200) {
                     const smallAvatar = document.querySelector(
@@ -184,17 +187,13 @@ export class ProfileView extends View<IProfileViewProps> {
             return;
         }
 
-        const formdata = new FormData();
-        formdata.append('nickname', nicknameInput.value);
-        formdata.append('email', emailInput.value);
-
-        if (oldPasswordInput.value && passwordInput.value) {
-            formdata.append('old_password', oldPasswordInput.value);
-            formdata.append('new_password', passwordInput.value);
-        }
-
         this.user
-            .updateSettings(formdata)
+            .updateSettings(
+                nicknameInput.value,
+                emailInput.value,
+                oldPasswordInput.value && passwordInput.value ? oldPasswordInput.value : null,
+                oldPasswordInput.value && passwordInput.value ? passwordInput.value : null,
+            )
             .then((body) => {
                 if (body.status === 200) {
                     msg.classList.remove('fail');

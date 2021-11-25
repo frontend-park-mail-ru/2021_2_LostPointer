@@ -54,10 +54,7 @@ export function addTrackToPlaylist(event) {
 export function createNewPlaylist() {
     const trackId = selectedTrackId;
 
-    const formdata = new FormData();
-    formdata.append('title', 'New playlist');
-
-    PlaylistModel.createPlaylist(formdata).then(({ id }) => {
+    PlaylistModel.createPlaylist('New playlist').then(({ id }) => {
         PlaylistModel.addTrack(id, trackId).then((response) => {
             if (response.status === 201) {
                 router.go(`${routerStore.playlist}/${id}`);

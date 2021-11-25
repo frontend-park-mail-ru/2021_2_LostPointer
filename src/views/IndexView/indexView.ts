@@ -142,10 +142,7 @@ class IndexView extends View<IIndexViewProps> {
             return;
         }
 
-        const formdata = new FormData();
-        formdata.append('title', 'New playlist');
-
-        PlaylistModel.createPlaylist(formdata).then(({ id }) => {
+        PlaylistModel.createPlaylist('New playlist').then(({ id }) => {
             router.go(`${routerStore.playlist}/${id}`);
         });
     }

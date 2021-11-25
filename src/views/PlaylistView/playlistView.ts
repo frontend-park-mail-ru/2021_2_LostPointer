@@ -24,7 +24,6 @@ import './playlistView.scss';
 // TODO service worker
 // TODO подразбить на компоненты
 // TODO почистить дубликаты кода (также в других вьюхах)
-// TODO формировать formdata внутри модели (также в других вьюхах)
 // TODO валидация
 // TODO переместить кнопку удаления в окошко редактирования
 // TODO при пустом треклисте удалять его из верстки
@@ -168,14 +167,6 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         const msg = document.querySelector('.editwindow__form-msg');
         (<HTMLElement>msg).innerText = '';
 
-        const formdata = new FormData();
-        formdata.append('artwork', file, file.name);
-
-        // FIXME костыль, потому что бэк присваивает is_public значение false, если он не указан в запросе
-        if (this.playlist.getProps().is_public) {
-            formdata.append('is_public', (this.playlist.getProps().is_public.toString()));
-        }
-
         const ext = file.name
             .substring(file.name.lastIndexOf('.') + 1)
             .toLowerCase();
@@ -207,7 +198,12 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         }
 
         this.playlist
-            .updateInformation(formdata)
+            .updateInformation(
+                null,
+                // FIXME костыль, потому что бэк присваивает is_public значение false, если он не указан в запросе
+                this.playlist.getProps().is_public ? this.playlist.getProps().is_public : null,
+                file
+            )
             .then((body) => {
                 // при успехе ответ возвращает только artwork, без status
                 if (!body.status) {
@@ -263,16 +259,12 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             return;
         }
 
-        const formdata = new FormData();
-        formdata.append('title', titleInput.value);
-
-        // FIXME костыль, потому что бэк присваивает is_public значение false, если он не указан в запросе
-        if (this.playlist.getProps().is_public) {
-            formdata.append('is_public', (this.playlist.getProps().is_public.toString()));
-        }
-
         this.playlist
-            .updateInformation(formdata)
+            .updateInformation(
+                titleInput.value,
+                // FIXME костыль, потому что бэк присваивает is_public значение false, если он не указан в запросе
+                this.playlist.getProps().is_public ? this.playlist.getProps().is_public : null,
+            )
             .then((body) => {
                 // при успехе ответ возвращает только artwork, без status
                 if (!body.status) {
@@ -389,17 +381,14 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     togglePublicity(event) {
-        const formdata = new FormData();
-        if (event.target.checked) {
-            formdata.append('is_public', 'true');
-        } else {
-            formdata.append('is_public', 'false');
-        }
         const msg = document.querySelector('.editwindow__form-msg');
         msg.innerHTML = '';
 
         this.playlist
-            .updateInformation(formdata)
+            .updateInformation(
+                null,
+                event.target.checked,
+            )
             .then((body) => {
                 // при успехе ответ возвращает только artwork, без status
                 if (!body.status) {
