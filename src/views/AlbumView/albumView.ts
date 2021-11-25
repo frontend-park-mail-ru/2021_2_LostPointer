@@ -6,9 +6,9 @@ import TopbarComponent from 'components/Topbar/topbar';
 import player from 'components/Player/player';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import { addTrackToPlaylist, createNewPlaylist, disableBrokenImg, hideContextMenu, showContextMenu } from 'views/utils';
+import { disableBrokenImg } from 'views/utils';
 import { PlaylistModel } from 'models/playlist';
-import { ContextMenu } from 'components/ContextMenu/contextMenu';
+import playlistsContextMenu, { PlaylistsContextMenu } from 'components/ContextMenu/playlistsContextMenu';
 
 import store from 'services/store/store';
 
@@ -27,9 +27,7 @@ export class AlbumView extends View<IAlbumViewProps> {
     private album: AlbumModel;
     private trackList: TrackList;
     private userPlaylists: Array<PlaylistModel>;
-    private contextMenu: ContextMenu;
-    private menuVisible: boolean;
-    private renderedMenu: HTMLElement;
+    private contextMenu: PlaylistsContextMenu;
 
     constructor(props?: IAlbumViewProps) {
         super(props);
@@ -64,52 +62,32 @@ export class AlbumView extends View<IAlbumViewProps> {
                 title: 'Tracks',
                 tracks: props.tracks,
             }).render();
-            const options = [
-                {
-                    class: 'js-playlist-create',
-                    dataId: null,
-                    value: 'Add to the new playlist',
-                },
-            ];
-            this.contextMenu = new ContextMenu({
-                options: options.concat(
-                    this.userPlaylists
-                        .filter((playlist) => {
-                            return playlist.getProps().is_own;
-                        })
-                        .map((playlist) => {
-                            return {
-                                class: `js-playlist-track-add`,
-                                dataId: playlist.getProps().id,
-                                value: playlist.getProps().title,
-                            };
-                        })
-                ),
-            });
+            this.contextMenu = playlistsContextMenu;
+            this.contextMenu.updatePlaylists(this.userPlaylists);
             this.isLoaded = true;
             this.render();
         });
     }
 
     addListeners() {
-        window.addEventListener('click', hideContextMenu.bind(this));
+        window.addEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
-                element.addEventListener('click', showContextMenu.bind(this));
+                element.addEventListener('click', this.contextMenu.showContextMenu.bind(this.contextMenu));
             });
 
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
         createPlaylistBtn.addEventListener(
             'click',
-            createNewPlaylist.bind(this)
+            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
         );
 
         const addTrackToPlaylistBtns = document.querySelectorAll(
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.addEventListener('click', addTrackToPlaylist.bind(this));
+            button.addEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
         });
 
         document.querySelectorAll('img').forEach(function (img) {
@@ -127,22 +105,22 @@ export class AlbumView extends View<IAlbumViewProps> {
             .forEach((element) => {
                 element.removeEventListener(
                     'click',
-                    showContextMenu.bind(this)
+                    this.contextMenu.showContextMenu.bind(this.contextMenu)
                 );
             });
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
         createPlaylistBtn.removeEventListener(
             'click',
-            createNewPlaylist.bind(this)
+            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
         );
         const addTrackToPlaylistBtns = document.querySelectorAll(
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.removeEventListener('click', addTrackToPlaylist.bind(this));
+            button.removeEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
         });
 
-        window.removeEventListener('click', hideContextMenu.bind(this));
+        window.removeEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
 
         this.isLoaded = false;
     }
@@ -179,8 +157,6 @@ export class AlbumView extends View<IAlbumViewProps> {
         });
         TopbarComponent.addHandlers();
         TopbarComponent.didMount();
-        this.renderedMenu = document.querySelector('.menu');
-        this.menuVisible = false;
         this.addListeners();
 
         player.setup(document.querySelectorAll('.track-list-item'));

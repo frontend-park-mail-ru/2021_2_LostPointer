@@ -12,20 +12,14 @@ import { AlbumModel } from 'models/album';
 import { View } from 'views/View/view';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import {
-    addTrackToPlaylist,
-    createNewPlaylist,
-    disableBrokenImg,
-    hideContextMenu,
-    showContextMenu,
-} from 'views/utils';
+import { disableBrokenImg } from 'views/utils';
 
 import store from 'services/store/store';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
 import { PlaylistModel } from 'models/playlist';
-import { ContextMenu } from 'components/ContextMenu/contextMenu';
+import playlistsContextMenu, { PlaylistsContextMenu } from 'components/ContextMenu/playlistsContextMenu';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -41,10 +35,8 @@ class IndexView extends View<IIndexViewProps> {
     private sidebar: Sidebar;
     private friend_activity: FriendActivity;
     private userAvatar: string;
-    private contextMenu: string;
+    private contextMenu: PlaylistsContextMenu;
     private userPlaylists: Array<PlaylistModel>;
-    private menuVisible: boolean;
-    private renderedMenu: HTMLElement;
     private renderCount: number;
 
     constructor(props?: IIndexViewProps) {
@@ -106,27 +98,8 @@ class IndexView extends View<IIndexViewProps> {
                         },
                     ],
                 }).render();
-                this.contextMenu = new ContextMenu({
-                    options: [
-                        {
-                            class: 'js-playlist-create',
-                            dataId: null,
-                            value: 'Add to the new playlist',
-                        },
-                    ].concat(
-                        this.userPlaylists
-                            .filter((playlist) => {
-                                return playlist.getProps().is_own;
-                            })
-                            .map((playlist) => {
-                                return {
-                                    class: `js-playlist-track-add`,
-                                    dataId: playlist.getProps().id,
-                                    value: playlist.getProps().title,
-                                };
-                            })
-                    ),
-                }).render();
+                this.contextMenu = playlistsContextMenu;
+                this.contextMenu.updatePlaylists(this.userPlaylists);
                 this.isLoaded = true;
                 this.render();
             }
@@ -170,21 +143,21 @@ class IndexView extends View<IIndexViewProps> {
         );
         createPlaylistContextMenuBtn.addEventListener(
             'click',
-            createNewPlaylist.bind(this)
+            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
         );
         const addTrackToPlaylistBtns = document.querySelectorAll(
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.addEventListener('click', addTrackToPlaylist.bind(this));
+            button.addEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
         });
 
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
-                element.addEventListener('click', showContextMenu.bind(this));
+                element.addEventListener('click', this.contextMenu.showContextMenu.bind(this.contextMenu));
             });
-        window.addEventListener('click', hideContextMenu.bind(this));
+        window.addEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
 
         player.setup(document.querySelectorAll('.track-list-item'));
 
@@ -203,10 +176,10 @@ class IndexView extends View<IIndexViewProps> {
             .forEach((element) => {
                 element.removeEventListener(
                     'click',
-                    showContextMenu.bind(this)
+                    this.contextMenu.showContextMenu.bind(this.contextMenu)
                 );
             });
-        window.removeEventListener('click', hideContextMenu.bind(this));
+        window.removeEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
         const createPlaylistBtn = document.querySelector(
             '.pl-link[href="/playlist/0"]'
         );
@@ -220,13 +193,13 @@ class IndexView extends View<IIndexViewProps> {
         );
         createPlaylistContextMenuBtn.removeEventListener(
             'click',
-            createNewPlaylist.bind(this)
+            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
         );
         const addTrackToPlaylistBtns = document.querySelectorAll(
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.removeEventListener('click', addTrackToPlaylist.bind(this));
+            button.removeEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
         });
 
         this.isLoaded = false;
@@ -251,12 +224,10 @@ class IndexView extends View<IIndexViewProps> {
             track_list: this.track_list,
             suggested_playlists: this.suggested_playlists,
             player: player.render(),
-            contextMenu: this.contextMenu,
+            contextMenu: this.contextMenu.render(),
         });
         TopbarComponent.addHandlers();
         TopbarComponent.didMount();
-        this.renderedMenu = document.querySelector('.menu');
-        this.menuVisible = false;
 
         this.addListeners();
     }

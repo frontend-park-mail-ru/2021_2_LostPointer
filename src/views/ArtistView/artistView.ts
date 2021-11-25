@@ -7,14 +7,8 @@ import { TrackList } from 'components/TrackList/tracklist';
 import { ArtistModel } from 'models/artist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import {
-    addTrackToPlaylist,
-    createNewPlaylist,
-    disableBrokenImg,
-    hideContextMenu,
-    showContextMenu,
-} from 'views/utils';
-import { ContextMenu } from 'components/ContextMenu/contextMenu';
+import { disableBrokenImg } from 'views/utils';
+import playlistsContextMenu, { PlaylistsContextMenu } from 'components/ContextMenu/playlistsContextMenu';
 import { PlaylistModel } from 'models/playlist';
 
 import ArtistTemplate from './artistView.hbs';
@@ -33,11 +27,8 @@ export class ArtistView extends View<IArtistViewProps> {
     private artist: ArtistModel;
     private trackList: TrackList;
     private albumList: SuggestedAlbums;
-    private contextMenu: ContextMenu;
+    private contextMenu: PlaylistsContextMenu;
     private userPlaylists: Array<PlaylistModel>;
-    private selectedTrackId: number;
-    private menuVisible: boolean;
-    private renderedMenu: HTMLElement;
 
     constructor(props?: IArtistViewProps) {
         super(props);
@@ -82,27 +73,8 @@ export class ArtistView extends View<IArtistViewProps> {
                 title: 'Tracks',
                 tracks: tracks,
             }).render();
-            this.contextMenu = new ContextMenu({
-                options: [
-                    {
-                        class: 'js-playlist-create',
-                        dataId: null,
-                        value: 'Add to the new playlist',
-                    },
-                ].concat(
-                    this.userPlaylists
-                        .filter((playlist) => {
-                            return playlist.getProps().is_own;
-                        })
-                        .map((playlist) => {
-                            return {
-                                class: `js-playlist-track-add`,
-                                dataId: playlist.getProps().id,
-                                value: playlist.getProps().title,
-                            };
-                        })
-                ),
-            });
+            this.contextMenu = playlistsContextMenu;
+            this.contextMenu.updatePlaylists(this.userPlaylists);
             this.isLoaded = true;
             this.render();
         });
@@ -119,21 +91,21 @@ export class ArtistView extends View<IArtistViewProps> {
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
         createPlaylistBtn.addEventListener(
             'click',
-            createNewPlaylist.bind(this)
+            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
         );
         const addTrackToPlaylistBtns = document.querySelectorAll(
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.addEventListener('click', addTrackToPlaylist.bind(this));
+            button.addEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
         });
 
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
-                element.addEventListener('click', showContextMenu.bind(this));
+                element.addEventListener('click', this.contextMenu.showContextMenu.bind(this.contextMenu));
             });
-        window.addEventListener('click', hideContextMenu.bind(this));
+        window.addEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
@@ -148,21 +120,21 @@ export class ArtistView extends View<IArtistViewProps> {
             .forEach((element) => {
                 element.removeEventListener(
                     'click',
-                    showContextMenu.bind(this)
+                    this.contextMenu.showContextMenu.bind(this.contextMenu)
                 );
             });
-        window.removeEventListener('click', hideContextMenu.bind(this));
+        window.removeEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
 
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
         createPlaylistBtn.removeEventListener(
             'click',
-            createNewPlaylist.bind(this)
+            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
         );
         const addTrackToPlaylistBtns = document.querySelectorAll(
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.removeEventListener('click', addTrackToPlaylist.bind(this));
+            button.removeEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
         });
 
         this.isLoaded = false;
@@ -189,8 +161,6 @@ export class ArtistView extends View<IArtistViewProps> {
             player: player.render(),
             contextMenu: this.contextMenu.render(),
         });
-        this.renderedMenu = document.querySelector('.menu');
-        this.menuVisible = false;
         TopbarComponent.addHandlers();
         this.addListeners();
         TopbarComponent.didMount();
