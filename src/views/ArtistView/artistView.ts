@@ -32,6 +32,20 @@ export class ArtistView extends View<IArtistViewProps> {
         this.isLoaded = false;
     }
 
+    updateMetaTags() {
+        document.querySelector('meta[property="og:title"]')
+            .setAttribute('content', this.artist.getProps().name);
+        document.querySelector('meta[property="og:image"]')
+            .setAttribute(
+                'content',
+                `${window.location.origin}${this.artist.getProps().avatar}`
+            );
+        document.querySelector('meta[property="og:url"]')
+            .setAttribute('content', window.location.href);
+        document.querySelector('meta[property="og:description"]')
+            .setAttribute('content', '');
+    }
+
     didMount() {
         const regex = /^\/artist\/(\d+)$/gm;
         const match = regex.exec(window.location.pathname);
@@ -54,6 +68,8 @@ export class ArtistView extends View<IArtistViewProps> {
         );
 
         Promise.all([artist, userPlaylists]).then(() => {
+            this.updateMetaTags()
+
             this.albumList = new SuggestedAlbums({
                 albums: this.artist.getProps().albums,
             }).render();
