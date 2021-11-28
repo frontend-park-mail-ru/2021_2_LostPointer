@@ -10,6 +10,7 @@
     "build": "webpack --mode=production && ts-node utils/generateSW.ts",
     "buildDev": "webpack --mode=development && ts-node utils/generateSW.ts",
     "start": "webpack serve --mode=development",
+    "startPre": "ts-node utils/server.ts",
     "prettier": "prettier --write src/"
   },
   "repository": {
@@ -38,6 +39,8 @@
     "html-webpack-plugin": "^5.4.0",
     "husky": "^7.0.2",
     "mini-css-extract-plugin": "^2.4.3",
+    "node-html-parser": "^5.1.0",
+    "node-fetch": "2.0.0",
     "prettier": "2.4.1",
     "sass": "^1.43.4",
     "sass-loader": "^12.3.0",
