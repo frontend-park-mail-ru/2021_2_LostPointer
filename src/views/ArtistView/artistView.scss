@@ -8,14 +8,18 @@
 .artist {
   display: flex;
   flex-direction: column;
-  color: white;
-  margin-left: 25px;
-  width: 100%;
+  color: var(--link-color);
+  margin: 10px 10px 0;
 
   &__content {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    height: calc(100% - 80px);
+
+    @media only screen and (max-width: 768px) {
+      flex-direction: column;
+    }
   }
 
   &__suggested-tracks-container {
@@ -41,6 +45,11 @@
     font-family: Montserrat, sans-serif;
     font-weight: 700;
     margin: 100px 0 80px;
+
+    @media only screen and (max-width: 768px) {
+      margin: 0 0 20px;
+      font-size: 50px;
+    }
   }
 
   &__background-container {
@@ -50,6 +59,12 @@
     z-index: -1;
     height: 800px;
     width: 100%;
+
+    @media only screen and (max-width: 768px) {
+      height: 400px;
+      top: -250px;
+      background-size: 100% !important;
+    }
   }
 
   &__background-video {
@@ -57,6 +72,10 @@
     object-fit: cover;
     z-index: -1;
     width: 100%;
+
+    @media only screen and (max-width: 768px) {
+      display: none;
+    }
   }
 }
 
@@ -70,10 +89,18 @@
   position: absolute;
   height: 800px;
   width: 100%;
+
+  @media only screen and (max-width: 768px) {
+    height: 400px;
+  }
 }
 
 .artist__content .track-list {
   width: 600px;
+
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .artist__content .track__name,

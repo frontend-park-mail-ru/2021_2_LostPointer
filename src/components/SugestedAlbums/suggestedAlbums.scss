@@ -1,8 +1,14 @@
 .suggested-albums {
   width: 380px;
 
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
+
   &__container {
     margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
   }
 
   &__header {
