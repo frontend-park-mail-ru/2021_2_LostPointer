@@ -187,7 +187,7 @@ export class SearchView extends View<ISearchViewProps> {
                 this.data.artists.length +
                 this.data.tracks.length ===
             0;
-        const contextMenu = document.querySelector('.menu-container');
+        const contextMenu = document.querySelector('.js-menu-container');
         contextMenu.innerHTML = this.contextMenu.render();
 
         const content = document.querySelector('.main-layout__content');
