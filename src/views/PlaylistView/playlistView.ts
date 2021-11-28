@@ -15,10 +15,8 @@ import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
 
 // TODO service worker (для альбома и поиска)
-// TODO создатель плейлиста на странице плейлиста
 // TODO opengraph
 // TODO генерация ссылки для шеринга
-// TODO кнопка открытия окошка редактирования плейлиста под названием плейлиста
 
 interface IPlaylistViewProps {
     authenticated: boolean;

@@ -20,7 +20,11 @@
                     </div>
                     <div class='playlist__description-text_block'>
                         <div class='playlist__description-text'>
-                            Playlist:
+                            {{#if is_own}}
+                                Your playlist:
+                            {{ else }}
+                                Public playlist:
+                            {{/if}}
                         </div>
                         <div class='playlist__description-title'>
                             {{{title}}}
