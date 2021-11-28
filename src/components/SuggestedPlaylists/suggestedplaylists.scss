@@ -15,6 +15,19 @@
     width: max-content;
   }
 
+  &__picker {
+    display: inline-block;
+    cursor: pointer;
+
+    &:nth-child(2) {
+      margin-left: 55px;
+    }
+
+    &.inactive {
+      color: #3d3d3d;
+    }
+  }
+
   &__container {
     display: flex;
     flex-direction: column;

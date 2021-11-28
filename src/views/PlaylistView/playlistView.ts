@@ -14,11 +14,12 @@ import playlistsContextMenu, { PlaylistsContextMenu } from 'components/Playlists
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
 
-// TODO service worker (для альбома и поиска?)
-// TODO переключение на главной своих и чужих плейлистов
+// TODO service worker (для альбома и поиска)
 // TODO создатель плейлиста на странице плейлиста
 // TODO opengraph
 // TODO генерация ссылки для шеринга
+// TODO кнопку удаления плейлиста вынести в окошко редактирования плейлиста
+// TODO кнопка открытия окошка редактирования плейлиста под названием плейлиста
 
 interface IPlaylistViewProps {
     authenticated: boolean;

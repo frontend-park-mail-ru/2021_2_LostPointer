@@ -4,7 +4,7 @@ import TopbarComponent from 'components/Topbar/topbar';
 import { FriendActivity } from 'components/FriendActivity/friendactivity';
 import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
 import { TrackList } from 'components/TrackList/tracklist';
-import { SuggestedPlaylists } from 'components/SuggestedPlaylists/suggestedplaylists';
+import suggestedPlaylists from 'components/SuggestedPlaylists/suggestedplaylists';
 import player from 'components/Player/player';
 import { TrackModel } from 'models/track';
 import { ArtistModel } from 'models/artist';
@@ -68,9 +68,8 @@ class IndexView extends View<IIndexViewProps> {
                     title: 'Tracks of the Week',
                     tracks: this.track_list,
                 }).render();
-                this.suggested_playlists = new SuggestedPlaylists({
-                    playlists: this.suggested_playlists,
-                }).render();
+
+                suggestedPlaylists.set(this.suggested_playlists);
 
                 this.top_albums = new TopAlbums({
                     albums: this.top_albums,
@@ -126,14 +125,51 @@ class IndexView extends View<IIndexViewProps> {
         });
     }
 
+    showPublicPlaylists() {
+        if (!suggestedPlaylists.publicView()) {
+            const playlistsContainer = document.querySelector('.js-playlists-container');
+            const createPlaylistBtn = document.querySelector(
+                '.pl-link[href="/playlist/0"]'
+            );
+            createPlaylistBtn.removeEventListener(
+                'click',
+                this.createPlaylist.bind(this)
+            );
+            suggestedPlaylists.toggleView(this.suggested_playlists, true);
+        }
+    }
+
+    showOwnPlaylists() {
+        if (suggestedPlaylists.publicView()) {
+            suggestedPlaylists.toggleView(this.suggested_playlists, false);
+            const createPlaylistBtn = document.querySelector(
+                '.pl-link[href="/playlist/0"]'
+            );
+            createPlaylistBtn.addEventListener(
+                'click',
+                this.createPlaylist.bind(this)
+            );
+        }
+    }
+
     addListeners() {
-        const createPlaylistBtn = document.querySelector(
-            '.pl-link[href="/playlist/0"]'
-        );
-        createPlaylistBtn.addEventListener(
-            'click',
-            this.createPlaylist.bind(this)
-        );
+        if (!suggestedPlaylists.publicView()) {
+            const createPlaylistBtn = document.querySelector(
+                '.pl-link[href="/playlist/0"]'
+            );
+            if (createPlaylistBtn) {
+                createPlaylistBtn.addEventListener(
+                    'click',
+                    this.createPlaylist.bind(this)
+                );
+            }
+        }
+
+        const publicPlaylistsBtn = document.querySelector('.js_public_playlists');
+        publicPlaylistsBtn.addEventListener('click', this.showPublicPlaylists.bind(this));
+        const ownPlaylistsBtn = document.querySelector('.js_own_playlists');
+        ownPlaylistsBtn.addEventListener('click', this.showOwnPlaylists.bind(this));
+
         const createPlaylistContextMenuBtn = document.querySelector(
             '.js-playlist-create'
         );
@@ -179,10 +215,17 @@ class IndexView extends View<IIndexViewProps> {
         const createPlaylistBtn = document.querySelector(
             '.pl-link[href="/playlist/0"]'
         );
-        createPlaylistBtn.removeEventListener(
-            'click',
-            this.createPlaylist.bind(this)
-        );
+        if (createPlaylistBtn) {
+            createPlaylistBtn.removeEventListener(
+                'click',
+                this.createPlaylist.bind(this)
+            );
+        }
+
+        const publicPlaylistsBtn = document.querySelector('.js_public_playlists');
+        publicPlaylistsBtn.removeEventListener('click', this.showPublicPlaylists.bind(this));
+        const ownPlaylistsBtn = document.querySelector('.js_own_playlists');
+        ownPlaylistsBtn.removeEventListener('click', this.showOwnPlaylists.bind(this));
 
         const createPlaylistContextMenuBtn = document.querySelector(
             '.js-playlist-create'
@@ -218,7 +261,7 @@ class IndexView extends View<IIndexViewProps> {
             top_albums: this.top_albums,
             suggested_artists: this.suggested_artists,
             track_list: this.track_list,
-            suggested_playlists: this.suggested_playlists,
+            suggested_playlists: suggestedPlaylists.render(),
             player: player.render(),
             contextMenu: this.contextMenu.render(),
         });
