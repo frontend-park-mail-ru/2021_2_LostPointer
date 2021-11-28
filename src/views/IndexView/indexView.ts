@@ -131,7 +131,6 @@ class IndexView extends View<IIndexViewProps> {
 
     showPublicPlaylists() {
         if (!suggestedPlaylists.publicView()) {
-            const playlistsContainer = document.querySelector('.js-playlists-container');
             const createPlaylistBtn = document.querySelector(
                 '.pl-link[href="/playlist/0"]'
             );
