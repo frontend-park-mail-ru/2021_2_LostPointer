@@ -35,7 +35,7 @@ http.createServer(function (req, res) {
                         `${origin}${data.avatar}`
                     );
                 document.querySelector('meta[property="og:url"]')
-                    .setAttribute('content', `${origin}${req.path}`);
+                    .setAttribute('content', `${origin}${req.url}`);
                 document.querySelector('meta[property="og:description"]')
                     .setAttribute('content', '');
 
@@ -70,7 +70,7 @@ http.createServer(function (req, res) {
                         `${origin}/static/artworks/${data.artwork}_512px.webp`
                     );
                 document.querySelector('meta[property="og:url"]')
-                    .setAttribute('content', `${origin}${req.path}`);
+                    .setAttribute('content', `${origin}${req.url}`);
                 document.querySelector('meta[property="og:description"]')
                     .setAttribute('content', '');
 
@@ -107,7 +107,7 @@ http.createServer(function (req, res) {
                         `${origin}${data.artwork}`
                     );
                 document.querySelector('meta[property="og:url"]')
-                    .setAttribute('content', `${origin}${req.path}`);
+                    .setAttribute('content', `${origin}${req.url}`);
                 document.querySelector('meta[property="og:description"]')
                     .setAttribute('content', '');
 
