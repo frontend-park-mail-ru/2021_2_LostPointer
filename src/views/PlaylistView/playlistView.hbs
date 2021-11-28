@@ -26,8 +26,8 @@
                             {{{title}}}
                         </div>
                         {{#if is_own}}
-                            <div class='playlist__description-delete'>
-                                Delete playlist
+                            <div class='playlist__description-text playlist__description-edit-btn'>
+                                Edit playlist
                             </div>
                         {{/if}}
                     </div>
@@ -39,45 +39,50 @@
             {{#if is_own}}
                 <div class='editwindow'>
                     <div class='editwindow__content'>
-                        <form class='editwindow__avatar' action='#' novalidate>
-                            <div class='editwindow__avatar-block'>
-                                <img class='editwindow__avatar-img' src='{{{avatar}}}' />
-                                <div class='editwindow__avatar-delete'>
-                                    <img src='/static/img/delete.svg'/>
+                        <div class='editwindow__content-flex'>
+                            <form class='editwindow__avatar' action='#' novalidate>
+                                <div class='editwindow__avatar-block'>
+                                    <img class='editwindow__avatar-img' src='{{{avatar}}}' />
+                                    <div class='editwindow__avatar-delete'>
+                                        <img src='/static/img/delete.svg'/>
+                                    </div>
                                 </div>
-                            </div>
-                            <input
-                                type='file'
-                                name='file'
-                                id='file'
-                                accept='image/png, image/jpg, image/webp'
-                                class='editwindow__avatar-input'
-                            />
-                            <label for='file' class='editwindow__avatar-input-btn'>Upload file</label>
-                        </form>
-                        <form class='editwindow__form' action='#' novalidate>
-                            <div class='editwindow__form-title'>
-                                Edit Details
-                            </div>
-                            {{#each inputs}}
-                                {{{this}}}
-                            {{/each}}
-                            <div class='editwindow__form-public'>
-                                <label class='editwindow__form-label'>Public playlist</label>
-                                <label class='editwindow__form-switch'>
-                                    <input type='checkbox' {{#if is_public}}checked{{/if}}>
-                                    <span class='slider'></span>
-                                </label>
-                            </div>
-                            <div class='editwindow__form-buttons'>
                                 <input
-                                    class='editwindow__form-submit'
-                                    type='image'
-                                    src='/static/img/save.svg'
+                                    type='file'
+                                    name='file'
+                                    id='file'
+                                    accept='image/png, image/jpg, image/webp'
+                                    class='editwindow__avatar-input'
                                 />
-                            </div>
-                            <div class='editwindow__form-msg form__fail_msg'></div>
-                        </form>
+                                <label for='file' class='editwindow__avatar-input-btn'>Upload file</label>
+                            </form>
+                            <form class='editwindow__form' action='#' novalidate>
+                                <div class='editwindow__form-title'>
+                                    Edit Details
+                                </div>
+                                {{#each inputs}}
+                                    {{{this}}}
+                                {{/each}}
+                                <div class='editwindow__form-buttons'>
+                                    <input
+                                        class='editwindow__form-submit'
+                                        type='image'
+                                        src='/static/img/save.svg'
+                                    />
+                                </div>
+                                <div class='editwindow__form-msg form__fail_msg'></div>
+                            </form>
+                        </div>
+                        <div class='editwindow__public'>
+                            <label class='editwindow__form-label'>Make playlist public</label>
+                            <label class='editwindow__form-switch'>
+                                <input type='checkbox' {{#if is_public}}checked{{/if}}>
+                                <span class='slider'></span>
+                            </label>
+                        </div>
+                        <div class='editwindow__delete'>
+                            Delete playlist
+                        </div>
                     </div>
                 </div>
             {{/if}}

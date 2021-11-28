@@ -58,19 +58,6 @@
       margin: 5px;
     }
 
-    &-delete {
-      font-family: Montserrat, sans-serif;
-      color: #cd0138;
-      cursor: pointer;
-      width: 120px;
-      margin: 5px;
-    }
-
-    &-delete.confirm {
-      color: #cd0138;
-      text-decoration: underline;
-    }
-
     &-avatar {
       width: 200px;
       height: 200px;
@@ -111,10 +98,19 @@
         font-family: Montserrat, sans-serif;
         font-weight: 700;
       }
+
+      &:hover {
+        opacity: 100%;
+      }
     }
 
-    &-edit:hover {
-      opacity: 100%;
+    &-edit-btn {
+      cursor: pointer;
+      width: 100px;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }
@@ -136,7 +132,10 @@
     padding: 20px;
     border-radius: 20px;
     width: 510px;
-    display: flex;
+
+    &-flex {
+      display: flex;
+    }
   }
 
   &__avatar {
@@ -201,19 +200,12 @@
   }
 
   &__form {
-    display: inline-block;
-    float: left;
     color: white;
-
-    &-public {
-      width: 200px;
-    }
 
     &-label {
       color: #ffffff;
       font-family: Montserrat, sans-serif;
       font-size: 16px;
-      padding-left: 10px;
       text-align: right;
       width: 150px;
       top: 20px;
@@ -222,7 +214,7 @@
     &-switch {
       position: relative;
       display: block;
-      margin: 10px;
+      margin-top: 10px;
       width: 60px;
       height: 34px;
 
@@ -290,6 +282,23 @@
       &:hover {
         transition: 0.5s ease-in-out;
       }
+    }
+  }
+
+  &__public {
+    margin: 20px 10px;
+  }
+
+  &__delete {
+    font-family: Montserrat, sans-serif;
+    color: #cd0138;
+    cursor: pointer;
+    width: 120px;
+    margin: 10px;
+
+    &.confirm {
+      color: #cd0138;
+      text-decoration: underline;
     }
   }
 }

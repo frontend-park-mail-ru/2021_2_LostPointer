@@ -18,7 +18,6 @@ import './playlistView.scss';
 // TODO создатель плейлиста на странице плейлиста
 // TODO opengraph
 // TODO генерация ссылки для шеринга
-// TODO кнопку удаления плейлиста вынести в окошко редактирования плейлиста
 // TODO кнопка открытия окошка редактирования плейлиста под названием плейлиста
 
 interface IPlaylistViewProps {
@@ -256,7 +255,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                 }
             );
         } else {
-            (<HTMLElement>event.target).innerText = 'Sure?';
+            (<HTMLElement>event.target).innerText = 'Are you sure?';
             (<HTMLElement>event.target).classList.add('confirm');
         }
     }
@@ -267,7 +266,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         }
 
         const deleteBtn = document.querySelector(
-            '.playlist__description-delete'
+            '.editwindow__delete'
         );
         if (event.target == deleteBtn) {
             return;
@@ -418,7 +417,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             );
 
             const deleteBtn = document.querySelector(
-                '.playlist__description-delete'
+                '.editwindow__delete'
             );
             deleteBtn.addEventListener(
                 'click',
@@ -434,6 +433,14 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             fileInput.addEventListener(
                 'change',
                 this.uploadAvatarFile.bind(this)
+            );
+
+            const editPlaylistBtn = document.querySelector(
+                '.playlist__description-edit-btn'
+            );
+            editPlaylistBtn.addEventListener(
+                'click',
+                this.displayEditWindow.bind(this)
             );
 
             const playlistAvatar = document.querySelector(
@@ -521,6 +528,14 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                 this.displayEditWindow.bind(this)
             );
 
+            const editPlaylistBtn = document.querySelector(
+                '.playlist__description-edit-btn'
+            );
+            editPlaylistBtn.removeEventListener(
+                'click',
+                this.displayEditWindow.bind(this)
+            );
+
             const fileInput = document.querySelector('input[name="file"]');
             fileInput.removeEventListener(
                 'change',
@@ -534,7 +549,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             );
 
             const deleteBtn = document.querySelector(
-                '.playlist__description-delete'
+                '.editwindow__delete'
             );
             deleteBtn.removeEventListener(
                 'click',
