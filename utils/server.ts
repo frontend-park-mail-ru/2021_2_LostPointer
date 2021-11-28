@@ -22,7 +22,8 @@ http.createServer(function (req, res) {
             })
             .then((data) => {
                 if (data.message) {
-                    res.sendFile(path.join(__dirname + '/../src/index.html'));
+                    res.write(indexFile);
+                    res.end();
                     return;
                 }
 
@@ -57,7 +58,8 @@ http.createServer(function (req, res) {
             })
             .then((data) => {
                 if (data.message) {
-                    res.sendFile(path.join(__dirname + '/../src/index.html'));
+                    res.write(indexFile);
+                    res.end();
                     return;
                 }
 
@@ -88,13 +90,14 @@ http.createServer(function (req, res) {
         const playlistId = match[1];
 
 
-        fetch(`${origin}${api}/playlist/${playlistId}`)
+        fetch(`${origin}${api}/playlists/${playlistId}`)
             .then((response) => {
                 return response.json();
             })
             .then((data) => {
                 if (data.message) {
-                    res.sendFile(path.join(__dirname + '/../src/index.html'));
+                    res.write(indexFile);
+                    res.end();
                     return;
                 }
 
