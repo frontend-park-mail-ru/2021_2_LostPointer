@@ -10,13 +10,6 @@ const api = '/api/v1'
 
 const indexFile = fs.readFileSync(path.join(__dirname + '/../dist/index.html'));
 
-app.use(function(req, res, next) {
-    req.getUrl = function() {
-        return req.protocol + "://" + req.get('host') + req.originalUrl;
-    }
-    return next();
-});
-
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/../src/index.html'));
@@ -47,7 +40,7 @@ app.get(/^\/artist\/(\d+)$/gm, (req, res) => {
                     `${origin}${data.avatar}`
                 );
             document.querySelector('meta[property="og:url"]')
-                .setAttribute('content', req.getUrl());
+                .setAttribute('content', `${origin}${req.path}`);
             document.querySelector('meta[property="og:description"]')
                 .setAttribute('content', '');
 
@@ -83,7 +76,7 @@ app.get(/^\/album\/(\d+)$/gm, (req, res) => {
                     `${origin}/static/artworks/${data.artwork}_512px.webp`
                 );
             document.querySelector('meta[property="og:url"]')
-                .setAttribute('content', req.getUrl());
+                .setAttribute('content', `${origin}${req.path}`);
             document.querySelector('meta[property="og:description"]')
                 .setAttribute('content', '');
 
@@ -118,7 +111,7 @@ app.get(/^\/playlist\/(\d+)$/gm, (req, res) => {
                     `${origin}${data.artwork}`
                 );
             document.querySelector('meta[property="og:url"]')
-                .setAttribute('content', req.getUrl());
+                .setAttribute('content', `${origin}${req.path}`);
             document.querySelector('meta[property="og:description"]')
                 .setAttribute('content', '');
 
