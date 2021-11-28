@@ -68,7 +68,7 @@ export class ArtistView extends View<IArtistViewProps> {
         );
 
         Promise.all([artist, userPlaylists]).then(() => {
-            this.updateMetaTags()
+            this.updateMetaTags();
 
             this.albumList = new SuggestedAlbums({
                 albums: this.artist.getProps().albums,
