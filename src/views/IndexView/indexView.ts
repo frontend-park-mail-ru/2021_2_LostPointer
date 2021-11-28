@@ -110,15 +110,19 @@ class IndexView extends View<IIndexViewProps> {
             return;
         }
 
-        const newPlaylistName = this.userPlaylists.reduce((newPlaylistName, _, index, array) => {
-            if (array.find((playlist) => {
-                return playlist.getProps().title == newPlaylistName;
-            })) {
-                return 'New playlist ' + (index + 2).toString();
-            } else {
-                return newPlaylistName;
-            }
-        }, 'New playlist')
+        const newPlaylistName = this.userPlaylists
+            .filter((playlist) => {
+                return playlist.getProps().is_own;
+            })
+            .reduce((newPlaylistName, _, index, array) => {
+                if (array.find((playlist) => {
+                    return playlist.getProps().title == newPlaylistName;
+                })) {
+                    return 'New playlist ' + (index + 2).toString();
+                } else {
+                    return newPlaylistName;
+                }
+            }, 'New playlist')
 
         PlaylistModel.createPlaylist(newPlaylistName).then(({ id }) => {
             router.go(`${routerStore.playlist}/${id}`);
