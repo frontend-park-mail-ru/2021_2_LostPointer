@@ -1,15 +1,14 @@
 import { Component } from 'components/Component/component';
-
 import Request from 'services/request/request';
-
-import PlayerTemplate from './player.hbs';
-import './player.scss';
 import routerStore from 'services/router/routerStore';
 import router from 'services/router/router';
 import store from 'services/store/store';
 import { TrackModel } from 'models/track';
 import { TrackList } from 'components/TrackList/tracklist';
 import { ArtistModel } from 'models/artist';
+
+import PlayerTemplate from './player.hbs';
+import './player.scss';
 
 interface IPlayerComponentProps {
     recovered: boolean;

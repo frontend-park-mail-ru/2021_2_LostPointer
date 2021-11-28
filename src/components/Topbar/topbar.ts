@@ -1,12 +1,12 @@
 import { Component } from 'components/Component/component';
-
-import TopbarTemplate from './topbar.hbs';
-import './topbar.scss';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import Request from 'services/request/request';
 import player from 'components/Player/player';
 import store from 'services/store/store';
+
+import TopbarTemplate from './topbar.hbs';
+import './topbar.scss';
 
 interface ITopbarComponentProps {
     authenticated: boolean;

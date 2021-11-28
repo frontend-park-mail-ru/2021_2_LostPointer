@@ -1,10 +1,10 @@
 import { Component } from '../Component/component';
 import { SuggestedPlaylist } from '../Playlist/suggestedplaylist';
-
 import SuggestedPlaylistsTemplate from './suggestedplaylists.hbs';
+import { PlaylistModel } from 'models/playlist';
+
 import PlaylistList from './playlistslist.hbs';
 import './suggestedplaylists.scss';
-import { PlaylistModel } from 'models/playlist';
 
 interface ISuggestedPlaylistsProps {
     publicView: boolean;
@@ -22,9 +22,9 @@ export class SuggestedPlaylists extends Component<ISuggestedPlaylistsProps> {
                     title: 'Create new...',
                     id: 0,
                     is_public: false,
-                }
+                },
             }).render(),
-        ]
+        ];
     }
 
     publicView() {
@@ -35,27 +35,26 @@ export class SuggestedPlaylists extends Component<ISuggestedPlaylistsProps> {
         if (this.props.publicView) {
             this.props.playlists = playlists
                 .filter((playlist) => {
-                    return !playlist.getProps().is_own && playlist.getProps().is_public;
+                    return (
+                        !playlist.getProps().is_own &&
+                        playlist.getProps().is_public
+                    );
                 })
-                .map((pl) => (
-                    new SuggestedPlaylist(pl).render()
-                ));
-        }
-        else {
+                .map((pl) => new SuggestedPlaylist(pl).render());
+        } else {
             this.props.playlists = playlists
                 .filter((playlist) => {
                     return playlist.getProps().is_own;
                 })
-                .map((pl) => (
-                    new SuggestedPlaylist(pl).render()
-                ));
-            this.props.playlists.push(new SuggestedPlaylist({
+                .map((pl) => new SuggestedPlaylist(pl).render());
+            this.props.playlists.push(
+                new SuggestedPlaylist({
                     props: {
                         artwork: '',
                         title: 'Create new...',
                         id: 0,
                         is_public: false,
-                    }
+                    },
                 }).render()
             );
         }
@@ -63,7 +62,9 @@ export class SuggestedPlaylists extends Component<ISuggestedPlaylistsProps> {
 
     toggleView(playlists: Array<PlaylistModel>, toPublic: boolean) {
         this.props.publicView = toPublic;
-        const publicPlaylistsBtn = document.querySelector('.js_public_playlists');
+        const publicPlaylistsBtn = document.querySelector(
+            '.js_public_playlists'
+        );
         const ownPlaylistsBtn = document.querySelector('.js_own_playlists');
         if (toPublic) {
             publicPlaylistsBtn.classList.remove('inactive');
@@ -73,18 +74,20 @@ export class SuggestedPlaylists extends Component<ISuggestedPlaylistsProps> {
             publicPlaylistsBtn.classList.add('inactive');
         }
         this.set(playlists);
-        const playlistList = document.querySelector('.suggested-playlists__container');
-        playlistList.innerHTML = PlaylistList({playlists: this.props.playlists});
+        const playlistList = document.querySelector(
+            '.suggested-playlists__container'
+        );
+        playlistList.innerHTML = PlaylistList({
+            playlists: this.props.playlists,
+        });
     }
 
     render() {
-        return SuggestedPlaylistsTemplate(
-            {
-                playlists: this.props.playlists,
-                publicView: this.props.publicView,
-            }
-        );
+        return SuggestedPlaylistsTemplate({
+            playlists: this.props.playlists,
+            publicView: this.props.publicView,
+        });
     }
 }
 
-export default new SuggestedPlaylists()
+export default new SuggestedPlaylists();

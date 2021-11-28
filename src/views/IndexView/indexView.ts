@@ -13,13 +13,14 @@ import { View } from 'views/View/view';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { disableBrokenImg } from 'views/utils';
-
 import store from 'services/store/store';
+import { PlaylistModel } from 'models/playlist';
+import playlistsContextMenu, {
+    PlaylistsContextMenu,
+} from 'components/PlaylistsContextMenu/playlistsContextMenu';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
-import { PlaylistModel } from 'models/playlist';
-import playlistsContextMenu, { PlaylistsContextMenu } from 'components/PlaylistsContextMenu/playlistsContextMenu';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -115,14 +116,16 @@ class IndexView extends View<IIndexViewProps> {
                 return playlist.getProps().is_own;
             })
             .reduce((newPlaylistName, _, index, array) => {
-                if (array.find((playlist) => {
-                    return playlist.getProps().title == newPlaylistName;
-                })) {
+                if (
+                    array.find((playlist) => {
+                        return playlist.getProps().title == newPlaylistName;
+                    })
+                ) {
                     return 'New playlist ' + (index + 2).toString();
                 } else {
                     return newPlaylistName;
                 }
-            }, 'New playlist')
+            }, 'New playlist');
 
         PlaylistModel.createPlaylist(newPlaylistName).then(({ id }) => {
             router.go(`${routerStore.playlist}/${id}`);
@@ -168,10 +171,18 @@ class IndexView extends View<IIndexViewProps> {
             }
         }
 
-        const publicPlaylistsBtn = document.querySelector('.js_public_playlists');
-        publicPlaylistsBtn.addEventListener('click', this.showPublicPlaylists.bind(this));
+        const publicPlaylistsBtn = document.querySelector(
+            '.js_public_playlists'
+        );
+        publicPlaylistsBtn.addEventListener(
+            'click',
+            this.showPublicPlaylists.bind(this)
+        );
         const ownPlaylistsBtn = document.querySelector('.js_own_playlists');
-        ownPlaylistsBtn.addEventListener('click', this.showOwnPlaylists.bind(this));
+        ownPlaylistsBtn.addEventListener(
+            'click',
+            this.showOwnPlaylists.bind(this)
+        );
 
         const createPlaylistContextMenuBtn = document.querySelector(
             '.js-playlist-create'
@@ -184,15 +195,24 @@ class IndexView extends View<IIndexViewProps> {
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.addEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
+            button.addEventListener(
+                'click',
+                this.contextMenu.addTrackToPlaylist.bind(this.contextMenu)
+            );
         });
 
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
-                element.addEventListener('click', this.contextMenu.showContextMenu.bind(this.contextMenu));
+                element.addEventListener(
+                    'click',
+                    this.contextMenu.showContextMenu.bind(this.contextMenu)
+                );
             });
-        window.addEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
+        window.addEventListener(
+            'click',
+            this.contextMenu.hideContextMenu.bind(this.contextMenu)
+        );
 
         player.setup(document.querySelectorAll('.track-list-item'));
 
@@ -214,7 +234,10 @@ class IndexView extends View<IIndexViewProps> {
                     this.contextMenu.showContextMenu.bind(this.contextMenu)
                 );
             });
-        window.removeEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
+        window.removeEventListener(
+            'click',
+            this.contextMenu.hideContextMenu.bind(this.contextMenu)
+        );
         const createPlaylistBtn = document.querySelector(
             '.pl-link[href="/playlist/0"]'
         );
@@ -225,10 +248,18 @@ class IndexView extends View<IIndexViewProps> {
             );
         }
 
-        const publicPlaylistsBtn = document.querySelector('.js_public_playlists');
-        publicPlaylistsBtn.removeEventListener('click', this.showPublicPlaylists.bind(this));
+        const publicPlaylistsBtn = document.querySelector(
+            '.js_public_playlists'
+        );
+        publicPlaylistsBtn.removeEventListener(
+            'click',
+            this.showPublicPlaylists.bind(this)
+        );
         const ownPlaylistsBtn = document.querySelector('.js_own_playlists');
-        ownPlaylistsBtn.removeEventListener('click', this.showOwnPlaylists.bind(this));
+        ownPlaylistsBtn.removeEventListener(
+            'click',
+            this.showOwnPlaylists.bind(this)
+        );
 
         const createPlaylistContextMenuBtn = document.querySelector(
             '.js-playlist-create'
@@ -241,7 +272,10 @@ class IndexView extends View<IIndexViewProps> {
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.removeEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
+            button.removeEventListener(
+                'click',
+                this.contextMenu.addTrackToPlaylist.bind(this.contextMenu)
+            );
         });
 
         this.isLoaded = false;
