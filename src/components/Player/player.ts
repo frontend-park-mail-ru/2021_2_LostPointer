@@ -333,7 +333,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     addHandlers() {
-        console.log('added player handlers');
         const shuffle = (array) => {
             let i = array.length;
             let temporaryValue;
