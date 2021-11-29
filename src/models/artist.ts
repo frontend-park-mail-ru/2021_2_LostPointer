@@ -105,6 +105,7 @@ export class ArtistModel extends Model<IArtistModel> {
                         tracks_count: 0,
                         tracks_duration: 0,
                         album: false,
+                        tracks: null,
                     });
 
                     const emptyTrack = new TrackModel({
