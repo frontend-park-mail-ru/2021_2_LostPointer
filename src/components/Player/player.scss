@@ -18,6 +18,10 @@
   background-color: white;
 }
 
+.seekbar-current {
+  width: var(--seekbar-current);
+}
+
 .player {
   @media only screen and (max-width: 768px) {
     display: none;

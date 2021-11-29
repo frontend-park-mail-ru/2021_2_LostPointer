@@ -32,7 +32,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private gotSeekPos: boolean;
     private gotVolPos: boolean;
     private seekbarPos: DOMRect;
-    private seekbarCurrent: HTMLElement;
     private volumePos: DOMRect;
     private currentVolume: HTMLElement;
     private buttonsHandler: EventListenerOrEventListenerObject;
@@ -81,7 +80,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.gotSeekPos = true;
         }
         const seek = (xPos - this.seekbarPos.left) / this.seekbarPos.width;
-        this.seekbarCurrent.style.width = `${seek * 100}%`;
+        document.documentElement.style.setProperty(
+            '--seekbar-current',
+            `${seek * 100}%`
+        );
         this.audio.currentTime = this.audio.duration * seek;
     }
 
@@ -288,10 +290,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     setup(playlist) {
-        this.seekbarCurrent = document.querySelector('.seekbar-current');
-        this.seekbarMobileCurrent = document.querySelector(
-            '.mobile-player__progress__bar__elapsed'
-        );
         this.currentVolume = document.querySelector('.volume-current');
         this.mute = document.querySelector('.mute');
         this.repeatToggle = document.querySelector('.repeat');
@@ -304,7 +302,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         const seekbarWidth = `${
             (this.audio.currentTime / this.audio.duration) * 100
         }%`;
-        this.seekbarCurrent.style.width = seekbarWidth;
+        document.documentElement.style.setProperty(
+            '--seekbar-current',
+            seekbarWidth
+        );
         if (this.seekbarMobileCurrent) {
             this.seekbarMobileCurrent.style.width = seekbarWidth;
         }
@@ -418,13 +419,11 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }
             const seconds = this.audio.currentTime % 60 | 0;
             const zero = seconds < 10 ? '0' : '';
-            const seekbarWidth = `${
-                (this.audio.currentTime / this.audio.duration) * 100
-            }%`;
-            this.seekbarCurrent.style.width = seekbarWidth;
-            if (this.seekbarMobileCurrent) {
-                this.seekbarMobileCurrent.style.width = seekbarWidth;
-            }
+            const fraction = this.audio.currentTime / this.audio.duration || 0;
+            document.documentElement.style.setProperty(
+                '--seekbar-current',
+                `${fraction * 100}%`
+            );
             this.props.current_time = `${
                 (this.audio.currentTime / 60) | 0
             }:${zero}${seconds}`;

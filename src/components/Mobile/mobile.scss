@@ -15,6 +15,7 @@
   --mobile-player-seekbar-radius: 2px;
   --mobile-player-artwork-max-width: 435px;
   --artwork-accent-color: var(--accent-color);
+  --seekbar-current: 0;
 }
 
 .mobile {
@@ -44,7 +45,8 @@
 
         &__progress {
           height: 2px;
-          width: 95%;
+          transition: var(--seekbar-transition);
+          width: var(--seekbar-current);
           background-color: var(--accent-color);
         }
 
@@ -174,6 +176,7 @@
         border-radius: var(--mobile-player-seekbar-radius);
 
         &__elapsed {
+          width: var(--seekbar-current);
           transition: var(--seekbar-transition);
           position: absolute;
           border-radius: var(--mobile-player-seekbar-radius);
