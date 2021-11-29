@@ -13,6 +13,7 @@ import store from 'services/store/store';
 
 import AlbumTemplate from './albumView.hbs';
 import './albumView.scss';
+import mobile from 'components/Mobile/mobile';
 
 interface IAlbumViewProps {
     authenticated: boolean;
@@ -112,11 +113,12 @@ export class AlbumView extends View<IAlbumViewProps> {
             artWork: '/static/artworks/' + this.album.getProps().artwork + '_512px.webp',
             title: this.album.getProps().title,
             trackList: this.trackList,
-            player: player.render(),
             tracksCount: this.album.getProps().tracks_count,
             tracksDurationMin: Math.floor((this.album.getProps().tracks_duration / 60)),
             tracksDurationSec: Math.floor((this.album.getProps().tracks_duration % 60)),
             album: this.album.getProps(),
+            player: player.render(),
+            mobile: mobile.render(),
         });
         this.addListeners();
 

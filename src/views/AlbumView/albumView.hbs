@@ -13,12 +13,12 @@
                         <img class='album__description-img' src='{{{artWork}}}'/>
                     </div>
                     <div class='album__description-title'>
-                        <div class="album__description-properties" style='font-size: 20px'>album</div>
+                        <div class="album__description-label">album</div>
                         {{{title}}}
                         <div class="album__description-properties">
                             {{#if tracksCount}}
                                 <img src='{{{album}}}'/>
-                                <a href='/artist/{{album.artist.id}}'>{{album.artist.name}}</a>
+                                <a href='/artist/{{album.artist.id}}' style='text-decoration: underline'>{{album.artist.name}}</a>
                                 &#8226; {{{album.year}}} &#8226; tracks count: {{{tracksCount}}}, {{{tracksDurationMin}}} min {{{tracksDurationSec}}} sec
                             {{else}}
                                 Loading album properties...
@@ -34,3 +34,4 @@
     </div>
 </div>
 {{{player}}}
+{{{mobile}}}
