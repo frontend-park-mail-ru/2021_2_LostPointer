@@ -66,11 +66,6 @@ export class Topbar extends Component<ITopbarComponentProps> {
                         if (ava) {
                             ava.remove();
                         }
-                        // if (
-                        //     window.location.pathname !== routerStore.dashboard
-                        // ) {
-                        //     router.go(routerStore.dashboard);
-                        // }
                     });
                     this.removeEventListener('click', logoutHandler);
                 });
