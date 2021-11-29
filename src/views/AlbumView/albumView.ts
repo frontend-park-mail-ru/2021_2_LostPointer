@@ -8,12 +8,12 @@ import player from 'components/Player/player';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import disableBrokenImg from 'views/utils';
+import mobile from 'components/Mobile/mobile';
 
 import store from 'services/store/store';
 
 import AlbumTemplate from './albumView.hbs';
 import './albumView.scss';
-import mobile from 'components/Mobile/mobile';
 
 interface IAlbumViewProps {
     authenticated: boolean;
