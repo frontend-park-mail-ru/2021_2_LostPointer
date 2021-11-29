@@ -2,6 +2,8 @@ import { Model } from './model';
 import Request from '../../src/services/request/request';
 import { TrackModel } from 'models/track';
 import { ArtistModel } from 'models/artist';
+import mockAlbum from 'models/mocks/mockAlbum';
+import mockTrack from 'models/mocks/mockTrack';
 
 export interface IAlbumModel {
     album: boolean;
@@ -50,19 +52,7 @@ export class AlbumModel extends Model<IAlbumModel> {
                             : [];
                         res(albums);
                     } else {
-                        const emptyAlbum = new AlbumModel({
-                            id: 0,
-                            title: 'Loading album name...',
-                            year: 0,
-                            artist: 'Loading artist name...',
-                            artwork: 'loading',
-                            tracks_count: 0,
-                            tracks_duration: 0,
-                            album: false,
-                            tracks: null,
-                        });
-
-                        res(Array.from({ length: 4 }, () => emptyAlbum));
+                        res(Array.from({ length: 4 }, () => mockAlbum));
                     }
                 });
         });
@@ -89,46 +79,9 @@ export class AlbumModel extends Model<IAlbumModel> {
                     res(new AlbumModel(response));
                 })
                 .catch(() => {
-                    const emptyArtist = new ArtistModel({
-                        id: 0,
-                        name: 'Loading artist name...',
-                        avatar: 'loading',
-                        video: '',
-                        albums: [],
-                        tracks: [],
-                    });
-
-                    const emptyAlbum = new AlbumModel({
-                        id: 0,
-                        title: 'Loading album name...',
-                        year: 0,
-                        artist: 'Loading artist name...',
-                        artwork: 'loading',
-                        tracks_count: 0,
-                        tracks_duration: 0,
-                        album: false,
-                        tracks: null,
-                    });
-
-                    const emptyTrack = new TrackModel({
-                        id: 0,
-                        title: 'Loading title...',
-                        artist: emptyArtist,
-                        album: emptyAlbum,
-                        explicit: false,
-                        genre: '',
-                        number: 0,
-                        file: '',
-                        listen_count: 0,
-                        duration: 0,
-                        lossless: false,
-                        cover: '',
-                        pos: 0,
-                    });
-
+                    const emptyAlbum = mockAlbum;
                     emptyAlbum.props.artist = 'Loading artist name...';
-                    emptyAlbum.props.tracks = Array.from({ length: 4 }, () => emptyTrack);
-
+                    emptyAlbum.props.tracks = Array.from({ length: 4 }, () => mockTrack);
                     res(emptyAlbum);
                 });
         });

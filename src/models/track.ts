@@ -2,6 +2,9 @@ import { Model } from 'models/model';
 import Request from 'services/request/request';
 import { AlbumModel } from 'models/album';
 import { ArtistModel } from 'models/artist';
+import mockArtist from 'models/mocks/mockArtist';
+import mockAlbum from 'models/mocks/mockAlbum';
+import mockTrack from 'models/mocks/mockTrack';
 
 export interface ITrackModel {
     id: number;
@@ -66,44 +69,7 @@ export class TrackModel extends Model<ITrackModel> {
                             : [];
                         res(tracks);
                     } else {
-                        const emptyArtist = new ArtistModel({
-                            id: 0,
-                            name: 'Loading artist name...',
-                            avatar: 'loading',
-                            video: '',
-                            albums: [],
-                            tracks: [],
-                        });
-
-                        const emptyAlbum = new AlbumModel({
-                            id: 0,
-                            title: 'Loading album name...',
-                            year: 0,
-                            artist: 'Loading artist name...',
-                            artwork: 'loading',
-                            tracks_count: 0,
-                            tracks_duration: 0,
-                            album: false,
-                            tracks: null,
-                        });
-
-                        const emptyTrack = new TrackModel({
-                            id: 0,
-                            title: 'Loading title...',
-                            artist: emptyArtist,
-                            album: emptyAlbum,
-                            explicit: false,
-                            genre: '',
-                            number: 0,
-                            file: '',
-                            listen_count: 0,
-                            duration: 0,
-                            lossless: false,
-                            cover: '',
-                            pos: 0,
-                        });
-
-                        res(Array.from({ length: 3 }, () => emptyTrack));
+                        res(Array.from({ length: 3 }, () => mockTrack));
                     }
                 });
         });
