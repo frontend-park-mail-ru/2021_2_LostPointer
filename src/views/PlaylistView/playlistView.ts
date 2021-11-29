@@ -255,8 +255,12 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                 }
             );
         } else {
-            (<HTMLElement>event.target).innerText = 'Are you sure?';
+            const msg = document.querySelector('.editwindow__form-msg');
             (<HTMLElement>event.target).classList.add('confirm');
+            msg.classList.remove('success');
+            msg.innerHTML = 'Are you sure?';
+            msg.classList.add('fail', 'visible');
+            event.stopPropagation();
         }
     }
 
@@ -272,8 +276,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             return;
         }
         if (deleteBtn) {
-            (<HTMLElement>deleteBtn).innerText = 'Delete playlist';
+            const msg = document.querySelector('.editwindow__form-msg');
+            msg.innerHTML = '';
             deleteBtn.classList.remove('confirm');
+            msg.classList.remove('fail', 'visible');
         }
     }
 

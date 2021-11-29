@@ -236,7 +236,8 @@
       font-family: Montserrat, sans-serif;
       font-weight: 700;
       margin: 10px;
-      text-align: center;
+      display: flex;
+      float: left;
     }
 
     &-input {
@@ -297,16 +298,11 @@
   }
 
   &__delete {
-    font-family: Montserrat, sans-serif;
-    color: #cd0138;
     cursor: pointer;
-    width: 120px;
-    margin: 10px;
-
-    &.confirm {
-      color: #cd0138;
-      text-decoration: underline;
-    }
+    display: flex;
+    height: 30px;
+    width: 30px;
+    padding: 7px 0 7px 110px;
   }
 }
 
