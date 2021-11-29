@@ -14,6 +14,7 @@
   --mobile-player-seekbar-height: 4px;
   --mobile-player-seekbar-radius: 2px;
   --mobile-player-artwork-max-width: 435px;
+  --artwork-accent-color: var(--accent-color);
 }
 
 .mobile {
@@ -101,7 +102,7 @@
     top: 0;
     left: 0;
     z-index: 6;
-    background: linear-gradient(#7c2c1b, #000000);
+    background: linear-gradient(var(--artwork-accent-color), #000000);
 
     &__container {
       margin: 25px;

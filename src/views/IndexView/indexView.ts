@@ -157,6 +157,7 @@ export class IndexView extends View<IIndexViewProps> {
                     title: e.target.dataset.title,
                     artist: e.target.dataset.artist,
                     album: e.target.dataset.album,
+                    artwork_color: e.target.dataset.artworkcolor,
                 });
             }
         };
@@ -223,8 +224,8 @@ export class IndexView extends View<IIndexViewProps> {
             player: player.render(),
             mobile: mobile.render(),
         });
-
         this.addListeners();
+        player.addHandlers();
     }
 }
 

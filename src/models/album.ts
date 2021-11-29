@@ -8,6 +8,7 @@ export interface IAlbumModel {
     year: number;
     artist: string;
     artwork: string;
+    artwork_color: string;
     tracks_count: number;
     tracks_duration: number;
 }
@@ -21,7 +22,10 @@ export class AlbumModel extends Model<IAlbumModel> {
         return new Promise((res) => {
             Request.get('/home/albums')
                 .then((response) => {
-                    sessionStorage.setItem('/home/albums', JSON.stringify(response));
+                    sessionStorage.setItem(
+                        '/home/albums',
+                        JSON.stringify(response)
+                    );
                     const albums: Array<AlbumModel> = response.reduce(
                         (acc, elem) => {
                             acc.push(new AlbumModel(elem));
@@ -32,7 +36,9 @@ export class AlbumModel extends Model<IAlbumModel> {
                     res(albums);
                 })
                 .catch(() => {
-                    const response = JSON.parse(sessionStorage.getItem('/home/albums'));
+                    const response = JSON.parse(
+                        sessionStorage.getItem('/home/albums')
+                    );
                     if (response) {
                         const albums: Array<AlbumModel> = response.reduce(
                             (acc, elem) => {
@@ -52,9 +58,10 @@ export class AlbumModel extends Model<IAlbumModel> {
                             tracks_count: 0,
                             tracks_duration: 0,
                             album: false,
+                            artwork_color: '#000000',
                         });
 
-                        res(Array.from({length: 4}, () => emptyAlbum));
+                        res(Array.from({ length: 4 }, () => emptyAlbum));
                     }
                 });
         });

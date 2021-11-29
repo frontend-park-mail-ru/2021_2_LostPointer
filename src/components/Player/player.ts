@@ -63,7 +63,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 ) as HTMLImageElement,
             } as IPlayerComponentProps;
         }
-        this.addHandlers();
+
         this.firstTime = true;
         this.audio.loop = false;
         this.gotSeekPos = false;
@@ -165,6 +165,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         if (this.props.right_disabled) {
             right.classList.add('disabled');
         }
+
+        document.documentElement.style.setProperty(
+            '--artwork-accent-color',
+            track.artwork_color
+        );
+
         this.audio.play().then(() => (this.props.playing = true));
     }
 
@@ -212,9 +218,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         document
             .querySelector('.player-volume')
             .addEventListener('click', this.volumeHandler);
-        document
-            .querySelector('.player-play')
-            .addEventListener('click', this.playButtonHandler);
+        document.querySelectorAll('.player-play').forEach((play) => {
+            play.addEventListener('click', this.playButtonHandler);
+        });
+
         this.audio.addEventListener('timeupdate', this.timeUpdateHandler);
         this.audio.addEventListener('pause', this.pauseHandler);
         this.audio.addEventListener('play', this.playHandler);
@@ -349,15 +356,17 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }
         };
         this.playHandler = () => {
-            (document.querySelector('.player-play') as HTMLImageElement).src =
-                '/static/img/pause.svg';
+            document.querySelectorAll('.player-play').forEach((play) => {
+                (<HTMLImageElement>play).src = '/static/img/pause.svg';
+            });
             if (this.nowPlaying) {
                 this.nowPlaying.src = '/static/img/pause-outline.svg';
             }
         };
         this.pauseHandler = () => {
-            (document.querySelector('.player-play') as HTMLImageElement).src =
-                '/static/img/play.svg';
+            document.querySelectorAll('.player-play').forEach((play) => {
+                (<HTMLImageElement>play).src = '/static/img/play.svg';
+            });
             if (this.nowPlaying) {
                 this.nowPlaying.src = '/static/img/play-outline.svg';
             }
@@ -433,15 +442,17 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         let allowed = false;
         if (next) {
             if (this.pos < this.playlist.length - 1) {
-                this.nowPlaying = this.playlist[
-                    this.playlistIndices[++this.pos]
+                this.nowPlaying =
+                    this.playlist[
+                        this.playlistIndices[++this.pos]
                     ].querySelector('.track-play'); //TODO=Сделать плейлист компонентом + потом отрисовывать
                 allowed = true;
             }
         } else if (this.pos >= 1) {
-            this.nowPlaying = this.playlist[
-                this.playlistIndices[--this.pos]
-                ].querySelector('.track-play');
+            this.nowPlaying =
+                this.playlist[this.playlistIndices[--this.pos]].querySelector(
+                    '.track-play'
+                );
             allowed = true;
         }
         if (allowed) {
@@ -453,6 +464,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 title: this.nowPlaying.dataset.title,
                 artist: this.nowPlaying.dataset.artist,
                 album: this.nowPlaying.dataset.album,
+                artwork_color: this.nowPlaying.dataset.artworkcolor,
             });
         }
     }
@@ -473,6 +485,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         const artwork = <HTMLImageElement>(
             document.getElementById('player-artwork')
         );
+        const mobileArtwork = <HTMLImageElement>(
+            document.getElementById('mobile-player-artwork')
+        );
         if (this.props.hide_artwork) {
             if (artwork) {
                 artwork.classList.add('hidden');
@@ -480,6 +495,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }
         }
         artwork.src = `${this.props.cover}_128px.webp`;
+        if (mobileArtwork) {
+            mobileArtwork.src = `${this.props.cover}_512px.webp`;
+            document.documentElement.style.setProperty(
+                '--accent-color',
+                'test'
+            );
+        }
     }
 
     stop() {
