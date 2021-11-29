@@ -1,10 +1,7 @@
 import { Model } from 'models/model';
 import Request from 'services/request/request';
-import { AlbumModel } from 'models/album';
-import { ArtistModel } from 'models/artist';
-import mockArtist from 'models/mocks/mockArtist';
-import mockAlbum from 'models/mocks/mockAlbum';
-import mockTrack from 'models/mocks/mockTrack';
+import { AlbumModel, mockAlbum } from 'models/album';
+import { ArtistModel, mockArtist } from 'models/artist';
 
 export interface ITrackModel {
     id: number;
@@ -93,3 +90,19 @@ export class TrackModel extends Model<ITrackModel> {
         });
     }
 }
+
+export const mockTrack = new TrackModel({
+    id: 0,
+    title: 'Loading title...',
+    artist: mockArtist,
+    album: mockAlbum,
+    explicit: false,
+    genre: '',
+    number: 0,
+    file: '',
+    listen_count: 0,
+    duration: 0,
+    lossless: false,
+    cover: '',
+    pos: 0,
+});

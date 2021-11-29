@@ -1,9 +1,7 @@
 import { Model } from './model';
 import Request from '../../src/services/request/request';
-import { TrackModel } from 'models/track';
+import { mockTrack, TrackModel } from 'models/track';
 import { ArtistModel } from 'models/artist';
-import mockAlbum from 'models/mocks/mockAlbum';
-import mockTrack from 'models/mocks/mockTrack';
 
 export interface IAlbumModel {
     album: boolean;
@@ -91,3 +89,15 @@ export class AlbumModel extends Model<IAlbumModel> {
         return this.props.tracks_count === 1;
     }
 }
+
+export const mockAlbum = new AlbumModel({
+    id: 0,
+    title: 'Loading album name...',
+    year: 0,
+    artist: 'Loading artist name...',
+    artwork: 'loading',
+    tracks_count: 0,
+    tracks_duration: 0,
+    album: false,
+    tracks: null,
+});
