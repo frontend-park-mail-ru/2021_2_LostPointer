@@ -1,5 +1,5 @@
 import { Model } from 'models/model';
-import { TrackModel } from 'models/track';
+import { mockTrack, TrackModel } from 'models/track';
 import { ArtistModel } from 'models/artist';
 import { AlbumModel } from 'models/album';
 import Request, {IResponseBody} from 'services/request/request';
@@ -46,6 +46,9 @@ export class PlaylistModel extends Model<IPlaylistModel> {
                         );
                     }
                     res(new PlaylistModel(response));
+                })
+                .catch(() => {
+                    res(mockPlaylist);
                 });
         });
     }
@@ -193,3 +196,13 @@ export class PlaylistModel extends Model<IPlaylistModel> {
         });
     }
 }
+
+export const mockPlaylist = new PlaylistModel({
+    id: 0,
+    title: 'Loading playlist title...',
+    tracks: Array.from({ length: 4 }, () => mockTrack),
+    artwork: '/static/artworks/loading_512px.webp',
+    artwork_color: '#000000',
+    is_public: true,
+    is_own: false,
+});

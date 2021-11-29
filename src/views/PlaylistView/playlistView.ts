@@ -14,7 +14,6 @@ import playlistsContextMenu, { PlaylistsContextMenu } from 'components/Playlists
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
 
-// TODO! service worker (для альбома и поиска)
 // TODO генерация ссылки для шеринга
 // TODO аватары пользователей-создателей плейлиста
 // TODO ссылки на альбомы на альбомах в треклисте

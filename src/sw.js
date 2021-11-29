@@ -11,11 +11,24 @@ self.addEventListener('install', (event) => {
     );
 });
 
+const frontArtistRegex = /^(http[s]?:\/.+\/artist)\/\d+$/gm;
+const frontAlbumRegex = /^(http[s]?:\/.+\/album)\/\d+$/gm;
+const frontPlaylistRegex = /^(http[s]?:\/.+\/playlist)\/\d+$/gm;
+const apiArtistRegex = /^http[s]?:\/.+\/api\/v1\/artist\/\d+$/gm;
+const apiAlbumRegex = /^http[s]?:\/.+\/api\/v1\/album\/\d+$/gm;
+const apiPlaylistRegex = /^http[s]?:\/.+\/api\/v1\/playlists\/\d+$/gm;
+const apiUserPlaylistsRegex = /^http[s]?:\/.+\/api\/v1\/playlists$/gm;
+const apiSettingsRegex = /^http[s]?:\/.+\/api\/v1\/user\/settings$/gm;
+const staticRegex = /^http[s]?:\/.+\/static\/\w+\/.+\.webp$/gm;
+
 const isUrlToCache = (url) => {
     const regexes = [
-        /^http[s]?:\/.+\/static\/\w+\/.+\.webp$/gm,
-        /^http[s]?:\/.+\/api\/v1\/artist\/\d+$/gm,
-        /^http[s]?:\/.+\/api\/v1\/user\/settings$/gm,
+        staticRegex,
+        apiArtistRegex,
+        apiAlbumRegex,
+        apiPlaylistRegex,
+        apiUserPlaylistsRegex,
+        apiSettingsRegex,
     ];
     return regexes.reduce((prevMatch, regex) => {
         return regex.exec(url) || prevMatch;
@@ -32,13 +45,25 @@ self.addEventListener('fetch', (event) => {
             return null;
         }
     } else {
-        const regex1 = /^(http[s]?:\/.+\/artist)\/\d+$/gm;
-        const regex2 = /^(http[s]?:\/.+\/api\/v1\/artist)\/\d+$/gm;
-        const match1 = regex1.exec(event.request.url);
-        const match2 = regex2.exec(event.request.url);
-        if (match1 && !match2) {
+        // TODO порефакторить
+        const frontArtistMatch = frontArtistRegex.exec(event.request.url);
+        const frontAlbumMatch = frontAlbumRegex.exec(event.request.url);
+        const frontPlaylistMatch = frontPlaylistRegex.exec(event.request.url);
+        if (frontArtistMatch && !apiArtistRegex.exec(event.request.url)) {
             event.respondWith(
-                caches.match(new Request(match1[1])).then((cachedResponse) => {
+                caches.match(new Request(frontArtistMatch[1])).then((cachedResponse) => {
+                    return cachedResponse;
+                })
+            );
+        } else if (frontAlbumMatch && !apiAlbumRegex.exec(event.request.url)) {
+            event.respondWith(
+                caches.match(new Request(frontAlbumMatch[1])).then((cachedResponse) => {
+                    return cachedResponse;
+                })
+            );
+        } else if (frontPlaylistMatch && !apiPlaylistRegex.exec(event.request.url)) {
+            event.respondWith(
+                caches.match(new Request(frontPlaylistMatch[1])).then((cachedResponse) => {
                     return cachedResponse;
                 })
             );
