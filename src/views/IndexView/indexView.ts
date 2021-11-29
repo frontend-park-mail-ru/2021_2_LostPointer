@@ -224,8 +224,8 @@ export class IndexView extends View<IIndexViewProps> {
             player: player.render(),
             mobile: mobile.render(),
         });
-        this.addListeners();
         player.addHandlers();
+        this.addListeners();
     }
 }
 

@@ -174,8 +174,8 @@
           position: absolute;
           border-radius: var(--mobile-player-seekbar-radius);
           height: var(--mobile-player-seekbar-height);
-          width: 50%;
-          background-color: var(--accent-color);
+          background-color: var(--artwork-accent-color);
+          filter: saturate(10);
         }
       }
 
