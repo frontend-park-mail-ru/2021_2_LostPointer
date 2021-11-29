@@ -7,8 +7,8 @@
             src='https://lostpointer.site/static/artworks/e8d30900-e884-469d-817b-a6d1f89dba13_512px.webp'
         />
         <div class='mobile-player__now-playing'>
-            <div class='mobile-player__now-playing__title'>Каждый раз</div>
-            <div class='mobile-player__now-playing__artist'>Монеточка</div>
+            <div class='mobile-player__now-playing__title mobile-track-title'>&nbsp;</div>
+            <div class='mobile-player__now-playing__artist mobile-track-artist'>&nbsp;</div>
         </div>
         <div class='mobile-player__progress'>
             <div class='mobile-player__progress__bar'></div>
@@ -19,11 +19,11 @@
             </div>
         </div>
         <div class="mobile-player__controls">
-            <img alt src="/static/img/skip.svg" id="player-skip-left"
+            <img alt src="/static/img/skip.svg"
                  class="player-skip-left{{# if left_disabled }} disabled{{/if}}">
             <img alt src="/static/img/{{# if playing}}pause.svg{{ else }}play.svg{{/if}}"
                  class="mobile-player__controls__play player-play">
-            <img alt src="/static/img/skip.svg" id="player-skip-right"
+            <img alt src="/static/img/skip.svg"
                  class="player-skip-right{{# if right_disabled }} disabled{{/if}}">
         </div>
         <div class='mobile-player__actions'>
@@ -39,11 +39,11 @@
             <i class='fa-solid fa-heart'></i>
         </div>
         <div class='mobile-footer__player__track'>
-            <div class='mobile-footer__player__track__title'>
+            <div class='mobile-footer__player__track__title mobile-track-title'>
                 After hours
             </div>
             &nbsp;•&nbsp;
-            <div class='mobile-footer__player__track__artist'>
+            <div class='mobile-footer__player__track__artist mobile-track-artist'>
                 The weeknd
             </div>
         </div>

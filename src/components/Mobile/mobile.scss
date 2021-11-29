@@ -145,10 +145,16 @@
       margin-bottom: 15px;
 
       &__artist {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         font-size: var(--artist-font-size);
       }
 
       &__title {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         font-weight: var(--mobile-track-font-weight);
         font-size: var(--mobile-track-font-size);
       }

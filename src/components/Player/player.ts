@@ -150,20 +150,29 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }, []),
         });
 
-        const right = document.getElementById('player-skip-right');
-        const left = document.getElementById('player-skip-left');
+        const right = document.querySelectorAll('.player-skip-right');
+        const left = document.querySelectorAll('.player-skip-left');
 
-        right.classList.remove('disabled');
-        left.classList.remove('disabled');
+        right.forEach((arrow) => {
+            arrow.classList.remove('disabled');
+        });
+
+        left.forEach((arrow) => {
+            arrow.classList.remove('disabled');
+        });
 
         this.props.right_disabled = this.pos === this.playlist.length - 1;
         this.props.left_disabled = this.pos === 0;
 
         if (this.props.left_disabled) {
-            left.classList.add('disabled');
+            left.forEach((arrow) => {
+                arrow.classList.add('disabled');
+            });
         }
         if (this.props.right_disabled) {
-            right.classList.add('disabled');
+            right.forEach((arrow) => {
+                arrow.classList.add('disabled');
+            });
         }
 
         document.documentElement.style.setProperty(
@@ -227,11 +236,15 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.audio.addEventListener('play', this.playHandler);
         this.audio.addEventListener('ended', this.endedHandler);
         document
-            .querySelector('.player-skip-left')
-            .addEventListener('click', this.arrowKeysHandler);
+            .querySelectorAll('.player-skip-left')
+            .forEach((arrow) =>
+                arrow.addEventListener('click', this.arrowKeysHandler)
+            );
         document
-            .querySelector('.player-skip-right')
-            .addEventListener('click', this.arrowKeysHandler);
+            .querySelectorAll('.player-skip-right')
+            .forEach((arrow) =>
+                arrow.addEventListener('click', this.arrowKeysHandler)
+            );
 
         navigator.mediaSession.setActionHandler(
             'previoustrack',
@@ -477,6 +490,18 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         const track = document.getElementById('track-name');
         if (track) {
             track.innerHTML = this.props.track || '';
+        }
+        const mobileTrack = document.querySelectorAll('.mobile-track-title');
+        if (mobileTrack) {
+            mobileTrack.forEach((title) => {
+                title.innerHTML = this.props.track || '';
+            });
+        }
+        const mobileArtist = document.querySelectorAll('.mobile-track-artist');
+        if (mobileArtist) {
+            mobileArtist.forEach((artist) => {
+                artist.innerHTML = this.props.artist || '';
+            });
         }
         const totalTime = document.getElementById('player-time-total');
         if (totalTime) {
