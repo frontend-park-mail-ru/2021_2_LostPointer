@@ -189,7 +189,6 @@ export class IndexView extends View<IIndexViewProps> {
                 this.playButtonHandler
             );
         this.isLoaded = false;
-        player.unmount();
     }
 
     userLogout() {
