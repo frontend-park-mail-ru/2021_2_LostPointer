@@ -336,6 +336,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
 
     togglePublicity(event) {
         const msg = document.querySelector('.editwindow__form-msg');
+        const link = document.querySelector('.editwindow__link');
         msg.innerHTML = '';
 
         this.playlist
@@ -347,13 +348,15 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                 // при успехе ответ возвращает только artwork, без status
                 if (!body.status) {
                     msg.classList.remove('fail');
-                    (<HTMLElement>msg).innerText = 'Changed successfully';
+                    if (event.target.checked) {
+                        navigator.clipboard.writeText(window.location.href);
+                        (<HTMLElement>link).style.visibility = 'visible';
+                        (<HTMLElement>msg).innerText = 'Link copied to clipboard';
+                    } else {
+                        (<HTMLElement>link).style.visibility = 'hidden';
+                        (<HTMLElement>msg).innerText = 'Changed successfully';
+                    }
                     msg.classList.add('success', 'visible');
-                    const title = document.querySelector(
-                        '.playlist__description-title'
-                    );
-                    (<HTMLElement>title).innerText =
-                        this.playlist.getProps().title;
                 } else {
                     msg.classList.remove('success');
                     (<HTMLElement>msg).innerText = body.message;
@@ -608,6 +611,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             player: player.render(),
             contextMenu: this.contextMenu.render(),
             inputs: this.inputs,
+            link: window.location.href,
         });
         TopbarComponent.addHandlers();
         TopbarComponent.didMount();

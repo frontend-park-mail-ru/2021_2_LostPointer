@@ -138,6 +138,13 @@
     }
   }
 
+  &__link {
+    color: #ffffff;
+    font-family: Montserrat, sans-serif;
+    font-size: 16px;
+    text-align: center;
+  }
+
   &__avatar {
     display: block;
 
@@ -206,15 +213,14 @@
       color: #ffffff;
       font-family: Montserrat, sans-serif;
       font-size: 16px;
-      text-align: right;
-      width: 150px;
-      top: 20px;
+      text-align: left;
+      margin: 10px 0;
+      width: 210px;
     }
 
     &-switch {
       position: relative;
       display: block;
-      margin-top: 10px;
       width: 60px;
       height: 34px;
 
@@ -243,7 +249,7 @@
       font-family: Montserrat, sans-serif;
       font-size: 16px;
       padding-left: 10px;
-      margin: 20px 10px;
+      margin: 23px 10px 0;
 
       &:focus {
         outline: none;
@@ -265,7 +271,7 @@
 
     &-buttons {
       padding: 10px 10px 0;
-      margin: 15px 0 0;
+      margin: 7px 0 0;
     }
 
     &-submit {
@@ -287,6 +293,7 @@
 
   &__public {
     margin: 20px 10px;
+    display: flex;
   }
 
   &__delete {
