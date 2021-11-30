@@ -5,6 +5,7 @@ import IndexView from 'views/IndexView/indexView';
 import SigninView from 'views/SigninView/signinView';
 import SignupView from 'views/SignupView/signupView';
 import PlaylistView from 'views/PlaylistView/playlistView';
+import playlistView from 'views/PlaylistView/playlistView';
 import ProfileView from 'views/ProfileView/profileView';
 import ArtistView from 'views/ArtistView/artistView';
 import SearchView from 'views/SearchView/searchView';
@@ -17,7 +18,6 @@ import store from 'services/store/store';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './static/css/fonts.css';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
-import playlistView from 'views/PlaylistView/playlistView';
 
 class App {
     start() {
@@ -42,8 +42,14 @@ class App {
             'click',
             playlistsContextMenu.hideContextMenu.bind(playlistsContextMenu)
         );
-        window.addEventListener('click', playlistView.removeEditWindow.bind(playlistView));
-        window.addEventListener('click', playlistView.deleteButtonReset.bind(playlistView));
+        window.addEventListener(
+            'click',
+            playlistView.removeEditWindow.bind(playlistView)
+        );
+        window.addEventListener(
+            'click',
+            playlistView.deleteButtonReset.bind(playlistView)
+        );
     }
 
     _enableServiceWorker() {
@@ -68,11 +74,17 @@ class App {
             event.preventDefault();
             router.go(target.getAttribute('href'));
         } else {
-            if (target.parentElement.tagName === 'A' && target.parentElement.getAttribute('href')) {
+            if (
+                target.parentElement.tagName === 'A' &&
+                target.parentElement.getAttribute('href')
+            ) {
                 event.preventDefault();
                 router.go(target.parentElement.getAttribute('href'));
             } else {
-                if (target.parentElement.parentElement.tagName === 'A' && target.parentElement.parentElement.getAttribute('href')) {
+                if (
+                    target.parentElement.parentElement.tagName === 'A' &&
+                    target.parentElement.parentElement.getAttribute('href')
+                ) {
                     event.preventDefault();
                     router.go(
                         target.parentElement.parentElement.getAttribute('href')

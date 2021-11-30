@@ -194,7 +194,9 @@ class IndexView extends View<IIndexViewProps> {
         addTrackToPlaylistBtns.forEach((button) => {
             button.addEventListener(
                 'click',
-                playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu)
+                playlistsContextMenu.addTrackToPlaylist.bind(
+                    playlistsContextMenu
+                )
             );
         });
 
@@ -203,7 +205,9 @@ class IndexView extends View<IIndexViewProps> {
             .forEach((element) => {
                 element.addEventListener(
                     'click',
-                    playlistsContextMenu.showContextMenu.bind(playlistsContextMenu)
+                    playlistsContextMenu.showContextMenu.bind(
+                        playlistsContextMenu
+                    )
                 );
             });
 
@@ -241,7 +245,9 @@ class IndexView extends View<IIndexViewProps> {
             .forEach((element) => {
                 element.removeEventListener(
                     'click',
-                    playlistsContextMenu.showContextMenu.bind(playlistsContextMenu)
+                    playlistsContextMenu.showContextMenu.bind(
+                        playlistsContextMenu
+                    )
                 );
             });
         const createPlaylistBtn = document.querySelector(
@@ -280,7 +286,9 @@ class IndexView extends View<IIndexViewProps> {
         addTrackToPlaylistBtns.forEach((button) => {
             button.removeEventListener(
                 'click',
-                playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu)
+                playlistsContextMenu.addTrackToPlaylist.bind(
+                    playlistsContextMenu
+                )
             );
         });
 
@@ -313,6 +321,7 @@ class IndexView extends View<IIndexViewProps> {
         TopbarComponent.didMount();
 
         player.addHandlers();
+        player.setEventListeners();
         this.addListeners();
     }
 }
