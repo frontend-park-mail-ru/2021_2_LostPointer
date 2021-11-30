@@ -408,8 +408,22 @@ export class PlaylistView extends View<IPlaylistViewProps> {
 
     }
 
+    copyLink() {
+        event.stopPropagation();
+        const msg = document.querySelector('.editwindow__form-msg');
+        msg.classList.remove('fail');
+        navigator.clipboard.writeText(window.location.href);
+        (<HTMLElement>msg).innerText = 'Link copied to clipboard';
+        msg.classList.add('success', 'visible');
+    }
+
     addListeners() {
         if (this.playlist.getProps().is_own) {
+            const link = document.querySelector(
+                '.editwindow__link'
+            );
+            link.addEventListener('click', this.copyLink.bind(this));
+
             const deleteAvatarBtn = document.querySelector(
                 '.editwindow__avatar-delete'
             );
@@ -586,6 +600,13 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         addTrackToPlaylistBtns.forEach((button) => {
             button.removeEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
         });
+
+        const link = document.querySelector(
+            '.editwindow__link'
+        );
+        if (link) {
+            link.removeEventListener('click', this.copyLink.bind(this));
+        }
 
         window.removeEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
 
