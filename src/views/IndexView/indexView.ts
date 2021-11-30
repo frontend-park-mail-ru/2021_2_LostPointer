@@ -15,9 +15,7 @@ import routerStore from 'services/router/routerStore';
 import { disableBrokenImg } from 'views/utils';
 import store from 'services/store/store';
 import { PlaylistModel } from 'models/playlist';
-import playlistsContextMenu, {
-    PlaylistsContextMenu,
-} from 'components/PlaylistsContextMenu/playlistsContextMenu';
+import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import mobile from 'components/Mobile/mobile';
 
 import IndexTemplate from './indexView.hbs';
@@ -34,7 +32,6 @@ class IndexView extends View<IIndexViewProps> {
     private suggested_playlists: PlaylistModel[];
     private friend_activity: FriendActivity;
     private userAvatar: string;
-    private contextMenu: PlaylistsContextMenu;
     private userPlaylists: Array<PlaylistModel>;
     private renderCount: number;
 
@@ -95,8 +92,7 @@ class IndexView extends View<IIndexViewProps> {
                         },
                     ],
                 }).render();
-                this.contextMenu = playlistsContextMenu;
-                this.contextMenu.updatePlaylists(this.userPlaylists);
+                playlistsContextMenu.updatePlaylists(this.userPlaylists);
                 this.isLoaded = true;
                 this.render();
             }
@@ -190,7 +186,7 @@ class IndexView extends View<IIndexViewProps> {
         );
         createPlaylistContextMenuBtn.addEventListener(
             'click',
-            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
+            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
         );
         const addTrackToPlaylistBtns = document.querySelectorAll(
             '.js-playlist-track-add'
@@ -198,7 +194,7 @@ class IndexView extends View<IIndexViewProps> {
         addTrackToPlaylistBtns.forEach((button) => {
             button.addEventListener(
                 'click',
-                this.contextMenu.addTrackToPlaylist.bind(this.contextMenu)
+                playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu)
             );
         });
 
@@ -207,13 +203,9 @@ class IndexView extends View<IIndexViewProps> {
             .forEach((element) => {
                 element.addEventListener(
                     'click',
-                    this.contextMenu.showContextMenu.bind(this.contextMenu)
+                    playlistsContextMenu.showContextMenu.bind(playlistsContextMenu)
                 );
             });
-        window.addEventListener(
-            'click',
-            this.contextMenu.hideContextMenu.bind(this.contextMenu)
-        );
 
         const playerElement: HTMLElement =
             document.querySelector('.mobile-player');
@@ -249,13 +241,9 @@ class IndexView extends View<IIndexViewProps> {
             .forEach((element) => {
                 element.removeEventListener(
                     'click',
-                    this.contextMenu.showContextMenu.bind(this.contextMenu)
+                    playlistsContextMenu.showContextMenu.bind(playlistsContextMenu)
                 );
             });
-        window.removeEventListener(
-            'click',
-            this.contextMenu.hideContextMenu.bind(this.contextMenu)
-        );
         const createPlaylistBtn = document.querySelector(
             '.pl-link[href="/playlist/0"]'
         );
@@ -284,7 +272,7 @@ class IndexView extends View<IIndexViewProps> {
         );
         createPlaylistContextMenuBtn.removeEventListener(
             'click',
-            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
+            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
         );
         const addTrackToPlaylistBtns = document.querySelectorAll(
             '.js-playlist-track-add'
@@ -292,7 +280,7 @@ class IndexView extends View<IIndexViewProps> {
         addTrackToPlaylistBtns.forEach((button) => {
             button.removeEventListener(
                 'click',
-                this.contextMenu.addTrackToPlaylist.bind(this.contextMenu)
+                playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu)
             );
         });
 
@@ -318,7 +306,7 @@ class IndexView extends View<IIndexViewProps> {
             track_list: this.track_list,
             suggested_playlists: suggestedPlaylists.render(),
             player: player.render(),
-            contextMenu: this.contextMenu.render(),
+            contextMenu: playlistsContextMenu.render(),
             mobile: mobile.render(),
         });
         TopbarComponent.addHandlers();

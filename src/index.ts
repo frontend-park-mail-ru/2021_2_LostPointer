@@ -16,6 +16,8 @@ import store from 'services/store/store';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './static/css/fonts.css';
+import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
+import playlistView from 'views/PlaylistView/playlistView';
 
 class App {
     start() {
@@ -27,11 +29,21 @@ class App {
                 UserModel.getSettings();
             }
 
+            this._addListeners();
             this._enableServiceWorker();
             this.initRoutes();
             document.body.addEventListener('click', this._dataLinkRoute);
             router.route();
         });
+    }
+
+    _addListeners() {
+        window.addEventListener(
+            'click',
+            playlistsContextMenu.hideContextMenu.bind(playlistsContextMenu)
+        );
+        window.addEventListener('click', playlistView.removeEditWindow.bind(playlistView));
+        window.addEventListener('click', playlistView.deleteButtonReset.bind(playlistView));
     }
 
     _enableServiceWorker() {

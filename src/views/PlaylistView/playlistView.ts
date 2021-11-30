@@ -9,15 +9,14 @@ import store from 'services/store/store';
 import { disableBrokenImg } from 'views/utils';
 import player from 'components/Player/player';
 import { InputFormComponent } from 'components/InputForm/inputform';
-import playlistsContextMenu, { PlaylistsContextMenu } from 'components/PlaylistsContextMenu/playlistsContextMenu';
+import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
 import mobile from 'components/Mobile/mobile';
 
-// TODO генерация ссылки для шеринга
 // TODO аватары пользователей-создателей плейлиста
-// TODO ссылки на альбомы на альбомах в треклисте
+// TODO! ссылки на альбомы на альбомах в треклисте
 // TODO проверить все unmount
 // TODO рефактор вьюх по аналогии с Search
 
@@ -31,7 +30,6 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     private userPlaylists: Array<PlaylistModel>;
     private trackList: TrackList;
     private inputs: Array<string>;
-    private contextMenu: PlaylistsContextMenu;
     private renderedMenu: HTMLElement;
 
     constructor(props?: IPlaylistViewProps) {
@@ -77,9 +75,8 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                     value: props.title,
                 }).render(),
             ];
-            this.contextMenu = playlistsContextMenu;
-            this.contextMenu.addRemoveButton();
-            this.contextMenu.updatePlaylists(this.userPlaylists);
+            playlistsContextMenu.addRemoveButton();
+            playlistsContextMenu.updatePlaylists(this.userPlaylists);
             this.isLoaded = true;
             this.render();
         });
@@ -378,7 +375,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     removeTrack() {
-        this.contextMenu.removeTrackFromPlaylist(this.playlist)
+        playlistsContextMenu.removeTrackFromPlaylist(this.playlist)
             .then((response) => {
                 if (response.status === 200) {
                     this.trackList.set({
@@ -391,7 +388,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                         .forEach((element) => {
                             element.removeEventListener(
                                 'click',
-                                this.contextMenu.showContextMenu.bind(this.contextMenu)
+                                playlistsContextMenu.showContextMenu.bind(playlistsContextMenu)
                             );
                         });
                     trackList.innerHTML = this.trackList.render();
@@ -400,7 +397,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                         .forEach((element) => {
                             element.addEventListener(
                                 'click',
-                                this.contextMenu.showContextMenu.bind(this.contextMenu)
+                                playlistsContextMenu.showContextMenu.bind(playlistsContextMenu)
                             );
                         });
                 }
@@ -474,8 +471,6 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                 'click',
                 this.displayEditWindow.bind(this)
             );
-            window.addEventListener('click', this.removeEditWindow.bind(this));
-            window.addEventListener('click', this.deleteButtonReset.bind(this));
 
             const removeTrackFromPlaylistBtn = document.querySelector(
                 '.js-playlist-track-remove'
@@ -486,24 +481,23 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             );
         }
 
-        window.addEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
-                element.addEventListener('click', this.contextMenu.showContextMenu.bind(this.contextMenu));
+                element.addEventListener('click', playlistsContextMenu.showContextMenu.bind(playlistsContextMenu));
             });
 
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
         createPlaylistBtn.addEventListener(
             'click',
-            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
+            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
         );
 
         const addTrackToPlaylistBtns = document.querySelectorAll(
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.addEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
+            button.addEventListener('click', playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu));
         });
 
         document.querySelectorAll('img').forEach(function (img) {
@@ -520,11 +514,11 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             .forEach((element) => {
                 element.removeEventListener(
                     'click',
-                    this.contextMenu.showContextMenu.bind(this.contextMenu)
+                    playlistsContextMenu.showContextMenu.bind(playlistsContextMenu)
                 );
             });
 
-        this.contextMenu.deleteRemoveButton();
+        playlistsContextMenu.deleteRemoveButton();
 
         if (this.playlist && this.playlist.getProps().is_own) {
             const removeTrackFromPlaylistBtn = document.querySelector(
@@ -533,15 +527,6 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             removeTrackFromPlaylistBtn.removeEventListener(
                 'click',
                 this.removeTrack.bind(this)
-            );
-
-            window.removeEventListener(
-                'click',
-                this.deleteButtonReset.bind(this)
-            );
-            window.removeEventListener(
-                'click',
-                this.removeEditWindow.bind(this)
             );
 
             const playlistAvatar = document.querySelector(
@@ -592,13 +577,13 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
         createPlaylistBtn.removeEventListener(
             'click',
-            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
+            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
         );
         const addTrackToPlaylistBtns = document.querySelectorAll(
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.removeEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
+            button.removeEventListener('click', playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu));
         });
 
         const link = document.querySelector(
@@ -607,8 +592,6 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         if (link) {
             link.removeEventListener('click', this.copyLink.bind(this));
         }
-
-        window.removeEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
 
         this.isLoaded = false;
     }
@@ -637,7 +620,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                 })
                 .render(),
             player: player.render(),
-            contextMenu: this.contextMenu.render(),
+            contextMenu: playlistsContextMenu.render(),
             inputs: this.inputs,
             link: window.location.href,
             mobile: mobile.render(),

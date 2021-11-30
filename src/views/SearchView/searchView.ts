@@ -41,7 +41,6 @@ export class SearchView extends View<ISearchViewProps> {
     private albums: AlbumModel[];
     private noResults: boolean;
     private userPlaylists: Array<PlaylistModel>;
-    private contextMenu: PlaylistsContextMenu;
 
     constructor(props?: ISearchViewProps) {
         super(props);
@@ -60,16 +59,13 @@ export class SearchView extends View<ISearchViewProps> {
                 this.userPlaylists = playlists;
             }
         );
-        this.contextMenu = playlistsContextMenu;
         Promise.all([userPlaylists]).then(() => {
-            this.contextMenu.updatePlaylists(this.userPlaylists);
+            playlistsContextMenu.updatePlaylists(this.userPlaylists);
             this.isLoaded = true;
         });
     }
 
     addListeners() {
-        window.addEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
-
         document
             .querySelector('.topbar__search-input')
             .addEventListener('input', (e) => {
@@ -125,8 +121,6 @@ export class SearchView extends View<ISearchViewProps> {
             img.removeEventListener('error', disableBrokenImg);
         });
 
-        window.removeEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
-
         this.isLoaded = false;
     }
 
@@ -143,7 +137,7 @@ export class SearchView extends View<ISearchViewProps> {
                 }).render(),
                 sidebar: sidebar.render(),
                 player: player.render(),
-                contextMenu: this.contextMenu.render(),
+                contextMenu: playlistsContextMenu.render(),
             });
             TopbarComponent.addHandlers();
         }
@@ -157,7 +151,7 @@ export class SearchView extends View<ISearchViewProps> {
             .forEach((element) => {
                 element.removeEventListener(
                     'click',
-                    this.contextMenu.showContextMenu.bind(this.contextMenu)
+                    playlistsContextMenu.showContextMenu.bind(playlistsContextMenu)
                 );
             });
 
@@ -188,7 +182,7 @@ export class SearchView extends View<ISearchViewProps> {
                 this.data.tracks.length ===
             0;
         const contextMenu = document.querySelector('.js-menu-container');
-        contextMenu.innerHTML = this.contextMenu.render();
+        contextMenu.innerHTML = playlistsContextMenu.render();
 
         const content = document.querySelector('.main-layout__content');
         content.innerHTML = SearchViewTemplate({
@@ -201,7 +195,7 @@ export class SearchView extends View<ISearchViewProps> {
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
-                element.addEventListener('click', this.contextMenu.showContextMenu.bind(this.contextMenu));
+                element.addEventListener('click', playlistsContextMenu.showContextMenu.bind(playlistsContextMenu));
             });
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);

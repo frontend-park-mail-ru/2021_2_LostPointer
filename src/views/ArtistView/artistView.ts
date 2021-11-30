@@ -8,7 +8,7 @@ import { ArtistModel } from 'models/artist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { disableBrokenImg } from 'views/utils';
-import playlistsContextMenu, { PlaylistsContextMenu } from 'components/PlaylistsContextMenu/playlistsContextMenu';
+import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import { PlaylistModel } from 'models/playlist';
 
 import ArtistTemplate from './artistView.hbs';
@@ -25,7 +25,6 @@ export class ArtistView extends View<IArtistViewProps> {
     private artist: ArtistModel;
     private trackList: TrackList;
     private albumList: SuggestedAlbums;
-    private contextMenu: PlaylistsContextMenu;
     private userPlaylists: Array<PlaylistModel>;
 
     constructor(props?: IArtistViewProps) {
@@ -70,8 +69,7 @@ export class ArtistView extends View<IArtistViewProps> {
                 title: 'Tracks',
                 tracks: tracks,
             }).render();
-            this.contextMenu = playlistsContextMenu;
-            this.contextMenu.updatePlaylists(this.userPlaylists);
+            playlistsContextMenu.updatePlaylists(this.userPlaylists);
             this.isLoaded = true;
             this.render();
         });
@@ -88,21 +86,20 @@ export class ArtistView extends View<IArtistViewProps> {
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
         createPlaylistBtn.addEventListener(
             'click',
-            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
+            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
         );
         const addTrackToPlaylistBtns = document.querySelectorAll(
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.addEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
+            button.addEventListener('click', playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu));
         });
 
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
-                element.addEventListener('click', this.contextMenu.showContextMenu.bind(this.contextMenu));
+                element.addEventListener('click', playlistsContextMenu.showContextMenu.bind(playlistsContextMenu));
             });
-        window.addEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
@@ -117,21 +114,20 @@ export class ArtistView extends View<IArtistViewProps> {
             .forEach((element) => {
                 element.removeEventListener(
                     'click',
-                    this.contextMenu.showContextMenu.bind(this.contextMenu)
+                    playlistsContextMenu.showContextMenu.bind(playlistsContextMenu)
                 );
             });
-        window.removeEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
 
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
         createPlaylistBtn.removeEventListener(
             'click',
-            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
+            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
         );
         const addTrackToPlaylistBtns = document.querySelectorAll(
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.removeEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
+            button.removeEventListener('click', playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu));
         });
 
         this.isLoaded = false;
@@ -156,7 +152,7 @@ export class ArtistView extends View<IArtistViewProps> {
             albumList: this.albumList,
             trackList: this.trackList,
             player: player.render(),
-            contextMenu: this.contextMenu.render(),
+            contextMenu: playlistsContextMenu.render(),
             mobile: mobile.render(),
         });
         TopbarComponent.addHandlers();

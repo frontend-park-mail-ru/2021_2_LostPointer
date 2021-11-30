@@ -24,7 +24,6 @@ export class AlbumView extends View<IAlbumViewProps> {
     private album: AlbumModel;
     private trackList: TrackList;
     private userPlaylists: Array<PlaylistModel>;
-    private contextMenu: PlaylistsContextMenu;
 
     constructor(props?: IAlbumViewProps) {
         super(props);
@@ -58,32 +57,30 @@ export class AlbumView extends View<IAlbumViewProps> {
                 title: 'Tracks',
                 tracks: props.tracks,
             }).render();
-            this.contextMenu = playlistsContextMenu;
-            this.contextMenu.updatePlaylists(this.userPlaylists);
+            playlistsContextMenu.updatePlaylists(this.userPlaylists);
             this.isLoaded = true;
             this.render();
         });
     }
 
     addListeners() {
-        window.addEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
-                element.addEventListener('click', this.contextMenu.showContextMenu.bind(this.contextMenu));
+                element.addEventListener('click', playlistsContextMenu.showContextMenu.bind(playlistsContextMenu));
             });
 
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
         createPlaylistBtn.addEventListener(
             'click',
-            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
+            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
         );
 
         const addTrackToPlaylistBtns = document.querySelectorAll(
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.addEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
+            button.addEventListener('click', playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu));
         });
 
         document.querySelectorAll('img').forEach(function (img) {
@@ -101,22 +98,20 @@ export class AlbumView extends View<IAlbumViewProps> {
             .forEach((element) => {
                 element.removeEventListener(
                     'click',
-                    this.contextMenu.showContextMenu.bind(this.contextMenu)
+                    playlistsContextMenu.showContextMenu.bind(playlistsContextMenu)
                 );
             });
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
         createPlaylistBtn.removeEventListener(
             'click',
-            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
+            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
         );
         const addTrackToPlaylistBtns = document.querySelectorAll(
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.removeEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
+            button.removeEventListener('click', playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu));
         });
-
-        window.removeEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
 
         this.isLoaded = false;
     }
@@ -140,7 +135,7 @@ export class AlbumView extends View<IAlbumViewProps> {
                 '_512px.webp',
             title: this.album.getProps().title,
             trackList: this.trackList,
-            contextMenu: this.contextMenu.render(),
+            contextMenu: playlistsContextMenu.render(),
             tracksCount: this.album.getProps().tracks_count,
             tracksDurationMin: Math.floor(
                 this.album.getProps().tracks_duration / 60
