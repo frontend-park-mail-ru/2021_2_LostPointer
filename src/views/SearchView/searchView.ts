@@ -158,6 +158,19 @@ export class SearchView extends View<ISearchViewProps> {
                 );
             });
 
+        playlistsContextMenu.deleteRemoveButton();
+        document.querySelector('.js-menu-container')
+            .innerHTML = playlistsContextMenu.render();
+        document.querySelectorAll(
+            '.js-playlist-track-add'
+        ).forEach((button) => {
+            button.addEventListener('click', playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu));
+        });
+        document.querySelector('.js-playlist-create').addEventListener(
+            'click',
+            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
+        );
+
         this.data.tracks =
             this.tracks.length !== 0
                 ? new TrackList({
