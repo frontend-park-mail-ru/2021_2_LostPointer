@@ -20,6 +20,7 @@ import ProfileTemplate from './profileView.hbs';
 import './profileView.scss';
 import { disableBrokenImg } from 'views/utils';
 import store from 'services/store/store';
+import mobile from 'components/Mobile/mobile';
 
 interface IProfileViewProps {
     authenticated: boolean;
@@ -261,6 +262,7 @@ export class ProfileView extends View<IProfileViewProps> {
             sidebar: sidebar.render(),
             profileform: this.profileform.render(),
             player: player.render(),
+            mobile: mobile.render(),
         });
         TopbarComponent.addHandlers();
         TopbarComponent.didMount();

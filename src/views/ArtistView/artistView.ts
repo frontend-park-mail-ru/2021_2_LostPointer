@@ -157,6 +157,7 @@ export class ArtistView extends View<IArtistViewProps> {
             trackList: this.trackList,
             player: player.render(),
             contextMenu: this.contextMenu.render(),
+            mobile: mobile.render(),
         });
         TopbarComponent.addHandlers();
         this.addListeners();
