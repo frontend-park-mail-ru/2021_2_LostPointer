@@ -1,6 +1,15 @@
 .profile-page {
   display: block;
 
+  & .js-logout {
+    display: none;
+
+    @media only screen and (max-width: 768px) {
+      display: inline-block;
+      margin-left: 10%;
+    }
+  }
+
   &__content {
     display: flex;
 
@@ -15,6 +24,14 @@
     font-size: 45px;
     font-weight: 400;
     text-align: center;
+
+    @media only screen and (max-width: 768px) {
+      font-size: 30px;
+      text-align: left;
+      width: 62%;
+      display: inline-block;
+      margin-left: 10%;
+    }
   }
 }
 

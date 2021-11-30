@@ -15,12 +15,12 @@ import {
 } from 'services/validation/validityChecks';
 import { ProfileForm } from 'components/ProfileForm/profileForm';
 import { UserModel } from 'models/user';
-
-import ProfileTemplate from './profileView.hbs';
-import './profileView.scss';
 import { disableBrokenImg } from 'views/utils';
 import store from 'services/store/store';
 import mobile from 'components/Mobile/mobile';
+
+import ProfileTemplate from './profileView.hbs';
+import './profileView.scss';
 
 interface IProfileViewProps {
     authenticated: boolean;
@@ -211,6 +211,18 @@ export class ProfileView extends View<IProfileViewProps> {
             });
     }
 
+    logoutHandler(event) {
+        event.stopPropagation();
+        UserModel.logout()
+            .then(() => {
+                player.stop();
+                player.clear();
+                store.set('authenticated', false);
+                window.localStorage.removeItem('lastPlayedData');
+                router.go(routerStore.dashboard);
+            })
+    }
+
     addListeners() {
         const form = document.querySelector('.profile-form');
         const nicknameInput = form.querySelector('input[name="nickname"]');
@@ -238,11 +250,19 @@ export class ProfileView extends View<IProfileViewProps> {
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
+
+        document.querySelectorAll('.js-logout').forEach((el) => {
+            el.addEventListener('click', this.logoutHandler.bind(this));
+        });
     }
 
     unmount() {
         document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
+        });
+
+        document.querySelectorAll('.js-logout').forEach((el) => {
+            el.removeEventListener('click', this.logoutHandler.bind(this));
         });
         this.isLoaded = false;
     }

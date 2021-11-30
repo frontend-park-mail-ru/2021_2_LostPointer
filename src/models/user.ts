@@ -70,6 +70,14 @@ export class UserModel extends Model<IUserModel> {
         })
     }
 
+    static logout(): Promise<IResponseBody> {
+        return new Promise<IResponseBody>((res) => {
+            Request.post('/user/logout').then((body) => {
+                res(body);
+            });
+        })
+    }
+
     updateSettings(
         nickname?: string,
         email?: string,

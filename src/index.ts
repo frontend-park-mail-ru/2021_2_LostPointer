@@ -52,15 +52,15 @@ class App {
 
     _dataLinkRoute(event) {
         const target = event.target;
-        if (target.tagName === 'A') {
+        if (target.tagName === 'A' && target.getAttribute('href')) {
             event.preventDefault();
             router.go(target.getAttribute('href'));
         } else {
-            if (target.parentElement.tagName === 'A') {
+            if (target.parentElement.tagName === 'A' && target.parentElement.getAttribute('href')) {
                 event.preventDefault();
                 router.go(target.parentElement.getAttribute('href'));
             } else {
-                if (target.parentElement.parentElement.tagName === 'A') {
+                if (target.parentElement.parentElement.tagName === 'A' && target.parentElement.parentElement.getAttribute('href')) {
                     event.preventDefault();
                     router.go(
                         target.parentElement.parentElement.getAttribute('href')
