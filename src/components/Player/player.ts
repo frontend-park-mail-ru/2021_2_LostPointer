@@ -1,6 +1,5 @@
 import { Component } from 'components/Component/component';
 import Request from 'services/request/request';
-import { ArtistModel } from 'models/artist';
 
 import PlayerTemplate from './player.hbs';
 import './player.scss';
@@ -10,10 +9,11 @@ interface IPlayerComponentProps {
     total_time: string;
     current_time: string;
     playing: boolean;
-    artist: ArtistModel;
+    artist: string;
     track: string;
     left_disabled: boolean;
     right_disabled: boolean;
+    url: string;
     file: string;
     playerCurrentTime: number;
     cover: string;
@@ -120,7 +120,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.audio.src = this.props.file;
             this.props.right_disabled = true;
             this.props.left_disabled = true;
-            document.title = `${this.props.track} · ${this.props.artist.props.name}`;
+            document.title = `${this.props.track} · ${this.props.artist}`;
             this.props.hide_artwork = false;
             this.props.recovered = true;
             this.audio.preload = 'metadata';
@@ -139,7 +139,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             url: track.url,
             artwork_color: track.artwork_color,
         } as IPlayerComponentProps;
-        document.title = `${this.props.track} · ${this.props.artist.props.name}`;
+        document.title = `${this.props.track} · ${this.props.artist}`;
 
         navigator.mediaSession.metadata = new MediaMetadata({
             title: track.title,
@@ -507,7 +507,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         const artist = document.getElementById('artist-name');
         if (artist) {
             try {
-                artist.innerHTML = this.props.artist.props.name || '';
+                artist.innerHTML = this.props.artist || '';
             } catch {
                 artist.innerHTML = '';
             }
@@ -588,6 +588,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             track: '',
             left_disabled: true,
             right_disabled: true,
+            file: '',
             url: '',
             playerCurrentTime: 0,
             cover: '',

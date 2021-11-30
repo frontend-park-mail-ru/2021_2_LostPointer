@@ -3,10 +3,15 @@
   align-items: center;
   width: 92%;
   height: 60px;
-  padding: 15px 15px 0;
+  margin: 25px;
   font-family: var(--font);
   color: white;
   overflow: hidden;
+
+  @media only screen and (max-width: 768px) {
+    margin: 0;
+    padding: 15px;
+  }
 
   &__artwork {
     border-radius: 15px;
@@ -22,12 +27,9 @@
   }
 
   &__container {
-    margin: 12px 0;
-    width: fit-content;
-    height: 100%;
-    background-color: #191919;
-    border-radius: 15px;
-    border: 1px #191919 solid;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
 
     &__artist {
       white-space: nowrap;
@@ -36,7 +38,11 @@
       vertical-align: bottom;
       font-weight: 600;
       cursor: pointer;
-      width: 35vw;
+      width: 260px;
+
+      @media only screen and (max-width: 768px) {
+        width: 30vw;
+      }
 
       &:hover {
         text-decoration: underline;
@@ -48,6 +54,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       vertical-align: bottom;
+      width: 260px;
 
       @media only screen and (max-width: 768px) {
         width: 30vw;
@@ -66,12 +73,29 @@
   }
 
   &__ellipsis {
-    margin-right: 0;
-    margin-left: auto;
     display: flex;
     border: 1px rgb(65 66 63) solid;
     border-radius: 50px;
-    width: 75px;
+    width: 110px;
     height: fit-content;
+
+    @media only screen and (max-width: 768px) {
+      margin-right: 0;
+      margin-left: auto;
+    }
+  }
+}
+
+.playlist__content .track__container,
+.album__content .track__container,
+.artist__content .track__container {
+
+  &__name,
+  &__artist {
+    width: 350px;
+
+    @media only screen and (max-width: 768px) {
+      width: 30vw;
+    }
   }
 }

@@ -29,12 +29,13 @@
   }
 
   &-extrarounded {
-    width: 105px;
-    height: 105px;
+    width: 128px;
+    height: 128px;
     object-fit: cover;
     cursor: pointer;
     background: linear-gradient(180deg, rgba(30 30 30 / 50%) 0%, rgba(30 30 30 / 80%) 100%);
     display: inline-block;
+    margin: 5px auto;
 
     &:nth-child(1),
     &:nth-child(1) img {
