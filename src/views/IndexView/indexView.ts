@@ -229,7 +229,7 @@ class IndexView extends View<IIndexViewProps> {
                 mobileFooter.classList.add('mobile-footer__menu__hidden');
             });
 
-        player.setup(document.querySelectorAll('.track-list-item'));
+        player.setup(document.querySelectorAll('.track'));
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
@@ -321,7 +321,6 @@ class IndexView extends View<IIndexViewProps> {
         TopbarComponent.didMount();
 
         player.addHandlers();
-        player.setEventListeners();
         this.addListeners();
     }
 }

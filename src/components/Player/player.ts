@@ -154,6 +154,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             track: track.title,
             artist: artist || track.artist,
             file: this.audio.src,
+            artwork_color: track.artworkcolor,
         } as IPlayerComponentProps;
         document.title = `${this.props.track} · ${this.props.artist.props.name}`;
 
@@ -550,12 +551,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             prev.src = '/static/img/play-outline.svg';
             this.nowPlaying.src = '/static/img/pause-outline.svg';
             this.setTrack({
-                url: `/static/tracks/${this.nowPlaying.dataset.url}`,
-                cover: `/static/artworks/${this.nowPlaying.dataset.cover}`,
+                url: `${this.nowPlaying.dataset.url}`,
+                cover: `${this.nowPlaying.dataset.cover}`,
                 title: this.nowPlaying.dataset.title,
                 artist: this.nowPlaying.dataset.artist,
                 album: this.nowPlaying.dataset.album,
-                artwork_color: this.nowPlaying.dataset.artworkcolor,
+                artworkcolor: this.nowPlaying.dataset.artworkcolor,
             });
         }
     }
