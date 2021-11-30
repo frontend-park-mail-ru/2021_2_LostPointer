@@ -176,6 +176,11 @@ body {
     background-color: #191919;
     border-radius: 15px;
     border: 1px #191919 solid;
+
+    @media only screen and (min-width: 768px) {
+      margin: 0;
+    }
+  }
   }
 }
 
