@@ -12,7 +12,7 @@ import { TopAlbums } from 'components/TopAlbums/topalbums';
 import TopbarComponent from 'components/Topbar/topbar';
 import sidebar from 'components/Sidebar/sidebar';
 import { PlaylistModel } from 'models/playlist';
-import playlistsContextMenu, { PlaylistsContextMenu } from 'components/PlaylistsContextMenu/playlistsContextMenu';
+import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 
 import SearchViewTemplate from './searchView.hbs';
 import './searchView.scss';
@@ -53,19 +53,17 @@ export class SearchView extends View<ISearchViewProps> {
         this.noResults = false;
     }
 
-    didMount() {
-        const userPlaylists = PlaylistModel.getUserPlaylists().then(
-            (playlists) => {
-                this.userPlaylists = playlists;
-            }
-        );
-        Promise.all([userPlaylists]).then(() => {
-            playlistsContextMenu.updatePlaylists(this.userPlaylists);
-            this.isLoaded = true;
-        });
-    }
-
     addListeners() {
+        document.querySelectorAll(
+            '.js-playlist-track-add'
+        ).forEach((button) => {
+            button.addEventListener('click', playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu));
+        });
+        document.querySelector('.js-playlist-create').addEventListener(
+            'click',
+            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
+        );
+
         document
             .querySelector('.topbar__search-input')
             .addEventListener('input', (e) => {
@@ -125,24 +123,29 @@ export class SearchView extends View<ISearchViewProps> {
     }
 
     render() {
-        this.didMount()
-
-        const app = document.getElementById('app');
-        if (app.innerHTML == '') {
-            document.getElementById('app').innerHTML = IndexTemplate({
-                topbar: TopbarComponent.set({
-                    authenticated: store.get('authenticated'),
-                    avatar: store.get('userAvatar'),
-                    offline: !navigator.onLine,
-                }).render(),
-                sidebar: sidebar.render(),
-                player: player.render(),
-                contextMenu: playlistsContextMenu.render(),
-            });
-            TopbarComponent.addHandlers();
-        }
-        document.querySelector('.main-layout__content').innerHTML = '';
-        this.addListeners();
+        PlaylistModel.getUserPlaylists().then(
+            (playlists) => {
+                this.userPlaylists = playlists;
+            }
+        ).then(() => {
+            playlistsContextMenu.updatePlaylists(this.userPlaylists);
+            const app = document.getElementById('app');
+            if (app.innerHTML == '') {
+                document.getElementById('app').innerHTML = IndexTemplate({
+                    topbar: TopbarComponent.set({
+                        authenticated: store.get('authenticated'),
+                        avatar: store.get('userAvatar'),
+                        offline: !navigator.onLine,
+                    }).render(),
+                    sidebar: sidebar.render(),
+                    player: player.render(),
+                    contextMenu: playlistsContextMenu.render(),
+                });
+                TopbarComponent.addHandlers();
+            }
+            document.querySelector('.main-layout__content').innerHTML = '';
+            this.addListeners();
+        });
     }
 
     update() {
@@ -181,8 +184,6 @@ export class SearchView extends View<ISearchViewProps> {
                 this.data.artists.length +
                 this.data.tracks.length ===
             0;
-        const contextMenu = document.querySelector('.js-menu-container');
-        contextMenu.innerHTML = playlistsContextMenu.render();
 
         const content = document.querySelector('.main-layout__content');
         content.innerHTML = SearchViewTemplate({
@@ -200,6 +201,10 @@ export class SearchView extends View<ISearchViewProps> {
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
+    }
+
+    didMount() {
+        console.log('not implemented');
     }
 }
 
