@@ -263,7 +263,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     deleteButtonReset(event) {
-        if (!this.playlist.getProps().is_own) {
+        if (!this.playlist || !this.playlist.getProps().is_own) {
             return;
         }
 
