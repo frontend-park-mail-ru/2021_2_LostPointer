@@ -28,7 +28,10 @@ export class TrackModel extends Model<ITrackModel> {
         return new Promise((res) => {
             Request.get('/home/tracks')
                 .then((response) => {
-                    sessionStorage.setItem('/home/tracks', JSON.stringify(response));
+                    sessionStorage.setItem(
+                        '/home/tracks',
+                        JSON.stringify(response)
+                    );
                     const tracks: Array<TrackModel> = response.reduce(
                         (acc, elem, index) => {
                             elem.pos = index;
@@ -44,7 +47,9 @@ export class TrackModel extends Model<ITrackModel> {
                     res(tracks);
                 })
                 .catch(() => {
-                    const response = JSON.parse(sessionStorage.getItem('/home/tracks'));
+                    const response = JSON.parse(
+                        sessionStorage.getItem('/home/tracks')
+                    );
                     if (response) {
                         const tracks: Array<TrackModel> = response.reduce(
                             (acc, elem, index) => {
@@ -79,6 +84,7 @@ export class TrackModel extends Model<ITrackModel> {
                             tracks_duration: 0,
                             album: false,
                             tracks: null,
+                            artwork_color: '#000000',
                         });
 
                         const emptyTrack = new TrackModel({
@@ -95,9 +101,9 @@ export class TrackModel extends Model<ITrackModel> {
                             lossless: false,
                             cover: '',
                             pos: 0,
-                        })
+                        });
 
-                        res(Array.from({length: 3}, () => emptyTrack));
+                        res(Array.from({ length: 3 }, () => emptyTrack));
                     }
                 });
         });

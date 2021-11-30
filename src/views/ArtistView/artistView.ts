@@ -164,6 +164,7 @@ export class ArtistView extends View<IArtistViewProps> {
                     title: e.target.dataset.title,
                     artist: e.target.dataset.artist,
                     album: e.target.dataset.album,
+                    artwork_color: e.target.dataset.artworkcolor,
                 });
             }
         };

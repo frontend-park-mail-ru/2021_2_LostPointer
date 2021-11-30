@@ -14,6 +14,8 @@
   --mobile-player-seekbar-height: 4px;
   --mobile-player-seekbar-radius: 2px;
   --mobile-player-artwork-max-width: 435px;
+  --artwork-accent-color: var(--accent-color);
+  --seekbar-current: 0;
 }
 
 .mobile {
@@ -43,7 +45,8 @@
 
         &__progress {
           height: 2px;
-          width: 95%;
+          transition: var(--seekbar-transition);
+          width: var(--seekbar-current);
           background-color: var(--accent-color);
         }
 
@@ -101,9 +104,10 @@
     top: 0;
     left: 0;
     z-index: 6;
-    background: linear-gradient(#7c2c1b, #000000);
+    background: linear-gradient(var(--artwork-accent-color), #000000);
 
     &__container {
+      height: 93%;
       margin: 25px;
       display: flex;
       align-items: center;
@@ -130,6 +134,7 @@
       width: 60vw;
 
       &__play {
+        filter: invert(1);
         width: 75px;
         height: 75px;
       }
@@ -144,10 +149,16 @@
       margin-bottom: 15px;
 
       &__artist {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         font-size: var(--artist-font-size);
       }
 
       &__title {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         font-weight: var(--mobile-track-font-weight);
         font-size: var(--mobile-track-font-size);
       }
@@ -159,16 +170,19 @@
       width: -webkit-fill-available;
 
       &__bar {
+        transition: var(--seekbar-transition);
         height: var(--mobile-player-seekbar-height);
         background-color: var(--player-seekbar-background);
         border-radius: var(--mobile-player-seekbar-radius);
 
         &__elapsed {
+          width: var(--seekbar-current);
+          transition: var(--seekbar-transition);
           position: absolute;
           border-radius: var(--mobile-player-seekbar-radius);
           height: var(--mobile-player-seekbar-height);
-          width: 50%;
-          background-color: var(--accent-color);
+          background-color: var(--artwork-accent-color);
+          filter: saturate(10);
         }
       }
 

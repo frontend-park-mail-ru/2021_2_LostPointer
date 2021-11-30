@@ -19,6 +19,7 @@ interface IPlayerComponentProps {
     cover: string;
     playButton: HTMLImageElement;
     hide_artwork: boolean;
+    artwork_color: string;
 }
 
 export class PlayerComponent extends Component<IPlayerComponentProps> {
@@ -31,7 +32,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private gotSeekPos: boolean;
     private gotVolPos: boolean;
     private seekbarPos: DOMRect;
-    private seekbarCurrent: HTMLElement;
     private volumePos: DOMRect;
     private currentVolume: HTMLElement;
     private buttonsHandler: EventListenerOrEventListenerObject;
@@ -50,6 +50,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private mute: HTMLImageElement;
     private shuffle: boolean;
     private counted: boolean;
+    private seekbarMobileCurrent: HTMLElement;
 
     constructor(props?: IPlayerComponentProps) {
         super(props);
@@ -63,7 +64,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 ) as HTMLImageElement,
             } as IPlayerComponentProps;
         }
-        this.addHandlers();
+
         this.firstTime = true;
         this.audio.loop = false;
         this.gotSeekPos = false;
@@ -79,7 +80,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.gotSeekPos = true;
         }
         const seek = (xPos - this.seekbarPos.left) / this.seekbarPos.width;
-        this.seekbarCurrent.style.width = `${seek * 100}%`;
+        document.documentElement.style.setProperty(
+            '--seekbar-current',
+            `${seek * 100}%`
+        );
         this.audio.currentTime = this.audio.duration * seek;
     }
 
@@ -132,6 +136,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             track: track.title,
             artist: track.artist,
             url: track.url,
+            artwork_color: track.artwork_color,
         } as IPlayerComponentProps;
 
         document.title = `${track.title} · ${track.artist}`;
@@ -150,21 +155,31 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }, []),
         });
 
-        const right = document.getElementById('player-skip-right');
-        const left = document.getElementById('player-skip-left');
+        const right = document.querySelectorAll('.player-skip-right');
+        const left = document.querySelectorAll('.player-skip-left');
 
-        right.classList.remove('disabled');
-        left.classList.remove('disabled');
+        right.forEach((arrow) => {
+            arrow.classList.remove('disabled');
+        });
+
+        left.forEach((arrow) => {
+            arrow.classList.remove('disabled');
+        });
 
         this.props.right_disabled = this.pos === this.playlist.length - 1;
         this.props.left_disabled = this.pos === 0;
 
         if (this.props.left_disabled) {
-            left.classList.add('disabled');
+            left.forEach((arrow) => {
+                arrow.classList.add('disabled');
+            });
         }
         if (this.props.right_disabled) {
-            right.classList.add('disabled');
+            right.forEach((arrow) => {
+                arrow.classList.add('disabled');
+            });
         }
+
         this.audio.play().then(() => (this.props.playing = true));
     }
 
@@ -192,6 +207,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.firstTime = false;
             this.saveLastPlayed();
             this.update();
+
             document
                 .querySelector('.player-artwork')
                 .classList.remove('hidden');
@@ -209,22 +225,33 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         document
             .querySelector('.player__seekbar')
             .addEventListener('click', this.seekbarHandler);
+        const mobileSeekbar = document.querySelector(
+            '.mobile-player__progress__bar'
+        );
+        if (mobileSeekbar) {
+            mobileSeekbar.addEventListener('click', this.seekbarHandler);
+        }
         document
             .querySelector('.player-volume')
             .addEventListener('click', this.volumeHandler);
-        document
-            .querySelector('.player-play')
-            .addEventListener('click', this.playButtonHandler);
+        document.querySelectorAll('.player-play').forEach((play) => {
+            play.addEventListener('click', this.playButtonHandler);
+        });
+
         this.audio.addEventListener('timeupdate', this.timeUpdateHandler);
         this.audio.addEventListener('pause', this.pauseHandler);
         this.audio.addEventListener('play', this.playHandler);
         this.audio.addEventListener('ended', this.endedHandler);
         document
-            .querySelector('.player-skip-left')
-            .addEventListener('click', this.arrowKeysHandler);
+            .querySelectorAll('.player-skip-left')
+            .forEach((arrow) =>
+                arrow.addEventListener('click', this.arrowKeysHandler)
+            );
         document
-            .querySelector('.player-skip-right')
-            .addEventListener('click', this.arrowKeysHandler);
+            .querySelectorAll('.player-skip-right')
+            .forEach((arrow) =>
+                arrow.addEventListener('click', this.arrowKeysHandler)
+            );
 
         navigator.mediaSession.setActionHandler(
             'previoustrack',
@@ -263,7 +290,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     setup(playlist) {
-        this.seekbarCurrent = document.querySelector('.seekbar-current');
         this.currentVolume = document.querySelector('.volume-current');
         this.mute = document.querySelector('.mute');
         this.repeatToggle = document.querySelector('.repeat');
@@ -273,9 +299,16 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.audio.volume = vol;
             this.currentVolume.style.width = `${vol * 100}%`;
         }
-        this.seekbarCurrent.style.width = `${
+        const seekbarWidth = `${
             (this.audio.currentTime / this.audio.duration) * 100
         }%`;
+        document.documentElement.style.setProperty(
+            '--seekbar-current',
+            seekbarWidth
+        );
+        if (this.seekbarMobileCurrent) {
+            this.seekbarMobileCurrent.style.width = seekbarWidth;
+        }
         this.audio.muted =
             window.localStorage.getItem('playerMuted') === 'true';
         if (this.audio.muted) {
@@ -349,15 +382,17 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }
         };
         this.playHandler = () => {
-            (document.querySelector('.player-play') as HTMLImageElement).src =
-                '/static/img/pause.svg';
+            document.querySelectorAll('.player-play').forEach((play) => {
+                (<HTMLImageElement>play).src = '/static/img/pause.svg';
+            });
             if (this.nowPlaying) {
                 this.nowPlaying.src = '/static/img/pause-outline.svg';
             }
         };
         this.pauseHandler = () => {
-            (document.querySelector('.player-play') as HTMLImageElement).src =
-                '/static/img/play.svg';
+            document.querySelectorAll('.player-play').forEach((play) => {
+                (<HTMLImageElement>play).src = '/static/img/play.svg';
+            });
             if (this.nowPlaying) {
                 this.nowPlaying.src = '/static/img/play-outline.svg';
             }
@@ -383,14 +418,22 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }
             const seconds = this.audio.currentTime % 60 | 0;
             const zero = seconds < 10 ? '0' : '';
-            this.seekbarCurrent.style.width = `${
-                (this.audio.currentTime / this.audio.duration) * 100
-            }%`;
+            const fraction = this.audio.currentTime / this.audio.duration || 0;
+            document.documentElement.style.setProperty(
+                '--seekbar-current',
+                `${fraction * 100}%`
+            );
             this.props.current_time = `${
                 (this.audio.currentTime / 60) | 0
             }:${zero}${seconds}`;
             document.getElementById('player-time-current').innerHTML =
                 this.props.current_time;
+            const mobileTime = document.querySelector(
+                '.mobile-player__progress__time__elapsed'
+            );
+            if (mobileTime) {
+                mobileTime.innerHTML = this.props.current_time;
+            }
             this.props.playerCurrentTime = this.audio.currentTime;
             this.saveLastPlayed();
         };
@@ -433,15 +476,17 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         let allowed = false;
         if (next) {
             if (this.pos < this.playlist.length - 1) {
-                this.nowPlaying = this.playlist[
-                    this.playlistIndices[++this.pos]
+                this.nowPlaying =
+                    this.playlist[
+                        this.playlistIndices[++this.pos]
                     ].querySelector('.track-play'); //TODO=Сделать плейлист компонентом + потом отрисовывать
                 allowed = true;
             }
         } else if (this.pos >= 1) {
-            this.nowPlaying = this.playlist[
-                this.playlistIndices[--this.pos]
-                ].querySelector('.track-play');
+            this.nowPlaying =
+                this.playlist[this.playlistIndices[--this.pos]].querySelector(
+                    '.track-play'
+                );
             allowed = true;
         }
         if (allowed) {
@@ -453,6 +498,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 title: this.nowPlaying.dataset.title,
                 artist: this.nowPlaying.dataset.artist,
                 album: this.nowPlaying.dataset.album,
+                artwork_color: this.nowPlaying.dataset.artworkcolor,
             });
         }
     }
@@ -466,12 +512,33 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         if (track) {
             track.innerHTML = this.props.track || '';
         }
+        const mobileTrack = document.querySelectorAll('.mobile-track-title');
+        if (mobileTrack) {
+            mobileTrack.forEach((title) => {
+                title.innerHTML = this.props.track || '';
+            });
+        }
+        const mobileArtist = document.querySelectorAll('.mobile-track-artist');
+        if (mobileArtist) {
+            mobileArtist.forEach((artist) => {
+                artist.innerHTML = this.props.artist || '';
+            });
+        }
         const totalTime = document.getElementById('player-time-total');
         if (totalTime) {
             totalTime.innerHTML = this.props.total_time || '';
         }
+        const totalTimeMobile = document.querySelector(
+            '.mobile-player__progress__time__remaining'
+        );
+        if (totalTimeMobile) {
+            totalTimeMobile.innerHTML = this.props.total_time || '';
+        }
         const artwork = <HTMLImageElement>(
             document.getElementById('player-artwork')
+        );
+        const mobileArtwork = <HTMLImageElement>(
+            document.getElementById('mobile-player-artwork')
         );
         if (this.props.hide_artwork) {
             if (artwork) {
@@ -480,6 +547,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }
         }
         artwork.src = `${this.props.cover}_128px.webp`;
+        if (mobileArtwork) {
+            mobileArtwork.src = `${this.props.cover}_512px.webp`;
+        }
+        document.documentElement.style.setProperty(
+            '--artwork-accent-color',
+            this.props.artwork_color
+        );
     }
 
     stop() {
@@ -502,6 +576,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.audio.pause();
         this.audio.src = '';
         this.props = {
+            artwork_color: '#000',
             total_time: '',
             current_time: '',
             playing: false,

@@ -97,10 +97,6 @@ body {
 .listen-now__top-albums {
   display: flex;
   justify-content: space-between;
-
-  @media only screen and (max-width: 768px) {
-    overflow-y: scroll;
-  }
 }
 
 .listen-now__suggested-content {

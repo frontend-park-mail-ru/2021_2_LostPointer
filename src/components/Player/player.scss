@@ -1,5 +1,6 @@
 :root {
   --player-seekbar-background: gray;
+  --seekbar-transition: 0.5s;
 }
 
 .volume-current {
@@ -15,6 +16,10 @@
   width: 0;
   display: block;
   background-color: white;
+}
+
+.seekbar-current {
+  width: var(--seekbar-current);
 }
 
 .player {
@@ -64,7 +69,7 @@
 
     &__current,
     .volume-current {
-      transition: 0.5s;
+      transition: var(--seekbar-transition);
       width: 0;
       display: block;
       background-color: white;
