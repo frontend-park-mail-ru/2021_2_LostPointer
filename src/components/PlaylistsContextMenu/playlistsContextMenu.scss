@@ -8,6 +8,10 @@
   opacity: 0%;
   transition: visibility 0s, opacity 0.2s linear;
 
+  @media only screen and (max-width: 768px) {
+    left: 10% !important;
+  }
+
   &-options {
     list-style: none;
     padding: 0;

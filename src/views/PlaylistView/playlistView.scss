@@ -12,6 +12,11 @@
   margin-left: 25px;
   width: 100%;
 
+  @media only screen and (max-width: 768px) {
+    width: auto;
+    margin: 10px 10px 0;
+  }
+
   &__background-container {
     position: absolute;
     top: -200px;
@@ -25,6 +30,11 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+
+    @media only screen and (max-width: 768px) {
+      flex-direction: column;
+      text-align: center;
+    }
   }
 
   &__suggested-tracks-container {
@@ -41,21 +51,38 @@
     display: flex;
     align-items: center;
 
+    @media only screen and (max-width: 768px) {
+      flex-direction: column;
+      text-align: center;
+    }
+
     &-text_block {
       margin: 80px 20px;
       width: 55%;
+
+      @media only screen and (max-width: 768px) {
+        margin: 5px 0 20px;
+      }
     }
 
     &-title {
       font-size: 80px;
       font-family: Montserrat, sans-serif;
       font-weight: 700;
+
+      @media only screen and (max-width: 768px) {
+        font-size: 30px;
+      }
     }
 
     &-text {
       font-family: Montserrat, sans-serif;
       font-weight: 700;
       margin: 5px;
+
+      @media only screen and (max-width: 768px) {
+        font-size: 15px;
+      }
     }
 
     &-avatar {
@@ -75,6 +102,10 @@
       border-radius: 20px;
       object-fit: cover;
       position: absolute;
+
+      @media only screen and (max-width: 768px) {
+        position: relative;
+      }
     }
 
     &-edit {
@@ -85,6 +116,10 @@
       text-align: center;
       opacity: 0%;
       border-radius: 20px;
+
+      @media only screen and (max-width: 768px) {
+        display: none;
+      }
 
       &-img {
         height: 50px;
@@ -111,6 +146,13 @@
       &:hover {
         text-decoration: underline;
       }
+
+      @media only screen and (max-width: 768px) {
+        font-size: 12px;
+        text-align: center;
+        width: 100%;
+        margin: 5px 0;
+      }
     }
   }
 }
@@ -133,8 +175,17 @@
     border-radius: 20px;
     width: 510px;
 
+    @media only screen and (max-width: 768px) {
+      width: 85%;
+      padding: 10px 0;
+    }
+
     &-flex {
       display: flex;
+
+      @media only screen and (max-width: 768px) {
+        display: block;
+      }
     }
   }
 
@@ -156,6 +207,11 @@
       background: linear-gradient(180deg, rgba(30, 30, 30, 50%) 0%, rgba(30, 30, 30, 80%) 100%);
       border-radius: 20px;
       display: inline-block;
+
+      @media only screen and (max-width: 768px) {
+        display: block;
+        margin: 10px auto;
+      }
     }
 
     &-img {
@@ -208,6 +264,11 @@
 
   &__form {
     color: white;
+
+    @media only screen and (max-width: 768px) {
+      width: 285px;
+      margin: 0 auto;
+    }
 
     &-label {
       color: #ffffff;
@@ -308,11 +369,10 @@
 
 .playlist__content .track-list {
   width: 600px;
-}
 
-.playlist__content .track-list-item__name,
-.playlist__content .track-list-item__artist {
-  width: 360px;
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .slider {

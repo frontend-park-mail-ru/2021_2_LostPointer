@@ -13,6 +13,7 @@ import playlistsContextMenu, { PlaylistsContextMenu } from 'components/Playlists
 
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
+import mobile from 'components/Mobile/mobile';
 
 // TODO генерация ссылки для шеринга
 // TODO аватары пользователей-создателей плейлиста
@@ -618,6 +619,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             contextMenu: this.contextMenu.render(),
             inputs: this.inputs,
             link: window.location.href,
+            mobile: mobile.render(),
         });
         TopbarComponent.addHandlers();
         TopbarComponent.didMount();
