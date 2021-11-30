@@ -1,9 +1,9 @@
 <div class="player">
     <img alt id="player-artwork" class="player-artwork{{#if hide_artwork}} hidden{{/if}}"
-         {{# if recovered}}src="{{ cover }}_128px.webp{{/if}}" />
+         src="{{ cover }}_128px.webp" />
     <div class="player-track">
         <div id="track-name" class="track-name">{{ track }}</div>
-        <div id="artist-name" class="artist-name">{{ artist }}</div>
+        <div id="artist-name" class="artist-name">{{ artist.props.name }}</div>
     </div>
     <div class="player-controls">
         <img alt src="/static/img/skip.svg"

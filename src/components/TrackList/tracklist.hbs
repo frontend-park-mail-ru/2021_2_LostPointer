@@ -1,8 +1,10 @@
 <div class='track-list'>
     <div class='suggested-tracks__header'>{{{title}}}</div>
-    <div class='suggested-tracks-container'>
-        {{#each tracks}}
-            {{{this}}}
-        {{/each}}
-    </div>
+    {{#if tracks}}
+        <div class='suggested-tracks-container'>
+            {{#each tracks}}
+                {{{this}}}
+            {{/each}}
+        </div>
+    {{/if}}
 </div>

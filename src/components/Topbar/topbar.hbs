@@ -3,8 +3,13 @@
         <i class='topbar__search-icon fa-solid fa-magnifying-glass'></i>
         <input
             class='topbar__search-input'
-            type='text'
+            type='search'
             placeholder='Search...'
+            maxlength='80'
+            autocorrect='off'
+            spellcheck='false'
+            autocapitalize='off'
+            autocomplete='off'
         />
     </div>
     {{#if offline}}
@@ -31,11 +36,11 @@
         <!--        ></i>-->
         {{#if authenticated}}
             <!--        </a>-->
-            <div id='signin-button'>
+            <a id='signin-button'>
                 <i
                     class='topbar-icon js-logout fa-solid fa-right-from-bracket'
                 ></i>
-            </div>
+            </a>
             <div class='topbar-profile'>
                 <a href='/profile'>
                     <img alt class='topbar-profile__img' src='{{avatar}}' />

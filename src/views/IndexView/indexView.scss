@@ -97,6 +97,13 @@ body {
 .listen-now__top-albums {
   display: flex;
   justify-content: space-between;
+
+  &__compact {
+    display: flex;
+    justify-content: space-between;
+    width: 90vw;
+    margin: 0 0 15px;
+  }
 }
 
 .listen-now__suggested-content {

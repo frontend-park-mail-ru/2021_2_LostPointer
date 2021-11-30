@@ -1,9 +1,11 @@
 const routerStore = {
     artist: '/artist',
     album: '/album',
+    playlist: '/playlist',
+    profile: '/profile',
     signin: '/signin',
     signup: '/signup',
-    profile: '/profile',
+    search: '/search',
     dashboard: '/',
 };
 

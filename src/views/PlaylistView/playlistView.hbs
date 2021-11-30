@@ -1,0 +1,100 @@
+<div class='app__content'>
+    {{{sidebar}}}
+    <div class='main-layout'>
+        {{{topbar}}}
+        <div class='main-layout__content'>
+            <div class='playlist__background-container'>
+            </div>
+            <div class='playlist'>
+                <div class='playlist__description'>
+                    <div class='playlist__description-avatar'>
+                        <img class='playlist__description-img' src='{{{avatar}}}' />
+                        {{#if is_own}}
+                            <div class='playlist__description-edit'>
+                                <img class='playlist__description-edit-img' src='/static/img/edit.svg' />
+                                <div class='playlist__description-edit-msg'>
+                                    Edit
+                                </div>
+                            </div>
+                        {{/if}}
+                    </div>
+                    <div class='playlist__description-text_block'>
+                        <div class='playlist__description-text'>
+                            {{#if is_own}}
+                                Your playlist:
+                            {{ else }}
+                                Public playlist:
+                            {{/if}}
+                        </div>
+                        <div class='playlist__description-title'>
+                            {{{title}}}
+                        </div>
+                        {{#if is_own}}
+                            <div class='playlist__description-text playlist__description-edit-btn'>
+                                Edit playlist
+                            </div>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class='playlist__content'>
+                    {{{trackList}}}
+                </div>
+            </div>
+            {{#if is_own}}
+                <div class='editwindow'>
+                    <div class='editwindow__content'>
+                        <div class='editwindow__content-flex'>
+                            <form class='editwindow__avatar' action='#' novalidate>
+                                <div class='editwindow__avatar-block'>
+                                    <img class='editwindow__avatar-img' src='{{{avatar}}}' />
+                                    <div class='editwindow__avatar-delete'>
+                                        <img src='/static/img/delete.svg'/>
+                                    </div>
+                                </div>
+                                <input
+                                    type='file'
+                                    name='file'
+                                    id='file'
+                                    accept='image/png, image/jpg, image/webp'
+                                    class='editwindow__avatar-input'
+                                />
+                                <label for='file' class='editwindow__avatar-input-btn'>Upload file</label>
+                            </form>
+                            <form class='editwindow__form' action='#' novalidate>
+                                <div class='editwindow__form-title'>
+                                    Edit Details
+                                </div>
+                                <img class='editwindow__delete' src='/static/img/trash.svg'/>
+                                <div class='editwindow__public'>
+                                    <label class='editwindow__form-label'>Make playlist public</label>
+                                    <label class='editwindow__form-switch'>
+                                        <input type='checkbox' {{#if is_public}}checked{{/if}}>
+                                        <span class='slider'></span>
+                                    </label>
+                                </div>
+                                <div class='editwindow__link' style='visibility: {{# if is_public }}visible{{else}}hidden{{/if}}'>
+                                    {{{link}}}
+                                </div>
+                                {{#each inputs}}
+                                    {{{this}}}
+                                {{/each}}
+                                <div class='editwindow__form-buttons'>
+                                    <input
+                                        class='editwindow__form-submit'
+                                        type='image'
+                                        src='/static/img/save.svg'
+                                    />
+                                </div>
+                                <div class='editwindow__form-msg form__fail_msg'></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+        <div class='js-menu-container'>
+            {{{contextMenu}}}
+        </div>
+    </div>
+</div>
+{{{player}}}

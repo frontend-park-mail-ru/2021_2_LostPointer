@@ -1,4 +1,4 @@
-import { PATH_ARG, PATH_SLASH } from 'store/regex';
+import { PATH_SLASH } from 'store/regex';
 import { View } from 'src/views/View/view';
 
 interface IRoute {
@@ -24,9 +24,7 @@ class Router {
     }
 
     _pathToRegex(path: string): RegExp {
-        return new RegExp(
-            `^${path.replace(PATH_SLASH, '\\/').replace(PATH_ARG, '(.+)')}`
-        );
+        return new RegExp(`^${path.replace(PATH_SLASH, '\\/')}`);
     }
 
     _getView(): View<never> {

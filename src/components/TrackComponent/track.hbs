@@ -13,6 +13,7 @@
         </a>
     </div>
     <div class='track__ellipsis'>
+        <img alt class='track-list-item-playlist' data-id='{{id}}' src='/static/img/playlist.svg' />
         <img alt class='track-fav' src='/static/img/favorite.svg' />
         <img
             alt
@@ -20,8 +21,9 @@
             data-id='{{id}}'
             data-title='{{title}}'
             data-artist='{{artist.props.name}}'
+            data-artist-id='{{artist.props.id}}'
             data-cover='{{album.props.artwork}}'
-            data-url='{{file}}'
+            data-file='{{file}}'
             data-pos='{{pos}}'
             data-album='{{album.props.title}}'
             data-artworkcolor='{{album.props.artwork_color}}'

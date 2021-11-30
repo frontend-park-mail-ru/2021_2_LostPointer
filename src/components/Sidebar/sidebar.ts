@@ -8,3 +8,5 @@ export class Sidebar extends Component<null> {
         return SidebarTemplate();
     }
 }
+
+export default new Sidebar();

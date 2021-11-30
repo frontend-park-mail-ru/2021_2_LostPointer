@@ -1,14 +1,15 @@
 import { View } from 'views/View/view';
-import Request from 'services/request/request';
 import player from 'components/Player/player';
-import { Sidebar } from 'components/Sidebar/sidebar';
-import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
+import sidebar from 'components/Sidebar/sidebar';
+import TopbarComponent from 'components/Topbar/topbar';
 import { SuggestedAlbums } from 'components/SugestedAlbums/suggestedAlbums';
 import { TrackList } from 'components/TrackList/tracklist';
 import { ArtistModel } from 'models/artist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import disableBrokenImg from 'views/utils';
+import { disableBrokenImg } from 'views/utils';
+import playlistsContextMenu, { PlaylistsContextMenu } from 'components/PlaylistsContextMenu/playlistsContextMenu';
+import { PlaylistModel } from 'models/playlist';
 
 import ArtistTemplate from './artistView.hbs';
 import './artistView.scss';
@@ -20,15 +21,12 @@ interface IArtistViewProps {
 }
 
 export class ArtistView extends View<IArtistViewProps> {
-    private authenticated: boolean;
-    private playButtonHandler: (e) => void;
-
-    private sidebar: Sidebar;
-    private topbar: Topbar;
     private userAvatar: string;
     private artist: ArtistModel;
     private trackList: TrackList;
     private albumList: SuggestedAlbums;
+    private contextMenu: PlaylistsContextMenu;
+    private userPlaylists: Array<PlaylistModel>;
 
     constructor(props?: IArtistViewProps) {
         super(props);
@@ -43,9 +41,6 @@ export class ArtistView extends View<IArtistViewProps> {
         }
         const artistId = match[1];
 
-        this.authenticated = store.get('authenticated');
-        this.userAvatar = store.get('userAvatar');
-
         const artist = ArtistModel.getArtist(artistId).then((artist) => {
             if (!artist) {
                 router.go(routerStore.dashboard);
@@ -53,9 +48,13 @@ export class ArtistView extends View<IArtistViewProps> {
             this.artist = artist;
         });
 
-        Promise.all([artist]).then(() => {
-            this.topbar = TopbarComponent;
-            this.sidebar = new Sidebar().render();
+        const userPlaylists = PlaylistModel.getUserPlaylists().then(
+            (playlists) => {
+                this.userPlaylists = playlists;
+            }
+        );
+
+        Promise.all([artist, userPlaylists]).then(() => {
             this.albumList = new SuggestedAlbums({
                 albums: this.artist.getProps().albums,
             }).render();
@@ -71,18 +70,14 @@ export class ArtistView extends View<IArtistViewProps> {
                 title: 'Tracks',
                 tracks: tracks,
             }).render();
+            this.contextMenu = playlistsContextMenu;
+            this.contextMenu.updatePlaylists(this.userPlaylists);
             this.isLoaded = true;
             this.render();
         });
     }
 
     addListeners() {
-        if (this.authenticated) {
-            document
-                .querySelector('.js-logout')
-                .addEventListener('click', this.userLogout);
-        }
-
         const video = document.querySelector('.artist__background-video');
         if (video) {
             video.addEventListener('ended', () => {
@@ -90,6 +85,24 @@ export class ArtistView extends View<IArtistViewProps> {
             });
         }
 
+        const createPlaylistBtn = document.querySelector('.js-playlist-create');
+        createPlaylistBtn.addEventListener(
+            'click',
+            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
+        );
+        const addTrackToPlaylistBtns = document.querySelectorAll(
+            '.js-playlist-track-add'
+        );
+        addTrackToPlaylistBtns.forEach((button) => {
+            button.addEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
+        });
+
+        document
+            .querySelectorAll('.track-list-item-playlist')
+            .forEach((element) => {
+                element.addEventListener('click', this.contextMenu.showContextMenu.bind(this.contextMenu));
+            });
+        window.addEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
@@ -99,18 +112,29 @@ export class ArtistView extends View<IArtistViewProps> {
         document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
-        this.isLoaded = false;
-    }
+        document
+            .querySelectorAll('.track-list-item-playlist')
+            .forEach((element) => {
+                element.removeEventListener(
+                    'click',
+                    this.contextMenu.showContextMenu.bind(this.contextMenu)
+                );
+            });
+        window.removeEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
 
-    userLogout() {
-        Request.post('/user/logout').then(() => {
-            player.stop();
-            this.authenticated = false;
-            store.set('authenticated', false);
-            player.clear();
-            window.localStorage.removeItem('lastPlayedData');
-            TopbarComponent.logout();
+        const createPlaylistBtn = document.querySelector('.js-playlist-create');
+        createPlaylistBtn.removeEventListener(
+            'click',
+            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
+        );
+        const addTrackToPlaylistBtns = document.querySelectorAll(
+            '.js-playlist-track-add'
+        );
+        addTrackToPlaylistBtns.forEach((button) => {
+            button.removeEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
         });
+
+        this.isLoaded = false;
     }
 
     render() {
@@ -123,57 +147,22 @@ export class ArtistView extends View<IArtistViewProps> {
             name: this.artist.getProps().name,
             video: this.artist.getProps().video,
             artistAvatar: this.artist.getProps().avatar,
-            topbar: this.topbar
-                .set({
-                    authenticated: this.authenticated,
-                    avatar: this.userAvatar,
-                    offline: navigator.onLine !== true,
-                })
-                .render(),
-            sidebar: this.sidebar,
+            topbar: TopbarComponent.set({
+                authenticated: store.get('authenticated'),
+                avatar: store.get('userAvatar'),
+                offline: navigator.onLine !== true,
+            }).render(),
+            sidebar: sidebar.render(),
             albumList: this.albumList,
             trackList: this.trackList,
             player: player.render(),
-            mobile: mobile.render(),
+            contextMenu: this.contextMenu.render(),
         });
+        TopbarComponent.addHandlers();
         this.addListeners();
+        TopbarComponent.didMount();
 
-        this.playButtonHandler = (e) => {
-            if (e.target.className === 'track-play') {
-                if (!this.authenticated) {
-                    router.go(routerStore.signin);
-                    return;
-                }
-                if (e.target === player.nowPlaying) {
-                    // Ставим на паузу/продолжаем воспр.
-                    player.toggle();
-                    return;
-                }
-                if (player.nowPlaying) {
-                    // Переключили на другой трек
-                    player.nowPlaying.dataset.playing = 'false';
-                    player.nowPlaying.src = '/static/img/play-outline.svg';
-                }
-
-                player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
-
-                e.target.dataset.playing = 'true';
-                player.setTrack({
-                    url: `/static/tracks/${e.target.dataset.url}`,
-                    cover: `/static/artworks/${e.target.dataset.cover}`,
-                    title: e.target.dataset.title,
-                    artist: e.target.dataset.artist,
-                    album: e.target.dataset.album,
-                    artwork_color: e.target.dataset.artworkcolor,
-                });
-            }
-        };
-        player.setup(document.querySelectorAll('.track'));
-        document
-            .querySelectorAll('.track-play')
-            .forEach((e) =>
-                e.addEventListener('click', this.playButtonHandler)
-            );
+        player.setup(document.querySelectorAll('.track-list-item'));
     }
 }
 

@@ -1,15 +1,15 @@
 import { View } from 'views/View/view';
-import { Sidebar } from 'components/Sidebar/sidebar';
+import sidebar from 'components/Sidebar/sidebar';
 import { AlbumModel } from 'models/album';
 import { TrackList } from 'components/TrackList/tracklist';
-import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
-import Request from 'services/request/request';
+import TopbarComponent from 'components/Topbar/topbar';
 import player from 'components/Player/player';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import disableBrokenImg from 'views/utils';
+import { disableBrokenImg } from 'views/utils';
+import { PlaylistModel } from 'models/playlist';
+import playlistsContextMenu, { PlaylistsContextMenu } from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import mobile from 'components/Mobile/mobile';
-
 import store from 'services/store/store';
 
 import AlbumTemplate from './albumView.hbs';
@@ -20,14 +20,11 @@ interface IAlbumViewProps {
 }
 
 export class AlbumView extends View<IAlbumViewProps> {
-    private authenticated: boolean;
-    private playButtonHandler: (e) => void;
-
-    private sidebar: Sidebar;
-    private topbar: Topbar;
     private userAvatar: string;
     private album: AlbumModel;
     private trackList: TrackList;
+    private userPlaylists: Array<PlaylistModel>;
+    private contextMenu: PlaylistsContextMenu;
 
     constructor(props?: IAlbumViewProps) {
         super(props);
@@ -42,9 +39,6 @@ export class AlbumView extends View<IAlbumViewProps> {
         }
         const albumId = match[1];
 
-        this.authenticated = store.get('authenticated');
-        this.userAvatar = store.get('userAvatar');
-
         const album = AlbumModel.getAlbum(albumId).then((album) => {
             if (!album) {
                 router.go(routerStore.dashboard);
@@ -52,47 +46,79 @@ export class AlbumView extends View<IAlbumViewProps> {
             this.album = album;
         });
 
-        Promise.all([album]).then(() => {
-            this.topbar = TopbarComponent;
-            this.sidebar = new Sidebar().render();
+        const userPlaylists = PlaylistModel.getUserPlaylists().then(
+            (playlists) => {
+                this.userPlaylists = playlists;
+            }
+        );
+
+        Promise.all([album, userPlaylists]).then(() => {
             const props = this.album.getProps();
             this.trackList = new TrackList({
                 title: 'Tracks',
                 tracks: props.tracks,
             }).render();
+            this.contextMenu = playlistsContextMenu;
+            this.contextMenu.updatePlaylists(this.userPlaylists);
             this.isLoaded = true;
             this.render();
         });
     }
 
     addListeners() {
-        if (this.authenticated) {
-            document
-                .querySelector('.js-logout')
-                .addEventListener('click', this.userLogout);
-        }
+        window.addEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
+        document
+            .querySelectorAll('.track-list-item-playlist')
+            .forEach((element) => {
+                element.addEventListener('click', this.contextMenu.showContextMenu.bind(this.contextMenu));
+            });
 
-        document.querySelectorAll('img').forEach(function(img) {
+        const createPlaylistBtn = document.querySelector('.js-playlist-create');
+        createPlaylistBtn.addEventListener(
+            'click',
+            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
+        );
+
+        const addTrackToPlaylistBtns = document.querySelectorAll(
+            '.js-playlist-track-add'
+        );
+        addTrackToPlaylistBtns.forEach((button) => {
+            button.addEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
+        });
+
+        document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function(img) {
+        document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
-        this.isLoaded = false;
-    }
 
-    userLogout() {
-        Request.post('/user/logout').then(() => {
-            player.stop();
-            this.authenticated = false;
-            store.set('authenticated', false);
-            player.clear();
-            window.localStorage.removeItem('lastPlayedData');
-            TopbarComponent.logout();
+        document
+            .querySelectorAll('.track-list-item-playlist')
+            .forEach((element) => {
+                element.removeEventListener(
+                    'click',
+                    this.contextMenu.showContextMenu.bind(this.contextMenu)
+                );
+            });
+        const createPlaylistBtn = document.querySelector('.js-playlist-create');
+        createPlaylistBtn.removeEventListener(
+            'click',
+            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
+        );
+        const addTrackToPlaylistBtns = document.querySelectorAll(
+            '.js-playlist-track-add'
+        );
+        addTrackToPlaylistBtns.forEach((button) => {
+            button.removeEventListener('click', this.contextMenu.addTrackToPlaylist.bind(this.contextMenu));
         });
+
+        window.removeEventListener('click', this.contextMenu.hideContextMenu.bind(this.contextMenu));
+
+        this.isLoaded = false;
     }
 
     render() {
@@ -102,61 +128,35 @@ export class AlbumView extends View<IAlbumViewProps> {
         }
 
         document.getElementById('app').innerHTML = AlbumTemplate({
-            sidebar: this.sidebar,
-            topbar: this.topbar
-                .set({
-                    authenticated: this.authenticated,
-                    avatar: this.userAvatar,
-                    offline: !navigator.onLine,
-                })
-                .render(),
-            artWork: '/static/artworks/' + this.album.getProps().artwork + '_512px.webp',
+            sidebar: sidebar.render(),
+            topbar: TopbarComponent.set({
+                authenticated: store.get('authenticated'),
+                avatar: store.get('userAvatar'),
+                offline: !navigator.onLine,
+            }).render(),
+            artWork:
+                '/static/artworks/' +
+                this.album.getProps().artwork +
+                '_512px.webp',
             title: this.album.getProps().title,
             trackList: this.trackList,
+            contextMenu: this.contextMenu.render(),
             tracksCount: this.album.getProps().tracks_count,
-            tracksDurationMin: Math.floor((this.album.getProps().tracks_duration / 60)),
-            tracksDurationSec: Math.floor((this.album.getProps().tracks_duration % 60)),
+            tracksDurationMin: Math.floor(
+                this.album.getProps().tracks_duration / 60
+            ),
+            tracksDurationSec: Math.floor(
+                this.album.getProps().tracks_duration % 60
+            ),
             album: this.album.getProps(),
             player: player.render(),
             mobile: mobile.render(),
         });
+        TopbarComponent.addHandlers();
+        TopbarComponent.didMount();
         this.addListeners();
 
-        this.playButtonHandler = (e) => {
-            if (e.target.className === 'track-list-item-play') {
-                if (!this.authenticated) {
-                    router.go(routerStore.signin);
-                    return;
-                }
-                if (e.target === player.nowPlaying) {
-                    // Ставим на паузу/продолжаем воспр.
-                    player.toggle();
-                    return;
-                }
-                if (player.nowPlaying) {
-                    // Переключили на другой трек
-                    player.nowPlaying.dataset.playing = 'false';
-                    player.nowPlaying.src = '/static/img/play-outline.svg';
-                }
-
-                player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
-
-                e.target.dataset.playing = 'true';
-                player.setTrack({
-                    url: `/static/tracks/${e.target.dataset.url}`,
-                    cover: `/static/artworks/${e.target.dataset.cover}`,
-                    title: e.target.dataset.title,
-                    artist: e.target.dataset.artist,
-                    album: e.target.dataset.album,
-                });
-            }
-        };
         player.setup(document.querySelectorAll('.track-list-item'));
-        document
-            .querySelectorAll('.track-list-item-play')
-            .forEach((e) =>
-                e.addEventListener('click', this.playButtonHandler),
-            );
     }
 }
 

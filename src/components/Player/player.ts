@@ -1,6 +1,6 @@
 import { Component } from 'components/Component/component';
-
 import Request from 'services/request/request';
+import { ArtistModel } from 'models/artist';
 
 import PlayerTemplate from './player.hbs';
 import './player.scss';
@@ -10,11 +10,11 @@ interface IPlayerComponentProps {
     total_time: string;
     current_time: string;
     playing: boolean;
-    artist: string;
+    artist: ArtistModel;
     track: string;
     left_disabled: boolean;
     right_disabled: boolean;
-    url: string;
+    file: string;
     playerCurrentTime: number;
     cover: string;
     playButton: HTMLImageElement;
@@ -51,6 +51,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private shuffle: boolean;
     private counted: boolean;
     private seekbarMobileCurrent: HTMLElement;
+    private globalPlayButtonHandler: EventListenerOrEventListenerObject;
 
     constructor(props?: IPlayerComponentProps) {
         super(props);
@@ -115,11 +116,11 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             const json = JSON.parse(data);
             json.playing = false;
             this.props = json;
-            this.audio.currentTime = this.props.playerCurrentTime;
-            this.audio.src = this.props.url;
+            this.audio.currentTime = this.props.playerCurrentTime || 0;
+            this.audio.src = this.props.file;
             this.props.right_disabled = true;
             this.props.left_disabled = true;
-            document.title = `${this.props.track} · ${this.props.artist}`;
+            document.title = `${this.props.track} · ${this.props.artist.props.name}`;
             this.props.hide_artwork = false;
             this.props.recovered = true;
             this.audio.preload = 'metadata';
@@ -130,7 +131,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     setTrack(track): void {
         this.audio.pause();
         this.counted = false;
-        this.audio.src = track.url;
+        this.audio.src = `/static/tracks/${track.file}`;
         this.props = {
             cover: track.cover,
             track: track.title,
@@ -138,8 +139,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             url: track.url,
             artwork_color: track.artwork_color,
         } as IPlayerComponentProps;
-
-        document.title = `${track.title} · ${track.artist}`;
+        document.title = `${this.props.track} · ${this.props.artist.props.name}`;
 
         navigator.mediaSession.metadata = new MediaMetadata({
             title: track.title,
@@ -452,7 +452,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.arrowKeysHandler = (e) => {
             if (!(<HTMLImageElement>e.target).classList.contains('disabled')) {
                 this.switchTrack(
-                    (e.target as HTMLElement).classList.contains(
+                    (<HTMLElement>e.target).classList.contains(
                         'player-skip-right'
                     )
                 );
@@ -506,7 +506,11 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     update() {
         const artist = document.getElementById('artist-name');
         if (artist) {
-            artist.innerHTML = this.props.artist || '';
+            try {
+                artist.innerHTML = this.props.artist.props.name || '';
+            } catch {
+                artist.innerHTML = '';
+            }
         }
         const track = document.getElementById('track-name');
         if (track) {

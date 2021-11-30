@@ -22,11 +22,12 @@
   }
 
   &__container {
-    margin-left: 0;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    width: 65%;
+    margin: 12px 0;
+    width: fit-content;
+    height: 100%;
+    background-color: #191919;
+    border-radius: 15px;
+    border: 1px #191919 solid;
 
     &__artist {
       white-space: nowrap;

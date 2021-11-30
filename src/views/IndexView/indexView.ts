@@ -1,22 +1,24 @@
-import { Sidebar } from 'components/Sidebar/sidebar';
+import sidebar from 'components/Sidebar/sidebar';
 import { TopAlbums } from 'components/TopAlbums/topalbums';
-import Request from 'services/request/request';
 import TopbarComponent from 'components/Topbar/topbar';
 import { FriendActivity } from 'components/FriendActivity/friendactivity';
 import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
 import { TrackList } from 'components/TrackList/tracklist';
-import { SuggestedPlaylists } from 'components/SuggestedPlaylists/suggestedplaylists';
+import suggestedPlaylists from 'components/SuggestedPlaylists/suggestedplaylists';
 import player from 'components/Player/player';
 import { TrackModel } from 'models/track';
 import { ArtistModel } from 'models/artist';
 import { AlbumModel } from 'models/album';
-import routerStore from 'services/router/routerStore';
-import router from 'services/router/router';
 import { View } from 'views/View/view';
-import disableBrokenImg from 'views/utils';
-import mobile from 'components/Mobile/mobile';
-
+import router from 'services/router/router';
+import routerStore from 'services/router/routerStore';
+import { disableBrokenImg } from 'views/utils';
 import store from 'services/store/store';
+import { PlaylistModel } from 'models/playlist';
+import playlistsContextMenu, {
+    PlaylistsContextMenu,
+} from 'components/PlaylistsContextMenu/playlistsContextMenu';
+import mobile from 'components/Mobile/mobile';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
@@ -25,27 +27,24 @@ interface IIndexViewProps {
     authenticated: boolean;
 }
 
-export class IndexView extends View<IIndexViewProps> {
-    private authenticated: boolean;
-    private playButtonHandler: (e) => void;
-
+class IndexView extends View<IIndexViewProps> {
     private top_albums: AlbumModel[];
     private suggested_artists: ArtistModel[];
     private track_list: TrackModel[];
-    private suggested_playlists: SuggestedPlaylists;
-    private sidebar: Sidebar;
+    private suggested_playlists: PlaylistModel[];
     private friend_activity: FriendActivity;
     private userAvatar: string;
+    private contextMenu: PlaylistsContextMenu;
+    private userPlaylists: Array<PlaylistModel>;
+    private renderCount: number;
 
     constructor(props?: IIndexViewProps) {
         super(props);
         this.isLoaded = false;
+        this.renderCount = 0;
     }
 
     didMount() {
-        this.authenticated = store.get('authenticated');
-        this.userAvatar = store.get('userAvatar');
-
         const tracks = TrackModel.getHomepageTracks().then((tracks) => {
             this.track_list = tracks;
         });
@@ -55,64 +54,167 @@ export class IndexView extends View<IIndexViewProps> {
         const albums = AlbumModel.getHomepageAlbums().then((albums) => {
             this.top_albums = albums;
         });
+        const playlists = PlaylistModel.getUserPlaylists().then((playlists) => {
+            this.suggested_playlists = playlists;
+        });
 
-        const predefinedPlaylists = [
-            {
-                cover: 'yur',
-                title: 'Jail Mix',
-            },
-            {
-                cover: 'albina',
-                title: 'Resine Working Mix Extended',
-            },
-            {
-                cover: 'starboy',
-                title: 'Workout Mix 2',
-            },
-        ];
+        const userPlaylists = PlaylistModel.getUserPlaylists().then(
+            (playlists) => {
+                this.userPlaylists = playlists;
+            }
+        );
 
-        Promise.all([tracks, artists, albums]).then(() => {
-            this.track_list = new TrackList({
-                title: 'Tracks of the Week',
-                tracks: this.track_list,
-            }).render();
-            this.suggested_playlists = new SuggestedPlaylists({
-                playlists: predefinedPlaylists,
-            }).render();
-            this.sidebar = new Sidebar().render();
+        Promise.all([tracks, artists, albums, playlists, userPlaylists]).then(
+            () => {
+                this.track_list = new TrackList({
+                    title: 'Tracks of the Week',
+                    tracks: this.track_list,
+                }).render();
 
-            this.top_albums = new TopAlbums({
-                albums: this.top_albums,
-            }).render();
-            this.suggested_artists = new SuggestedArtists({
-                artists: this.suggested_artists,
-            }).render();
+                suggestedPlaylists.set(this.suggested_playlists);
 
-            this.friend_activity = new FriendActivity({
-                friends: [
-                    {
-                        img: 'default_avatar_150px',
-                        nickname: 'Frank Sinatra',
-                        listening_to: 'Strangers in the Night',
-                    },
-                    {
-                        img: 'default_avatar_150px',
-                        nickname: 'Земфира',
-                        listening_to: 'Трафик',
-                    },
-                ],
-            }).render();
-            this.isLoaded = true;
-            this.render();
+                this.top_albums = new TopAlbums({
+                    albums: this.top_albums,
+                }).render();
+                this.suggested_artists = new SuggestedArtists({
+                    artists: this.suggested_artists,
+                    extraRounded: true,
+                }).render();
+
+                this.friend_activity = new FriendActivity({
+                    friends: [
+                        {
+                            img: 'default_avatar_150px',
+                            nickname: 'Frank Sinatra',
+                            listening_to: 'Strangers in the Night',
+                        },
+                        {
+                            img: 'default_avatar_150px',
+                            nickname: 'Земфира',
+                            listening_to: 'Трафик',
+                        },
+                    ],
+                }).render();
+                this.contextMenu = playlistsContextMenu;
+                this.contextMenu.updatePlaylists(this.userPlaylists);
+                this.isLoaded = true;
+                this.render();
+            }
+        );
+    }
+
+    createPlaylist(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!store.get('authenticated')) {
+            router.go(routerStore.signin);
+            return;
+        }
+
+        const newPlaylistName = this.userPlaylists
+            .filter((playlist) => {
+                return playlist.getProps().is_own;
+            })
+            .reduce((newPlaylistName, _, index, array) => {
+                if (
+                    array.find((playlist) => {
+                        return playlist.getProps().title == newPlaylistName;
+                    })
+                ) {
+                    return 'New playlist ' + (index + 2).toString();
+                } else {
+                    return newPlaylistName;
+                }
+            }, 'New playlist');
+
+        PlaylistModel.createPlaylist(newPlaylistName).then(({ id }) => {
+            router.go(`${routerStore.playlist}/${id}`);
         });
     }
 
-    addListeners() {
-        if (this.authenticated) {
-            document
-                .querySelector('.js-logout')
-                .addEventListener('click', this.userLogout);
+    showPublicPlaylists() {
+        if (!suggestedPlaylists.publicView()) {
+            const createPlaylistBtn = document.querySelector(
+                '.pl-link[href="/playlist/0"]'
+            );
+            createPlaylistBtn.removeEventListener(
+                'click',
+                this.createPlaylist.bind(this)
+            );
+            suggestedPlaylists.toggleView(this.suggested_playlists, true);
         }
+    }
+
+    showOwnPlaylists() {
+        if (suggestedPlaylists.publicView()) {
+            suggestedPlaylists.toggleView(this.suggested_playlists, false);
+            const createPlaylistBtn = document.querySelector(
+                '.pl-link[href="/playlist/0"]'
+            );
+            createPlaylistBtn.addEventListener(
+                'click',
+                this.createPlaylist.bind(this)
+            );
+        }
+    }
+
+    addListeners() {
+        if (!suggestedPlaylists.publicView()) {
+            const createPlaylistBtn = document.querySelector(
+                '.pl-link[href="/playlist/0"]'
+            );
+            if (createPlaylistBtn) {
+                createPlaylistBtn.addEventListener(
+                    'click',
+                    this.createPlaylist.bind(this)
+                );
+            }
+        }
+
+        const publicPlaylistsBtn = document.querySelector(
+            '.js_public_playlists'
+        );
+        publicPlaylistsBtn.addEventListener(
+            'click',
+            this.showPublicPlaylists.bind(this)
+        );
+        const ownPlaylistsBtn = document.querySelector('.js_own_playlists');
+        ownPlaylistsBtn.addEventListener(
+            'click',
+            this.showOwnPlaylists.bind(this)
+        );
+
+        const createPlaylistContextMenuBtn = document.querySelector(
+            '.js-playlist-create'
+        );
+        createPlaylistContextMenuBtn.addEventListener(
+            'click',
+            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
+        );
+        const addTrackToPlaylistBtns = document.querySelectorAll(
+            '.js-playlist-track-add'
+        );
+        addTrackToPlaylistBtns.forEach((button) => {
+            button.addEventListener(
+                'click',
+                this.contextMenu.addTrackToPlaylist.bind(this.contextMenu)
+            );
+        });
+
+        document
+            .querySelectorAll('.track-list-item-playlist')
+            .forEach((element) => {
+                element.addEventListener(
+                    'click',
+                    this.contextMenu.showContextMenu.bind(this.contextMenu)
+                );
+            });
+        window.addEventListener(
+            'click',
+            this.contextMenu.hideContextMenu.bind(this.contextMenu)
+        );
+
         const playerElement: HTMLElement =
             document.querySelector('.mobile-player');
         const mobileFooter: HTMLElement = document.querySelector(
@@ -131,42 +233,7 @@ export class IndexView extends View<IIndexViewProps> {
                 mobileFooter.classList.add('mobile-footer__menu__hidden');
             });
 
-        this.playButtonHandler = (e) => {
-            if (e.target.className === 'track-play') {
-                if (!this.authenticated) {
-                    router.go(routerStore.signin);
-                    return;
-                }
-                if (e.target === player.nowPlaying) {
-                    // Ставим на паузу/продолжаем воспр.
-                    player.toggle();
-                    return;
-                }
-                if (player.nowPlaying) {
-                    // Переключили на другой трек
-                    player.nowPlaying.dataset.playing = 'false';
-                    player.nowPlaying.src = '/static/img/play-outline.svg';
-                }
-
-                player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
-
-                e.target.dataset.playing = 'true';
-                player.setTrack({
-                    url: `/static/tracks/${e.target.dataset.url}`,
-                    cover: `/static/artworks/${e.target.dataset.cover}`,
-                    title: e.target.dataset.title,
-                    artist: e.target.dataset.artist,
-                    album: e.target.dataset.album,
-                    artwork_color: e.target.dataset.artworkcolor,
-                });
-            }
-        };
-        player.setup(document.querySelectorAll('.track'));
-        document
-            .querySelectorAll('.track-play')
-            .forEach((e) =>
-                e.addEventListener('click', this.playButtonHandler)
-            );
+        player.setup(document.querySelectorAll('.track-list-item'));
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
@@ -176,32 +243,60 @@ export class IndexView extends View<IIndexViewProps> {
         document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
-        document
-            .querySelectorAll('.track-play')
-            .forEach((e) =>
-                e.removeEventListener('click', this.playButtonHandler)
-            );
-        const suggestedTracksContainer = document.querySelector(
-            '.suggested-tracks-container'
-        );
-        if (suggestedTracksContainer)
-            suggestedTracksContainer.removeEventListener(
-                'click',
-                this.playButtonHandler
-            );
         this.isLoaded = false;
-        player.unmount();
-    }
+        document
+            .querySelectorAll('.track-list-item-playlist')
+            .forEach((element) => {
+                element.removeEventListener(
+                    'click',
+                    this.contextMenu.showContextMenu.bind(this.contextMenu)
+                );
+            });
+        window.removeEventListener(
+            'click',
+            this.contextMenu.hideContextMenu.bind(this.contextMenu)
+        );
+        const createPlaylistBtn = document.querySelector(
+            '.pl-link[href="/playlist/0"]'
+        );
+        if (createPlaylistBtn) {
+            createPlaylistBtn.removeEventListener(
+                'click',
+                this.createPlaylist.bind(this)
+            );
+        }
 
-    userLogout() {
-        Request.post('/user/logout').then(() => {
-            player.stop();
-            player.clear();
-            store.set('authenticated', false);
-            this.authenticated = false;
-            window.localStorage.removeItem('lastPlayedData');
-            TopbarComponent.logout();
+        const publicPlaylistsBtn = document.querySelector(
+            '.js_public_playlists'
+        );
+        publicPlaylistsBtn.removeEventListener(
+            'click',
+            this.showPublicPlaylists.bind(this)
+        );
+        const ownPlaylistsBtn = document.querySelector('.js_own_playlists');
+        ownPlaylistsBtn.removeEventListener(
+            'click',
+            this.showOwnPlaylists.bind(this)
+        );
+
+        const createPlaylistContextMenuBtn = document.querySelector(
+            '.js-playlist-create'
+        );
+        createPlaylistContextMenuBtn.removeEventListener(
+            'click',
+            this.contextMenu.createNewPlaylist.bind(this.contextMenu)
+        );
+        const addTrackToPlaylistBtns = document.querySelectorAll(
+            '.js-playlist-track-add'
+        );
+        addTrackToPlaylistBtns.forEach((button) => {
+            button.removeEventListener(
+                'click',
+                this.contextMenu.addTrackToPlaylist.bind(this.contextMenu)
+            );
         });
+
+        player.unmount();
     }
 
     render() {
@@ -212,19 +307,23 @@ export class IndexView extends View<IIndexViewProps> {
 
         document.getElementById('app').innerHTML = IndexTemplate({
             topbar: TopbarComponent.set({
-                authenticated: this.authenticated,
-                avatar: this.userAvatar,
-                offline: navigator.onLine !== true,
+                authenticated: store.get('authenticated'),
+                avatar: store.get('userAvatar'),
+                offline: !navigator.onLine,
             }).render(),
-            sidebar: this.sidebar,
+            sidebar: sidebar.render(),
             friend_activity: this.friend_activity,
             top_albums: this.top_albums,
             suggested_artists: this.suggested_artists,
             track_list: this.track_list,
-            suggested_playlists: this.suggested_playlists,
+            suggested_playlists: suggestedPlaylists.render(),
             player: player.render(),
+            contextMenu: this.contextMenu.render(),
             mobile: mobile.render(),
         });
+        TopbarComponent.addHandlers();
+        TopbarComponent.didMount();
+
         player.addHandlers();
         this.addListeners();
     }

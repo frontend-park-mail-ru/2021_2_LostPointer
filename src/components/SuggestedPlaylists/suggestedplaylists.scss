@@ -1,13 +1,31 @@
+.pl-link {
+  border-radius: inherit;
+}
+
 .suggested-playlists {
   display: flex;
   flex-direction: column;
   align-content: space-between;
+  width: 300px;
 
   &__header {
     color: white;
     font-family: Montserrat, sans-serif;
     font-weight: 700;
     width: max-content;
+  }
+
+  &__picker {
+    display: inline-block;
+    cursor: pointer;
+
+    &:nth-child(2) {
+      margin-left: 55px;
+    }
+
+    &.inactive {
+      color: #3d3d3d;
+    }
   }
 
   &__container {
