@@ -7,6 +7,10 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     padding-top: 12px;
+
+    @media only screen and (max-width: 768px) {
+      display: block;
+    }
   }
 
   &__header {
@@ -14,6 +18,10 @@
     font-family: Montserrat, sans-serif;
     font-weight: 700;
     width: max-content;
+
+    @media only screen and (max-width: 768px) {
+      margin: 10px 0 0;
+    }
   }
 }
 
