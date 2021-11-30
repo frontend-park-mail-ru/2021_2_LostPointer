@@ -7,10 +7,6 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     padding-top: 12px;
-
-    @media only screen and (max-width: 768px) {
-      display: block;
-    }
   }
 
   &__header {
@@ -26,24 +22,30 @@
 }
 
 .suggested-artist {
-  width: 105px;
-  height: 105px;
+  width: 128px;
+  height: 128px;
   object-fit: cover;
   cursor: pointer;
   display: inline-block;
+  margin: 5px auto;
 
   & img {
     border-radius: 20px;
   }
 
   &-extrarounded {
-    width: 128px;
-    height: 128px;
+    width: 105px;
+    height: 105px;
     object-fit: cover;
     cursor: pointer;
     background: linear-gradient(180deg, rgba(30 30 30 / 50%) 0%, rgba(30 30 30 / 80%) 100%);
     display: inline-block;
     margin: 5px auto;
+
+    @media only screen and (max-width: 768px) {
+      width: 128px;
+      height: 128px;
+    }
 
     &:nth-child(1),
     &:nth-child(1) img {
