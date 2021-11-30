@@ -245,27 +245,32 @@ class IndexView extends View<IIndexViewProps> {
         const publicPlaylistsBtn = document.querySelector(
             '.js_public_playlists'
         );
-        publicPlaylistsBtn.removeEventListener(
-            'click',
-            this.showPublicPlaylists.bind(this)
-        );
+        if (publicPlaylistsBtn) {
+            publicPlaylistsBtn.removeEventListener(
+                'click',
+                this.showPublicPlaylists.bind(this)
+            );
+        }
         const ownPlaylistsBtn = document.querySelector('.js_own_playlists');
-        ownPlaylistsBtn.removeEventListener(
-            'click',
-            this.showOwnPlaylists.bind(this)
-        );
+        if (ownPlaylistsBtn) {
+            ownPlaylistsBtn.removeEventListener(
+                'click',
+                this.showOwnPlaylists.bind(this)
+            );
+        }
 
         const createPlaylistContextMenuBtn = document.querySelector(
             '.js-playlist-create'
         );
-        createPlaylistContextMenuBtn.removeEventListener(
-            'click',
-            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
-        );
-        const addTrackToPlaylistBtns = document.querySelectorAll(
+        if (createPlaylistContextMenuBtn) {
+            createPlaylistContextMenuBtn.removeEventListener(
+                'click',
+                playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
+            );
+        }
+        document.querySelectorAll(
             '.js-playlist-track-add'
-        );
-        addTrackToPlaylistBtns.forEach((button) => {
+        ).forEach((button) => {
             button.removeEventListener(
                 'click',
                 playlistsContextMenu.addTrackToPlaylist.bind(

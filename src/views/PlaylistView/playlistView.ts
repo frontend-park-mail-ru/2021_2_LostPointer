@@ -17,7 +17,6 @@ import mobile from 'components/Mobile/mobile';
 
 // TODO аватары пользователей-создателей плейлиста
 // TODO! ссылки на альбомы на альбомах в треклисте
-// TODO проверить все unmount
 // TODO рефактор вьюх по аналогии с Search
 
 interface IPlaylistViewProps {
@@ -521,68 +520,62 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         playlistsContextMenu.deleteRemoveButton();
 
         if (this.playlist && this.playlist.getProps().is_own) {
-            const removeTrackFromPlaylistBtn = document.querySelector(
+            document.querySelector(
                 '.js-playlist-track-remove'
-            );
-            removeTrackFromPlaylistBtn.removeEventListener(
+            ).removeEventListener(
                 'click',
                 this.removeTrack.bind(this)
             );
 
-            const playlistAvatar = document.querySelector(
+            document.querySelector(
                 '.playlist__description-avatar'
-            );
-            playlistAvatar.removeEventListener(
+            ).removeEventListener(
                 'click',
                 this.displayEditWindow.bind(this)
             );
 
-            const editPlaylistBtn = document.querySelector(
+            document.querySelector(
                 '.playlist__description-edit-btn'
-            );
-            editPlaylistBtn.removeEventListener(
+            ).removeEventListener(
                 'click',
                 this.displayEditWindow.bind(this)
             );
 
-            const fileInput = document.querySelector('input[name="file"]');
-            fileInput.removeEventListener(
+            document.querySelector('input[name="file"]').removeEventListener(
                 'change',
                 this.uploadAvatarFile.bind(this)
             );
 
-            const form = document.querySelector('.editwindow__form');
-            form.removeEventListener(
+            document.querySelector('.editwindow__form').removeEventListener(
                 'submit',
                 this.submitChangePlaylistInfoForm.bind(this)
             );
 
-            const deleteBtn = document.querySelector(
+            document.querySelector(
                 '.editwindow__delete'
-            );
-            deleteBtn.removeEventListener(
+            ).removeEventListener(
                 'click',
                 this.deleteButtonClick.bind(this)
             );
 
-            const deleteAvatarBtn = document.querySelector(
+            document.querySelector(
                 '.editwindow__avatar-delete'
-            );
-            deleteAvatarBtn.removeEventListener(
+            ).removeEventListener(
                 'click',
                 this.deleteAvatar.bind(this)
             );
         }
 
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
-        createPlaylistBtn.removeEventListener(
-            'click',
-            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
-        );
-        const addTrackToPlaylistBtns = document.querySelectorAll(
+        if (createPlaylistBtn) {
+            createPlaylistBtn.removeEventListener(
+                'click',
+                playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
+            );
+        }
+        document.querySelectorAll(
             '.js-playlist-track-add'
-        );
-        addTrackToPlaylistBtns.forEach((button) => {
+        ).forEach((button) => {
             button.removeEventListener('click', playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu));
         });
 

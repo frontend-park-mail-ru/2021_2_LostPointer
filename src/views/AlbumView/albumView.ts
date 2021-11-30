@@ -114,10 +114,12 @@ export class AlbumView extends View<IAlbumViewProps> {
                 );
             });
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
-        createPlaylistBtn.removeEventListener(
-            'click',
-            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
-        );
+        if (createPlaylistBtn) {
+            createPlaylistBtn.removeEventListener(
+                'click',
+                playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
+            );
+        }
         const addTrackToPlaylistBtns = document.querySelectorAll(
             '.js-playlist-track-add'
         );
