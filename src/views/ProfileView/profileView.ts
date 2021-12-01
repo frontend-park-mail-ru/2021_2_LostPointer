@@ -287,8 +287,6 @@ export class ProfileView extends View<IProfileViewProps> {
         TopbarComponent.addHandlers();
         TopbarComponent.didMount();
         this.addListeners();
-
-        player.setup(document.querySelectorAll('.track-list-item'));
     }
 }
 

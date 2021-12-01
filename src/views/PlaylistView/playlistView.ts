@@ -641,7 +641,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         }, black)`;
         this.addListeners();
 
-        player.setup(document.querySelectorAll('.track-list-item'));
+        player.setup(document.querySelectorAll('.track'));
     }
 }
 
