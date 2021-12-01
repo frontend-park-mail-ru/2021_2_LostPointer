@@ -304,6 +304,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             const target = <HTMLImageElement>e.target;
             if (target.classList.contains('top-album__play')) {
                 e.preventDefault();
+                if (!store.get('authenticated')) {
+                    router.go(routerStore.signin);
+                    return;
+                }
                 TrackModel.getAlbumTracks(target.dataset.id).then((tracks) => {
                     this.playlist = new TrackList({ tracks }).render();
                     this.setup(this.playlist);
