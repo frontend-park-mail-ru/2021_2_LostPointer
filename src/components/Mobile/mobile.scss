@@ -125,6 +125,10 @@
     z-index: 10;
     background: linear-gradient(var(--artwork-accent-color), #000000);
 
+    @media only screen and (min-width: 768px) {
+      display: none;
+    }
+
     &__container {
       height: 93%;
       margin: 25px;
