@@ -639,6 +639,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         if (mobileArtwork) {
             mobileArtwork.src = `${this.props.cover}_512px.webp`;
         }
+        artwork.style.display = 'block';
         document.documentElement.style.setProperty(
             '--artwork-accent-color',
             this.props.artwork_color
