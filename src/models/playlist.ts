@@ -39,6 +39,7 @@ export class PlaylistModel extends Model<IPlaylistModel> {
                                 const album = new AlbumModel(elem.album);
                                 elem.album = album;
                                 elem.artist = artist;
+                                elem.artwork_color = album.props.artwork_color;
                                 acc.push(new TrackModel(elem));
                                 return acc;
                             },
