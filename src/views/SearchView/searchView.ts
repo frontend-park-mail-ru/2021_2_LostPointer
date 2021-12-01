@@ -85,31 +85,31 @@ export class SearchView extends View<ISearchViewProps> {
                             .then((response) => {
                                 this.tracks = response.tracks
                                     ? response.tracks.reduce(
-                                        (acc, elem, index) => {
-                                            elem.pos = index;
-                                            elem.album = new AlbumModel(
-                                                elem.album
-                                            );
-                                            elem.artist = new ArtistModel(
-                                                elem.artist
-                                            );
-                                            acc.push(new TrackModel(elem));
-                                            return acc;
-                                        },
-                                        []
-                                    )
+                                          (acc, elem, index) => {
+                                              elem.pos = index;
+                                              elem.album = new AlbumModel(
+                                                  elem.album
+                                              );
+                                              elem.artist = new ArtistModel(
+                                                  elem.artist
+                                              );
+                                              acc.push(new TrackModel(elem));
+                                              return acc;
+                                          },
+                                          []
+                                      )
                                     : [];
                                 this.albums = response.albums
                                     ? response.albums.reduce((acc, elem) => {
-                                        acc.push(new AlbumModel(elem));
-                                        return acc;
-                                    }, [])
+                                          acc.push(new AlbumModel(elem));
+                                          return acc;
+                                      }, [])
                                     : [];
                                 this.artists = response.artists
                                     ? response.artists.reduce((acc, elem) => {
-                                        acc.push(new ArtistModel(elem));
-                                        return acc;
-                                    }, [])
+                                          acc.push(new ArtistModel(elem));
+                                          return acc;
+                                      }, [])
                                     : [];
                             })
                             .then(() => {
@@ -125,7 +125,7 @@ export class SearchView extends View<ISearchViewProps> {
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function(img) {
+        document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
 
@@ -198,28 +198,28 @@ export class SearchView extends View<ISearchViewProps> {
         this.data.tracks =
             this.tracks.length !== 0
                 ? new TrackList({
-                    title: 'Tracks',
-                    tracks: this.tracks,
-                }).render()
+                      title: 'Tracks',
+                      tracks: this.tracks,
+                  }).render()
                 : [];
         this.data.artists =
             this.artists.length !== 0
                 ? new SuggestedArtists({
-                    artists: this.artists,
-                }).render()
+                      artists: this.artists,
+                  }).render()
                 : [];
         this.data.albums =
             this.albums.length !== 0
                 ? new TopAlbums({
-                    albums: this.albums,
-                    compact: true,
-                }).render()
+                      albums: this.albums,
+                      compact: true,
+                  }).render()
                 : [];
 
         this.noResults =
             this.data.albums.length +
-            this.data.artists.length +
-            this.data.tracks.length ===
+                this.data.artists.length +
+                this.data.tracks.length ===
             0;
 
         const content = document.querySelector('.main-layout__content');
@@ -229,7 +229,7 @@ export class SearchView extends View<ISearchViewProps> {
             albums: this.data.albums,
             not_found: this.noResults,
         });
-        player.setup(document.querySelectorAll('.track-list-item'));
+        player.setup(document.querySelectorAll('.track'));
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
@@ -240,7 +240,7 @@ export class SearchView extends View<ISearchViewProps> {
                     )
                 );
             });
-        document.querySelectorAll('img').forEach(function(img) {
+        document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
