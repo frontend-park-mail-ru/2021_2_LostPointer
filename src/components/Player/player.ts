@@ -160,7 +160,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             track: track.title,
             artist: artist || track.artist,
             file: this.audio.src,
-            artwork_color: track.artworkcolor,
+            artwork_color:
+                track.artworkcolor || track.album.props.artwork_color,
         } as IPlayerComponentProps;
         document.title = `${this.props.track} · ${this.props.artist.props.name}`;
 
