@@ -152,11 +152,11 @@ export class SearchView extends View<ISearchViewProps> {
                         contextMenu: playlistsContextMenu.render(),
                         mobile: mobile.set(player.getNowPlaying()).render(),
                     });
+                    player.addHandlers();
                     TopbarComponent.addHandlers();
                 }
                 document.querySelector('.main-layout__content').innerHTML = '';
 
-                player.addHandlers();
                 this.addListeners();
             });
     }
