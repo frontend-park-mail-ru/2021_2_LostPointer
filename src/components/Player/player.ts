@@ -162,19 +162,20 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         } as IPlayerComponentProps;
         document.title = `${this.props.track} · ${this.props.artist.props.name}`;
 
-        navigator.mediaSession.metadata = new MediaMetadata({
+        const mediaMetadata = {
             title: track.title,
             artist: track.artist,
             album: track.album,
             artwork: [96, 128, 192, 256, 384, 512].reduce((acc, elem) => {
                 acc.push({
-                    src: `${track.cover}_${elem}px.webp`,
+                    src: `/static/artworks/${track.cover}_${elem}px.webp`,
                     sizes: `${elem}x${elem}`,
                     type: 'image/webp',
                 });
                 return acc;
             }, []),
-        });
+        };
+        navigator.mediaSession.metadata = new MediaMetadata(mediaMetadata);
 
         const right = document.querySelectorAll('.player-skip-right');
         const left = document.querySelectorAll('.player-skip-left');
