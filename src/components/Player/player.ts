@@ -146,7 +146,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         }
         this.audio.pause();
         this.counted = false;
-        this.audio.src = `/static/tracks/${track.url}`;
+        this.audio.src = `/static/tracks/${track.url || track.file}`; //TODO=Привести к одному виду
         this.props = {
             cover: `/static/artworks/${
                 track.cover || track.album.props.artwork
@@ -301,7 +301,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 TrackModel.getAlbumTracks(target.dataset.id).then((tracks) => {
                     this.playlist = new TrackList({ tracks }).render();
                     this.setup(this.playlist);
-                    // this.setPos(0);
+                    this.setPos(0);
                     this.setTrack(tracks[0].props);
                 });
                 return;
@@ -360,6 +360,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     setup(playlist) {
+        if (typeof playlist === 'string') {
+            //TODO=Возможно убрать костыль
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(playlist, 'text/html');
+            playlist = doc.querySelectorAll('.track');
+        }
         this.currentVolume = document.querySelector('.volume-current');
         this.mute = document.querySelector('.mute');
         this.repeatToggle = document.querySelector('.repeat');
@@ -686,9 +692,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.update();
     }
 
-    setPos(pos: number, element: HTMLImageElement) {
+    setPos(pos: number, element?: HTMLImageElement) {
         this.pos = pos;
-        this.nowPlaying = element;
+        if (element) {
+            this.nowPlaying = element;
+        } else {
+            this.nowPlaying = this.playlist[pos].querySelector('.track-play');
+        }
     }
 }
 
