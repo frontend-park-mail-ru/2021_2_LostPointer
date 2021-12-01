@@ -20,6 +20,13 @@
 
 .mobile {
 
+  &-track-title {
+    width: 90%;
+    text-overflow: ellipsis;
+    text-align: center;
+    overflow: hidden;
+  }
+
   &-footer {
     height: 0;
     font-family: var(--font);
@@ -67,6 +74,7 @@
           align-items: center;
           flex-direction: column;
           flex-grow: 1;
+          width: 70%;
 
           &__artist {
             color: var(--artist-color);
