@@ -198,6 +198,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         }
 
         document.getElementById('player-artwork').style.display = '';
+        document.getElementById('mobile-player-artwork').style.display = '';
         this.audio.play().then(() => (this.props.playing = true));
     }
 
