@@ -52,12 +52,16 @@
 
         &__icon {
           font-size: var(--icon-size);
+          display: flex;
+          justify-content: center;
+          width: 30px;
         }
 
         &__track {
           display: flex;
           align-items: center;
           flex-direction: column;
+          flex-grow: 1;
 
           &__artist {
             color: var(--artist-color);
