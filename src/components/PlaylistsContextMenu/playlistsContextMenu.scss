@@ -1,0 +1,33 @@
+.menu {
+  width: 300px;
+  background: rgb(30, 30, 30);
+  position: absolute;
+  z-index: 1;
+  border-radius: 10px;
+  visibility: hidden;
+  opacity: 0%;
+  transition: visibility 0s, opacity 0.2s linear;
+
+  @media only screen and (max-width: 768px) {
+    left: 10% !important;
+  }
+
+  &-options {
+    list-style: none;
+    padding: 0;
+
+    .menu-option {
+      font-weight: 500;
+      color: #ffffff;
+      font-family: Montserrat, sans-serif;
+      font-size: 16px;
+      padding: 15px;
+      cursor: pointer;
+
+      &:hover {
+        background: rgb(20, 20, 20);
+        border-radius: 10px;
+      }
+    }
+  }
+}

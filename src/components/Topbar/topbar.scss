@@ -5,14 +5,22 @@
   width: 100%;
   margin: 25px 10px;
 
+  @media only screen and (max-width: 768px) {
+    height: 60px;
+  }
+
   &__search {
     opacity: 60%;
     height: 100%;
     display: flex;
     align-items: center;
     background-color: #191919;
-    width: 30%;
     border-radius: 50px;
+    width: 95%;
+
+    @media only screen and (min-width: 768px) {
+      width: 30%;
+    }
 
     &-icon {
       color: grey;
@@ -51,6 +59,10 @@
   }
 
   &-icons {
+    @media only screen and (max-width: 768px) {
+      display: none;
+    }
+
     padding: 5px 10px;
     height: 40px;
     width: 225px;
@@ -65,16 +77,18 @@
     padding-left: 10px;
     color: white;
     font-size: 25px;
-    margin-left: 10px;
+    margin: 5px 10px 0 0;
   }
 
   &-profile {
+    @media only screen and (max-width: 768px) {
+      display: none;
+    }
+
     cursor: pointer;
-    margin-right: 40px;
-    margin-top: 2px;
+    margin: 0 50px 0 40px;
     height: 45px;
     border-radius: 30px;
-    margin-left: 50px;
     width: 45px;
     background: linear-gradient(180deg, rgba(30 30 30 / 50%) 0%, rgba(30 30 30 / 80%) 100%);
 
@@ -108,7 +122,7 @@
 .tooltip::before,
 .tooltip::after {
   display: block;
-  opacity: 0;
+  opacity: 0%;
   pointer-events: none;
   position: absolute;
 }
@@ -133,6 +147,6 @@
 
 .tooltip.fade:hover::after,
 .tooltip.fade:hover::before {
-  opacity: 1;
+  opacity: 10%;
   transform: translate3d(0, 0, 0);
 }

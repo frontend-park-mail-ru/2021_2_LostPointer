@@ -1,7 +1,11 @@
 .suggested-artists {
-  width: 215px;
+  @media screen and (min-width: 768px) {
+    width: 215px;
+  }
 
   &__container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     padding-top: 12px;
   }
 
@@ -10,40 +14,88 @@
     font-family: Montserrat, sans-serif;
     font-weight: 700;
     width: max-content;
+
+    @media only screen and (max-width: 768px) {
+      margin: 10px 0 0;
+    }
   }
 }
 
 .suggested-artist {
-  width: 105px;
-  height: 105px;
+  width: 128px;
+  height: 128px;
   object-fit: cover;
   cursor: pointer;
-  background: linear-gradient(180deg, rgba(30 30 30 / 50%) 0%, rgba(30 30 30 / 80%) 100%);
   display: inline-block;
+  margin: 5px auto;
 
-  &:nth-child(1),
-  &:nth-child(1) img {
-    border-radius: 20px 10px 10px;
+  & img {
+    border-radius: 20px;
   }
 
-  &:nth-child(2),
-  &:nth-child(2) img {
-    border-radius: 10px 20px 10px 10px;
+  &-extrarounded {
+    width: 105px;
+    height: 105px;
+    object-fit: cover;
+    cursor: pointer;
+    background: linear-gradient(180deg, rgba(30 30 30 / 50%) 0%, rgba(30 30 30 / 80%) 100%);
+    display: inline-block;
+    margin: 5px auto;
+
+    @media only screen and (max-width: 768px) {
+      width: 128px;
+      height: 128px;
+    }
+
+    &:nth-child(1),
+    &:nth-child(1) img {
+      border-radius: 20px 10px 10px;
+    }
+
+    &:nth-child(2),
+    &:nth-child(2) img {
+      border-radius: 10px 20px 10px 10px;
+    }
+
+    &:nth-child(3),
+    &:nth-child(3) img {
+      border-radius: 10px 10px 10px 20px;
+    }
+
+    &:nth-child(4),
+    &:nth-child(4) img {
+      border-radius: 10px 10px 20px;
+    }
   }
 
-  &:nth-child(3),
-  &:nth-child(3) img {
-    border-radius: 10px 10px 10px 20px;
-  }
+  @media screen and (min-width: 768px) {
 
-  &:nth-child(4),
-  &:nth-child(4) img {
-    border-radius: 10px 10px 20px;
+    &:nth-child(1),
+    &:nth-child(1) img {
+      border-radius: 20px 10px 10px;
+    }
+
+    &:nth-child(2),
+    &:nth-child(2) img {
+      border-radius: 10px 20px 10px 10px;
+    }
+
+    &:nth-child(3),
+    &:nth-child(3) img {
+      border-radius: 10px 10px 10px 20px;
+    }
+
+    &:nth-child(4),
+    &:nth-child(4) img {
+      border-radius: 10px 10px 20px;
+    }
   }
 
   &__img {
-    width: 105px;
-    height: 105px;
+    @media screen and (min-width: 768px) {
+      width: 105px;
+      height: 105px;
+    }
   }
 }
 

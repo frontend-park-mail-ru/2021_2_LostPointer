@@ -3,6 +3,10 @@
   float: left;
   margin-top: 30px;
 
+  @media only screen and (max-width: 768px) {
+    margin: 0;
+  }
+
   &__message-block {
     padding: 35px 0 0;
   }
@@ -12,6 +16,11 @@
     font-family: Montserrat, sans-serif;
     font-size: 18px;
     margin-left: 265px;
+
+    @media only screen and (max-width: 768px) {
+      margin: 10px;
+      text-align: center;
+    }
   }
 
   &__label {
@@ -36,6 +45,11 @@
     color: #969696;
     height: 265px;
 
+    @media only screen and (max-width: 768px) {
+      margin: 0 auto;
+      height: 0;
+    }
+
     & div.invalid {
       color: #ff4d5b;
       margin-bottom: 10px;
@@ -49,6 +63,10 @@
   &__buttons {
     padding: 10px;
     margin-left: 160px;
+
+    @media only screen and (max-width: 768px) {
+      margin: 0;
+    }
   }
 
   &__submit {
@@ -72,6 +90,10 @@
 
 .profile-avatar {
   margin: 50px;
+
+  @media only screen and (max-width: 768px) {
+    margin: 0;
+  }
 
   &__block {
     display: block;

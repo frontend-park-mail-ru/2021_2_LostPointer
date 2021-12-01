@@ -2,7 +2,7 @@
     <div class='suggested-artists__header'>Top Artists</div>
     <div class='suggested-artists__container'>
         {{#each artists}}
-            <div class='suggested-artist'>
+            <div class='suggested-artist{{#if ../extra_rounded}}-extrarounded{{/if}}'>
                 <a href='/artist/{{props.id}}'>
                     <img
                         alt

@@ -1,3 +1,8 @@
+:root {
+  --player-seekbar-background: gray;
+  --seekbar-transition: 0.5s;
+}
+
 .volume-current {
   width: 50%;
 }
@@ -13,7 +18,15 @@
   background-color: white;
 }
 
+.seekbar-current {
+  width: var(--seekbar-current);
+}
+
 .player {
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
+
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -48,7 +61,7 @@
   }
 
   &__seekbar {
-    background-color: grey;
+    background-color: var(--player-seekbar-background);
     height: 5px;
     width: 30%;
     border-radius: 10px;
@@ -56,7 +69,7 @@
 
     &__current,
     .volume-current {
-      transition: 0.5s;
+      transition: var(--seekbar-transition);
       width: 0;
       display: block;
       background-color: white;

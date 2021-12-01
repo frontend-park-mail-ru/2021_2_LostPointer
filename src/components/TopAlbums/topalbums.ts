@@ -6,13 +6,16 @@ import './topalbums.scss';
 
 interface ITopAlbumsProps {
     albums: Array<AlbumModel>;
+    compact?: boolean;
 }
 
 export class TopAlbums extends Component<ITopAlbumsProps> {
     private albums: Array<AlbumModel>;
+    private compact: boolean;
 
     constructor(props) {
         super(props);
+        this.compact = this.props.compact || false;
         this.albums = this.props.albums.reduce((acc, album) => {
             const alb = album;
             alb.props.album = !alb.isSingle();
@@ -22,6 +25,6 @@ export class TopAlbums extends Component<ITopAlbumsProps> {
     }
 
     render() {
-        return TopAlbumsTemplate({ albums: this.albums });
+        return TopAlbumsTemplate({ albums: this.albums, compact: this.compact });
     }
 }

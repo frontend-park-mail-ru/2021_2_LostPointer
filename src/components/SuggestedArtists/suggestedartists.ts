@@ -6,14 +6,18 @@ import './suggestedartists.scss';
 
 interface ISuggestedArtistsProps {
     artists: Array<ArtistModel>;
+    extraRounded?: boolean;
 }
 
 export class SuggestedArtists extends Component<ISuggestedArtistsProps> {
+    private extraRounded: boolean;
+
     constructor(props) {
         super(props);
+        this.extraRounded = this.props.extraRounded || false;
     }
 
     render() {
-        return SuggestedArtistsTemplate({ artists: this.props.artists });
+        return SuggestedArtistsTemplate({ artists: this.props.artists, extra_rounded: this.extraRounded });
     }
 }

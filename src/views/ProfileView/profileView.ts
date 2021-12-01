@@ -1,10 +1,9 @@
 import { View } from 'views/View/view';
-import Request from 'services/request/request';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import TopbarComponent, { Topbar } from 'components/Topbar/topbar';
-import player, { PlayerComponent } from 'components/Player/player';
-import { Sidebar } from 'components/Sidebar/sidebar';
+import TopbarComponent from 'components/Topbar/topbar';
+import player from 'components/Player/player';
+import sidebar from 'components/Sidebar/sidebar';
 import { ICustomInput } from 'interfaces/CustomInput';
 import { CustomValidation, isValidForm } from 'services/validation/validation';
 import {
@@ -16,23 +15,18 @@ import {
 } from 'services/validation/validityChecks';
 import { ProfileForm } from 'components/ProfileForm/profileForm';
 import { UserModel } from 'models/user';
+import { disableBrokenImg } from 'views/utils';
+import store from 'services/store/store';
+import mobile from 'components/Mobile/mobile';
 
 import ProfileTemplate from './profileView.hbs';
 import './profileView.scss';
-import disableBrokenImg from 'views/utils';
-import store from 'services/store/store';
 
 interface IProfileViewProps {
     authenticated: boolean;
 }
 
 export class ProfileView extends View<IProfileViewProps> {
-    private authenticated: boolean;
-    private playButtonHandler: (e) => void;
-
-    private player: PlayerComponent;
-    private sidebar: Sidebar;
-    private topbar: Topbar;
     private profileform: ProfileForm;
     private userAvatar: string;
     private user: UserModel;
@@ -43,20 +37,17 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     didMount() {
-        this.authenticated = store.get('authenticated');
-        if (!this.authenticated) {
+        if (!store.get('authenticated')) {
             router.go(routerStore.signin);
             return;
         }
-        this.userAvatar = store.get('userAvatar');
 
         UserModel.getSettings().then((user) => {
             this.user = user;
-            this.sidebar = new Sidebar();
-            this.topbar = new Topbar({
-                authenticated: this.authenticated,
+            TopbarComponent.set({
+                authenticated: store.get('authenticated'),
                 avatar: user.getProps().small_avatar,
-                offline: navigator.onLine !== true,
+                offline: !navigator.onLine,
             });
             this.profileform = new ProfileForm(user.getProps());
             this.isLoaded = true;
@@ -71,9 +62,6 @@ export class ProfileView extends View<IProfileViewProps> {
         let readFile = null;
         const msg = document.querySelector('.profile-avatar__msg');
         (<HTMLElement>msg).innerText = '';
-
-        const formdata = new FormData();
-        formdata.append('avatar', file, file.name);
 
         const ext = file.name
             .substring(file.name.lastIndexOf('.') + 1)
@@ -104,7 +92,13 @@ export class ProfileView extends View<IProfileViewProps> {
         }
 
         this.user
-            .updateSettings(formdata)
+            .updateSettings(
+                null,
+                null,
+                null,
+                null,
+                file,
+            )
             .then((body) => {
                 if (body.status === 200) {
                     const smallAvatar = document.querySelector(
@@ -192,17 +186,13 @@ export class ProfileView extends View<IProfileViewProps> {
             return;
         }
 
-        const formdata = new FormData();
-        formdata.append('nickname', nicknameInput.value);
-        formdata.append('email', emailInput.value);
-
-        if (oldPasswordInput.value && passwordInput.value) {
-            formdata.append('old_password', oldPasswordInput.value);
-            formdata.append('new_password', passwordInput.value);
-        }
-
         this.user
-            .updateSettings(formdata)
+            .updateSettings(
+                nicknameInput.value,
+                emailInput.value,
+                oldPasswordInput.value && passwordInput.value ? oldPasswordInput.value : null,
+                oldPasswordInput.value && passwordInput.value ? passwordInput.value : null,
+            )
             .then((body) => {
                 if (body.status === 200) {
                     msg.classList.remove('fail');
@@ -221,13 +211,19 @@ export class ProfileView extends View<IProfileViewProps> {
             });
     }
 
-    addListeners() {
-        if (this.authenticated) {
-            document
-                .querySelector('.js-logout')
-                .addEventListener('click', this.userLogout);
-        }
+    logoutHandler(event) {
+        event.stopPropagation();
+        UserModel.logout()
+            .then(() => {
+                player.stop();
+                player.clear();
+                store.set('authenticated', false);
+                window.localStorage.removeItem('lastPlayedData');
+                router.go(routerStore.dashboard);
+            })
+    }
 
+    addListeners() {
         const form = document.querySelector('.profile-form');
         const nicknameInput = form.querySelector('input[name="nickname"]');
         const emailInput = form.querySelector('input[name="email"]');
@@ -254,23 +250,21 @@ export class ProfileView extends View<IProfileViewProps> {
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
+
+        document.querySelectorAll('.js-logout').forEach((el) => {
+            el.addEventListener('click', this.logoutHandler.bind(this));
+        });
     }
 
     unmount() {
         document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
-        this.isLoaded = false;
-    }
 
-    userLogout() {
-        Request.post('/user/logout').then(() => {
-            this.authenticated = false;
-            store.set('authenticated', false);
-            window.localStorage.removeItem('lastPlayedData');
-            TopbarComponent.logout();
-            router.go(routerStore.dashboard);
+        document.querySelectorAll('.js-logout').forEach((el) => {
+            el.removeEventListener('click', this.logoutHandler.bind(this));
         });
+        this.isLoaded = false;
     }
 
     render() {
@@ -280,54 +274,19 @@ export class ProfileView extends View<IProfileViewProps> {
         }
 
         document.getElementById('app').innerHTML = ProfileTemplate({
-            topbar: this.topbar
-                .set({
-                    authenticated: this.authenticated,
-                    avatar: this.userAvatar,
-                    offline: navigator.onLine !== true,
-                })
-                .render(),
-            sidebar: this.sidebar.render(),
+            topbar: TopbarComponent.set({
+                authenticated: store.get('authenticated'),
+                avatar: store.get('userAvatar'),
+                offline: !navigator.onLine,
+            }).render(),
+            sidebar: sidebar.render(),
             profileform: this.profileform.render(),
             player: player.render(),
+            mobile: mobile.render(),
         });
+        TopbarComponent.addHandlers();
+        TopbarComponent.didMount();
         this.addListeners();
-
-        this.playButtonHandler = (e) => {
-            if (e.target.className === 'track-list-item-play') {
-                if (!this.authenticated) {
-                    router.go(routerStore.signin);
-                    return;
-                }
-                if (e.target === player.nowPlaying) {
-                    // Ставим на паузу/продолжаем воспр.
-                    player.toggle();
-                    return;
-                }
-                if (player.nowPlaying) {
-                    // Переключили на другой трек
-                    player.nowPlaying.dataset.playing = 'false';
-                    player.nowPlaying.src = '/static/img/play-outline.svg';
-                }
-
-                player.setPos(parseInt(e.target.dataset.pos, 10), e.target);
-
-                e.target.dataset.playing = 'true';
-                player.setTrack({
-                    url: `/static/tracks/${e.target.dataset.url}`,
-                    cover: `/static/artworks/${e.target.dataset.cover}`,
-                    title: e.target.dataset.title,
-                    artist: e.target.dataset.artist,
-                    album: e.target.dataset.album,
-                });
-            }
-        };
-        player.setup(document.querySelectorAll('.track-list-item'));
-        document
-            .querySelectorAll('.track-list-item-play')
-            .forEach((e) =>
-                e.addEventListener('click', this.playButtonHandler)
-            );
     }
 }
 

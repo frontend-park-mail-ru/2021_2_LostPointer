@@ -70,7 +70,35 @@ export class UserModel extends Model<IUserModel> {
         })
     }
 
-    updateSettings(formdata: FormData): Promise<IResponseBody> {
+    static logout(): Promise<IResponseBody> {
+        return new Promise<IResponseBody>((res) => {
+            Request.post('/user/logout').then((body) => {
+                res(body);
+            });
+        })
+    }
+
+    updateSettings(
+        nickname?: string,
+        email?: string,
+        old_password?: string,
+        new_password?: string,
+        avatar?: any,
+        ): Promise<IResponseBody> {
+
+        const formdata = new FormData();
+        if (nickname && email) {
+            formdata.append('nickname', nickname);
+            formdata.append('email', email);
+        }
+        if (old_password && new_password ) {
+            formdata.append('old_password', old_password);
+            formdata.append('new_password', new_password);
+        }
+        if (avatar) {
+            formdata.append('avatar', avatar, avatar.name);
+        }
+
         return new Promise<IResponseBody>((res) => {
             Request.get(
                 '/csrf',
@@ -81,14 +109,14 @@ export class UserModel extends Model<IUserModel> {
                         Request.patch(
                             '/user/settings',
                             formdata,
-                            ContentType.JSON,
+                            ContentType.FORM,
                             {
                                 'X-CSRF-Token': csrfToken,
                             },
                         ).then((body) => {
-                            if (body.status === 200) {
-                                this.props.nickname = String(formdata.get('nickname'));
-                                this.props.email = String(formdata.get('email'));
+                            if (body.status === 200 && nickname && email) {
+                                this.props.nickname = nickname;
+                                this.props.email = email;
                             }
                             res(body);
                         })

@@ -2,6 +2,10 @@
   width: 500px;
   height: fit-content;
 
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
+
   &-item {
     display: flex;
     width: 100%;
@@ -35,7 +39,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       vertical-align: bottom;
-      width: 290px;
+      width: 260px;
       font-weight: 600;
       cursor: pointer;
 
@@ -49,12 +53,18 @@
       overflow: hidden;
       text-overflow: ellipsis;
       vertical-align: bottom;
-      width: 290px;
+      width: 260px;
+    }
+
+    &-playlist {
+      height: 13px;
+      margin: auto 10px auto 13px;
+      cursor: pointer;
     }
 
     &-fav {
       height: 13px;
-      margin: auto 10px auto 13px;
+      margin: auto 13px auto 10px;
       cursor: pointer;
     }
 
@@ -66,7 +76,7 @@
       display: flex;
       border: 1px rgb(65 66 63) solid;
       border-radius: 50px;
-      width: 75px;
+      width: 110px;
       height: fit-content;
     }
   }

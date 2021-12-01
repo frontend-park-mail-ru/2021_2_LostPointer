@@ -11,20 +11,37 @@
     &__placeholder {
       width: 50%;
       height: 100%;
+
+      @media only screen and (max-width: 768px) {
+        display: none;
+      }
     }
 
     &__content {
       margin-left: 60px;
+
+      @media only screen and (max-width: 768px) {
+        margin: 50px 5px 0;
+      }
     }
 
     &__logo {
       display: flex;
+
+      @media only screen and (max-width: 768px) {
+        display: block;
+      }
 
       &-image {
         cursor: pointer;
         width: 272px;
         display: inline-block;
         margin-left: 10px;
+
+        @media only screen and (max-width: 768px) {
+          margin: 0 15%;
+          width: 70%;
+        }
       }
     }
 
@@ -35,6 +52,11 @@
       font-weight: 400;
       margin-top: 20px;
       text-align: center;
+      width: 350px;
+
+      @media only screen and (max-width: 768px) {
+        width: 100%;
+      }
     }
 
     &__description {
@@ -46,6 +68,10 @@
       line-height: 30px;
       width: 350px;
       text-align: center;
+
+      @media only screen and (max-width: 768px) {
+        width: 100%;
+      }
     }
   }
 
@@ -54,6 +80,10 @@
     display: inline-block;
     float: left;
     margin-top: 30px;
+
+    @media only screen and (max-width: 768px) {
+      width: 100%;
+    }
 
     &__invalidities {
       display: flex;
@@ -67,6 +97,14 @@
       margin: 290px 10px 10px;
       color: #969696;
       height: 265px;
+
+      @media only screen and (max-width: 768px) {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        margin: 20px 0;
+        text-align: center;
+      }
 
       & div.invalid {
         color: #ff4d5b;
@@ -89,6 +127,10 @@
       margin: 10px;
       color: #ff4d5b;
       display: block;
+
+      @media only screen and (max-width: 768px) {
+        max-width: 100%;
+      }
 
       &.visible {
         visibility: visible;
@@ -132,6 +174,11 @@
     &__data {
       width: 50%;
       display: flex;
+
+      @media only screen and (max-width: 768px) {
+        width: 100%;
+        display: block;
+      }
     }
   }
 }

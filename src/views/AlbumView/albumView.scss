@@ -1,0 +1,103 @@
+.album {
+  display: flex;
+  flex-direction: column;
+  color: var(--link-color);
+  margin: 10px 10px 0;
+
+  &__content {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    @media only screen and (max-width: 768px) {
+      flex-direction: column;
+    }
+  }
+
+  &__description {
+    display: flex;
+    align-items: center;
+
+    @media only screen and (max-width: 768px) {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    &-title {
+      font-size: 80px;
+      font-family: Montserrat, sans-serif;
+      font-weight: 700;
+      margin: 80px 20px;
+      display: inline-block;
+
+      @media only screen and (max-width: 768px) {
+        margin: 5px 0 20px;
+        font-size: 30px;
+      }
+    }
+
+    &-label {
+      font-size: 20px;
+
+      @media only screen and (max-width: 768px) {
+        font-size: 15px;
+      }
+    }
+
+    &-properties {
+      font-size: 25px;
+      display: block;
+      font-weight: 500;
+      margin: 0 5px;
+
+      @media only screen and (max-width: 768px) {
+        font-size: 15px;
+        margin: 0;
+      }
+    }
+
+    &-avatar {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      background: linear-gradient(180deg, rgba(30, 30, 30, 50%) 0%, rgba(30, 30, 30, 80%) 100%);
+      border-radius: 20px;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    &-img {
+      width: 200px;
+      height: 200px;
+      border-radius: 20px;
+    }
+  }
+
+  &__properties {
+    margin: 0 10px;
+    font-size: 30px;
+    font-family: Montserrat, sans-serif;
+    font-weight: 500;
+  }
+
+  &__background-container {
+    position: absolute;
+    top: -200px;
+    left: 0;
+    z-index: -1;
+    height: 800px;
+    width: 100%;
+  }
+}
+
+.album__content .track-list {
+  width: 600px;
+
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
+}
+
+.album__content .track-list-item__name {
+  width: 400px;
+}

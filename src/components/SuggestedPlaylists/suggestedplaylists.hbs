@@ -1,8 +1,15 @@
 <div class='suggested-playlists'>
-    <div class='suggested-playlists__header'>Your Playlists</div>
+    <div class='suggested-playlists__header'>
+        <div class='suggested-playlists__picker {{#if publicView }}inactive{{/if}} js_own_playlists'>
+            Your playlists
+        </div>
+        <div class='suggested-playlists__picker {{#unless publicView }}inactive{{/unless}} js_public_playlists'>
+            Public playlists
+        </div>
+    </div>
     <div class='suggested-playlists__container'>
         {{#each playlists}}
-            {{{playlist}}}
+            {{{this}}}
         {{/each}}
     </div>
 </div>

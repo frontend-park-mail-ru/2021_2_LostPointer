@@ -1,11 +1,17 @@
 * {
   user-select: none;
+  -webkit-user-select: none;
   margin: 0;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0%);
 }
 
 a,
-a:visited {
-  color: white;
+a:link,
+a:visited,
+a:hover,
+a:active {
+  color: var(--link-color);
+  text-decoration: none;
 }
 
 img {
@@ -26,8 +32,17 @@ img {
   border-radius: 20px;
 }
 
+@media only screen and (max-width: 768px) {
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 :root {
   --accent-color: #cd0138;
+  --link-color: white;
+  --mobile-footer-height: 100px;
 }
 
 body,
@@ -48,6 +63,10 @@ body {
   &__content {
     display: flex;
     height: calc(100% - 80px);
+
+    @media only screen and (max-width: 768px) {
+      height: calc(100% - var(--mobile-footer-height));
+    }
   }
 }
 
@@ -64,6 +83,11 @@ body {
   overflow-y: scroll;
   height: 100%;
   justify-content: space-between;
+
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+    overflow-x: hidden;
+  }
 }
 
 .main-layout {
@@ -75,17 +99,34 @@ body {
 .listen-now__top-albums {
   display: flex;
   justify-content: space-between;
+  min-width: min-content;
+  overflow-x: auto;
+  height: 385px;
+
+  &__compact {
+    display: flex;
+    justify-content: space-between;
+    width: 90vw;
+    margin: 0 0 15px;
+  }
 }
 
 .listen-now__suggested-content {
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+
   margin-top: 50px;
   display: flex;
   justify-content: space-between;
 }
 
 .listen-now {
-  width: 80%;
   margin: 10px 10px 0;
+
+  @media only screen and (min-width: 768px) {
+    width: 80%;
+  }
 }
 
 .hidden {
@@ -125,4 +166,35 @@ body {
 .enabled {
   transition: 0.1s;
   opacity: 100%;
+}
+
+.suggested-tracks {
+
+  &__header {
+    color: white;
+    font-family: Montserrat, sans-serif;
+    font-weight: 700;
+    width: max-content;
+  }
+
+  &-container {
+    margin: 12px 0;
+    background-color: #191919;
+    border-radius: 15px;
+    border: 1px #191919 solid;
+
+    @media only screen and (max-width: 768px) {
+      width: 100%;
+      margin: 0;
+    }
+  }
+}
+
+.suggested-track {
+
+  &-play {
+    height: 70%;
+    cursor: pointer;
+    margin: auto 25px auto 0;
+  }
 }

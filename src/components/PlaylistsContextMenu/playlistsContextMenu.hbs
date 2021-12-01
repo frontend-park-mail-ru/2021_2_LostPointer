@@ -1,0 +1,12 @@
+<div class="menu">
+    <ul class="menu-options">
+        <li class="menu-option js-playlist-create">Add to the new playlist</li>
+        {{#if deleteButtonIsHere}}
+            <li class="menu-option js-playlist-track-remove">Remove from the current playlist</li>
+        {{/if}}
+        <hr/>
+        {{#each options}}
+            <li class="menu-option {{{class}}}" {{#if dataId}}data-id='{{{dataId}}}'{{/if}}>{{{value}}}</li>
+        {{/each}}
+    </ul>
+</div>
