@@ -127,14 +127,16 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.audio.src = this.props.file;
             this.props.right_disabled = true;
             this.props.left_disabled = true;
-            document.title = `${this.props.track} · ${this.props.artist.props.name}`;
+            document.title = 'LostPointer Music';
             this.props.hide_artwork = false;
             this.props.recovered = true;
             this.audio.preload = 'metadata';
-            document.documentElement.style.setProperty(
-                '--artwork-accent-color',
-                this.props.artwork_color
-            );
+            if (this.props.artwork_color) {
+                document.documentElement.style.setProperty(
+                    '--artwork-accent-color',
+                    this.props.artwork_color
+                );
+            }
         }
         return typeof data === 'string';
     }
