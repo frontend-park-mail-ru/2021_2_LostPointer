@@ -56,6 +56,8 @@
 
         &__track {
           display: flex;
+          align-items: center;
+          flex-direction: column;
 
           &__artist {
             color: var(--artist-color);

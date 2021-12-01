@@ -11,7 +11,7 @@ import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { ArtistModel } from 'models/artist';
 
-interface IPlayerComponentProps {
+export interface IPlayerComponentProps {
     artwork_color: string;
     recovered: boolean;
     total_time: string;
@@ -127,7 +127,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.audio.src = this.props.file;
             this.props.right_disabled = true;
             this.props.left_disabled = true;
-            document.title = `${this.props.track} · ${this.props.artist}`;
+            document.title = `${this.props.track} · ${this.props.artist.props.name}`;
             this.props.hide_artwork = false;
             this.props.recovered = true;
             this.audio.preload = 'metadata';
@@ -211,9 +211,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     setEventListeners() {
-        if (this.eventListenersAlreadySet) {
-            return;
-        }
         this.audio.addEventListener('loadedmetadata', () => {
             const totalSeconds = this.audio.duration % 60 | 0;
             const zero = totalSeconds < 10 ? '0' : '';
@@ -232,12 +229,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 .querySelector('.player-artwork')
                 .classList.remove('hidden');
         });
-        document
-            .querySelector('.repeat')
-            .addEventListener('click', this.buttonsHandler);
-        document
-            .querySelector('.shuffle')
-            .addEventListener('click', this.buttonsHandler);
+        document.querySelectorAll('.repeat').forEach((repeat) => {
+            repeat.addEventListener('click', this.buttonsHandler);
+        });
+
+        document.querySelectorAll('.shuffle').forEach((shuffle) => {
+            shuffle.addEventListener('click', this.buttonsHandler);
+        });
         document
             .querySelector('.mute')
             .addEventListener('click', this.buttonsHandler);
@@ -248,6 +246,23 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         const mobileSeekbar = document.querySelector(
             '.mobile-player__progress__bar'
         );
+        const playerElement: HTMLElement =
+            document.querySelector('.mobile-player');
+        const mobileFooter: HTMLElement = document.querySelector(
+            '.mobile-footer__menu'
+        );
+        document
+            .querySelector('.mobile-player__close')
+            .addEventListener('click', () => {
+                playerElement.classList.add('mobile-player__hidden');
+                mobileFooter.classList.remove('mobile-footer__menu__hidden');
+            });
+        document
+            .querySelector('.mobile-footer__player')
+            .addEventListener('click', () => {
+                playerElement.classList.remove('mobile-player__hidden');
+                mobileFooter.classList.add('mobile-footer__menu__hidden');
+            });
         if (mobileSeekbar) {
             mobileSeekbar.addEventListener('click', this.seekbarHandler);
         }
@@ -281,7 +296,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             'nexttrack',
             this.switchTrackHandler
         );
-
+        if (this.eventListenersAlreadySet) {
+            //TODO=Определить правильное положение этого блока в `методе`
+            return;
+        }
         this.globalPlayButtonHandler = (e) => {
             const target = <HTMLImageElement>e.target;
             if (target.classList.contains('top-album__play')) {
@@ -390,6 +408,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         return PlayerTemplate(this.props);
     }
 
+    getNowPlaying(): IPlayerComponentProps {
+        return this.props;
+    }
+
     addHandlers() {
         const shuffle = (array) => {
             let i = array.length;
@@ -457,7 +479,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         };
         this.seekbarHandler = (e: MouseEvent) => this.seek(e.x);
         this.volumeHandler = (e: MouseEvent) => this.volume(e.x);
-        this.playButtonHandler = () => {
+        this.playButtonHandler = (e) => {
+            e.stopPropagation();
             this.props.playing ? this.audio.pause() : this.audio.play();
             this.props.playing = !this.props.playing;
         };

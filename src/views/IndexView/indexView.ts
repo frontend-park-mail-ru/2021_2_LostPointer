@@ -211,25 +211,7 @@ class IndexView extends View<IIndexViewProps> {
                 );
             });
 
-        const playerElement: HTMLElement =
-            document.querySelector('.mobile-player');
-        const mobileFooter: HTMLElement = document.querySelector(
-            '.mobile-footer__menu'
-        );
-        document
-            .querySelector('.mobile-player__close')
-            .addEventListener('click', () => {
-                playerElement.classList.add('mobile-player__hidden');
-                mobileFooter.classList.remove('mobile-footer__menu__hidden');
-            });
-        document
-            .querySelector('.mobile-footer__player')
-            .addEventListener('click', () => {
-                playerElement.classList.remove('mobile-player__hidden');
-                mobileFooter.classList.add('mobile-footer__menu__hidden');
-            });
-
-        player.setup(document.querySelectorAll('.track'));
+        player.setup(document.querySelectorAll('.track')); //TODO=Вынести в сам плеер, при определении новой View выполнять
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
@@ -315,7 +297,7 @@ class IndexView extends View<IIndexViewProps> {
             suggested_playlists: suggestedPlaylists.render(),
             player: player.render(),
             contextMenu: playlistsContextMenu.render(),
-            mobile: mobile.render(),
+            mobile: mobile.set(player.getNowPlaying()).render(),
         });
         TopbarComponent.addHandlers();
         TopbarComponent.didMount();

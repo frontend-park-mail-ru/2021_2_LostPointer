@@ -92,13 +92,23 @@ export class ArtistView extends View<IArtistViewProps> {
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.addEventListener('click', playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu));
+            button.addEventListener(
+                'click',
+                playlistsContextMenu.addTrackToPlaylist.bind(
+                    playlistsContextMenu
+                )
+            );
         });
 
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
-                element.addEventListener('click', playlistsContextMenu.showContextMenu.bind(playlistsContextMenu));
+                element.addEventListener(
+                    'click',
+                    playlistsContextMenu.showContextMenu.bind(
+                        playlistsContextMenu
+                    )
+                );
             });
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
@@ -114,7 +124,9 @@ export class ArtistView extends View<IArtistViewProps> {
             .forEach((element) => {
                 element.removeEventListener(
                     'click',
-                    playlistsContextMenu.showContextMenu.bind(playlistsContextMenu)
+                    playlistsContextMenu.showContextMenu.bind(
+                        playlistsContextMenu
+                    )
                 );
             });
 
@@ -127,7 +139,12 @@ export class ArtistView extends View<IArtistViewProps> {
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.removeEventListener('click', playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu));
+            button.removeEventListener(
+                'click',
+                playlistsContextMenu.addTrackToPlaylist.bind(
+                    playlistsContextMenu
+                )
+            );
         });
 
         this.isLoaded = false;
@@ -159,7 +176,8 @@ export class ArtistView extends View<IArtistViewProps> {
         this.addListeners();
         TopbarComponent.didMount();
 
-        player.setup(document.querySelectorAll('.track-list-item'));
+        player.setEventListeners();
+        player.setup(document.querySelectorAll('.track'));
     }
 }
 

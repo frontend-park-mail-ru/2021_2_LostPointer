@@ -2,15 +2,16 @@ import { Component } from 'components/Component/component';
 
 import MobileFooterTemplate from './mobile.hbs';
 import './mobile.scss';
+import { IPlayerComponentProps } from 'components/Player/player';
 
-interface IMobileFooterProps {
-    nowPlaying: string;
-    liked: boolean;
-}
-
-export class MobileFooter extends Component<IMobileFooterProps> {
+export class MobileFooter extends Component<IPlayerComponentProps> {
     constructor() {
         super();
+    }
+
+    set(props: IPlayerComponentProps) {
+        this.props = { ...props };
+        return this;
     }
 
     render(): string {
