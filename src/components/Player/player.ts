@@ -603,33 +603,33 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     update() {
         const artist = document.getElementById('artist-name');
         if (artist) {
-            artist.innerHTML = this.props.artist.props.name || '';
+            artist.innerHTML = this.props.artist && this.props.artist.props ? this.props.artist.props.name : '';
         }
         const track = document.getElementById('track-name');
         if (track) {
-            track.innerHTML = this.props.track || '';
+            track.innerHTML = this.props.track ? this.props.track : '';
         }
         const mobileTrack = document.querySelectorAll('.mobile-track-title');
         if (mobileTrack) {
             mobileTrack.forEach((title) => {
-                title.innerHTML = this.props.track || '';
+                title.innerHTML = this.props.track ? this.props.track : '';
             });
         }
         const mobileArtist = document.querySelectorAll('.mobile-track-artist');
         if (mobileArtist) {
             mobileArtist.forEach((artist: HTMLElement) => {
-                artist.innerHTML = this.props.artist.props.name || '';
+                artist.innerHTML = this.props.artist && this.props.artist.props ? this.props.artist.props.name : '';
             });
         }
         const totalTime = document.getElementById('player-time-total');
         if (totalTime) {
-            totalTime.innerHTML = this.props.total_time || '';
+            totalTime.innerHTML = this.props.total_time ? this.props.total_time : '';
         }
         const totalTimeMobile = document.querySelector(
             '.mobile-player__progress__time__remaining'
         );
         if (totalTimeMobile) {
-            totalTimeMobile.innerHTML = this.props.total_time || '';
+            totalTimeMobile.innerHTML = this.props.total_time ? this.props.total_time : '';
         }
         const artwork = <HTMLImageElement>(
             document.getElementById('player-artwork')
