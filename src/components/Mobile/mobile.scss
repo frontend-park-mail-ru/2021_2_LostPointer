@@ -197,6 +197,7 @@
         height: var(--mobile-player-seekbar-height);
         background-color: var(--player-seekbar-background);
         border-radius: var(--mobile-player-seekbar-radius);
+        position: relative;
 
         &__elapsed {
           width: var(--seekbar-current);
