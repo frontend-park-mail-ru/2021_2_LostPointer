@@ -131,6 +131,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.props.hide_artwork = false;
             this.props.recovered = true;
             this.audio.preload = 'metadata';
+            document.documentElement.style.setProperty(
+                '--artwork-accent-color',
+                this.props.artwork_color
+            );
         }
         return typeof data === 'string';
     }
@@ -603,7 +607,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     update() {
         const artist = document.getElementById('artist-name');
         if (artist) {
-            artist.innerHTML = this.props.artist && this.props.artist.props ? this.props.artist.props.name : '';
+            artist.innerHTML =
+                this.props.artist && this.props.artist.props
+                    ? this.props.artist.props.name
+                    : '';
         }
         const track = document.getElementById('track-name');
         if (track) {
@@ -618,18 +625,25 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         const mobileArtist = document.querySelectorAll('.mobile-track-artist');
         if (mobileArtist) {
             mobileArtist.forEach((artist: HTMLElement) => {
-                artist.innerHTML = this.props.artist && this.props.artist.props ? this.props.artist.props.name : '';
+                artist.innerHTML =
+                    this.props.artist && this.props.artist.props
+                        ? this.props.artist.props.name
+                        : '';
             });
         }
         const totalTime = document.getElementById('player-time-total');
         if (totalTime) {
-            totalTime.innerHTML = this.props.total_time ? this.props.total_time : '';
+            totalTime.innerHTML = this.props.total_time
+                ? this.props.total_time
+                : '';
         }
         const totalTimeMobile = document.querySelector(
             '.mobile-player__progress__time__remaining'
         );
         if (totalTimeMobile) {
-            totalTimeMobile.innerHTML = this.props.total_time ? this.props.total_time : '';
+            totalTimeMobile.innerHTML = this.props.total_time
+                ? this.props.total_time
+                : '';
         }
         const artwork = <HTMLImageElement>(
             document.getElementById('player-artwork')
