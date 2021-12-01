@@ -243,9 +243,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         document
             .querySelector('.player__seekbar')
             .addEventListener('click', this.seekbarHandler);
-        const mobileSeekbar = document.querySelector(
-            '.mobile-player__progress__bar'
-        );
         const playerElement: HTMLElement =
             document.querySelector('.mobile-player');
         const mobileFooter: HTMLElement = document.querySelector(
@@ -263,9 +260,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 playerElement.classList.remove('mobile-player__hidden');
                 mobileFooter.classList.add('mobile-footer__menu__hidden');
             });
-        if (mobileSeekbar) {
-            mobileSeekbar.addEventListener('click', this.seekbarHandler);
-        }
         document
             .querySelector('.player-volume')
             .addEventListener('click', this.volumeHandler);
@@ -469,7 +463,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     button.classList.add('fa-pause');
                 } else {
                     button.src = '/static/img/pause.svg';
-
                 }
             });
             if (this.nowPlaying) {
