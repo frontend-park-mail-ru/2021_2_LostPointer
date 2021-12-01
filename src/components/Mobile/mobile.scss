@@ -21,7 +21,14 @@
 .mobile {
 
   &-track-title {
-    width: 90%;
+    width: 100%;
+    text-overflow: ellipsis;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  &-track-artist {
+    width: 100%;
     text-overflow: ellipsis;
     text-align: center;
     overflow: hidden;
