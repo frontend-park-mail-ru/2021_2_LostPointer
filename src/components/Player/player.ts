@@ -463,15 +463,29 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         };
         this.playHandler = () => {
             document.querySelectorAll('.player-play').forEach((play) => {
-                (<HTMLImageElement>play).src = '/static/img/pause.svg';
+                const button = <HTMLImageElement>play;
+                if (button.classList.contains('fa-play')) {
+                    button.classList.remove('fa-play');
+                    button.classList.add('fa-pause');
+                } else {
+                    button.src = '/static/img/pause.svg';
+
+                }
             });
             if (this.nowPlaying) {
                 this.nowPlaying.src = '/static/img/pause-outline.svg';
             }
         };
+        //TODO=Объединить в один
         this.pauseHandler = () => {
             document.querySelectorAll('.player-play').forEach((play) => {
-                (<HTMLImageElement>play).src = '/static/img/play.svg';
+                const button = <HTMLImageElement>play;
+                if (button.classList.contains('fa-pause')) {
+                    button.classList.remove('fa-pause');
+                    button.classList.add('fa-play');
+                } else {
+                    button.src = '/static/img/play.svg';
+                }
             });
             if (this.nowPlaying) {
                 this.nowPlaying.src = '/static/img/play-outline.svg';
@@ -557,11 +571,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         let allowed = false;
         if (next) {
             if (this.pos < this.playlist.length - 1) {
-                this.nowPlaying =
-                    this.playlist[
-                        this.playlistIndices[++this.pos]
-                    ].querySelector('.track-play'); //TODO=Сделать плейлист компонентом + потом отрисовывать
-                allowed = true;
+                const nowPlaying =
+                    this.playlist[this.playlistIndices[++this.pos]];
+                if (nowPlaying) {
+                    this.nowPlaying = nowPlaying.querySelector('.track-play'); //TODO=Сделать плейлист компонентом + потом отрисовывать
+                    allowed = true;
+                }
             }
         } else if (this.pos >= 1) {
             this.nowPlaying =

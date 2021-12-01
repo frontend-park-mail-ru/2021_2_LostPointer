@@ -273,8 +273,6 @@ class IndexView extends View<IIndexViewProps> {
                 )
             );
         });
-
-        player.unmount();
     }
 
     render() {

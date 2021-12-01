@@ -1,5 +1,6 @@
 * {
   user-select: none;
+  -webkit-user-select: none;
   margin: 0;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0%);
 }
@@ -85,6 +86,7 @@ body {
 
   @media only screen and (max-width: 768px) {
     flex-direction: column;
+    overflow-x: hidden;
   }
 }
 
@@ -97,6 +99,8 @@ body {
 .listen-now__top-albums {
   display: flex;
   justify-content: space-between;
+  min-width: min-content;
+  overflow-x: auto;
 
   &__compact {
     display: flex;
