@@ -36,15 +36,7 @@ export class TrackModel extends Model<ITrackModel> {
                         JSON.stringify(response)
                     );
                     const tracks: Array<TrackModel> = response
-                        ? response.reduce((acc, elem, index) => {
-                              elem.pos = index;
-                              const artist = new ArtistModel(elem.artist);
-                              const album = new AlbumModel(elem.album);
-                              elem.album = album;
-                              elem.artist = artist;
-                              acc.push(new TrackModel(elem));
-                              return acc;
-                          }, [])
+                        ? TrackModel.serializeList(response)
                         : [];
                     res(tracks);
                 })
@@ -54,15 +46,7 @@ export class TrackModel extends Model<ITrackModel> {
                     );
                     if (response) {
                         const tracks: Array<TrackModel> = response
-                            ? response.reduce((acc, elem, index) => {
-                                  elem.pos = index;
-                                  const artist = new ArtistModel(elem.artist);
-                                  const album = new AlbumModel(elem.album);
-                                  elem.album = album;
-                                  elem.artist = artist;
-                                  acc.push(new TrackModel(elem));
-                                  return acc;
-                              }, [])
+                            ? TrackModel.serializeList(response)
                             : [];
                         res(tracks);
                     } else {
@@ -76,18 +60,23 @@ export class TrackModel extends Model<ITrackModel> {
         return new Promise((resolve) => {
             Request.get(`/album/${id}`).then((response) => {
                 const tracks = response
-                    ? response.tracks.reduce((acc, elem, idx) => {
-                          elem.pos = idx;
-                          elem.album = new AlbumModel(response);
-                          elem.artist = new ArtistModel(response.artist);
-                          const track = new TrackModel(elem);
-                          acc.push(track);
-                          return acc;
-                      }, [])
+                    ? TrackModel.serializeList(response.tracks, response)
                     : [];
                 resolve(tracks);
             });
         });
+    }
+
+    static serializeList(trackList, album = null, artist = null) {
+        return trackList.reduce((acc, elem, index) => {
+                elem.pos = index;
+                elem.album = album ? new AlbumModel(album) : new AlbumModel(elem.album);
+                elem.artist = artist ? new ArtistModel(artist) : new ArtistModel(elem.artist);
+                elem.artwork_color = elem.album.props.artwork_color;
+                acc.push(new TrackModel(elem));
+                return acc;
+            },
+            [],);
     }
 }
 

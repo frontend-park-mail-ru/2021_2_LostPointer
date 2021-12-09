@@ -84,20 +84,7 @@ export class SearchView extends View<ISearchViewProps> {
                         Request.get(`/music/search?text=${text}`)
                             .then((response) => {
                                 this.tracks = response.tracks
-                                    ? response.tracks.reduce(
-                                          (acc, elem, index) => {
-                                              elem.pos = index;
-                                              elem.album = new AlbumModel(
-                                                  elem.album
-                                              );
-                                              elem.artist = new ArtistModel(
-                                                  elem.artist
-                                              );
-                                              acc.push(new TrackModel(elem));
-                                              return acc;
-                                          },
-                                          []
-                                      )
+                                    ? TrackModel.serializeList(response.tracks)
                                     : [];
                                 this.albums = response.albums
                                     ? response.albums.reduce((acc, elem) => {
