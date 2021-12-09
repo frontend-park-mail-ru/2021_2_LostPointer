@@ -17,6 +17,7 @@ export interface ITrackModel {
     lossless: boolean;
     cover: string;
     pos: number;
+    is_in_favorites: boolean;
 }
 
 export class TrackModel extends Model<ITrackModel> {
@@ -94,4 +95,5 @@ export const mockTrack = new TrackModel({
     lossless: false,
     cover: '',
     pos: 0,
+    is_in_favorites: false,
 });

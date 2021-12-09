@@ -21,7 +21,14 @@
             data-id='{{id}}'
             src='/static/img/playlist.svg'
         />
-        <img alt class='track-fav' src='/static/img/favorite.svg' />
+        <img
+            alt class='track-fav'
+            {{# if is_in_favorites}}
+                src='/static/img/favorite_green.svg'
+            {{ else }}
+                src='/static/img/favorite.svg'
+            {{/if}}
+        />
         <img
             alt
             class='track-play'

@@ -12,6 +12,7 @@ interface ITrackProps {
     file: string;
     pos: number;
     album: string;
+    is_in_favorites: boolean;
 }
 
 export class TrackComponent extends Component<ITrackProps> {
