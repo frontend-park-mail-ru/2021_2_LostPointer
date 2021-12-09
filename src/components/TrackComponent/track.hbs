@@ -23,7 +23,9 @@
         />
         <img
             alt class='track-fav'
+            data-id='{{id}}'
             {{# if is_in_favorites}}
+                data-in_favorites='{{is_in_favorites}}'
                 src='/static/img/favorite_green.svg'
             {{ else }}
                 src='/static/img/favorite.svg'
