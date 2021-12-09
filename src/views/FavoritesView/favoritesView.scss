@@ -1,0 +1,69 @@
+.__web-inspector-hide-shortcut__,
+.__web-inspector-hide-shortcut__ *,
+.__web-inspector-hidebefore-shortcut__::before,
+.__web-inspector-hideafter-shortcut__::after {
+  visibility: hidden;
+}
+
+.favorites {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  margin-left: 25px;
+  width: 100%;
+
+  @media only screen and (max-width: 768px) {
+    width: auto;
+    margin: 10px 10px 0;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    @media only screen and (max-width: 768px) {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+
+  &__suggested-tracks-container {
+    margin: 12px 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    border: 1px rgb(44 44 44) solid;
+    background: rgba(0 0 0 / 50%);
+    backdrop-filter: blur(20px);
+  }
+
+  &__description {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+
+    @media only screen and (max-width: 768px) {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    &-title {
+      font-size: 80px;
+      font-family: Montserrat, sans-serif;
+      font-weight: 700;
+
+      @media only screen and (max-width: 768px) {
+        font-size: 30px;
+      }
+    }
+  }
+}
+
+.favorites__content .track-list {
+  width: 600px;
+
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
+}

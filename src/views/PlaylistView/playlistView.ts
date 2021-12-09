@@ -16,7 +16,6 @@ import './playlistView.scss';
 import mobile from 'components/Mobile/mobile';
 
 // TODO аватары пользователей-создателей плейлиста
-// TODO! ссылки на альбомы на альбомах в треклисте
 // TODO рефактор вьюх по аналогии с Search
 
 interface IPlaylistViewProps {

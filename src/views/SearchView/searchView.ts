@@ -13,11 +13,11 @@ import TopbarComponent from 'components/Topbar/topbar';
 import sidebar from 'components/Sidebar/sidebar';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
+import IndexTemplate from 'views/IndexView/indexView.hbs';
+import mobile from 'components/Mobile/mobile';
 
 import SearchViewTemplate from './searchView.hbs';
 import './searchView.scss';
-import IndexTemplate from 'views/IndexView/indexView.hbs';
-import mobile from 'components/Mobile/mobile';
 
 const SEARCH_TIMEOUT = 200;
 
