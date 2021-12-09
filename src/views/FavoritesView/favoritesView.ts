@@ -15,6 +15,8 @@ import routerStore from 'services/router/routerStore';
 
 import FavoritesViewTemplate from './favoritesView.hbs';
 import './favoritesView.scss';
+import { TrackModel } from 'models/track';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 // TODO service worker
 
@@ -23,10 +25,12 @@ import './favoritesView.scss';
 // TODO this.isLoaded - тоже мб не нужен
 
 
-export class FavoritesView extends View<any> {
+export class FavoritesView extends View<never> {
     private userPlaylists: Array<PlaylistModel>;
 
     addListeners() {
+        TrackComponent.addToggleFavorListeners();
+
         // TODO повторяющийся код для добавления обработчиков добавления в плейлист - вынести
         document
             .querySelectorAll('.js-playlist-track-add')
@@ -64,6 +68,8 @@ export class FavoritesView extends View<any> {
     }
 
     unmount() {
+        TrackComponent.removeToggleFavorListeners();
+
         document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });

@@ -18,6 +18,7 @@ import mobile from 'components/Mobile/mobile';
 
 import SearchViewTemplate from './searchView.hbs';
 import './searchView.scss';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 const SEARCH_TIMEOUT = 200;
 
@@ -149,6 +150,9 @@ export class SearchView extends View<ISearchViewProps> {
     }
 
     update() {
+        if (store.get('authenticated')) {
+            TrackComponent.removeToggleFavorListeners();
+        }
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
@@ -227,6 +231,9 @@ export class SearchView extends View<ISearchViewProps> {
                     )
                 );
             });
+        if (store.get('authenticated')) {
+            TrackComponent.addToggleFavorListeners();
+        }
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });

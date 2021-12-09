@@ -14,6 +14,7 @@ import store from 'services/store/store';
 
 import AlbumTemplate from './albumView.hbs';
 import './albumView.scss';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 interface IAlbumViewProps {
     authenticated: boolean;
@@ -64,6 +65,9 @@ export class AlbumView extends View<IAlbumViewProps> {
     }
 
     addListeners() {
+        if (store.get('authenticated')) {
+            TrackComponent.addToggleFavorListeners();
+        }
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
@@ -131,6 +135,10 @@ export class AlbumView extends View<IAlbumViewProps> {
                 )
             );
         });
+
+        if (store.get('authenticated')) {
+            TrackComponent.removeToggleFavorListeners();
+        }
 
         this.isLoaded = false;
     }

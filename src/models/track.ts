@@ -1,5 +1,5 @@
 import { Model } from 'models/model';
-import Request from 'services/request/request';
+import Request, { IResponseBody } from 'services/request/request';
 import { AlbumModel, mockAlbum } from 'models/album';
 import { ArtistModel, mockArtist } from 'models/artist';
 
@@ -66,6 +66,24 @@ export class TrackModel extends Model<ITrackModel> {
                 resolve(tracks);
             });
         });
+    }
+
+    static addInFavorites(id: number): Promise<IResponseBody> {
+        return new Promise<IResponseBody>((res) => {
+            Request.post(`/track/like/${id}`)
+                .then((response) => {
+                    res(response);
+                })
+        })
+    }
+
+    static removeFromFavorites(id: number): Promise<IResponseBody> {
+        return new Promise<IResponseBody>((res) => {
+            Request.delete(`/track/like/${id}`)
+                .then((response) => {
+                    res(response);
+                })
+        })
     }
 
     static serializeList(trackList, album = null, artist = null) {

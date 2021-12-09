@@ -14,6 +14,7 @@ import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsConte
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
 import mobile from 'components/Mobile/mobile';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 // TODO аватары пользователей-создателей плейлиста
 // TODO рефактор вьюх по аналогии с Search
@@ -413,6 +414,9 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     addListeners() {
+        if (store.get('authenticated')) {
+            TrackComponent.addToggleFavorListeners();
+        }
         if (this.playlist.getProps().is_own) {
             const link = document.querySelector(
                 '.editwindow__link'
@@ -583,6 +587,10 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         );
         if (link) {
             link.removeEventListener('click', this.copyLink.bind(this));
+        }
+
+        if (store.get('authenticated')) {
+            TrackComponent.removeToggleFavorListeners();
         }
 
         this.isLoaded = false;
