@@ -32,18 +32,12 @@ export class TrackComponent extends Component<ITrackProps> {
         if (event.target.attributes.getNamedItem('data-in_favorites')) {
             TrackModel.removeFromFavorites(trackId).then(() => {
                 event.target.removeAttribute('data-in_favorites');
-                event.target.src = event.target.src.replace(
-                    'favorite_green.svg',
-                    'favorite.svg'
-                );
+                event.target.src = `${window.location.origin}/static/img/favorite.svg`;
             });
         } else {
             TrackModel.addInFavorites(trackId).then(() => {
                 event.target.setAttribute('data-in_favorites', 'true');
-                event.target.src = event.target.src.replace(
-                    'favorite.svg',
-                    'favorite_green.svg'
-                );
+                event.target.src = `${window.location.origin}/static/img/favorite_green.svg`;
             });
         }
     }
