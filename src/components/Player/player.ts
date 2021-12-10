@@ -11,6 +11,9 @@ import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { ArtistModel } from 'models/artist';
 
+const SWITCH_TRACK = 0;
+const TIMEUPDATE = 1;
+
 export interface IPlayerComponentProps {
     artwork_color: string;
     recovered: boolean;
@@ -205,7 +208,16 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
         document.getElementById('player-artwork').style.display = '';
         document.getElementById('mobile-player-artwork').style.display = '';
-        this.audio.play().then(() => (this.props.playing = true));
+        this.audio.play().then(() => {
+            this.props.playing = true;
+            this.bc.postMessage({
+                ...this.props,
+                type: SWITCH_TRACK,
+                audio_src: this.audio.src,
+                playlist: this.playlist.toString(),
+            });
+            console.log('Posted 1 message');
+        });
     }
 
     unmount() {
@@ -482,9 +494,11 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             if (this.nowPlaying) {
                 this.nowPlaying.src = '/static/img/pause-outline.svg';
             }
+            this.bc.postMessage(this.props);
         };
         //TODO=Объединить в один
         this.pauseHandler = () => {
+            console.log('pause');
             document.querySelectorAll('.player-play').forEach((play) => {
                 const button = <HTMLImageElement>play;
                 if (button.classList.contains('fa-pause')) {
@@ -497,6 +511,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             if (this.nowPlaying) {
                 this.nowPlaying.src = '/static/img/play-outline.svg';
             }
+            this.bc.postMessage(this.props);
         };
         this.seekbarHandler = (e: MouseEvent) => this.seek(e.x);
         this.volumeHandler = (e: MouseEvent) => this.volume(e.x);
@@ -537,7 +552,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 mobileTime.innerHTML = this.props.current_time;
             }
             this.props.playerCurrentTime = this.audio.currentTime;
-            this.bc.postMessage(this.props);
+            this.bc.postMessage({ ...this.props, type: TIMEUPDATE });
             this.saveLastPlayed();
         };
         this.resizeHandler = () => {
@@ -566,9 +581,15 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         };
         console.log('added handler');
         this.bc.onmessage = (event) => {
-            console.log(event);
-            this.props = event.data;
-            this.update();
+            switch (event.data.type) {
+                case TIMEUPDATE:
+                    console.log(event.data);
+                    this.props = event.data;
+                    this.update();
+                    break;
+                case SWITCH_TRACK:
+                    break;
+            }
         };
     }
 
@@ -660,6 +681,18 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         const mobileArtwork = <HTMLImageElement>(
             document.getElementById('mobile-player-artwork')
         );
+        const right = document.getElementById('player-right');
+        const left = document.getElementById('player-left');
+        if (this.props.right_disabled) {
+            right.classList.add('disabled');
+        } else {
+            right.classList.remove('disabled');
+        }
+        if (this.props.left_disabled) {
+            left.classList.add('disabled');
+        } else {
+            left.classList.remove('disabled');
+        }
         if (this.props.hide_artwork) {
             if (artwork) {
                 artwork.classList.add('hidden');
