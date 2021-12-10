@@ -239,6 +239,11 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 .querySelector('.player-artwork')
                 .classList.remove('hidden');
         });
+
+        document.querySelectorAll('.player-fav').forEach((favorites) => {
+            favorites.addEventListener('click', this.buttonsHandler);
+        });
+
         document.querySelectorAll('.repeat').forEach((repeat) => {
             repeat.addEventListener('click', this.buttonsHandler);
         });
@@ -473,6 +478,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 (element as HTMLImageElement).src = `/static/img/${
                     this.audio.muted ? 'muted.svg' : 'volume.svg'
                 }`;
+            } else if (element.classList.contains('player-fav')) {
+                console.log('knopka ne pashet');
             }
         };
         this.playHandler = () => {
