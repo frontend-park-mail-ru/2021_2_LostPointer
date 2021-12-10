@@ -1,5 +1,3 @@
-// TODO хранить здесь также и роуты для апи
-
 const routerStore = {
     artist: '/artist',
     album: '/album',

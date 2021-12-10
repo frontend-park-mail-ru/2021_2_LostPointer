@@ -17,17 +17,12 @@ import { TrackComponent } from 'components/TrackComponent/track';
 import FavoritesViewTemplate from './favoritesView.hbs';
 import './favoritesView.scss';
 
-// TODO для рефактора:
-// TODO Props'ы - нужны ли они, также как и authenticated в них и в ctor'е
-// TODO this.isLoaded - тоже мб не нужен
-
 export class FavoritesView extends View<never> {
     private userPlaylists: Array<PlaylistModel>;
 
     addListeners() {
         TrackComponent.addToggleFavorListeners();
 
-        // TODO повторяющийся код для добавления обработчиков добавления в плейлист - вынести
         document
             .querySelectorAll('.js-playlist-track-add')
             .forEach((button) => {
@@ -46,7 +41,7 @@ export class FavoritesView extends View<never> {
                     playlistsContextMenu
                 )
             );
-        // TODO повторяющийся код для добавления обработчиков вызова контекстного меню - вынести
+
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
@@ -57,7 +52,7 @@ export class FavoritesView extends View<never> {
                     )
                 );
             });
-        // TODO повторяющийся код для обработки ошибки загрузки изображений - вынести
+        //
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
@@ -69,18 +64,14 @@ export class FavoritesView extends View<never> {
         document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
-        // TODO удалять обработчики вызова контекстного меню - будет повторяющийся код - вынести
-        // TODO удалять обработчики добавления в плейлист - будет повторяющийся код - вынести
     }
 
     render(): void {
-        // TODO повторяющийся код для проверки авторизации - мб тоже вынести
         if (!store.get('authenticated')) {
             router.go(routerStore.signin);
             return;
         }
 
-        // TODO повторяющийся код для рендера вьюх - вынести
         PlaylistModel.getUserPlaylists()
             .then((playlists) => {
                 this.userPlaylists = playlists;
@@ -104,7 +95,6 @@ export class FavoritesView extends View<never> {
                     TopbarComponent.addHandlers();
                 }
 
-                // TODO в некоторых вьюхах кнопка удаления из текущего плейлиста не удаляется
                 playlistsContextMenu.deleteRemoveButton();
                 document.querySelector('.js-menu-container').innerHTML =
                     playlistsContextMenu.render();
@@ -125,7 +115,6 @@ export class FavoritesView extends View<never> {
             });
     }
 
-    // TODO мб не нужон, тогда надо будет выпилить из базового класса
     didMount(): void {
         console.log('not implemented');
     }
