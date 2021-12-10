@@ -17,8 +17,6 @@ import { TrackComponent } from 'components/TrackComponent/track';
 import FavoritesViewTemplate from './favoritesView.hbs';
 import './favoritesView.scss';
 
-// TODO service worker
-
 // TODO для рефактора:
 // TODO Props'ы - нужны ли они, также как и authenticated в них и в ctor'е
 // TODO this.isLoaded - тоже мб не нужен

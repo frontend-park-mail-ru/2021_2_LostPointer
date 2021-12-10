@@ -20,6 +20,7 @@ const apiPlaylistRegex = /^http[s]?:\/.+\/api\/v1\/playlists\/\d+$/gm;
 const apiUserPlaylistsRegex = /^http[s]?:\/.+\/api\/v1\/playlists$/gm;
 const apiSettingsRegex = /^http[s]?:\/.+\/api\/v1\/user\/settings$/gm;
 const staticRegex = /^http[s]?:\/.+\/static\/\w+\/.+\.webp$/gm;
+const apiFavoritesRegex = /^http[s]?:\/.+\/api\/v1\/track\/favorites$/gm;
 
 const isUrlToCache = (url) => {
     const regexes = [
@@ -29,6 +30,7 @@ const isUrlToCache = (url) => {
         apiPlaylistRegex,
         apiUserPlaylistsRegex,
         apiSettingsRegex,
+        apiFavoritesRegex,
     ];
     return regexes.reduce((prevMatch, regex) => {
         return regex.exec(url) || prevMatch;
@@ -51,21 +53,30 @@ self.addEventListener('fetch', (event) => {
         const frontPlaylistMatch = frontPlaylistRegex.exec(event.request.url);
         if (frontArtistMatch && !apiArtistRegex.exec(event.request.url)) {
             event.respondWith(
-                caches.match(new Request(frontArtistMatch[1])).then((cachedResponse) => {
-                    return cachedResponse;
-                })
+                caches
+                    .match(new Request(frontArtistMatch[1]))
+                    .then((cachedResponse) => {
+                        return cachedResponse;
+                    })
             );
         } else if (frontAlbumMatch && !apiAlbumRegex.exec(event.request.url)) {
             event.respondWith(
-                caches.match(new Request(frontAlbumMatch[1])).then((cachedResponse) => {
-                    return cachedResponse;
-                })
+                caches
+                    .match(new Request(frontAlbumMatch[1]))
+                    .then((cachedResponse) => {
+                        return cachedResponse;
+                    })
             );
-        } else if (frontPlaylistMatch && !apiPlaylistRegex.exec(event.request.url)) {
+        } else if (
+            frontPlaylistMatch &&
+            !apiPlaylistRegex.exec(event.request.url)
+        ) {
             event.respondWith(
-                caches.match(new Request(frontPlaylistMatch[1])).then((cachedResponse) => {
-                    return cachedResponse;
-                })
+                caches
+                    .match(new Request(frontPlaylistMatch[1]))
+                    .then((cachedResponse) => {
+                        return cachedResponse;
+                    })
             );
         } else {
             event.respondWith(
