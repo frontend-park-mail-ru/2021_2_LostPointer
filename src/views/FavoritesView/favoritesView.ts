@@ -12,18 +12,16 @@ import { TrackList } from 'components/TrackList/tracklist';
 import { UserModel } from 'models/user';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 import FavoritesViewTemplate from './favoritesView.hbs';
 import './favoritesView.scss';
-import { TrackModel } from 'models/track';
-import { TrackComponent } from 'components/TrackComponent/track';
 
 // TODO service worker
 
 // TODO для рефактора:
 // TODO Props'ы - нужны ли они, также как и authenticated в них и в ctor'е
 // TODO this.isLoaded - тоже мб не нужен
-
 
 export class FavoritesView extends View<never> {
     private userPlaylists: Array<PlaylistModel>;
@@ -113,20 +111,19 @@ export class FavoritesView extends View<never> {
                 document.querySelector('.js-menu-container').innerHTML =
                     playlistsContextMenu.render();
 
-        // вот до сюда выносить
+                // вот до сюда выносить
 
-                UserModel.getFavorites()
-                    .then((favoritesTracks) => {
-                        document.querySelector('.main-layout__content').innerHTML = FavoritesViewTemplate({
+                UserModel.getFavorites().then((favoritesTracks) => {
+                    document.querySelector('.main-layout__content').innerHTML =
+                        FavoritesViewTemplate({
                             trackList: new TrackList({
-                                    title: 'Tracks',
-                                    tracks: favoritesTracks,
-                                })
-                                .render(),
+                                title: 'Tracks',
+                                tracks: favoritesTracks,
+                            }).render(),
                         });
-                        player.setup(document.querySelectorAll('.track'));
-                        this.addListeners();
-                    });
+                    player.setup(document.querySelectorAll('.track'));
+                    this.addListeners();
+                });
             });
     }
 

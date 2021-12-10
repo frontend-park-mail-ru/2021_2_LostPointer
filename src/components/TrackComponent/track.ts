@@ -1,10 +1,10 @@
 import { Component } from 'components/Component/component';
 
 import { ArtistModel } from 'models/artist';
+import { TrackModel } from 'models/track';
 
 import TrackTemplate from './track.hbs';
 import './track.scss';
-import { TrackModel } from 'models/track';
 
 interface ITrackProps {
     cover: string;
@@ -26,15 +26,25 @@ export class TrackComponent extends Component<ITrackProps> {
     }
 
     static toggleFavor(event) {
-        const trackId = parseInt(event.target.attributes.getNamedItem("data-id").value);
-        if (event.target.attributes.getNamedItem("data-in_favorites")) {
-            TrackModel.removeFromFavorites(trackId);
-            event.target.removeAttribute('data-in_favorites');
-            event.target.src = event.target.src.replace('favorite_green.svg', 'favorite.svg');
+        const trackId = parseInt(
+            event.target.attributes.getNamedItem('data-id').value
+        );
+        if (event.target.attributes.getNamedItem('data-in_favorites')) {
+            TrackModel.removeFromFavorites(trackId).then(() => {
+                event.target.removeAttribute('data-in_favorites');
+                event.target.src = event.target.src.replace(
+                    'favorite_green.svg',
+                    'favorite.svg'
+                );
+            });
         } else {
-            TrackModel.addInFavorites(trackId);
-            event.target.setAttribute('data-in_favorites', 'true');
-            event.target.src = event.target.src.replace('favorite.svg', 'favorite_green.svg');
+            TrackModel.addInFavorites(trackId).then(() => {
+                event.target.setAttribute('data-in_favorites', 'true');
+                event.target.src = event.target.src.replace(
+                    'favorite.svg',
+                    'favorite_green.svg'
+                );
+            });
         }
     }
 
