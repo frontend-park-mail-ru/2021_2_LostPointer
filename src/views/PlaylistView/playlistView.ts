@@ -72,6 +72,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                     type: 'text',
                     placeholder: 'Title',
                     value: props.title,
+                    maxlength: 30,
                 }).render(),
             ];
             playlistsContextMenu.addRemoveButton();
@@ -152,7 +153,9 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             .updateInformation(
                 null,
                 // FIXME костыль, потому что бэк присваивает is_public значение false, если он не указан в запросе
-                this.playlist.getProps().is_public ? this.playlist.getProps().is_public : null,
+                this.playlist.getProps().is_public
+                    ? this.playlist.getProps().is_public
+                    : null,
                 file
             )
             .then((body) => {
@@ -201,8 +204,13 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         const titleInput = event.target.querySelector('input[name="title"]');
         const msg = event.target.querySelector('.editwindow__form-msg');
         msg.innerHTML = '';
-        if (!titleInput.value || titleInput.value.length < 4 || titleInput.value.length > 30) {
-            msg.innerHTML = 'The length of title must be from 3 to 30 characters';
+        if (
+            !titleInput.value ||
+            titleInput.value.length < 4 ||
+            titleInput.value.length > 30
+        ) {
+            msg.innerHTML =
+                'The length of title must be from 3 to 30 characters';
             msg.classList.add('fail', 'visible');
             return;
         }
@@ -214,7 +222,9 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             .updateInformation(
                 titleInput.value,
                 // FIXME костыль, потому что бэк присваивает is_public значение false, если он не указан в запросе
-                this.playlist.getProps().is_public ? this.playlist.getProps().is_public : null,
+                this.playlist.getProps().is_public
+                    ? this.playlist.getProps().is_public
+                    : null
             )
             .then((body) => {
                 // при успехе ответ возвращает только artwork, без status
@@ -266,9 +276,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             return;
         }
 
-        const deleteBtn = document.querySelector(
-            '.editwindow__delete'
-        );
+        const deleteBtn = document.querySelector('.editwindow__delete');
         if (event.target == deleteBtn) {
             return;
         }
@@ -343,10 +351,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         msg.innerHTML = '';
 
         this.playlist
-            .updateInformation(
-                null,
-                event.target.checked,
-            )
+            .updateInformation(null, event.target.checked)
             .then((body) => {
                 // при успехе ответ возвращает только artwork, без status
                 if (!body.status) {
@@ -354,7 +359,8 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                     if (event.target.checked) {
                         navigator.clipboard.writeText(window.location.href);
                         (<HTMLElement>link).style.visibility = 'visible';
-                        (<HTMLElement>msg).innerText = 'Link copied to clipboard';
+                        (<HTMLElement>msg).innerText =
+                            'Link copied to clipboard';
                     } else {
                         (<HTMLElement>link).style.visibility = 'hidden';
                         (<HTMLElement>msg).innerText = 'Changed successfully';
@@ -374,20 +380,24 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     removeTrack() {
-        playlistsContextMenu.removeTrackFromPlaylist(this.playlist)
+        playlistsContextMenu
+            .removeTrackFromPlaylist(this.playlist)
             .then((response) => {
                 if (response.status === 200) {
                     this.trackList.set({
                         title: 'Tracks',
                         tracks: this.playlist.getProps().tracks,
                     });
-                    const trackList = document.querySelector('.playlist__content');
+                    const trackList =
+                        document.querySelector('.playlist__content');
                     document
                         .querySelectorAll('.track-list-item-playlist')
                         .forEach((element) => {
                             element.removeEventListener(
                                 'click',
-                                playlistsContextMenu.showContextMenu.bind(playlistsContextMenu)
+                                playlistsContextMenu.showContextMenu.bind(
+                                    playlistsContextMenu
+                                )
                             );
                         });
                     trackList.innerHTML = this.trackList.render();
@@ -396,12 +406,13 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                         .forEach((element) => {
                             element.addEventListener(
                                 'click',
-                                playlistsContextMenu.showContextMenu.bind(playlistsContextMenu)
+                                playlistsContextMenu.showContextMenu.bind(
+                                    playlistsContextMenu
+                                )
                             );
                         });
                 }
             });
-
     }
 
     copyLink() {
@@ -415,9 +426,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
 
     addListeners() {
         if (this.playlist.getProps().is_own) {
-            const link = document.querySelector(
-                '.editwindow__link'
-            );
+            const link = document.querySelector('.editwindow__link');
             link.addEventListener('click', this.copyLink.bind(this));
 
             const deleteAvatarBtn = document.querySelector(
@@ -436,9 +445,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
                 this.togglePublicity.bind(this)
             );
 
-            const deleteBtn = document.querySelector(
-                '.editwindow__delete'
-            );
+            const deleteBtn = document.querySelector('.editwindow__delete');
             deleteBtn.addEventListener(
                 'click',
                 this.deleteButtonClick.bind(this)
@@ -483,7 +490,12 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
-                element.addEventListener('click', playlistsContextMenu.showContextMenu.bind(playlistsContextMenu));
+                element.addEventListener(
+                    'click',
+                    playlistsContextMenu.showContextMenu.bind(
+                        playlistsContextMenu
+                    )
+                );
             });
 
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
@@ -496,7 +508,12 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             '.js-playlist-track-add'
         );
         addTrackToPlaylistBtns.forEach((button) => {
-            button.addEventListener('click', playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu));
+            button.addEventListener(
+                'click',
+                playlistsContextMenu.addTrackToPlaylist.bind(
+                    playlistsContextMenu
+                )
+            );
         });
 
         document.querySelectorAll('img').forEach(function (img) {
@@ -513,75 +530,80 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             .forEach((element) => {
                 element.removeEventListener(
                     'click',
-                    playlistsContextMenu.showContextMenu.bind(playlistsContextMenu)
+                    playlistsContextMenu.showContextMenu.bind(
+                        playlistsContextMenu
+                    )
                 );
             });
 
         playlistsContextMenu.deleteRemoveButton();
 
         if (this.playlist && this.playlist.getProps().is_own) {
-            document.querySelector(
-                '.js-playlist-track-remove'
-            ).removeEventListener(
-                'click',
-                this.removeTrack.bind(this)
-            );
+            document
+                .querySelector('.js-playlist-track-remove')
+                .removeEventListener('click', this.removeTrack.bind(this));
 
-            document.querySelector(
-                '.playlist__description-avatar'
-            ).removeEventListener(
-                'click',
-                this.displayEditWindow.bind(this)
-            );
+            document
+                .querySelector('.playlist__description-avatar')
+                .removeEventListener(
+                    'click',
+                    this.displayEditWindow.bind(this)
+                );
 
-            document.querySelector(
-                '.playlist__description-edit-btn'
-            ).removeEventListener(
-                'click',
-                this.displayEditWindow.bind(this)
-            );
+            document
+                .querySelector('.playlist__description-edit-btn')
+                .removeEventListener(
+                    'click',
+                    this.displayEditWindow.bind(this)
+                );
 
-            document.querySelector('input[name="file"]').removeEventListener(
-                'change',
-                this.uploadAvatarFile.bind(this)
-            );
+            document
+                .querySelector('input[name="file"]')
+                .removeEventListener(
+                    'change',
+                    this.uploadAvatarFile.bind(this)
+                );
 
-            document.querySelector('.editwindow__form').removeEventListener(
-                'submit',
-                this.submitChangePlaylistInfoForm.bind(this)
-            );
+            document
+                .querySelector('.editwindow__form')
+                .removeEventListener(
+                    'submit',
+                    this.submitChangePlaylistInfoForm.bind(this)
+                );
 
-            document.querySelector(
-                '.editwindow__delete'
-            ).removeEventListener(
-                'click',
-                this.deleteButtonClick.bind(this)
-            );
+            document
+                .querySelector('.editwindow__delete')
+                .removeEventListener(
+                    'click',
+                    this.deleteButtonClick.bind(this)
+                );
 
-            document.querySelector(
-                '.editwindow__avatar-delete'
-            ).removeEventListener(
-                'click',
-                this.deleteAvatar.bind(this)
-            );
+            document
+                .querySelector('.editwindow__avatar-delete')
+                .removeEventListener('click', this.deleteAvatar.bind(this));
         }
 
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
         if (createPlaylistBtn) {
             createPlaylistBtn.removeEventListener(
                 'click',
-                playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
+                playlistsContextMenu.createNewPlaylist.bind(
+                    playlistsContextMenu
+                )
             );
         }
-        document.querySelectorAll(
-            '.js-playlist-track-add'
-        ).forEach((button) => {
-            button.removeEventListener('click', playlistsContextMenu.addTrackToPlaylist.bind(playlistsContextMenu));
-        });
+        document
+            .querySelectorAll('.js-playlist-track-add')
+            .forEach((button) => {
+                button.removeEventListener(
+                    'click',
+                    playlistsContextMenu.addTrackToPlaylist.bind(
+                        playlistsContextMenu
+                    )
+                );
+            });
 
-        const link = document.querySelector(
-            '.editwindow__link'
-        );
+        const link = document.querySelector('.editwindow__link');
         if (link) {
             link.removeEventListener('click', this.copyLink.bind(this));
         }

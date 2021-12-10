@@ -59,6 +59,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private seekbarMobileCurrent: HTMLElement;
     private globalPlayButtonHandler: EventListenerOrEventListenerObject;
     private eventListenersAlreadySet: boolean;
+    private bc: BroadcastChannel;
 
     constructor(props?: IPlayerComponentProps) {
         super(props);
@@ -78,6 +79,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.gotSeekPos = false;
         this.gotVolPos = false;
         this.props.playing = false;
+        this.bc = new BroadcastChannel('lostpointer_player');
     }
 
     seek(xPos) {
@@ -535,6 +537,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 mobileTime.innerHTML = this.props.current_time;
             }
             this.props.playerCurrentTime = this.audio.currentTime;
+            this.bc.postMessage(this.props);
             this.saveLastPlayed();
         };
         this.resizeHandler = () => {
@@ -560,6 +563,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         };
         this.endedHandler = () => {
             this.switchTrack(true);
+        };
+        console.log('added handler');
+        this.bc.onmessage = (event) => {
+            console.log(event);
+            this.props = event.data;
+            this.update();
         };
     }
 
