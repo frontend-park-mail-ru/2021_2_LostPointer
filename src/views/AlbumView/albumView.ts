@@ -22,6 +22,7 @@ export class AlbumView extends View<IAlbumViewProps> {
     private trackList: TrackList;
     private userPlaylists: Array<PlaylistModel>;
     private tracks: Array<TrackModel>;
+    private albumID: string;
 
     constructor(props?: IAlbumViewProps) {
         super(props);
@@ -29,16 +30,13 @@ export class AlbumView extends View<IAlbumViewProps> {
     }
 
     didMount() {
-        if (this.isLoaded) {
-            return;
-        }
         const regex = /^\/album\/(\d+)$/gm;
         const match = regex.exec(window.location.pathname);
         if (!match) {
             router.go(routerStore.dashboard);
         }
         const albumId = match[1];
-
+        this.albumID = albumId;
         const album = AlbumModel.getAlbum(albumId).then((album) => {
             if (!album) {
                 router.go(routerStore.dashboard);
@@ -105,7 +103,10 @@ export class AlbumView extends View<IAlbumViewProps> {
     }
 
     render() {
-        this.didMount();
+        if (!this.isLoaded) {
+            this.didMount();
+            return;
+        }
         playlistsContextMenu.updatePlaylists(this.userPlaylists);
         baseView.render();
         document.querySelector('.main-layout__content').innerHTML =

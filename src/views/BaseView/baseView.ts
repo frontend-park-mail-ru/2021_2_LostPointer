@@ -9,7 +9,7 @@ import mobile from 'components/Mobile/mobile';
 import BaseViewTemplate from './baseView.hbs';
 import './baseView.scss';
 
-class BaseView extends View<any> {
+class BaseView extends View<never> {
     private mounted: boolean;
 
     constructor() {
