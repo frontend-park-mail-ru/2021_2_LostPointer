@@ -18,6 +18,7 @@ import SigninComponentTemplate from './signinView.hbs';
 import './signinView.scss';
 import { UserModel } from 'models/user';
 import store from 'services/store/store';
+import baseView from 'views/BaseView/baseView';
 
 interface ISigninComponentProps {
     placeholder_img: string;
@@ -42,6 +43,7 @@ export class SigninView extends View<ISigninComponentProps> {
     }
 
     render() {
+        baseView.unmount();
         if (store.get('authenticated')) {
             router.go(routerStore.dashboard);
             return;

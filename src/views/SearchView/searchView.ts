@@ -152,7 +152,7 @@ export class SearchView extends View<ISearchViewProps> {
                         contextMenu: playlistsContextMenu.render(),
                         mobile: mobile.set(player.getNowPlaying()).render(),
                     });
-                    player.addHandlers();
+                    player.setEventListeners();
                     TopbarComponent.addHandlers();
                 }
                 document.querySelector('.main-layout__content').innerHTML = '';
@@ -229,7 +229,6 @@ export class SearchView extends View<ISearchViewProps> {
             albums: this.data.albums,
             not_found: this.noResults,
         });
-        player.setup(document.querySelectorAll('.track'));
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
@@ -247,6 +246,10 @@ export class SearchView extends View<ISearchViewProps> {
 
     didMount() {
         console.log('not implemented');
+    }
+
+    getTracksContext(): TrackModel[] {
+        return this.tracks;
     }
 }
 

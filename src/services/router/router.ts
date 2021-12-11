@@ -63,6 +63,10 @@ class Router {
         window.addEventListener('popstate', this.route.bind(this));
         return this;
     }
+
+    getCurrentView() {
+        return this.currentView;
+    }
 }
 
 export default new Router();

@@ -1,19 +1,16 @@
 import { View } from 'views/View/view';
-import sidebar from 'components/Sidebar/sidebar';
 import { AlbumModel } from 'models/album';
 import { TrackList } from 'components/TrackList/tracklist';
-import TopbarComponent from 'components/Topbar/topbar';
-import player from 'components/Player/player';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { disableBrokenImg } from 'views/utils';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
-import mobile from 'components/Mobile/mobile';
-import store from 'services/store/store';
 
 import AlbumTemplate from './albumView.hbs';
 import './albumView.scss';
+import { TrackModel } from 'models/track';
+import baseView from 'views/BaseView/baseView';
 
 interface IAlbumViewProps {
     authenticated: boolean;
@@ -24,6 +21,7 @@ export class AlbumView extends View<IAlbumViewProps> {
     private album: AlbumModel;
     private trackList: TrackList;
     private userPlaylists: Array<PlaylistModel>;
+    private tracks: Array<TrackModel>;
 
     constructor(props?: IAlbumViewProps) {
         super(props);
@@ -31,6 +29,9 @@ export class AlbumView extends View<IAlbumViewProps> {
     }
 
     didMount() {
+        if (this.isLoaded) {
+            return;
+        }
         const regex = /^\/album\/(\d+)$/gm;
         const match = regex.exec(window.location.pathname);
         if (!match) {
@@ -53,6 +54,7 @@ export class AlbumView extends View<IAlbumViewProps> {
 
         Promise.all([album, userPlaylists]).then(() => {
             const props = this.album.getProps();
+            this.tracks = props.tracks;
             this.trackList = new TrackList({
                 title: 'Tracks',
                 tracks: props.tracks,
@@ -99,79 +101,37 @@ export class AlbumView extends View<IAlbumViewProps> {
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function (img) {
-            img.removeEventListener('error', disableBrokenImg);
-        });
-
-        document
-            .querySelectorAll('.track-list-item-playlist')
-            .forEach((element) => {
-                element.removeEventListener(
-                    'click',
-                    playlistsContextMenu.showContextMenu.bind(
-                        playlistsContextMenu
-                    )
-                );
-            });
-        const createPlaylistBtn = document.querySelector('.js-playlist-create');
-        if (createPlaylistBtn) {
-            createPlaylistBtn.removeEventListener(
-                'click',
-                playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
-            );
-        }
-        const addTrackToPlaylistBtns = document.querySelectorAll(
-            '.js-playlist-track-add'
-        );
-        addTrackToPlaylistBtns.forEach((button) => {
-            button.removeEventListener(
-                'click',
-                playlistsContextMenu.addTrackToPlaylist.bind(
-                    playlistsContextMenu
-                )
-            );
-        });
-
         this.isLoaded = false;
     }
 
     render() {
-        if (!this.isLoaded) {
-            this.didMount();
-            return;
-        }
+        this.didMount();
+        playlistsContextMenu.updatePlaylists(this.userPlaylists);
+        baseView.render();
+        document.querySelector('.main-layout__content').innerHTML =
+            AlbumTemplate({
+                artWork:
+                    '/static/artworks/' +
+                    this.album.getProps().artwork +
+                    '_512px.webp',
+                title: this.album.getProps().title,
+                trackList: this.trackList,
+                contextMenu: playlistsContextMenu.render(),
+                tracksCount: this.album.getProps().tracks_count,
+                tracksDurationMin: Math.floor(
+                    this.album.getProps().tracks_duration / 60
+                ),
+                tracksDurationSec: Math.floor(
+                    this.album.getProps().tracks_duration % 60
+                ),
+                album: this.album.getProps(),
+            });
 
-        document.getElementById('app').innerHTML = AlbumTemplate({
-            sidebar: sidebar.render(),
-            topbar: TopbarComponent.set({
-                authenticated: store.get('authenticated'),
-                avatar: store.get('userAvatar'),
-                offline: !navigator.onLine,
-            }).render(),
-            artWork:
-                '/static/artworks/' +
-                this.album.getProps().artwork +
-                '_512px.webp',
-            title: this.album.getProps().title,
-            trackList: this.trackList,
-            contextMenu: playlistsContextMenu.render(),
-            tracksCount: this.album.getProps().tracks_count,
-            tracksDurationMin: Math.floor(
-                this.album.getProps().tracks_duration / 60
-            ),
-            tracksDurationSec: Math.floor(
-                this.album.getProps().tracks_duration % 60
-            ),
-            album: this.album.getProps(),
-            player: player.render(),
-            mobile: mobile.render(),
-        });
-        TopbarComponent.addHandlers();
-        TopbarComponent.didMount();
         this.addListeners();
+    }
 
-        player.setEventListeners();
-        player.setup(document.querySelectorAll('.track'));
+    getTracksContext(): TrackModel[] {
+        return this.tracks;
     }
 }
 
