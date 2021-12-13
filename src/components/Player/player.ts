@@ -297,7 +297,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         `.track-play[data-id="${this.nowPlaying.props.id}"]`
                     )
                 );
-                nowPlayingButton.src = '/static/img/play-outline.svg';
+                if (nowPlayingButton) {
+                    nowPlayingButton.src = '/static/img/play-outline.svg';
+                }
             }
         };
         this.seekbarHandler = (e: MouseEvent) => this.seek(e.x);
@@ -518,32 +520,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.eventListenersAlreadySet = true;
     }
 
-    removeEventListeners() {
-        this.audio.removeEventListener('timeupdate', this.timeUpdateHandler);
-        const repeat = document.querySelector('.repeat');
-        repeat.removeEventListener('click', this.buttonsHandler);
-        const shuffle = document.querySelector('.shuffle');
-        shuffle.removeEventListener('click', this.buttonsHandler);
-        const mute = document.querySelector('.mute');
-        mute.removeEventListener('click', this.buttonsHandler);
-        window.removeEventListener('resize', this.resizeHandler);
-        document
-            .querySelector('.player__seekbar')
-            .removeEventListener('click', this.seekbarHandler);
-        document
-            .querySelector('.player-play')
-            .removeEventListener('click', this.playButtonHandler);
-        this.audio.removeEventListener('pause', this.pauseHandler);
-        this.audio.removeEventListener('play', this.playHandler);
-        this.audio.removeEventListener('ended', this.endedHandler);
-        document
-            .querySelector('.player-skip-left')
-            .removeEventListener('click', this.arrowKeysHandler);
-        document
-            .querySelector('.player-skip-right')
-            .removeEventListener('click', this.arrowKeysHandler);
-    }
-
     setup([...playlist]: TrackModel[]) {
         this.currentVolume = document.querySelector('.volume-current');
         this.mute = document.querySelector('.mute');
@@ -698,6 +674,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     stop() {
+        this.playlist = [];
         if (this.audio.paused) {
             return;
         }

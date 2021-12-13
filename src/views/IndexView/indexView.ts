@@ -223,7 +223,8 @@ class IndexView extends View<IIndexViewProps> {
             return;
         }
         baseView.render();
-        document.getElementById('content').innerHTML = IndexTemplate({
+        const content = document.getElementById('content');
+        content.innerHTML = IndexTemplate({
             friend_activity: this.friend_activity,
             top_albums: this.top_albums,
             suggested_artists: this.suggested_artists,
