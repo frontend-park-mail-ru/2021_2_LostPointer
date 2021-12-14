@@ -1,11 +1,8 @@
-import sidebar from 'components/Sidebar/sidebar';
 import { TopAlbums } from 'components/TopAlbums/topalbums';
-import TopbarComponent from 'components/Topbar/topbar';
 import { FriendActivity } from 'components/FriendActivity/friendactivity';
 import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
 import { TrackList } from 'components/TrackList/tracklist';
 import suggestedPlaylists from 'components/SuggestedPlaylists/suggestedplaylists';
-import player from 'components/Player/player';
 import { TrackModel } from 'models/track';
 import { ArtistModel } from 'models/artist';
 import { AlbumModel } from 'models/album';
@@ -16,10 +13,10 @@ import { disableBrokenImg } from 'views/utils';
 import store from 'services/store/store';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
-import mobile from 'components/Mobile/mobile';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
+import baseView from 'views/BaseView/baseView';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -34,6 +31,7 @@ class IndexView extends View<IIndexViewProps> {
     private userAvatar: string;
     private userPlaylists: Array<PlaylistModel>;
     private renderCount: number;
+    private rendered_track_list: string;
 
     constructor(props?: IIndexViewProps) {
         super(props);
@@ -63,7 +61,7 @@ class IndexView extends View<IIndexViewProps> {
 
         Promise.all([tracks, artists, albums, playlists, userPlaylists]).then(
             () => {
-                this.track_list = new TrackList({
+                this.rendered_track_list = new TrackList({
                     title: 'Tracks of the Week',
                     tracks: this.track_list,
                 }).render();
@@ -210,74 +208,13 @@ class IndexView extends View<IIndexViewProps> {
                     )
                 );
             });
-
-        player.setup(document.querySelectorAll('.track')); //TODO=Вынести в сам плеер, при определении новой View выполнять
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function (img) {
-            img.removeEventListener('error', disableBrokenImg);
-        });
-        this.isLoaded = false;
-        document
-            .querySelectorAll('.track-list-item-playlist')
-            .forEach((element) => {
-                element.removeEventListener(
-                    'click',
-                    playlistsContextMenu.showContextMenu.bind(
-                        playlistsContextMenu
-                    )
-                );
-            });
-        const createPlaylistBtn = document.querySelector(
-            '.pl-link[href="/playlist/0"]'
-        );
-        if (createPlaylistBtn) {
-            createPlaylistBtn.removeEventListener(
-                'click',
-                this.createPlaylist.bind(this)
-            );
-        }
-
-        const publicPlaylistsBtn = document.querySelector(
-            '.js_public_playlists'
-        );
-        if (publicPlaylistsBtn) {
-            publicPlaylistsBtn.removeEventListener(
-                'click',
-                this.showPublicPlaylists.bind(this)
-            );
-        }
-        const ownPlaylistsBtn = document.querySelector('.js_own_playlists');
-        if (ownPlaylistsBtn) {
-            ownPlaylistsBtn.removeEventListener(
-                'click',
-                this.showOwnPlaylists.bind(this)
-            );
-        }
-
-        const createPlaylistContextMenuBtn = document.querySelector(
-            '.js-playlist-create'
-        );
-        if (createPlaylistContextMenuBtn) {
-            createPlaylistContextMenuBtn.removeEventListener(
-                'click',
-                playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
-            );
-        }
-        document.querySelectorAll(
-            '.js-playlist-track-add'
-        ).forEach((button) => {
-            button.removeEventListener(
-                'click',
-                playlistsContextMenu.addTrackToPlaylist.bind(
-                    playlistsContextMenu
-                )
-            );
-        });
+        // this.isLoaded = false;
     }
 
     render() {
@@ -285,28 +222,21 @@ class IndexView extends View<IIndexViewProps> {
             this.didMount();
             return;
         }
-
-        document.getElementById('app').innerHTML = IndexTemplate({
-            topbar: TopbarComponent.set({
-                authenticated: store.get('authenticated'),
-                avatar: store.get('userAvatar'),
-                offline: !navigator.onLine,
-            }).render(),
-            sidebar: sidebar.render(),
+        baseView.render();
+        const content = document.getElementById('content');
+        content.innerHTML = IndexTemplate({
             friend_activity: this.friend_activity,
             top_albums: this.top_albums,
             suggested_artists: this.suggested_artists,
-            track_list: this.track_list,
+            track_list: this.rendered_track_list,
             suggested_playlists: suggestedPlaylists.render(),
-            player: player.render(),
-            contextMenu: playlistsContextMenu.render(),
-            mobile: mobile.set(player.getNowPlaying()).render(),
         });
-        TopbarComponent.addHandlers();
-        TopbarComponent.didMount();
 
-        player.addHandlers();
         this.addListeners();
+    }
+
+    getTracksContext(): TrackModel[] {
+        return this.track_list;
     }
 }
 

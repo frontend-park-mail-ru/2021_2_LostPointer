@@ -1,6 +1,5 @@
 import { View } from 'views/View/view';
 import player from 'components/Player/player';
-import sidebar from 'components/Sidebar/sidebar';
 import TopbarComponent from 'components/Topbar/topbar';
 import { SuggestedAlbums } from 'components/SugestedAlbums/suggestedAlbums';
 import { TrackList } from 'components/TrackList/tracklist';
@@ -10,11 +9,11 @@ import routerStore from 'services/router/routerStore';
 import { disableBrokenImg } from 'views/utils';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import { PlaylistModel } from 'models/playlist';
+import { TrackModel } from 'models/track';
 
 import ArtistTemplate from './artistView.hbs';
 import './artistView.scss';
-import store from 'services/store/store';
-import mobile from 'components/Mobile/mobile';
+import baseView from 'views/BaseView/baseView';
 
 interface IArtistViewProps {
     authenticated: boolean;
@@ -26,6 +25,7 @@ export class ArtistView extends View<IArtistViewProps> {
     private trackList: TrackList;
     private albumList: SuggestedAlbums;
     private userPlaylists: Array<PlaylistModel>;
+    private tracks: TrackModel[];
 
     constructor(props?: IArtistViewProps) {
         super(props);
@@ -65,6 +65,7 @@ export class ArtistView extends View<IArtistViewProps> {
                 //TODO=ПОПРАВИТЬ!!!
                 return track;
             });
+            this.tracks = tracks;
             this.trackList = new TrackList({
                 title: 'Tracks',
                 tracks: tracks,
@@ -116,39 +117,6 @@ export class ArtistView extends View<IArtistViewProps> {
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function (img) {
-            img.removeEventListener('error', disableBrokenImg);
-        });
-        document
-            .querySelectorAll('.track-list-item-playlist')
-            .forEach((element) => {
-                element.removeEventListener(
-                    'click',
-                    playlistsContextMenu.showContextMenu.bind(
-                        playlistsContextMenu
-                    )
-                );
-            });
-
-        const createPlaylistBtn = document.querySelector('.js-playlist-create');
-        if (createPlaylistBtn) {
-            createPlaylistBtn.removeEventListener(
-                'click',
-                playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
-            );
-        }
-        const addTrackToPlaylistBtns = document.querySelectorAll(
-            '.js-playlist-track-add'
-        );
-        addTrackToPlaylistBtns.forEach((button) => {
-            button.removeEventListener(
-                'click',
-                playlistsContextMenu.addTrackToPlaylist.bind(
-                    playlistsContextMenu
-                )
-            );
-        });
-
         this.isLoaded = false;
     }
 
@@ -157,29 +125,23 @@ export class ArtistView extends View<IArtistViewProps> {
             this.didMount();
             return;
         }
-
-        document.getElementById('app').innerHTML = ArtistTemplate({
+        baseView.render();
+        document.getElementById('content').innerHTML = ArtistTemplate({
             name: this.artist.getProps().name,
             video: this.artist.getProps().video,
             artistAvatar: this.artist.getProps().avatar,
-            topbar: TopbarComponent.set({
-                authenticated: store.get('authenticated'),
-                avatar: store.get('userAvatar'),
-                offline: navigator.onLine !== true,
-            }).render(),
-            sidebar: sidebar.render(),
             albumList: this.albumList,
             trackList: this.trackList,
-            player: player.render(),
-            contextMenu: playlistsContextMenu.render(),
-            mobile: mobile.render(),
         });
         TopbarComponent.addHandlers();
         this.addListeners();
         TopbarComponent.didMount();
 
         player.setEventListeners();
-        player.setup(document.querySelectorAll('.track'));
+    }
+
+    getTracksContext(): TrackModel[] {
+        return this.tracks;
     }
 }
 

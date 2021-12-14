@@ -20,6 +20,7 @@ import SignupComponentTemplate from './signupView.hbs';
 import './signupView.scss';
 import { UserModel } from 'models/user';
 import store from 'services/store/store';
+import baseView from 'views/BaseView/baseView';
 
 interface ISignupComponentProps {
     placeholder_img: string;
@@ -45,6 +46,7 @@ export class SignupView extends View<ISignupComponentProps> {
     }
 
     render() {
+        baseView.unmount();
         if (store.get('authenticated')) {
             router.go(routerStore.dashboard);
             return;

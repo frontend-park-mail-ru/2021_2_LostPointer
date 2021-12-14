@@ -1,55 +1,43 @@
-<div class='app__content'>
-    {{{sidebar}}}
-    <div class='main-layout'>
-        {{{topbar}}}
-        <div class='main-layout__content'>
-            <div class='album__background-container' style='background: black'>
-                <div
-                    class='overlay'
-                    style='background: linear-gradient(to top, rgba(255 255 255 / 0%), {{{album.artwork_color}}}'
-                ></div>
-            </div>
-            <div class='album'>
-                <div class='album__description'>
-                    <div class='album__description-avatar'>
-                        <img
-                            class='album__description-img'
-                            src='{{{artWork}}}'
-                        />
-                    </div>
-                    <div class='album__description-title'>
-                        <div class='album__description-label'>album</div>
-                        {{{title}}}
-                        <div class='album__description-properties'>
-                            {{#if tracksCount}}
-                                <a
-                                    href='/artist/{{album.artist.id}}'
-                                    style='text-decoration: underline'
-                                >{{album.artist.name}}</a>
-                                &#8226;
-                                {{{album.year}}}
-                                &#8226; tracks count:
-                                {{{tracksCount}}}
-                                ,
-                                {{{tracksDurationMin}}}
-                                min
-                                {{{tracksDurationSec}}}
-                                sec
-                            {{else}}
-                                Loading album properties...
-                            {{/if}}
-                        </div>
-                    </div>
-                </div>
-                <div class='album__content'>
-                    {{{trackList}}}
-                </div>
-            </div>
+<div class='album__background-container' style='background: black'>
+    <div
+        class='overlay'
+        style='background: linear-gradient(to top, rgba(255 255 255 / 0%), {{{album.artwork_color}}}'
+    ></div>
+</div>
+<div class='album'>
+    <div class='album__description'>
+        <div class='album__description-avatar'>
+            <img
+                alt='{{album.artist.name}} - {{title}}'
+                class='album__description-img'
+                src='{{{artWork}}}'
+            />
         </div>
-        <div class='js-menu-container'>
-            {{{contextMenu}}}
+        <div class='album__description-title'>
+            <div class='album__description-label'>album</div>
+            {{{title}}}
+            <div class='album__description-properties'>
+                {{#if tracksCount}}
+                    <a
+                        href='/artist/{{album.artist.id}}'
+                        style='text-decoration: underline'
+                    >{{album.artist.name}}</a>
+                    &#8226;
+                    {{{album.year}}}
+                    &#8226; tracks count:
+                    {{{tracksCount}}}
+                    ,
+                    {{{tracksDurationMin}}}
+                    min
+                    {{{tracksDurationSec}}}
+                    sec
+                {{else}}
+                    Loading album properties...
+                {{/if}}
+            </div>
         </div>
     </div>
+    <div class='album__content'>
+        {{{trackList}}}
+    </div>
 </div>
-{{{player}}}
-{{{mobile}}}

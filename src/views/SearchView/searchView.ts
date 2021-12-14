@@ -1,23 +1,18 @@
 import Request from 'services/request/request';
-import player from 'components/Player/player';
 import { View } from 'views/View/view';
 import { disableBrokenImg } from 'views/utils';
-import store from 'services/store/store';
 import { TrackModel } from 'models/track';
 import { AlbumModel } from 'models/album';
 import { ArtistModel } from 'models/artist';
 import { TrackList } from 'components/TrackList/tracklist';
 import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
 import { TopAlbums } from 'components/TopAlbums/topalbums';
-import TopbarComponent from 'components/Topbar/topbar';
-import sidebar from 'components/Sidebar/sidebar';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 
 import SearchViewTemplate from './searchView.hbs';
 import './searchView.scss';
-import IndexTemplate from 'views/IndexView/indexView.hbs';
-import mobile from 'components/Mobile/mobile';
+import baseView from 'views/BaseView/baseView';
 
 const SEARCH_TIMEOUT = 200;
 
@@ -129,7 +124,7 @@ export class SearchView extends View<ISearchViewProps> {
             img.removeEventListener('error', disableBrokenImg);
         });
 
-        this.isLoaded = false;
+        // this.isLoaded = false;
     }
 
     render() {
@@ -139,24 +134,8 @@ export class SearchView extends View<ISearchViewProps> {
             })
             .then(() => {
                 playlistsContextMenu.updatePlaylists(this.userPlaylists);
-                const app = document.getElementById('app');
-                if (app.innerHTML == '') {
-                    document.getElementById('app').innerHTML = IndexTemplate({
-                        topbar: TopbarComponent.set({
-                            authenticated: store.get('authenticated'),
-                            avatar: store.get('userAvatar'),
-                            offline: !navigator.onLine,
-                        }).render(),
-                        sidebar: sidebar.render(),
-                        player: player.render(),
-                        contextMenu: playlistsContextMenu.render(),
-                        mobile: mobile.set(player.getNowPlaying()).render(),
-                    });
-                    player.addHandlers();
-                    TopbarComponent.addHandlers();
-                }
+                baseView.render();
                 document.querySelector('.main-layout__content').innerHTML = '';
-
                 this.addListeners();
             });
     }
@@ -229,7 +208,6 @@ export class SearchView extends View<ISearchViewProps> {
             albums: this.data.albums,
             not_found: this.noResults,
         });
-        player.setup(document.querySelectorAll('.track'));
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
@@ -243,10 +221,15 @@ export class SearchView extends View<ISearchViewProps> {
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
+        this.isLoaded = true;
     }
 
     didMount() {
         console.log('not implemented');
+    }
+
+    getTracksContext(): TrackModel[] {
+        return this.tracks;
     }
 }
 
