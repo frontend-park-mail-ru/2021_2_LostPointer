@@ -433,24 +433,6 @@ export class PlaylistView extends View<never> {
 
         TrackComponent.addShowContextMenuListeners();
 
-        const createPlaylistBtn = document.querySelector('.js-playlist-create');
-        createPlaylistBtn.addEventListener(
-            'click',
-            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
-        );
-
-        const addTrackToPlaylistBtns = document.querySelectorAll(
-            '.js-playlist-track-add'
-        );
-        addTrackToPlaylistBtns.forEach((button) => {
-            button.addEventListener(
-                'click',
-                playlistsContextMenu.addTrackToPlaylist.bind(
-                    playlistsContextMenu
-                )
-            );
-        });
-
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
@@ -499,11 +481,11 @@ export class PlaylistView extends View<never> {
                     value: props.title,
                 }).render(),
             ];
+
             playlistsContextMenu.addRemoveButton();
             playlistsContextMenu.updatePlaylists(this.userPlaylists);
             baseView.render();
-            document.querySelector('.js-menu-container').innerHTML =
-                playlistsContextMenu.render();
+
             document.getElementById('content').innerHTML = PlaylistTemplate({
                 title: this.playlist.getProps().title,
                 avatar: this.playlist.getProps().artwork,

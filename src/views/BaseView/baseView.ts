@@ -13,7 +13,11 @@ class BaseView extends View<never> {
     private mounted: boolean;
 
     render() {
+        playlistsContextMenu.removeListeners();
         if (this.mounted) {
+            document.querySelector('.js-menu-container').innerHTML =
+                playlistsContextMenu.render();
+            playlistsContextMenu.addListeners();
             return;
         }
         document.getElementById('app').innerHTML = BaseViewTemplate({
@@ -28,6 +32,8 @@ class BaseView extends View<never> {
             mobile: mobile.set(player.getNowPlaying()).render(),
         });
         this.mounted = true;
+
+        playlistsContextMenu.addListeners();
 
         TopbarComponent.addHandlers();
         TopbarComponent.didMount();

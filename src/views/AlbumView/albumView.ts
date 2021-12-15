@@ -23,24 +23,6 @@ export class AlbumView extends View<never> {
     addListeners() {
         TrackComponent.addShowContextMenuListeners();
 
-        const createPlaylistBtn = document.querySelector('.js-playlist-create');
-        createPlaylistBtn.addEventListener(
-            'click',
-            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
-        );
-
-        const addTrackToPlaylistBtns = document.querySelectorAll(
-            '.js-playlist-track-add'
-        );
-        addTrackToPlaylistBtns.forEach((button) => {
-            button.addEventListener(
-                'click',
-                playlistsContextMenu.addTrackToPlaylist.bind(
-                    playlistsContextMenu
-                )
-            );
-        });
-
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
@@ -78,11 +60,11 @@ export class AlbumView extends View<never> {
                 title: 'Tracks',
                 tracks: props.tracks,
             }).render();
+
             playlistsContextMenu.updatePlaylists(this.userPlaylists);
-            baseView.render();
             playlistsContextMenu.deleteRemoveButton();
-            document.querySelector('.js-menu-container').innerHTML =
-                playlistsContextMenu.render();
+            baseView.render();
+
             document.querySelector('.main-layout__content').innerHTML =
                 AlbumTemplate({
                     artWork:
@@ -91,7 +73,6 @@ export class AlbumView extends View<never> {
                         '_512px.webp',
                     title: this.album.getProps().title,
                     trackList: this.trackList,
-                    contextMenu: playlistsContextMenu.render(),
                     tracksCount: this.album.getProps().tracks_count,
                     tracksDurationMin: Math.floor(
                         this.album.getProps().tracks_duration / 60

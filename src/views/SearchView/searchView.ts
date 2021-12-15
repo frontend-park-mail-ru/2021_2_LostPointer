@@ -44,25 +44,6 @@ export class SearchView extends View<never> {
 
     addListeners() {
         document
-            .querySelectorAll('.js-playlist-track-add')
-            .forEach((button) => {
-                button.addEventListener(
-                    'click',
-                    playlistsContextMenu.addTrackToPlaylist.bind(
-                        playlistsContextMenu
-                    )
-                );
-            });
-        document
-            .querySelector('.js-playlist-create')
-            .addEventListener(
-                'click',
-                playlistsContextMenu.createNewPlaylist.bind(
-                    playlistsContextMenu
-                )
-            );
-
-        document
             .querySelector('.topbar__search-input')
             .addEventListener('input', (e) => {
                 const text = (<HTMLInputElement>e.target).value;
@@ -134,27 +115,11 @@ export class SearchView extends View<never> {
     update() {
         TrackComponent.removeShowContextMenuListeners();
 
+        playlistsContextMenu.removeListeners();
         playlistsContextMenu.deleteRemoveButton();
         document.querySelector('.js-menu-container').innerHTML =
             playlistsContextMenu.render();
-        document
-            .querySelectorAll('.js-playlist-track-add')
-            .forEach((button) => {
-                button.addEventListener(
-                    'click',
-                    playlistsContextMenu.addTrackToPlaylist.bind(
-                        playlistsContextMenu
-                    )
-                );
-            });
-        document
-            .querySelector('.js-playlist-create')
-            .addEventListener(
-                'click',
-                playlistsContextMenu.createNewPlaylist.bind(
-                    playlistsContextMenu
-                )
-            );
+        playlistsContextMenu.addListeners();
 
         this.data.tracks =
             this.tracks.length !== 0

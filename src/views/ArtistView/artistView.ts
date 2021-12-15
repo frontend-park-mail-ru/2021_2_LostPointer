@@ -29,23 +29,6 @@ export class ArtistView extends View<never> {
             });
         }
 
-        const createPlaylistBtn = document.querySelector('.js-playlist-create');
-        createPlaylistBtn.addEventListener(
-            'click',
-            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
-        );
-        const addTrackToPlaylistBtns = document.querySelectorAll(
-            '.js-playlist-track-add'
-        );
-        addTrackToPlaylistBtns.forEach((button) => {
-            button.addEventListener(
-                'click',
-                playlistsContextMenu.addTrackToPlaylist.bind(
-                    playlistsContextMenu
-                )
-            );
-        });
-
         TrackComponent.addShowContextMenuListeners();
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
@@ -94,11 +77,11 @@ export class ArtistView extends View<never> {
                 title: 'Tracks',
                 tracks: tracks,
             }).render();
+
             playlistsContextMenu.updatePlaylists(this.userPlaylists);
-            baseView.render();
             playlistsContextMenu.deleteRemoveButton();
-            document.querySelector('.js-menu-container').innerHTML =
-                playlistsContextMenu.render();
+            baseView.render();
+
             document.getElementById('content').innerHTML = ArtistTemplate({
                 name: this.artist.getProps().name,
                 video: this.artist.getProps().video,

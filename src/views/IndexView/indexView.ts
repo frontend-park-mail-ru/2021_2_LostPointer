@@ -110,25 +110,6 @@ class IndexView extends View<never> {
             this.showOwnPlaylists.bind(this)
         );
 
-        const createPlaylistContextMenuBtn = document.querySelector(
-            '.js-playlist-create'
-        );
-        createPlaylistContextMenuBtn.addEventListener(
-            'click',
-            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
-        );
-        const addTrackToPlaylistBtns = document.querySelectorAll(
-            '.js-playlist-track-add'
-        );
-        addTrackToPlaylistBtns.forEach((button) => {
-            button.addEventListener(
-                'click',
-                playlistsContextMenu.addTrackToPlaylist.bind(
-                    playlistsContextMenu
-                )
-            );
-        });
-
         TrackComponent.addShowContextMenuListeners();
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
@@ -190,11 +171,11 @@ class IndexView extends View<never> {
                         },
                     ],
                 }).render();
+
                 playlistsContextMenu.updatePlaylists(this.userPlaylists);
-                baseView.render();
                 playlistsContextMenu.deleteRemoveButton();
-                document.querySelector('.js-menu-container').innerHTML =
-                    playlistsContextMenu.render();
+                baseView.render();
+
                 const content = document.getElementById('content');
                 content.innerHTML = IndexTemplate({
                     friend_activity: this.friend_activity,

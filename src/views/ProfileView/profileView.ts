@@ -243,6 +243,7 @@ export class ProfileView extends View<never> {
             this.profileform = new ProfileForm(user.getProps());
 
             baseView.render();
+
             document.querySelector('.main-layout__content').innerHTML =
                 ProfileTemplate({
                     profileform: this.profileform.render(),

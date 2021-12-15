@@ -59,6 +59,39 @@ export class PlaylistsContextMenu extends Component<IContextMenuProps> {
         return ContextMenuTemplate(this.props);
     }
 
+    addListeners() {
+        document.querySelectorAll('.js-playlist-create').forEach((item) => {
+            item.addEventListener('click', this.createNewPlaylist.bind(this));
+        });
+
+        document
+            .querySelectorAll('.js-playlist-track-add')
+            .forEach((button) => {
+                button.addEventListener(
+                    'click',
+                    this.addTrackToPlaylist.bind(this)
+                );
+            });
+    }
+
+    removeListeners() {
+        document.querySelectorAll('.js-playlist-create').forEach((item) => {
+            item.removeEventListener(
+                'click',
+                this.createNewPlaylist.bind(this)
+            );
+        });
+
+        document
+            .querySelectorAll('.js-playlist-track-add')
+            .forEach((button) => {
+                button.removeEventListener(
+                    'click',
+                    this.addTrackToPlaylist.bind(this)
+                );
+            });
+    }
+
     toggleMenu(command) {
         const renderedMenu = document.querySelector('.menu');
 
