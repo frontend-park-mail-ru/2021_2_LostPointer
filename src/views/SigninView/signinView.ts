@@ -13,12 +13,12 @@ import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { ICustomInput } from 'interfaces/CustomInput';
 import { View } from 'views/View/view';
-
-import SigninComponentTemplate from './signinView.hbs';
-import './signinView.scss';
 import { UserModel } from 'models/user';
 import store from 'services/store/store';
 import baseView from 'views/BaseView/baseView';
+
+import SigninComponentTemplate from './signinView.hbs';
+import './signinView.scss';
 
 interface ISigninComponentProps {
     placeholder_img: string;

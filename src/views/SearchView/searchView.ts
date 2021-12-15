@@ -22,12 +22,7 @@ interface ISearchViewData {
     artists: string;
 }
 
-interface ISearchViewProps {
-    authenticated: boolean;
-}
-
-export class SearchView extends View<ISearchViewProps> {
-    private userAvatar: string;
+export class SearchView extends View<never> {
     private searchTimer: any; //TODO=Поправить
     private data: ISearchViewData;
     private tracks: TrackModel[];
@@ -36,9 +31,8 @@ export class SearchView extends View<ISearchViewProps> {
     private noResults: boolean;
     private userPlaylists: Array<PlaylistModel>;
 
-    constructor(props?: ISearchViewProps) {
+    constructor(props?: never) {
         super(props);
-        this.isLoaded = false;
         this.data = {
             tracks: null,
             albums: null,
@@ -217,7 +211,6 @@ export class SearchView extends View<ISearchViewProps> {
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
-        this.isLoaded = true;
     }
 
     getTracksContext(): TrackModel[] {

@@ -12,10 +12,6 @@ import './baseView.scss';
 class BaseView extends View<never> {
     private mounted: boolean;
 
-    constructor() {
-        super();
-    }
-
     render() {
         if (this.mounted) {
             return;

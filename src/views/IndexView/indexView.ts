@@ -18,25 +18,14 @@ import baseView from 'views/BaseView/baseView';
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
 
-interface IIndexViewProps {
-    authenticated: boolean;
-}
-
-class IndexView extends View<IIndexViewProps> {
+class IndexView extends View<never> {
     private top_albums: AlbumModel[];
     private suggested_artists: ArtistModel[];
     private track_list: TrackModel[];
     private suggested_playlists: PlaylistModel[];
     private friend_activity: FriendActivity;
-    private userAvatar: string;
     private userPlaylists: Array<PlaylistModel>;
-    private renderCount: number;
     private rendered_track_list: string;
-
-    constructor(props?: IIndexViewProps) {
-        super(props);
-        this.renderCount = 0;
-    }
 
     createPlaylist(event) {
         event.preventDefault();

@@ -1,5 +1,4 @@
 export abstract class View<TProps> {
-    protected isLoaded: boolean;
     protected props: TProps;
 
     constructor(props?: TProps) {

@@ -15,12 +15,12 @@ import {
 import { ICustomInput } from 'interfaces/CustomInput';
 import routerStore from 'services/router/routerStore';
 import { View } from 'views/View/view';
-
-import SignupComponentTemplate from './signupView.hbs';
-import './signupView.scss';
 import { UserModel } from 'models/user';
 import store from 'services/store/store';
 import baseView from 'views/BaseView/baseView';
+
+import SignupComponentTemplate from './signupView.hbs';
+import './signupView.scss';
 
 interface ISignupComponentProps {
     placeholder_img: string;

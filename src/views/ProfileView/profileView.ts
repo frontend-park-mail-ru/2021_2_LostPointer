@@ -20,18 +20,9 @@ import baseView from 'views/BaseView/baseView';
 import ProfileTemplate from './profileView.hbs';
 import './profileView.scss';
 
-interface IProfileViewProps {
-    authenticated: boolean;
-}
-
-export class ProfileView extends View<IProfileViewProps> {
+export class ProfileView extends View<never> {
     private profileform: ProfileForm;
-    private userAvatar: string;
     private user: UserModel;
-
-    constructor(props?: IProfileViewProps) {
-        super(props);
-    }
 
     uploadAvatarFile(event) {
         event.preventDefault();
@@ -239,7 +230,6 @@ export class ProfileView extends View<IProfileViewProps> {
         document.querySelectorAll('.js-logout').forEach((el) => {
             el.removeEventListener('click', this.logoutHandler.bind(this));
         });
-        this.isLoaded = false;
     }
 
     render() {

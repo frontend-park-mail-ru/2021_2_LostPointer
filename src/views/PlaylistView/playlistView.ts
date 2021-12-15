@@ -17,22 +17,13 @@ import './playlistView.scss';
 // TODO! ссылки на альбомы на альбомах в треклисте
 // TODO рефактор вьюх по аналогии с Search
 
-interface IPlaylistViewProps {
-    authenticated: boolean;
-}
-
-export class PlaylistView extends View<IPlaylistViewProps> {
-    private userAvatar: string;
+export class PlaylistView extends View<never> {
     private playlist: PlaylistModel;
     private userPlaylists: Array<PlaylistModel>;
     private trackList: TrackList;
     private inputs: Array<string>;
     private renderedMenu: HTMLElement;
     private tracks: Array<TrackModel>;
-
-    constructor(props?: IPlaylistViewProps) {
-        super(props);
-    }
 
     displayEditWindow(event) {
         if (!store.get('authenticated') || !this.playlist.getProps().is_own) {

@@ -13,21 +13,12 @@ import baseView from 'views/BaseView/baseView';
 import ArtistTemplate from './artistView.hbs';
 import './artistView.scss';
 
-interface IArtistViewProps {
-    authenticated: boolean;
-}
-
-export class ArtistView extends View<IArtistViewProps> {
-    private userAvatar: string;
+export class ArtistView extends View<never> {
     private artist: ArtistModel;
     private trackList: TrackList;
     private albumList: SuggestedAlbums;
     private userPlaylists: Array<PlaylistModel>;
     private tracks: TrackModel[];
-
-    constructor(props?: IArtistViewProps) {
-        super(props);
-    }
 
     addListeners() {
         const video = document.querySelector('.artist__background-video');

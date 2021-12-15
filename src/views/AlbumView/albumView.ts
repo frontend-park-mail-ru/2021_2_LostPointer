@@ -12,21 +12,12 @@ import { TrackModel } from 'models/track';
 import AlbumTemplate from './albumView.hbs';
 import './albumView.scss';
 
-interface IAlbumViewProps {
-    authenticated: boolean;
-}
-
-export class AlbumView extends View<IAlbumViewProps> {
-    private userAvatar: string;
+export class AlbumView extends View<never> {
     private album: AlbumModel;
     private trackList: TrackList;
     private userPlaylists: Array<PlaylistModel>;
     private tracks: Array<TrackModel>;
     private albumID: string;
-
-    constructor(props?: IAlbumViewProps) {
-        super(props);
-    }
 
     addListeners() {
         document
