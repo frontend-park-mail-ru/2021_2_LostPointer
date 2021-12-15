@@ -26,18 +26,19 @@ export class TrackComponent extends Component<ITrackProps> {
     }
 
     static toggleFavor(event) {
+        const { target } = event;
         const trackId = parseInt(
-            event.target.attributes.getNamedItem('data-id').value
+            target.attributes.getNamedItem('data-id').value
         );
-        if (event.target.attributes.getNamedItem('data-in_favorites')) {
+        if (target.attributes.getNamedItem('data-in_favorites')) {
             TrackModel.removeFromFavorites(trackId).then(() => {
-                event.target.removeAttribute('data-in_favorites');
-                event.target.src = `${window.location.origin}/static/img/favorite.svg`;
+                target.removeAttribute('data-in_favorites');
+                target.src = `${window.location.origin}/static/img/favorite.svg`;
             });
         } else {
             TrackModel.addInFavorites(trackId).then(() => {
-                event.target.setAttribute('data-in_favorites', 'true');
-                event.target.src = `${window.location.origin}/static/img/favorite_green.svg`;
+                target.setAttribute('data-in_favorites', 'true');
+                target.src = `${window.location.origin}/static/img/favorite_green.svg`;
             });
         }
     }

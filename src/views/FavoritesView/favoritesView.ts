@@ -99,8 +99,6 @@ export class FavoritesView extends View<never> {
                 document.querySelector('.js-menu-container').innerHTML =
                     playlistsContextMenu.render();
 
-                // вот до сюда выносить
-
                 UserModel.getFavorites().then((favoritesTracks) => {
                     document.querySelector('.main-layout__content').innerHTML =
                         FavoritesViewTemplate({

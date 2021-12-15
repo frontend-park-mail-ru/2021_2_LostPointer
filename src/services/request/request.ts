@@ -20,7 +20,7 @@ export class Request {
         requestBody?: BodyInit,
         contentType?: string,
         customHeaders?: object
-    ) {
+    ): Promise<any> {
         return this._fetchRequest(
             this._createURL(this.backendDomain, path),
             RequestMethods.PATCH,
@@ -30,7 +30,11 @@ export class Request {
         );
     }
 
-    post(path: string, requestBody?: BodyInit, contentType?: string) {
+    post(
+        path: string,
+        requestBody?: BodyInit,
+        contentType?: string
+    ): Promise<any> {
         return this._fetchRequest(
             this._createURL(this.backendDomain, path),
             RequestMethods.POST,
@@ -39,7 +43,11 @@ export class Request {
         );
     }
 
-    put(path: string, requestBody?: BodyInit, contentType?: string) {
+    put(
+        path: string,
+        requestBody?: BodyInit,
+        contentType?: string
+    ): Promise<any> {
         return this._fetchRequest(
             this._createURL(this.backendDomain, path),
             RequestMethods.PUT,
@@ -48,14 +56,18 @@ export class Request {
         );
     }
 
-    get(path: string) {
+    get(path: string): Promise<any> {
         return this._fetchRequest(
             this._createURL(this.backendDomain, path),
             RequestMethods.GET
         );
     }
 
-    delete(path: string, requestBody?: BodyInit, contentType?: string) {
+    delete(
+        path: string,
+        requestBody?: BodyInit,
+        contentType?: string
+    ): Promise<any> {
         return this._fetchRequest(
             this._createURL(this.backendDomain, path),
             RequestMethods.DELETE,
@@ -70,7 +82,7 @@ export class Request {
         requestBody: BodyInit = null,
         contentType: string = ContentType.JSON,
         customHeaders = null
-    ) {
+    ): Promise<any> {
         const myHeaders = new Headers();
         if (
             !!requestBody &&
