@@ -13,7 +13,10 @@ import {
 } from 'services/validation/validityChecks';
 import { ProfileForm } from 'components/ProfileForm/profileForm';
 import { UserModel } from 'models/user';
-import { disableBrokenImg } from 'views/utils';
+import {
+    addDisableBrokenImgListeners,
+    removeDisableBrokenImgListeners,
+} from 'views/utils';
 import store from 'services/store/store';
 import baseView from 'views/BaseView/baseView';
 
@@ -213,9 +216,7 @@ export class ProfileView extends View<never> {
         const fileInput = document.querySelector('input[name="file"]');
         fileInput.addEventListener('change', this.uploadAvatarFile.bind(this));
 
-        document.querySelectorAll('img').forEach(function (img) {
-            img.addEventListener('error', disableBrokenImg);
-        });
+        addDisableBrokenImgListeners();
 
         document.querySelectorAll('.js-logout').forEach((el) => {
             el.addEventListener('click', this.logoutHandler.bind(this));
@@ -223,10 +224,7 @@ export class ProfileView extends View<never> {
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function (img) {
-            img.removeEventListener('error', disableBrokenImg);
-        });
-
+        removeDisableBrokenImgListeners();
         document.querySelectorAll('.js-logout').forEach((el) => {
             el.removeEventListener('click', this.logoutHandler.bind(this));
         });

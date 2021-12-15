@@ -1,6 +1,9 @@
 import Request from 'services/request/request';
 import { View } from 'views/View/view';
-import { disableBrokenImg } from 'views/utils';
+import {
+    addDisableBrokenImgListeners,
+    removeDisableBrokenImgListeners,
+} from 'views/utils';
 import { TrackModel } from 'models/track';
 import { AlbumModel } from 'models/album';
 import { ArtistModel } from 'models/artist';
@@ -10,10 +13,10 @@ import { TopAlbums } from 'components/TopAlbums/topalbums';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import baseView from 'views/BaseView/baseView';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 import SearchViewTemplate from './searchView.hbs';
 import './searchView.scss';
-import { TrackComponent } from 'components/TrackComponent/track';
 
 const SEARCH_TIMEOUT = 200;
 
@@ -94,9 +97,7 @@ export class SearchView extends View<never> {
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function (img) {
-            img.removeEventListener('error', disableBrokenImg);
-        });
+        removeDisableBrokenImgListeners();
     }
 
     render() {
@@ -156,9 +157,7 @@ export class SearchView extends View<never> {
             not_found: this.noResults,
         });
         TrackComponent.addShowContextMenuListeners();
-        document.querySelectorAll('img').forEach(function (img) {
-            img.addEventListener('error', disableBrokenImg);
-        });
+        addDisableBrokenImgListeners();
     }
 
     getTracksContext(): TrackModel[] {

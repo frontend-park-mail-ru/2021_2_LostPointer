@@ -4,7 +4,10 @@ import { DEFAULT_ARTWORK, PlaylistModel } from 'models/playlist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import store from 'services/store/store';
-import { disableBrokenImg } from 'views/utils';
+import {
+    addDisableBrokenImgListeners,
+    removeDisableBrokenImgListeners,
+} from 'views/utils';
 import { InputFormComponent } from 'components/InputForm/inputform';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import { TrackModel } from 'models/track';
@@ -432,13 +435,11 @@ export class PlaylistView extends View<never> {
         }
 
         TrackComponent.addShowContextMenuListeners();
-
-        document.querySelectorAll('img').forEach(function (img) {
-            img.addEventListener('error', disableBrokenImg);
-        });
+        addDisableBrokenImgListeners();
     }
 
     unmount() {
+        removeDisableBrokenImgListeners();
         TrackComponent.removeShowContextMenuListeners();
     }
 

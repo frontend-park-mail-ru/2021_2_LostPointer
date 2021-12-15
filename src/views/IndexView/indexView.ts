@@ -9,7 +9,10 @@ import { AlbumModel } from 'models/album';
 import { View } from 'views/View/view';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import { disableBrokenImg } from 'views/utils';
+import {
+    addDisableBrokenImgListeners,
+    removeDisableBrokenImgListeners,
+} from 'views/utils';
 import store from 'services/store/store';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
@@ -111,12 +114,11 @@ class IndexView extends View<never> {
         );
 
         TrackComponent.addShowContextMenuListeners();
-        document.querySelectorAll('img').forEach(function (img) {
-            img.addEventListener('error', disableBrokenImg);
-        });
+        addDisableBrokenImgListeners();
     }
 
     unmount() {
+        removeDisableBrokenImgListeners();
         TrackComponent.removeShowContextMenuListeners();
     }
 

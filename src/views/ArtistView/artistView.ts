@@ -4,7 +4,10 @@ import { TrackList } from 'components/TrackList/tracklist';
 import { ArtistModel } from 'models/artist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import { disableBrokenImg } from 'views/utils';
+import {
+    addDisableBrokenImgListeners,
+    removeDisableBrokenImgListeners,
+} from 'views/utils';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import { PlaylistModel } from 'models/playlist';
 import { TrackModel } from 'models/track';
@@ -30,12 +33,11 @@ export class ArtistView extends View<never> {
         }
 
         TrackComponent.addShowContextMenuListeners();
-        document.querySelectorAll('img').forEach(function (img) {
-            img.addEventListener('error', disableBrokenImg);
-        });
+        addDisableBrokenImgListeners();
     }
 
     unmount() {
+        removeDisableBrokenImgListeners();
         TrackComponent.removeShowContextMenuListeners();
     }
 

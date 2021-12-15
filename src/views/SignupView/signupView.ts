@@ -18,6 +18,10 @@ import { View } from 'views/View/view';
 import { UserModel } from 'models/user';
 import store from 'services/store/store';
 import baseView from 'views/BaseView/baseView';
+import {
+    addDisableBrokenImgListeners,
+    removeDisableBrokenImgListeners,
+} from 'views/utils';
 
 import SignupComponentTemplate from './signupView.hbs';
 import './signupView.scss';
@@ -77,9 +81,11 @@ export class SignupView extends View<ISignupComponentProps> {
 
         addInputsEventListeners(form);
         form.addEventListener('submit', this.submitSignupForm);
+        addDisableBrokenImgListeners();
     }
 
     unmount() {
+        removeDisableBrokenImgListeners();
         const form = document.querySelector('.auth-form');
         if (form) {
             form.removeEventListener('submit', this.submitSignupForm);
