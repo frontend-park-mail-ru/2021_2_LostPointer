@@ -60,6 +60,15 @@ export class PlaylistsContextMenu extends Component<IContextMenuProps> {
     }
 
     addListeners() {
+        document
+            .querySelectorAll('.track-list-item-playlist')
+            .forEach((element) => {
+                element.addEventListener(
+                    'click',
+                    this.showContextMenu.bind(this)
+                );
+            });
+
         document.querySelectorAll('.js-playlist-create').forEach((item) => {
             item.addEventListener('click', this.createNewPlaylist.bind(this));
         });
@@ -75,6 +84,15 @@ export class PlaylistsContextMenu extends Component<IContextMenuProps> {
     }
 
     removeListeners() {
+        document
+            .querySelectorAll('.track-list-item-playlist')
+            .forEach((element) => {
+                element.removeEventListener(
+                    'click',
+                    this.showContextMenu.bind(this)
+                );
+            });
+
         document.querySelectorAll('.js-playlist-create').forEach((item) => {
             item.removeEventListener(
                 'click',

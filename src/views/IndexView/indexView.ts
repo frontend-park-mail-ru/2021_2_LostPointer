@@ -113,13 +113,13 @@ class IndexView extends View<never> {
             this.showOwnPlaylists.bind(this)
         );
 
-        TrackComponent.addShowContextMenuListeners();
+        playlistsContextMenu.addListeners();
         addDisableBrokenImgListeners();
     }
 
     unmount() {
         removeDisableBrokenImgListeners();
-        TrackComponent.removeShowContextMenuListeners();
+        playlistsContextMenu.removeListeners();
     }
 
     render() {

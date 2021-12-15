@@ -12,14 +12,11 @@ import { InputFormComponent } from 'components/InputForm/inputform';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import { TrackModel } from 'models/track';
 import baseView from 'views/BaseView/baseView';
-import { TrackComponent } from 'components/TrackComponent/track';
 
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
 
 // TODO аватары пользователей-создателей плейлиста
-// TODO! ссылки на альбомы на альбомах в треклисте
-// TODO рефактор вьюх по аналогии с Search
 
 export class PlaylistView extends View<never> {
     private playlist: PlaylistModel;
@@ -235,7 +232,7 @@ export class PlaylistView extends View<never> {
         }
     }
 
-    deleteAvatar(event) {
+    deleteAvatar() {
         if (!this.playlist.getProps().is_own) {
             return;
         }
@@ -362,7 +359,7 @@ export class PlaylistView extends View<never> {
             });
     }
 
-    copyLink() {
+    copyLink(event) {
         event.stopPropagation();
         const msg = document.querySelector('.editwindow__form-msg');
         msg.classList.remove('fail');
@@ -434,13 +431,13 @@ export class PlaylistView extends View<never> {
             );
         }
 
-        TrackComponent.addShowContextMenuListeners();
+        playlistsContextMenu.addListeners();
         addDisableBrokenImgListeners();
     }
 
     unmount() {
         removeDisableBrokenImgListeners();
-        TrackComponent.removeShowContextMenuListeners();
+        playlistsContextMenu.removeListeners();
     }
 
     render(): void {

@@ -114,8 +114,6 @@ export class SearchView extends View<never> {
     }
 
     update() {
-        TrackComponent.removeShowContextMenuListeners();
-
         playlistsContextMenu.removeListeners();
         playlistsContextMenu.deleteRemoveButton();
         document.querySelector('.js-menu-container').innerHTML =
@@ -156,7 +154,6 @@ export class SearchView extends View<never> {
             albums: this.data.albums,
             not_found: this.noResults,
         });
-        TrackComponent.addShowContextMenuListeners();
         addDisableBrokenImgListeners();
     }
 

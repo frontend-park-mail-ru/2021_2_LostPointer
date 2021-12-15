@@ -24,13 +24,13 @@ export class AlbumView extends View<never> {
     private albumID: string;
 
     addListeners() {
-        TrackComponent.addShowContextMenuListeners();
+        playlistsContextMenu.addListeners();
         addDisableBrokenImgListeners();
     }
 
     unmount() {
         removeDisableBrokenImgListeners();
-        TrackComponent.removeShowContextMenuListeners();
+        playlistsContextMenu.removeListeners();
     }
 
     render() {

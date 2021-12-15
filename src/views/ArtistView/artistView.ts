@@ -32,13 +32,12 @@ export class ArtistView extends View<never> {
             });
         }
 
-        TrackComponent.addShowContextMenuListeners();
         addDisableBrokenImgListeners();
     }
 
     unmount() {
         removeDisableBrokenImgListeners();
-        TrackComponent.removeShowContextMenuListeners();
+        playlistsContextMenu.removeListeners();
     }
 
     render() {
