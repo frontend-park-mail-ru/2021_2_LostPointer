@@ -14,6 +14,7 @@ import store from 'services/store/store';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import baseView from 'views/BaseView/baseView';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
@@ -128,23 +129,14 @@ class IndexView extends View<never> {
             );
         });
 
-        document
-            .querySelectorAll('.track-list-item-playlist')
-            .forEach((element) => {
-                element.addEventListener(
-                    'click',
-                    playlistsContextMenu.showContextMenu.bind(
-                        playlistsContextMenu
-                    )
-                );
-            });
+        TrackComponent.addShowContextMenuListeners();
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        return;
+        TrackComponent.removeShowContextMenuListeners();
     }
 
     render() {

@@ -9,6 +9,7 @@ import { InputFormComponent } from 'components/InputForm/inputform';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import { TrackModel } from 'models/track';
 import baseView from 'views/BaseView/baseView';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
@@ -430,16 +431,7 @@ export class PlaylistView extends View<never> {
             );
         }
 
-        document
-            .querySelectorAll('.track-list-item-playlist')
-            .forEach((element) => {
-                element.addEventListener(
-                    'click',
-                    playlistsContextMenu.showContextMenu.bind(
-                        playlistsContextMenu
-                    )
-                );
-            });
+        TrackComponent.addShowContextMenuListeners();
 
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
         createPlaylistBtn.addEventListener(
@@ -465,7 +457,7 @@ export class PlaylistView extends View<never> {
     }
 
     unmount() {
-        // this.isLoaded = false;
+        TrackComponent.removeShowContextMenuListeners();
     }
 
     render(): void {

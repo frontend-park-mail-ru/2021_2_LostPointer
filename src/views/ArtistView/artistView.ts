@@ -9,6 +9,7 @@ import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsConte
 import { PlaylistModel } from 'models/playlist';
 import { TrackModel } from 'models/track';
 import baseView from 'views/BaseView/baseView';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 import ArtistTemplate from './artistView.hbs';
 import './artistView.scss';
@@ -45,23 +46,14 @@ export class ArtistView extends View<never> {
             );
         });
 
-        document
-            .querySelectorAll('.track-list-item-playlist')
-            .forEach((element) => {
-                element.addEventListener(
-                    'click',
-                    playlistsContextMenu.showContextMenu.bind(
-                        playlistsContextMenu
-                    )
-                );
-            });
+        TrackComponent.addShowContextMenuListeners();
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
     }
 
     unmount() {
-        return;
+        TrackComponent.removeShowContextMenuListeners();
     }
 
     render() {

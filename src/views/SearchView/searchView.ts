@@ -13,6 +13,7 @@ import baseView from 'views/BaseView/baseView';
 
 import SearchViewTemplate from './searchView.hbs';
 import './searchView.scss';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 const SEARCH_TIMEOUT = 200;
 
@@ -131,16 +132,7 @@ export class SearchView extends View<never> {
     }
 
     update() {
-        document
-            .querySelectorAll('.track-list-item-playlist')
-            .forEach((element) => {
-                element.removeEventListener(
-                    'click',
-                    playlistsContextMenu.showContextMenu.bind(
-                        playlistsContextMenu
-                    )
-                );
-            });
+        TrackComponent.removeShowContextMenuListeners();
 
         playlistsContextMenu.deleteRemoveButton();
         document.querySelector('.js-menu-container').innerHTML =
@@ -198,16 +190,7 @@ export class SearchView extends View<never> {
             albums: this.data.albums,
             not_found: this.noResults,
         });
-        document
-            .querySelectorAll('.track-list-item-playlist')
-            .forEach((element) => {
-                element.addEventListener(
-                    'click',
-                    playlistsContextMenu.showContextMenu.bind(
-                        playlistsContextMenu
-                    )
-                );
-            });
+        TrackComponent.addShowContextMenuListeners();
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });

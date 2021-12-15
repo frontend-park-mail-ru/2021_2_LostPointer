@@ -8,6 +8,7 @@ import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import baseView from 'views/BaseView/baseView';
 import { TrackModel } from 'models/track';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 import AlbumTemplate from './albumView.hbs';
 import './albumView.scss';
@@ -20,16 +21,7 @@ export class AlbumView extends View<never> {
     private albumID: string;
 
     addListeners() {
-        document
-            .querySelectorAll('.track-list-item-playlist')
-            .forEach((element) => {
-                element.addEventListener(
-                    'click',
-                    playlistsContextMenu.showContextMenu.bind(
-                        playlistsContextMenu
-                    )
-                );
-            });
+        TrackComponent.addShowContextMenuListeners();
 
         const createPlaylistBtn = document.querySelector('.js-playlist-create');
         createPlaylistBtn.addEventListener(
@@ -55,7 +47,7 @@ export class AlbumView extends View<never> {
     }
 
     unmount() {
-        return;
+        TrackComponent.removeShowContextMenuListeners();
     }
 
     render() {
