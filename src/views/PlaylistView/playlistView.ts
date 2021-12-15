@@ -7,11 +7,11 @@ import store from 'services/store/store';
 import { disableBrokenImg } from 'views/utils';
 import { InputFormComponent } from 'components/InputForm/inputform';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
+import { TrackModel } from 'models/track';
+import baseView from 'views/BaseView/baseView';
 
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
-import { TrackModel } from 'models/track';
-import baseView from 'views/BaseView/baseView';
 
 // TODO аватары пользователей-создателей плейлиста
 // TODO! ссылки на альбомы на альбомах в треклисте
@@ -32,53 +32,6 @@ export class PlaylistView extends View<IPlaylistViewProps> {
 
     constructor(props?: IPlaylistViewProps) {
         super(props);
-        this.isLoaded = false;
-    }
-
-    didMount(): void {
-        const regex = /^\/playlist\/(\d+)$/gm;
-        const match = regex.exec(window.location.pathname);
-        if (!match) {
-            router.go(routerStore.dashboard);
-        }
-        const playlistId = parseInt(match[1]);
-
-        const playlist = PlaylistModel.getPlaylist(playlistId).then(
-            (playlist) => {
-                if (!playlist) {
-                    router.go(routerStore.dashboard);
-                }
-                this.playlist = playlist;
-            }
-        );
-
-        const userPlaylists = PlaylistModel.getUserPlaylists().then(
-            (playlists) => {
-                this.userPlaylists = playlists;
-            }
-        );
-
-        Promise.all([playlist, userPlaylists]).then(() => {
-            const props = this.playlist.getProps();
-            this.tracks = props.tracks;
-            this.trackList = new TrackList({
-                title: 'Tracks',
-                tracks: props.tracks,
-            });
-            this.inputs = [
-                new InputFormComponent({
-                    class: 'editwindow__form-input',
-                    name: 'title',
-                    type: 'text',
-                    placeholder: 'Title',
-                    value: props.title,
-                }).render(),
-            ];
-            playlistsContextMenu.addRemoveButton();
-            playlistsContextMenu.updatePlaylists(this.userPlaylists);
-            this.isLoaded = true;
-            this.render();
-        });
     }
 
     displayEditWindow(event) {
@@ -525,46 +478,84 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     render(): void {
-        if (!this.isLoaded) {
-            this.didMount();
-            return;
+        const regex = /^\/playlist\/(\d+)$/gm;
+        const match = regex.exec(window.location.pathname);
+        if (!match) {
+            router.go(routerStore.dashboard);
         }
+        const playlistId = parseInt(match[1]);
 
-        baseView.render();
-        document.getElementById('content').innerHTML = PlaylistTemplate({
-            title: this.playlist.getProps().title,
-            avatar: this.playlist.getProps().artwork,
-            is_own: this.playlist.getProps().is_own,
-            is_public: this.playlist.getProps().is_public,
-            trackList: this.trackList
-                .set({
-                    title: 'Tracks',
-                    tracks: this.playlist.getProps().tracks,
-                })
-                .render(),
-            inputs: this.inputs,
-            link: window.location.href,
+        const playlist = PlaylistModel.getPlaylist(playlistId).then(
+            (playlist) => {
+                if (!playlist) {
+                    router.go(routerStore.dashboard);
+                }
+                this.playlist = playlist;
+            }
+        );
+
+        const userPlaylists = PlaylistModel.getUserPlaylists().then(
+            (playlists) => {
+                this.userPlaylists = playlists;
+            }
+        );
+
+        Promise.all([playlist, userPlaylists]).then(() => {
+            const props = this.playlist.getProps();
+            this.tracks = props.tracks;
+            this.trackList = new TrackList({
+                title: 'Tracks',
+                tracks: props.tracks,
+            });
+            this.inputs = [
+                new InputFormComponent({
+                    class: 'editwindow__form-input',
+                    name: 'title',
+                    type: 'text',
+                    placeholder: 'Title',
+                    value: props.title,
+                }).render(),
+            ];
+            playlistsContextMenu.addRemoveButton();
+            playlistsContextMenu.updatePlaylists(this.userPlaylists);
+            baseView.render();
+            document.querySelector('.js-menu-container').innerHTML =
+                playlistsContextMenu.render();
+            document.getElementById('content').innerHTML = PlaylistTemplate({
+                title: this.playlist.getProps().title,
+                avatar: this.playlist.getProps().artwork,
+                is_own: this.playlist.getProps().is_own,
+                is_public: this.playlist.getProps().is_public,
+                trackList: this.trackList
+                    .set({
+                        title: 'Tracks',
+                        tracks: this.playlist.getProps().tracks,
+                    })
+                    .render(),
+                inputs: this.inputs,
+                link: window.location.href,
+            });
+            this.renderedMenu = document.querySelector('.menu');
+
+            const deleteAvatarBtn = document.querySelector(
+                '.editwindow__avatar-delete'
+            );
+            if (
+                this.playlist.getProps().is_own &&
+                this.playlist.getProps().artwork === DEFAULT_ARTWORK
+            ) {
+                (<HTMLElement>deleteAvatarBtn).style.display = 'none';
+            }
+            const backgroundOverlay = document.querySelector(
+                '.playlist__background-container'
+            );
+            (<HTMLElement>(
+                backgroundOverlay
+            )).style.backgroundImage = `linear-gradient(to bottom, ${
+                this.playlist.getProps().artwork_color
+            }, black)`;
+            this.addListeners();
         });
-        this.renderedMenu = document.querySelector('.menu');
-
-        const deleteAvatarBtn = document.querySelector(
-            '.editwindow__avatar-delete'
-        );
-        if (
-            this.playlist.getProps().is_own &&
-            this.playlist.getProps().artwork === DEFAULT_ARTWORK
-        ) {
-            (<HTMLElement>deleteAvatarBtn).style.display = 'none';
-        }
-        const backgroundOverlay = document.querySelector(
-            '.playlist__background-container'
-        );
-        (<HTMLElement>(
-            backgroundOverlay
-        )).style.backgroundImage = `linear-gradient(to bottom, ${
-            this.playlist.getProps().artwork_color
-        }, black)`;
-        this.addListeners();
     }
 
     getTracksContext(): TrackModel[] {

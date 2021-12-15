@@ -13,10 +13,10 @@ import { disableBrokenImg } from 'views/utils';
 import store from 'services/store/store';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
+import baseView from 'views/BaseView/baseView';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
-import baseView from 'views/BaseView/baseView';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -35,66 +35,7 @@ class IndexView extends View<IIndexViewProps> {
 
     constructor(props?: IIndexViewProps) {
         super(props);
-        this.isLoaded = false;
         this.renderCount = 0;
-    }
-
-    didMount() {
-        const tracks = TrackModel.getHomepageTracks().then((tracks) => {
-            this.track_list = tracks;
-        });
-        const artists = ArtistModel.getHomepageArtists().then((artists) => {
-            this.suggested_artists = artists;
-        });
-        const albums = AlbumModel.getHomepageAlbums().then((albums) => {
-            this.top_albums = albums;
-        });
-        const playlists = PlaylistModel.getUserPlaylists().then((playlists) => {
-            this.suggested_playlists = playlists;
-        });
-
-        const userPlaylists = PlaylistModel.getUserPlaylists().then(
-            (playlists) => {
-                this.userPlaylists = playlists;
-            }
-        );
-
-        Promise.all([tracks, artists, albums, playlists, userPlaylists]).then(
-            () => {
-                this.rendered_track_list = new TrackList({
-                    title: 'Tracks of the Week',
-                    tracks: this.track_list,
-                }).render();
-
-                suggestedPlaylists.set(this.suggested_playlists);
-
-                this.top_albums = new TopAlbums({
-                    albums: this.top_albums,
-                }).render();
-                this.suggested_artists = new SuggestedArtists({
-                    artists: this.suggested_artists,
-                    extraRounded: true,
-                }).render();
-
-                this.friend_activity = new FriendActivity({
-                    friends: [
-                        {
-                            img: 'default_avatar_150px',
-                            nickname: 'Frank Sinatra',
-                            listening_to: 'Strangers in the Night',
-                        },
-                        {
-                            img: 'default_avatar_150px',
-                            nickname: 'Земфира',
-                            listening_to: 'Трафик',
-                        },
-                    ],
-                }).render();
-                playlistsContextMenu.updatePlaylists(this.userPlaylists);
-                this.isLoaded = true;
-                this.render();
-            }
-        );
     }
 
     createPlaylist(event) {
@@ -214,25 +155,77 @@ class IndexView extends View<IIndexViewProps> {
     }
 
     unmount() {
-        // this.isLoaded = false;
+        return;
     }
 
     render() {
-        if (!this.isLoaded) {
-            this.didMount();
-            return;
-        }
-        baseView.render();
-        const content = document.getElementById('content');
-        content.innerHTML = IndexTemplate({
-            friend_activity: this.friend_activity,
-            top_albums: this.top_albums,
-            suggested_artists: this.suggested_artists,
-            track_list: this.rendered_track_list,
-            suggested_playlists: suggestedPlaylists.render(),
+        const tracks = TrackModel.getHomepageTracks().then((tracks) => {
+            this.track_list = tracks;
+        });
+        const artists = ArtistModel.getHomepageArtists().then((artists) => {
+            this.suggested_artists = artists;
+        });
+        const albums = AlbumModel.getHomepageAlbums().then((albums) => {
+            this.top_albums = albums;
+        });
+        const playlists = PlaylistModel.getUserPlaylists().then((playlists) => {
+            this.suggested_playlists = playlists;
         });
 
-        this.addListeners();
+        const userPlaylists = PlaylistModel.getUserPlaylists().then(
+            (playlists) => {
+                this.userPlaylists = playlists;
+            }
+        );
+
+        Promise.all([tracks, artists, albums, playlists, userPlaylists]).then(
+            () => {
+                this.rendered_track_list = new TrackList({
+                    title: 'Tracks of the Week',
+                    tracks: this.track_list,
+                }).render();
+
+                suggestedPlaylists.set(this.suggested_playlists);
+
+                this.top_albums = new TopAlbums({
+                    albums: this.top_albums,
+                }).render();
+                this.suggested_artists = new SuggestedArtists({
+                    artists: this.suggested_artists,
+                    extraRounded: true,
+                }).render();
+
+                this.friend_activity = new FriendActivity({
+                    friends: [
+                        {
+                            img: 'default_avatar_150px',
+                            nickname: 'Frank Sinatra',
+                            listening_to: 'Strangers in the Night',
+                        },
+                        {
+                            img: 'default_avatar_150px',
+                            nickname: 'Земфира',
+                            listening_to: 'Трафик',
+                        },
+                    ],
+                }).render();
+                playlistsContextMenu.updatePlaylists(this.userPlaylists);
+                baseView.render();
+                playlistsContextMenu.deleteRemoveButton();
+                document.querySelector('.js-menu-container').innerHTML =
+                    playlistsContextMenu.render();
+                const content = document.getElementById('content');
+                content.innerHTML = IndexTemplate({
+                    friend_activity: this.friend_activity,
+                    top_albums: this.top_albums,
+                    suggested_artists: this.suggested_artists,
+                    track_list: this.rendered_track_list,
+                    suggested_playlists: suggestedPlaylists.render(),
+                });
+
+                this.addListeners();
+            }
+        );
     }
 
     getTracksContext(): TrackModel[] {

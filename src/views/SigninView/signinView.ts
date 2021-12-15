@@ -38,10 +38,6 @@ export class SigninView extends View<ISigninComponentProps> {
         };
     }
 
-    didMount(): void {
-        throw new Error('Method not implemented.');
-    }
-
     render() {
         baseView.unmount();
         if (store.get('authenticated')) {

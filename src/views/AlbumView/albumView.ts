@@ -6,11 +6,11 @@ import routerStore from 'services/router/routerStore';
 import { disableBrokenImg } from 'views/utils';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
+import baseView from 'views/BaseView/baseView';
+import { TrackModel } from 'models/track';
 
 import AlbumTemplate from './albumView.hbs';
 import './albumView.scss';
-import { TrackModel } from 'models/track';
-import baseView from 'views/BaseView/baseView';
 
 interface IAlbumViewProps {
     authenticated: boolean;
@@ -26,41 +26,6 @@ export class AlbumView extends View<IAlbumViewProps> {
 
     constructor(props?: IAlbumViewProps) {
         super(props);
-        this.isLoaded = false;
-    }
-
-    didMount() {
-        const regex = /^\/album\/(\d+)$/gm;
-        const match = regex.exec(window.location.pathname);
-        if (!match) {
-            router.go(routerStore.dashboard);
-        }
-        const albumId = match[1];
-        this.albumID = albumId;
-        const album = AlbumModel.getAlbum(albumId).then((album) => {
-            if (!album) {
-                router.go(routerStore.dashboard);
-            }
-            this.album = album;
-        });
-
-        const userPlaylists = PlaylistModel.getUserPlaylists().then(
-            (playlists) => {
-                this.userPlaylists = playlists;
-            }
-        );
-
-        Promise.all([album, userPlaylists]).then(() => {
-            const props = this.album.getProps();
-            this.tracks = props.tracks;
-            this.trackList = new TrackList({
-                title: 'Tracks',
-                tracks: props.tracks,
-            }).render();
-            playlistsContextMenu.updatePlaylists(this.userPlaylists);
-            this.isLoaded = true;
-            this.render();
-        });
     }
 
     addListeners() {
@@ -99,36 +64,63 @@ export class AlbumView extends View<IAlbumViewProps> {
     }
 
     unmount() {
-        this.isLoaded = false;
+        return;
     }
 
     render() {
-        if (!this.isLoaded) {
-            this.didMount();
-            return;
+        const regex = /^\/album\/(\d+)$/gm;
+        const match = regex.exec(window.location.pathname);
+        if (!match) {
+            router.go(routerStore.dashboard);
         }
-        playlistsContextMenu.updatePlaylists(this.userPlaylists);
-        baseView.render();
-        document.querySelector('.main-layout__content').innerHTML =
-            AlbumTemplate({
-                artWork:
-                    '/static/artworks/' +
-                    this.album.getProps().artwork +
-                    '_512px.webp',
-                title: this.album.getProps().title,
-                trackList: this.trackList,
-                contextMenu: playlistsContextMenu.render(),
-                tracksCount: this.album.getProps().tracks_count,
-                tracksDurationMin: Math.floor(
-                    this.album.getProps().tracks_duration / 60
-                ),
-                tracksDurationSec: Math.floor(
-                    this.album.getProps().tracks_duration % 60
-                ),
-                album: this.album.getProps(),
-            });
+        const albumId = match[1];
+        this.albumID = albumId;
+        const album = AlbumModel.getAlbum(albumId).then((album) => {
+            if (!album) {
+                router.go(routerStore.dashboard);
+            }
+            this.album = album;
+        });
 
-        this.addListeners();
+        const userPlaylists = PlaylistModel.getUserPlaylists().then(
+            (playlists) => {
+                this.userPlaylists = playlists;
+            }
+        );
+
+        Promise.all([album, userPlaylists]).then(() => {
+            const props = this.album.getProps();
+            this.tracks = props.tracks;
+            this.trackList = new TrackList({
+                title: 'Tracks',
+                tracks: props.tracks,
+            }).render();
+            playlistsContextMenu.updatePlaylists(this.userPlaylists);
+            baseView.render();
+            playlistsContextMenu.deleteRemoveButton();
+            document.querySelector('.js-menu-container').innerHTML =
+                playlistsContextMenu.render();
+            document.querySelector('.main-layout__content').innerHTML =
+                AlbumTemplate({
+                    artWork:
+                        '/static/artworks/' +
+                        this.album.getProps().artwork +
+                        '_512px.webp',
+                    title: this.album.getProps().title,
+                    trackList: this.trackList,
+                    contextMenu: playlistsContextMenu.render(),
+                    tracksCount: this.album.getProps().tracks_count,
+                    tracksDurationMin: Math.floor(
+                        this.album.getProps().tracks_duration / 60
+                    ),
+                    tracksDurationSec: Math.floor(
+                        this.album.getProps().tracks_duration % 60
+                    ),
+                    album: this.album.getProps(),
+                });
+
+            this.addListeners();
+        });
     }
 
     getTracksContext(): TrackModel[] {

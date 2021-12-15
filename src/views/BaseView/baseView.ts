@@ -39,9 +39,6 @@ class BaseView extends View<never> {
         player.setEventListeners();
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    didMount(): void {}
-
     unmount(): void {
         this.mounted = false;
     }

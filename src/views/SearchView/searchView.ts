@@ -9,10 +9,10 @@ import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
 import { TopAlbums } from 'components/TopAlbums/topalbums';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
+import baseView from 'views/BaseView/baseView';
 
 import SearchViewTemplate from './searchView.hbs';
 import './searchView.scss';
-import baseView from 'views/BaseView/baseView';
 
 const SEARCH_TIMEOUT = 200;
 
@@ -27,8 +27,6 @@ interface ISearchViewProps {
 }
 
 export class SearchView extends View<ISearchViewProps> {
-    private authenticated: boolean;
-
     private userAvatar: string;
     private searchTimer: any; //TODO=Поправить
     private data: ISearchViewData;
@@ -123,8 +121,6 @@ export class SearchView extends View<ISearchViewProps> {
         document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
-
-        // this.isLoaded = false;
     }
 
     render() {
@@ -222,10 +218,6 @@ export class SearchView extends View<ISearchViewProps> {
             img.addEventListener('error', disableBrokenImg);
         });
         this.isLoaded = true;
-    }
-
-    didMount() {
-        console.log('not implemented');
     }
 
     getTracksContext(): TrackModel[] {
