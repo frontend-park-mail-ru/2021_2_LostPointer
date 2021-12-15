@@ -1,9 +1,7 @@
 import { View } from 'views/View/view';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import TopbarComponent from 'components/Topbar/topbar';
 import player from 'components/Player/player';
-import sidebar from 'components/Sidebar/sidebar';
 import { ICustomInput } from 'interfaces/CustomInput';
 import { CustomValidation, isValidForm } from 'services/validation/validation';
 import {
@@ -17,7 +15,7 @@ import { ProfileForm } from 'components/ProfileForm/profileForm';
 import { UserModel } from 'models/user';
 import { disableBrokenImg } from 'views/utils';
 import store from 'services/store/store';
-import mobile from 'components/Mobile/mobile';
+import baseView from 'views/BaseView/baseView';
 
 import ProfileTemplate from './profileView.hbs';
 import './profileView.scss';
@@ -33,26 +31,6 @@ export class ProfileView extends View<IProfileViewProps> {
 
     constructor(props?: IProfileViewProps) {
         super(props);
-        this.isLoaded = false;
-    }
-
-    didMount() {
-        if (!store.get('authenticated')) {
-            router.go(routerStore.signin);
-            return;
-        }
-
-        UserModel.getSettings().then((user) => {
-            this.user = user;
-            TopbarComponent.set({
-                authenticated: store.get('authenticated'),
-                avatar: user.getProps().small_avatar,
-                offline: !navigator.onLine,
-            });
-            this.profileform = new ProfileForm(user.getProps());
-            this.isLoaded = true;
-            this.render();
-        });
     }
 
     uploadAvatarFile(event) {
@@ -92,13 +70,7 @@ export class ProfileView extends View<IProfileViewProps> {
         }
 
         this.user
-            .updateSettings(
-                null,
-                null,
-                null,
-                null,
-                file,
-            )
+            .updateSettings(null, null, null, null, file)
             .then((body) => {
                 if (body.status === 200) {
                     const smallAvatar = document.querySelector(
@@ -190,8 +162,12 @@ export class ProfileView extends View<IProfileViewProps> {
             .updateSettings(
                 nicknameInput.value,
                 emailInput.value,
-                oldPasswordInput.value && passwordInput.value ? oldPasswordInput.value : null,
-                oldPasswordInput.value && passwordInput.value ? passwordInput.value : null,
+                oldPasswordInput.value && passwordInput.value
+                    ? oldPasswordInput.value
+                    : null,
+                oldPasswordInput.value && passwordInput.value
+                    ? passwordInput.value
+                    : null
             )
             .then((body) => {
                 if (body.status === 200) {
@@ -213,14 +189,13 @@ export class ProfileView extends View<IProfileViewProps> {
 
     logoutHandler(event) {
         event.stopPropagation();
-        UserModel.logout()
-            .then(() => {
-                player.stop();
-                player.clear();
-                store.set('authenticated', false);
-                window.localStorage.removeItem('lastPlayedData');
-                router.go(routerStore.dashboard);
-            })
+        UserModel.logout().then(() => {
+            player.stop();
+            player.clear();
+            store.set('authenticated', false);
+            window.localStorage.removeItem('lastPlayedData');
+            router.go(routerStore.dashboard);
+        });
     }
 
     addListeners() {
@@ -268,25 +243,22 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     render() {
-        if (!this.isLoaded) {
-            this.didMount();
+        if (!store.get('authenticated')) {
+            router.go(routerStore.signin);
             return;
         }
 
-        document.getElementById('app').innerHTML = ProfileTemplate({
-            topbar: TopbarComponent.set({
-                authenticated: store.get('authenticated'),
-                avatar: store.get('userAvatar'),
-                offline: !navigator.onLine,
-            }).render(),
-            sidebar: sidebar.render(),
-            profileform: this.profileform.render(),
-            player: player.render(),
-            mobile: mobile.render(),
+        UserModel.getSettings().then((user) => {
+            this.user = user;
+            this.profileform = new ProfileForm(user.getProps());
+
+            baseView.render();
+            document.querySelector('.main-layout__content').innerHTML =
+                ProfileTemplate({
+                    profileform: this.profileform.render(),
+                });
+            this.addListeners();
         });
-        TopbarComponent.addHandlers();
-        TopbarComponent.didMount();
-        this.addListeners();
     }
 }
 

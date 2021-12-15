@@ -6,8 +6,6 @@ export abstract class View<TProps> {
         this.props = { ...props };
     }
 
-    abstract didMount(): void;
-
     abstract render(): void;
 
     abstract unmount(): void;
