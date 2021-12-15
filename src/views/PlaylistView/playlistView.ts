@@ -438,6 +438,84 @@ export class PlaylistView extends View<never> {
     unmount() {
         removeDisableBrokenImgListeners();
         playlistsContextMenu.removeListeners();
+
+        const link = document.querySelector('.editwindow__link');
+        if (link) {
+            link.removeEventListener('click', this.copyLink.bind(this));
+        }
+
+        const deleteAvatarBtn = document.querySelector(
+            '.editwindow__avatar-delete'
+        );
+        if (deleteAvatarBtn) {
+            deleteAvatarBtn.removeEventListener(
+                'click',
+                this.deleteAvatar.bind(this)
+            );
+        }
+
+        const publicityCheckbox = document.querySelector(
+            '.editwindow__form-switch input'
+        );
+        if (publicityCheckbox) {
+            publicityCheckbox.removeEventListener(
+                'click',
+                this.togglePublicity.bind(this)
+            );
+        }
+
+        const deleteBtn = document.querySelector('.editwindow__delete');
+        if (deleteBtn) {
+            deleteBtn.removeEventListener(
+                'click',
+                this.deleteButtonClick.bind(this)
+            );
+        }
+
+        const form = document.querySelector('.editwindow__form');
+        if (form) {
+            form.removeEventListener(
+                'submit',
+                this.submitChangePlaylistInfoForm.bind(this)
+            );
+        }
+        const fileInput = document.querySelector('input[name="file"]');
+        if (fileInput) {
+            fileInput.removeEventListener(
+                'change',
+                this.uploadAvatarFile.bind(this)
+            );
+        }
+
+        const editPlaylistBtn = document.querySelector(
+            '.playlist__description-edit-btn'
+        );
+        if (editPlaylistBtn) {
+            editPlaylistBtn.removeEventListener(
+                'click',
+                this.displayEditWindow.bind(this)
+            );
+        }
+
+        const playlistAvatar = document.querySelector(
+            '.playlist__description-avatar'
+        );
+        if (playlistAvatar) {
+            playlistAvatar.removeEventListener(
+                'click',
+                this.displayEditWindow.bind(this)
+            );
+        }
+
+        const removeTrackFromPlaylistBtn = document.querySelector(
+            '.js-playlist-track-remove'
+        );
+        if (removeTrackFromPlaylistBtn) {
+            removeTrackFromPlaylistBtn.removeEventListener(
+                'click',
+                this.removeTrack.bind(this)
+            );
+        }
     }
 
     render(): void {

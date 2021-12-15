@@ -12,7 +12,6 @@ import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsConte
 import { PlaylistModel } from 'models/playlist';
 import { TrackModel } from 'models/track';
 import baseView from 'views/BaseView/baseView';
-import { TrackComponent } from 'components/TrackComponent/track';
 
 import ArtistTemplate from './artistView.hbs';
 import './artistView.scss';
@@ -32,12 +31,20 @@ export class ArtistView extends View<never> {
             });
         }
 
+        playlistsContextMenu.addListeners();
         addDisableBrokenImgListeners();
     }
 
     unmount() {
         removeDisableBrokenImgListeners();
         playlistsContextMenu.removeListeners();
+
+        const video = document.querySelector('.artist__background-video');
+        if (video) {
+            video.removeEventListener('ended', () => {
+                video.classList.add('transition');
+            });
+        }
     }
 
     render() {

@@ -45,59 +45,57 @@ export class SearchView extends View<never> {
         this.noResults = false;
     }
 
+    handleInput(e) {
+        const text = (<HTMLInputElement>e.target).value;
+        clearTimeout(this.searchTimer);
+        this.searchTimer = setTimeout(() => {
+            if (text.length != 0) {
+                Request.get(`/music/search?text=${text}`)
+                    .then((response) => {
+                        this.tracks = response.tracks
+                            ? response.tracks.reduce((acc, elem, index) => {
+                                  elem.pos = index;
+                                  elem.album = new AlbumModel(elem.album);
+                                  elem.artist = new ArtistModel(elem.artist);
+                                  acc.push(new TrackModel(elem));
+                                  return acc;
+                              }, [])
+                            : [];
+                        this.albums = response.albums
+                            ? response.albums.reduce((acc, elem) => {
+                                  acc.push(new AlbumModel(elem));
+                                  return acc;
+                              }, [])
+                            : [];
+                        this.artists = response.artists
+                            ? response.artists.reduce((acc, elem) => {
+                                  acc.push(new ArtistModel(elem));
+                                  return acc;
+                              }, [])
+                            : [];
+                    })
+                    .then(() => {
+                        this.update();
+                    });
+            } else {
+                document.querySelector('.main-layout__content').innerHTML = '';
+            }
+        }, SEARCH_TIMEOUT);
+    }
+
     addListeners() {
         document
             .querySelector('.topbar__search-input')
-            .addEventListener('input', (e) => {
-                const text = (<HTMLInputElement>e.target).value;
-                clearTimeout(this.searchTimer);
-                this.searchTimer = setTimeout(() => {
-                    if (text.length != 0) {
-                        Request.get(`/music/search?text=${text}`)
-                            .then((response) => {
-                                this.tracks = response.tracks
-                                    ? response.tracks.reduce(
-                                          (acc, elem, index) => {
-                                              elem.pos = index;
-                                              elem.album = new AlbumModel(
-                                                  elem.album
-                                              );
-                                              elem.artist = new ArtistModel(
-                                                  elem.artist
-                                              );
-                                              acc.push(new TrackModel(elem));
-                                              return acc;
-                                          },
-                                          []
-                                      )
-                                    : [];
-                                this.albums = response.albums
-                                    ? response.albums.reduce((acc, elem) => {
-                                          acc.push(new AlbumModel(elem));
-                                          return acc;
-                                      }, [])
-                                    : [];
-                                this.artists = response.artists
-                                    ? response.artists.reduce((acc, elem) => {
-                                          acc.push(new ArtistModel(elem));
-                                          return acc;
-                                      }, [])
-                                    : [];
-                            })
-                            .then(() => {
-                                this.update();
-                            });
-                    } else {
-                        document.querySelector(
-                            '.main-layout__content'
-                        ).innerHTML = '';
-                    }
-                }, SEARCH_TIMEOUT);
-            });
+            .addEventListener('input', this.handleInput.bind(this));
     }
 
     unmount() {
         removeDisableBrokenImgListeners();
+        playlistsContextMenu.removeListeners();
+        const input = document.querySelector('.topbar__search-input');
+        if (input) {
+            input.removeEventListener('input', this.handleInput.bind(this));
+        }
     }
 
     render() {

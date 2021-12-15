@@ -228,6 +228,21 @@ export class ProfileView extends View<never> {
         document.querySelectorAll('.js-logout').forEach((el) => {
             el.removeEventListener('click', this.logoutHandler.bind(this));
         });
+
+        const form = document.querySelector('.profile-form');
+        if (form) {
+            form.removeEventListener(
+                'submit',
+                this.submitChangeProfileForm.bind(this)
+            );
+        }
+        const fileInput = document.querySelector('input[name="file"]');
+        if (fileInput) {
+            fileInput.removeEventListener(
+                'change',
+                this.uploadAvatarFile.bind(this)
+            );
+        }
     }
 
     render() {

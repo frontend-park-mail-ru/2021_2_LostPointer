@@ -11,7 +11,6 @@ import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import baseView from 'views/BaseView/baseView';
 import { TrackModel } from 'models/track';
-import { TrackComponent } from 'components/TrackComponent/track';
 
 import AlbumTemplate from './albumView.hbs';
 import './albumView.scss';
