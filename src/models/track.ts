@@ -70,32 +70,29 @@ export class TrackModel extends Model<ITrackModel> {
 
     static addInFavorites(id: number): Promise<IResponseBody> {
         return new Promise<IResponseBody>((res) => {
-            Request.post(`/track/like/${id}`)
-                .then((response) => {
-                    res(response);
-                })
-        })
+            Request.post(`/track/like/${id}`).then((response) => {
+                res(response);
+            });
+        });
     }
 
     static removeFromFavorites(id: number): Promise<IResponseBody> {
         return new Promise<IResponseBody>((res) => {
-            Request.delete(`/track/like/${id}`)
-                .then((response) => {
-                    res(response);
-                })
-        })
+            Request.delete(`/track/like/${id}`).then((response) => {
+                res(response);
+            });
+        });
     }
 
     static serializeList(trackList, album = null, artist = null) {
         return trackList.reduce((acc, elem, index) => {
-                elem.pos = index;
-                elem.album = album ? new AlbumModel(album) : new AlbumModel(elem.album);
-                elem.artist = artist ? new ArtistModel(artist) : new ArtistModel(elem.artist);
-                elem.artwork_color = elem.album.props.artwork_color;
-                acc.push(new TrackModel(elem));
-                return acc;
-            },
-            [],);
+            elem.pos = index;
+            elem.album = new AlbumModel(album ? album : elem.album);
+            elem.artist = new ArtistModel(artist ? artist : elem.artist);
+            elem.artwork_color = elem.album.props.artwork_color;
+            acc.push(new TrackModel(elem));
+            return acc;
+        }, []);
     }
 }
 
