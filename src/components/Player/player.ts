@@ -1,15 +1,15 @@
 import { Component } from 'components/Component/component';
-
 import Request from 'services/request/request';
-
-import PlayerTemplate from './player.hbs';
-import './player.scss';
 import { TrackModel } from 'models/track';
 import { TrackList } from 'components/TrackList/tracklist';
 import store from 'services/store/store';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { ArtistModel } from 'models/artist';
+import { TrackComponent } from 'components/TrackComponent/track';
+
+import PlayerTemplate from './player.hbs';
+import './player.scss';
 
 export interface IPlayerComponentProps {
     artwork_color: string;
@@ -479,7 +479,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     this.audio.muted ? 'muted.svg' : 'volume.svg'
                 }`;
             } else if (element.classList.contains('player-fav')) {
-                console.log('knopka ne pashet');
+                // TrackComponent.toggleFavor(e);
             }
         };
         this.playHandler = () => {
