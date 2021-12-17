@@ -10,6 +10,7 @@ import ProfileView from 'views/ProfileView/profileView';
 import ArtistView from 'views/ArtistView/artistView';
 import SearchView from 'views/SearchView/searchView';
 import AlbumView from 'views/AlbumView/albumView';
+import FavoritesView from 'views/FavoritesView/favoritesView';
 
 import { UserModel } from 'models/user';
 
@@ -68,6 +69,7 @@ class App {
         }
     }
 
+    // FIXME костыль на костыле на костыле на костыле
     _dataLinkRoute(event) {
         const target = event.target;
         if (target.tagName === 'A' && target.getAttribute('href')) {
@@ -98,6 +100,7 @@ class App {
         router
             .register(routerStore.artist, ArtistView)
             .register(routerStore.album, AlbumView)
+            .register(routerStore.favorites, FavoritesView)
             .register(routerStore.playlist, PlaylistView)
             .register(routerStore.profile, ProfileView)
             .register(routerStore.signin, SigninView)

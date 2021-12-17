@@ -20,6 +20,7 @@ import mobile from 'components/Mobile/mobile';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -156,6 +157,9 @@ class IndexView extends View<IIndexViewProps> {
     }
 
     addListeners() {
+        if (store.get('authenticated')) {
+            TrackComponent.addToggleFavorListeners();
+        }
         if (!suggestedPlaylists.publicView()) {
             const createPlaylistBtn = document.querySelector(
                 '.pl-link[href="/playlist/0"]'
@@ -278,6 +282,10 @@ class IndexView extends View<IIndexViewProps> {
                 )
             );
         });
+
+        if (store.get('authenticated')) {
+            TrackComponent.removeToggleFavorListeners();
+        }
     }
 
     render() {

@@ -67,13 +67,7 @@ export class ArtistModel extends Model<IArtistModel> {
                     }
 
                     response.tracks = response
-                        ? response.tracks.reduce((acc, elem, index) => {
-                              elem.pos = index;
-                              const album = new AlbumModel(elem.album);
-                              elem.album = album;
-                              acc.push(new TrackModel(elem));
-                              return acc;
-                          }, [])
+                        ? TrackModel.serializeList(response.tracks)
                         : [];
                     response.albums = response
                         ? response.albums.reduce((acc, elem, index) => {

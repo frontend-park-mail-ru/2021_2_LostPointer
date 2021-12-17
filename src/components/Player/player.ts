@@ -1,15 +1,15 @@
 import { Component } from 'components/Component/component';
-
 import Request from 'services/request/request';
-
-import PlayerTemplate from './player.hbs';
-import './player.scss';
 import { TrackModel } from 'models/track';
 import { TrackList } from 'components/TrackList/tracklist';
 import store from 'services/store/store';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { ArtistModel } from 'models/artist';
+import { TrackComponent } from 'components/TrackComponent/track';
+
+import PlayerTemplate from './player.hbs';
+import './player.scss';
 
 export interface IPlayerComponentProps {
     artwork_color: string;
@@ -127,14 +127,16 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.audio.src = this.props.file;
             this.props.right_disabled = true;
             this.props.left_disabled = true;
-            document.title = `${this.props.track} · ${this.props.artist.props.name}`;
+            document.title = 'LostPointer Music';
             this.props.hide_artwork = false;
             this.props.recovered = true;
             this.audio.preload = 'metadata';
-            document.documentElement.style.setProperty(
-                '--artwork-accent-color',
-                this.props.artwork_color
-            );
+            if (this.props.artwork_color) {
+                document.documentElement.style.setProperty(
+                    '--artwork-accent-color',
+                    this.props.artwork_color
+                );
+            }
         }
         return typeof data === 'string';
     }
@@ -158,23 +160,25 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             track: track.title,
             artist: artist || track.artist,
             file: this.audio.src,
-            artwork_color: track.artworkcolor,
+            artwork_color:
+                track.artworkcolor || track.album.props.artwork_color,
         } as IPlayerComponentProps;
         document.title = `${this.props.track} · ${this.props.artist.props.name}`;
 
-        navigator.mediaSession.metadata = new MediaMetadata({
+        const mediaMetadata = {
             title: track.title,
             artist: track.artist,
             album: track.album,
             artwork: [96, 128, 192, 256, 384, 512].reduce((acc, elem) => {
                 acc.push({
-                    src: `${track.cover}_${elem}px.webp`,
+                    src: `/static/artworks/${track.cover}_${elem}px.webp`,
                     sizes: `${elem}x${elem}`,
                     type: 'image/webp',
                 });
                 return acc;
             }, []),
-        });
+        };
+        navigator.mediaSession.metadata = new MediaMetadata(mediaMetadata);
 
         const right = document.querySelectorAll('.player-skip-right');
         const left = document.querySelectorAll('.player-skip-left');
@@ -235,6 +239,11 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 .querySelector('.player-artwork')
                 .classList.remove('hidden');
         });
+
+        document.querySelectorAll('.player-fav').forEach((favorites) => {
+            favorites.addEventListener('click', this.buttonsHandler);
+        });
+
         document.querySelectorAll('.repeat').forEach((repeat) => {
             repeat.addEventListener('click', this.buttonsHandler);
         });
@@ -304,6 +313,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             const target = <HTMLImageElement>e.target;
             if (target.classList.contains('top-album__play')) {
                 e.preventDefault();
+                if (!store.get('authenticated')) {
+                    router.go(routerStore.signin);
+                    return;
+                }
                 TrackModel.getAlbumTracks(target.dataset.id).then((tracks) => {
                     this.playlist = new TrackList({ tracks }).render();
                     this.setup(this.playlist);
@@ -465,6 +478,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 (element as HTMLImageElement).src = `/static/img/${
                     this.audio.muted ? 'muted.svg' : 'volume.svg'
                 }`;
+            } else if (element.classList.contains('player-fav')) {
+                // TrackComponent.toggleFavor(e);
             }
         };
         this.playHandler = () => {

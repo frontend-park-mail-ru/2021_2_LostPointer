@@ -1,5 +1,6 @@
 import { ContentType, RequestMethods } from './requestUtils';
 
+// const defaultBackendDomain = 'https://api.lostpointer.site/api/v1';
 const defaultBackendDomain = '/api/v1';
 
 export interface IResponseBody {
@@ -14,12 +15,26 @@ export class Request {
         this.backendDomain = domain;
     }
 
-    patch(path: string, requestBody?: BodyInit, contentType?: string, customHeaders?: object) {
-        return this._fetchRequest(this._createURL(this.backendDomain, path),
-            RequestMethods.PATCH, requestBody, contentType, customHeaders);
+    patch(
+        path: string,
+        requestBody?: BodyInit,
+        contentType?: string,
+        customHeaders?: object
+    ): Promise<any> {
+        return this._fetchRequest(
+            this._createURL(this.backendDomain, path),
+            RequestMethods.PATCH,
+            requestBody,
+            contentType,
+            customHeaders
+        );
     }
 
-    post(path: string, requestBody?: BodyInit, contentType?: string) {
+    post(
+        path: string,
+        requestBody?: BodyInit,
+        contentType?: string
+    ): Promise<any> {
         return this._fetchRequest(
             this._createURL(this.backendDomain, path),
             RequestMethods.POST,
@@ -28,7 +43,11 @@ export class Request {
         );
     }
 
-    put(path: string, requestBody?: BodyInit, contentType?: string) {
+    put(
+        path: string,
+        requestBody?: BodyInit,
+        contentType?: string
+    ): Promise<any> {
         return this._fetchRequest(
             this._createURL(this.backendDomain, path),
             RequestMethods.PUT,
@@ -37,14 +56,18 @@ export class Request {
         );
     }
 
-    get(path: string) {
+    get(path: string): Promise<any> {
         return this._fetchRequest(
             this._createURL(this.backendDomain, path),
             RequestMethods.GET
         );
     }
 
-    delete(path: string, requestBody?: BodyInit, contentType?: string) {
+    delete(
+        path: string,
+        requestBody?: BodyInit,
+        contentType?: string
+    ): Promise<any> {
         return this._fetchRequest(
             this._createURL(this.backendDomain, path),
             RequestMethods.DELETE,
@@ -58,19 +81,17 @@ export class Request {
         requestMethod: string,
         requestBody: BodyInit = null,
         contentType: string = ContentType.JSON,
-        customHeaders = null,
-    ) {
+        customHeaders = null
+    ): Promise<any> {
         const myHeaders = new Headers();
         if (
-            !!requestBody
-                // потому что FormData сам проставляет нужный content type
-                && contentType !== ContentType.FORM
-            && (
-                RequestMethods.POST === requestMethod
-                || RequestMethods.PUT === requestMethod
-                || RequestMethods.DELETE === requestMethod
-                || RequestMethods.PATCH
-            )
+            !!requestBody &&
+            // потому что FormData сам проставляет нужный content type
+            contentType !== ContentType.FORM &&
+            (RequestMethods.POST === requestMethod ||
+                RequestMethods.PUT === requestMethod ||
+                RequestMethods.DELETE === requestMethod ||
+                RequestMethods.PATCH)
         ) {
             myHeaders.append('Content-Type', contentType);
         }
