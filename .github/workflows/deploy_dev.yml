@@ -49,7 +49,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: lostpointer-static
-          path: ./lostpointer-static
+          path: ./dist
 
   deploy:
     runs-on: ubuntu-latest
