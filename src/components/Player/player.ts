@@ -123,7 +123,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         if (this.props.playing) {
             window.localStorage.setItem(
                 'lastPlayedData',
-                JSON.stringify(this.props)
+                JSON.stringify({ pos: this.pos, ...this.props })
             );
         }
     }
@@ -144,6 +144,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.props.hide_artwork = false;
             this.props.recovered = true;
             this.audio.preload = 'metadata';
+            this.pos = json.pos;
             document.documentElement.style.setProperty(
                 '--artwork-accent-color',
                 this.props.artwork_color
@@ -556,7 +557,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         if (!Number.isNaN(vol)) {
             this.audio.volume = vol;
             this.currentVolume &&
-            (this.currentVolume.style.width = `${vol * 100}%`);
+                (this.currentVolume.style.width = `${vol * 100}%`);
         }
         const seekbarWidth = `${
             (this.audio.currentTime / this.audio.duration) * 100
@@ -586,7 +587,18 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.playlist = playlist;
         this.playlistIndices = [...Array(this.playlist.length).keys()];
 
-        window.localStorage.setItem('playlist', JSON.stringify(this.playlist));
+        console.log(this.playlist);
+        window.localStorage.setItem(
+            'playlist',
+            JSON.stringify(
+                this.playlist.reduce((acc, track) => {
+                    const t = { ...track };
+                    delete t.props.album.props.tracks; // Иначе цикл
+                    acc.push(t);
+                    return acc;
+                }, [])
+            )
+        );
         window.localStorage.setItem(
             'playlistIndices',
             JSON.stringify(this.playlistIndices)
@@ -664,7 +676,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         };
         //TODO=Объединить в один
         this.pauseHandler = () => {
-            console.log('pause');
             document.querySelectorAll('.player-play').forEach((play) => {
                 const button = <HTMLImageElement>play;
                 if (button.classList.contains('fa-pause')) {
@@ -742,9 +753,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.endedHandler = () => {
             this.switchTrack(true);
         };
-        console.log('added handler');
-        this.bc.onmessage = function(event) {
-            console.log(event);
+        this.bc.onmessage = function (event) {
             // switch (event.data.type) {
             //     case TIMEUPDATE:
             //         console.log(event.data);
@@ -758,9 +767,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     switchTrack(next: boolean) {
-        console.log(`Switch track ${next}`);
-        console.log(this.playlist);
-        console.log([this.playlist.length, this.pos]);
         if (this.currentHandler) {
             this.audio.removeEventListener('play', this.currentHandler);
             this.audio.removeEventListener('pause', this.currentHandler);
