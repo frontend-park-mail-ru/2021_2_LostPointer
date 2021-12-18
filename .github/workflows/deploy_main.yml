@@ -3,11 +3,6 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - deploy
-      - main
-      - los-127
-  pull_request:
-    branches:
       - main
 
 jobs:
