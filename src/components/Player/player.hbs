@@ -10,9 +10,9 @@
              id='player-left'
              class="player-skip-left{{# if left_disabled }} disabled{{/if}}">
         {{# if playing}}
-            <img alt src="/static/img/pause.svg" class="player-play">
+            <img alt src="/static/img/pause.svg" class="player-play" id='player-play'>
         {{ else }}
-            <img alt src="/static/img/play.svg" class="player-play">
+            <img alt src="/static/img/play.svg" class="player-play" id='player-play'>
         {{/if}}
         <img alt src="/static/img/skip.svg"
              id="player-right" class="player-skip-right{{# if right_disabled }} disabled{{/if}}">

@@ -10,8 +10,11 @@ import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { ArtistModel } from 'models/artist';
 
-const SWITCH_TRACK = 0;
+const SET_TRACK = 0;
 const TIMEUPDATE = 1;
+const SWITCH_TRACK = 2;
+const PLAY = 3;
+const PAUSE = 4;
 
 export interface IPlayerComponentProps {
     artwork_color: string;
@@ -187,7 +190,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             album: track.props.album.props.title,
             artwork: [96, 128, 192, 256, 384, 512].reduce((acc, elem) => {
                 acc.push({
-                    src: `${track.props.cover}_${elem}px.webp`,
+                    src: `/static/artworks/${track.props.album.props.artwork}_${elem}px.webp`,
                     sizes: `${elem}x${elem}`,
                     type: 'image/webp',
                 });
@@ -226,7 +229,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.props.playing = true;
             this.bc.postMessage({
                 ...this.props,
-                type: SWITCH_TRACK,
+                type: SET_TRACK,
                 audio_src: this.audio.src,
                 playlist: this.playlist.toString(),
             });
@@ -310,6 +313,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     nowPlayingButton.src = '/static/img/pause-outline.svg';
                 }
             }
+            this.bc.postMessage({
+                ...this.props,
+                type: PLAY,
+            });
         };
 
         this.pauseHandler = () => {
@@ -332,6 +339,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     nowPlayingButton.src = '/static/img/play-outline.svg';
                 }
             }
+            this.bc.postMessage({
+                ...this.props,
+                type: PAUSE,
+            });
         };
         this.seekbarHandler = (e: MouseEvent) => this.seek(e.x);
         this.volumeHandler = (e: MouseEvent) => this.volume(e.x);
@@ -569,7 +580,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         event.data.seekbarWidth
                     );
                     break;
-                case SWITCH_TRACK:
+                case SET_TRACK:
                     (<HTMLImageElement>(
                         document.getElementById('player-artwork')
                     )).src = `${event.data.cover}_128px.webp`;
@@ -577,6 +588,43 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         event.data.track;
                     document.getElementById('artist-name').innerHTML =
                         event.data.artist.props.name;
+                    this.playlist = event.data.playlist;
+                    if (event.data.right_disabled) {
+                        document
+                            .getElementById('player-right')
+                            .classList.add('disabled');
+                    } else {
+                        document
+                            .getElementById('player-right')
+                            .classList.remove('disabled');
+                    }
+                    if (event.data.left_disabled) {
+                        document
+                            .getElementById('player-left')
+                            .classList.add('disabled');
+                    } else {
+                        document
+                            .getElementById('player-left')
+                            .classList.remove('disabled');
+                    }
+                    (<HTMLImageElement>(
+                        document.getElementById('player-play')
+                    )).src = `/static/img/${
+                        event.data.playing ? 'pause' : 'play'
+                    }.svg`;
+                    break;
+                case SWITCH_TRACK:
+                    this.switchTrack(event.data.next);
+                    break;
+                case PLAY:
+                    (<HTMLImageElement>(
+                        document.getElementById('player-play')
+                    )).src = `/static/img/pause.svg`;
+                    break;
+                case PAUSE:
+                    (<HTMLImageElement>(
+                        document.getElementById('player-play')
+                    )).src = `/static/img/play.svg`;
                     break;
             }
         };
