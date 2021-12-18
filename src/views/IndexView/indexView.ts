@@ -17,6 +17,7 @@ import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsConte
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
 import baseView from 'views/BaseView/baseView';
+import player from 'components/Player/player';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -232,6 +233,7 @@ class IndexView extends View<IIndexViewProps> {
             suggested_playlists: suggestedPlaylists.render(),
         });
 
+        player.setEventListeners(); // !!
         this.addListeners();
     }
 

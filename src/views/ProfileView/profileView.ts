@@ -3,7 +3,6 @@ import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import TopbarComponent from 'components/Topbar/topbar';
 import player from 'components/Player/player';
-import sidebar from 'components/Sidebar/sidebar';
 import { ICustomInput } from 'interfaces/CustomInput';
 import { CustomValidation, isValidForm } from 'services/validation/validation';
 import {
@@ -17,10 +16,10 @@ import { ProfileForm } from 'components/ProfileForm/profileForm';
 import { UserModel } from 'models/user';
 import { disableBrokenImg } from 'views/utils';
 import store from 'services/store/store';
-import mobile from 'components/Mobile/mobile';
 
 import ProfileTemplate from './profileView.hbs';
 import './profileView.scss';
+import baseView from 'views/BaseView/baseView';
 
 interface IProfileViewProps {
     authenticated: boolean;
@@ -247,7 +246,7 @@ export class ProfileView extends View<IProfileViewProps> {
         const fileInput = document.querySelector('input[name="file"]');
         fileInput.addEventListener('change', this.uploadAvatarFile.bind(this));
 
-        document.querySelectorAll('img').forEach(function (img) {
+        document.querySelectorAll('img').forEach(function(img) {
             img.addEventListener('error', disableBrokenImg);
         });
 
@@ -257,7 +256,7 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function (img) {
+        document.querySelectorAll('img').forEach(function(img) {
             img.removeEventListener('error', disableBrokenImg);
         });
 
@@ -273,16 +272,10 @@ export class ProfileView extends View<IProfileViewProps> {
             return;
         }
 
-        document.getElementById('app').innerHTML = ProfileTemplate({
-            topbar: TopbarComponent.set({
-                authenticated: store.get('authenticated'),
-                avatar: store.get('userAvatar'),
-                offline: !navigator.onLine,
-            }).render(),
-            sidebar: sidebar.render(),
+        baseView.render();
+        const content = document.getElementById('content');
+        content.innerHTML = ProfileTemplate({
             profileform: this.profileform.render(),
-            player: player.render(),
-            mobile: mobile.render(),
         });
         TopbarComponent.addHandlers();
         TopbarComponent.didMount();

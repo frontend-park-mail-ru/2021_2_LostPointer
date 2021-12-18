@@ -63,6 +63,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private eventListenersAlreadySet: boolean;
     private currentContext: string;
     private bc: BroadcastChannel;
+    private handlersSet: boolean;
 
     constructor(props?: IPlayerComponentProps) {
         super(props);
@@ -83,6 +84,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.gotVolPos = false;
         this.props.playing = false;
         this.bc = new BroadcastChannel('lostpointer_player');
+        this.handlersSet = false;
     }
 
     seek(xPos) {
@@ -370,6 +372,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }
             this.props.playerCurrentTime = this.audio.currentTime;
             this.saveLastPlayed();
+            this.bc.postMessage({ type: TIMEUPDATE, ...this.props });
         };
         this.resizeHandler = () => {
             this.seekbarPos = document
@@ -546,6 +549,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         };
         document.addEventListener('click', this.globalPlayButtonHandler);
         this.eventListenersAlreadySet = true;
+        this.bc.onmessage = (event) => {
+            console.log(event);
+        };
     }
 
     setup([...playlist]: TrackModel[]) {
@@ -587,13 +593,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.playlist = playlist;
         this.playlistIndices = [...Array(this.playlist.length).keys()];
 
-        console.log(this.playlist);
         window.localStorage.setItem(
             'playlist',
             JSON.stringify(
                 this.playlist.reduce((acc, track) => {
                     const t = { ...track };
                     delete t.props.album.props.tracks; // Иначе цикл
+                    delete t.props.artist.props.tracks;
                     acc.push(t);
                     return acc;
                 }, [])
@@ -611,159 +617,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
     getNowPlaying(): IPlayerComponentProps {
         return this.props;
-    }
-
-    addHandlers() {
-        const shuffle = (array) => {
-            let i = array.length;
-            let temporaryValue;
-            let randomIndex;
-            while (i !== 0) {
-                randomIndex = Math.floor(Math.random() * i);
-                temporaryValue = array[--i];
-                array[i] = array[randomIndex];
-                array[randomIndex] = temporaryValue;
-            }
-        };
-        this.buttonsHandler = (e: Event) => {
-            const element = e.target as HTMLElement;
-            if (element.classList.contains('repeat')) {
-                this.audio.loop = !element.classList.contains('enabled');
-                this.audio.loop
-                    ? element.classList.add('enabled')
-                    : element.classList.remove('enabled');
-                window.localStorage.setItem(
-                    'playerLooped',
-                    `${this.audio.loop}`
-                );
-            } else if (element.classList.contains('shuffle')) {
-                this.shuffle = !element.classList.contains('enabled');
-                this.pos = -1;
-                if (this.shuffle) {
-                    element.classList.add('enabled');
-                    shuffle(this.playlistIndices);
-                } else {
-                    element.classList.remove('enabled');
-                    this.playlistIndices = [
-                        ...Array(this.playlist.length).keys(),
-                    ];
-                }
-            } else if (element.classList.contains('mute')) {
-                this.audio.muted = !this.audio.muted;
-                this.audio.muted
-                    ? element.classList.add('enabled')
-                    : element.classList.remove('enabled');
-                window.localStorage.setItem(
-                    'playerMuted',
-                    `${this.audio.muted}`
-                );
-                (element as HTMLImageElement).src = `/static/img/${
-                    this.audio.muted ? 'muted.svg' : 'volume.svg'
-                }`;
-            }
-        };
-        this.playHandler = () => {
-            document.querySelectorAll('.player-play').forEach((play) => {
-                const button = <HTMLImageElement>play;
-                if (button.classList.contains('fa-play')) {
-                    button.classList.remove('fa-play');
-                    button.classList.add('fa-pause');
-                } else {
-                    button.src = '/static/img/pause.svg';
-                }
-            });
-            this.bc.postMessage(this.props);
-        };
-        //TODO=Объединить в один
-        this.pauseHandler = () => {
-            document.querySelectorAll('.player-play').forEach((play) => {
-                const button = <HTMLImageElement>play;
-                if (button.classList.contains('fa-pause')) {
-                    button.classList.remove('fa-pause');
-                    button.classList.add('fa-play');
-                } else {
-                    button.src = '/static/img/play.svg';
-                }
-            });
-            this.bc.postMessage(this.props);
-        };
-        this.seekbarHandler = (e: MouseEvent) => this.seek(e.x);
-        this.volumeHandler = (e: MouseEvent) => this.volume(e.x);
-        this.playButtonHandler = (e) => {
-            e.stopPropagation();
-            this.props.playing ? this.audio.pause() : this.audio.play();
-            this.props.playing = !this.props.playing;
-        };
-        this.timeUpdateHandler = () => {
-            if (
-                this.nowPlaying &&
-                this.audio.currentTime / this.audio.duration > 0.35 &&
-                !this.counted
-            ) {
-                Request.post(
-                    '/inc_listencount',
-                    JSON.stringify({ id: this.nowPlaying.props.id })
-                ).then(() => {
-                    this.counted = true;
-                });
-            }
-            const seconds = this.audio.currentTime % 60 | 0;
-            const zero = seconds < 10 ? '0' : '';
-            const fraction = this.audio.currentTime / this.audio.duration || 0;
-            document.documentElement.style.setProperty(
-                '--seekbar-current',
-                `${fraction * 100}%`
-            );
-            this.props.current_time = `${
-                (this.audio.currentTime / 60) | 0
-            }:${zero}${seconds}`;
-            document.getElementById('player-time-current').innerHTML =
-                this.props.current_time;
-            const mobileTime = document.querySelector(
-                '.mobile-player__progress__time__elapsed'
-            );
-            if (mobileTime) {
-                mobileTime.innerHTML = this.props.current_time;
-            }
-            this.props.playerCurrentTime = this.audio.currentTime;
-            this.bc.postMessage({ ...this.props, type: TIMEUPDATE });
-            this.saveLastPlayed();
-        };
-        this.resizeHandler = () => {
-            this.seekbarPos = document
-                .querySelector('.player__seekbar')
-                .getBoundingClientRect();
-            this.volumePos = document
-                .querySelector('.player-volume')
-                .getBoundingClientRect();
-        };
-        this.switchTrackHandler = (e: MediaSessionActionDetails) => {
-            this.switchTrack(e.action === 'nexttrack');
-        };
-
-        this.arrowKeysHandler = (e) => {
-            if (!(<HTMLImageElement>e.target).classList.contains('disabled')) {
-                this.switchTrack(
-                    (e.target as HTMLElement).classList.contains(
-                        'player-skip-right'
-                    )
-                );
-            }
-        };
-        this.endedHandler = () => {
-            this.switchTrack(true);
-        };
-        this.bc.onmessage = function (event) {
-            // switch (event.data.type) {
-            //     case TIMEUPDATE:
-            //         console.log(event.data);
-            //         this.props = event.data;
-            //         this.update();
-            //         break;
-            //     case SWITCH_TRACK:
-            //         break;
-            // }
-        };
     }
 
     switchTrack(next: boolean) {
