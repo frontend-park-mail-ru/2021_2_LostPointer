@@ -63,5 +63,4 @@ jobs:
         run: |
           echo ${{ secrets.PRIVATE_KEY }} > /tmp/priv_key
           ssh-add /tmp/priv_key
-          rsync -avzr ./ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/${{ secrets.DEV_LOCATION }}
-          remote_key:
+          rsync 'ssh -i /tmp/priv_key' -avzr ./ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/${{ secrets.DEV_LOCATION }}
