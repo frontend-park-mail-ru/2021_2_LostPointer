@@ -54,6 +54,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Install rsync
+        run: sudo apt install -y rsync
+        
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
