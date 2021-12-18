@@ -108,31 +108,38 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.gotVolPos = true;
         }
         const vol = (xPos - this.volumePos.left) / this.volumePos.width;
-        this.currentVolume.style.width = `${vol * 100}%`;
+        if (this.currentVolume) {
+            this.currentVolume.style.width = `${vol * 100}%`;
+        } else {
+            this.currentVolume = document.querySelector('.volume-current');
+            this.currentVolume.style.width = `${vol * 100}%`;
+        }
         this.audio.volume = vol;
         window.localStorage.setItem('playerVolume', `${vol}`);
     }
 
     saveLastPlayed() {
         // TODO
-        // if (this.props.playing) {
-        //     window.localStorage.setItem(
-        //         'lastPlayedData',
-        //         JSON.stringify(this.props)
-        //     );
-        // }
+        if (this.props.playing) {
+            window.localStorage.setItem(
+                'lastPlayedData',
+                JSON.stringify(this.props)
+            );
+        }
     }
 
     getLastPlayed(): boolean {
         const data = window.localStorage.getItem('lastPlayedData');
+        const playlist = JSON.parse(window.localStorage.getItem('playlist'));
+        const playlistIndices = JSON.parse(
+            window.localStorage.getItem('playlistIndices')
+        );
         if (data) {
             const json = JSON.parse(data);
             json.playing = false;
             this.props = json;
             this.audio.currentTime = this.props.playerCurrentTime || 0;
             this.audio.src = this.props.file;
-            this.props.right_disabled = true;
-            this.props.left_disabled = true;
             document.title = `${this.props.track} · ${this.props.artist.props.name}`;
             this.props.hide_artwork = false;
             this.props.recovered = true;
@@ -141,6 +148,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 '--artwork-accent-color',
                 this.props.artwork_color
             );
+
+            this.playlistIndices = playlistIndices;
+            this.playlist = playlist.reduce((acc, track) => {
+                acc.push(new TrackModel(track.props));
+                return acc;
+            }, []);
         }
         return typeof data === 'string';
     }
@@ -542,7 +555,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         const vol = parseFloat(window.localStorage.getItem('playerVolume'));
         if (!Number.isNaN(vol)) {
             this.audio.volume = vol;
-            this.currentVolume.style.width = `${vol * 100}%`;
+            this.currentVolume &&
+            (this.currentVolume.style.width = `${vol * 100}%`);
         }
         const seekbarWidth = `${
             (this.audio.currentTime / this.audio.duration) * 100
@@ -571,6 +585,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
         this.playlist = playlist;
         this.playlistIndices = [...Array(this.playlist.length).keys()];
+
+        window.localStorage.setItem('playlist', JSON.stringify(this.playlist));
+        window.localStorage.setItem(
+            'playlistIndices',
+            JSON.stringify(this.playlistIndices)
+        );
     }
 
     render() {
@@ -723,7 +743,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.switchTrack(true);
         };
         console.log('added handler');
-        this.bc.onmessage = function (event) {
+        this.bc.onmessage = function(event) {
             console.log(event);
             // switch (event.data.type) {
             //     case TIMEUPDATE:
@@ -738,6 +758,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     switchTrack(next: boolean) {
+        console.log(`Switch track ${next}`);
+        console.log(this.playlist);
+        console.log([this.playlist.length, this.pos]);
         if (this.currentHandler) {
             this.audio.removeEventListener('play', this.currentHandler);
             this.audio.removeEventListener('pause', this.currentHandler);
@@ -750,7 +773,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 const nowPlaying =
                     this.playlist[this.playlistIndices[++this.pos]];
                 if (nowPlaying) {
-                    this.nowPlaying = nowPlaying; //TODO=Сделать плейлист компонентом + потом отрисовывать
+                    this.nowPlaying = nowPlaying;
                     allowed = true;
                 }
             }
