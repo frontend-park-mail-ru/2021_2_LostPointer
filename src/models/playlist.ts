@@ -32,19 +32,7 @@ export class PlaylistModel extends Model<IPlaylistModel> {
                     }
 
                     if (response.tracks) {
-                        response.tracks = response.tracks.reduce(
-                            (acc, elem, index) => {
-                                elem.pos = index;
-                                const artist = new ArtistModel(elem.artist);
-                                const album = new AlbumModel(elem.album);
-                                elem.album = album;
-                                elem.artist = artist;
-                                elem.artwork_color = album.props.artwork_color;
-                                acc.push(new TrackModel(elem));
-                                return acc;
-                            },
-                            []
-                        );
+                        response.tracks = TrackModel.serializeList(response.tracks);
                     }
                     res(new PlaylistModel(response));
                 })

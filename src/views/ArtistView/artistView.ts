@@ -15,6 +15,7 @@ import ArtistTemplate from './artistView.hbs';
 import './artistView.scss';
 import store from 'services/store/store';
 import mobile from 'components/Mobile/mobile';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 interface IArtistViewProps {
     authenticated: boolean;
@@ -76,6 +77,9 @@ export class ArtistView extends View<IArtistViewProps> {
     }
 
     addListeners() {
+        if (store.get('authenticated')) {
+            TrackComponent.addToggleFavorListeners();
+        }
         const video = document.querySelector('.artist__background-video');
         if (video) {
             video.addEventListener('ended', () => {
@@ -148,6 +152,10 @@ export class ArtistView extends View<IArtistViewProps> {
                 )
             );
         });
+
+        if (store.get('authenticated')) {
+            TrackComponent.removeToggleFavorListeners();
+        }
 
         this.isLoaded = false;
     }

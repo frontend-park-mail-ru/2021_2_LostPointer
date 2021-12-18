@@ -1,5 +1,5 @@
 import { Model } from 'models/model';
-import Request from 'services/request/request';
+import Request, { IResponseBody } from 'services/request/request';
 import { AlbumModel, mockAlbum } from 'models/album';
 import { ArtistModel, mockArtist } from 'models/artist';
 
@@ -17,6 +17,7 @@ export interface ITrackModel {
     lossless: boolean;
     cover: string;
     pos: number;
+    is_in_favorites: boolean;
 }
 
 export class TrackModel extends Model<ITrackModel> {
@@ -36,15 +37,7 @@ export class TrackModel extends Model<ITrackModel> {
                         JSON.stringify(response)
                     );
                     const tracks: Array<TrackModel> = response
-                        ? response.reduce((acc, elem, index) => {
-                              elem.pos = index;
-                              const artist = new ArtistModel(elem.artist);
-                              const album = new AlbumModel(elem.album);
-                              elem.album = album;
-                              elem.artist = artist;
-                              acc.push(new TrackModel(elem));
-                              return acc;
-                          }, [])
+                        ? TrackModel.serializeList(response)
                         : [];
                     res(tracks);
                 })
@@ -54,15 +47,7 @@ export class TrackModel extends Model<ITrackModel> {
                     );
                     if (response) {
                         const tracks: Array<TrackModel> = response
-                            ? response.reduce((acc, elem, index) => {
-                                  elem.pos = index;
-                                  const artist = new ArtistModel(elem.artist);
-                                  const album = new AlbumModel(elem.album);
-                                  elem.album = album;
-                                  elem.artist = artist;
-                                  acc.push(new TrackModel(elem));
-                                  return acc;
-                              }, [])
+                            ? TrackModel.serializeList(response)
                             : [];
                         res(tracks);
                     } else {
@@ -76,18 +61,38 @@ export class TrackModel extends Model<ITrackModel> {
         return new Promise((resolve) => {
             Request.get(`/album/${id}`).then((response) => {
                 const tracks = response
-                    ? response.tracks.reduce((acc, elem, idx) => {
-                          elem.pos = idx;
-                          elem.album = new AlbumModel(response);
-                          elem.artist = new ArtistModel(response.artist);
-                          const track = new TrackModel(elem);
-                          acc.push(track);
-                          return acc;
-                      }, [])
+                    ? TrackModel.serializeList(response.tracks, response)
                     : [];
                 resolve(tracks);
             });
         });
+    }
+
+    static addInFavorites(id: number): Promise<IResponseBody> {
+        return new Promise<IResponseBody>((res) => {
+            Request.post(`/track/like/${id}`).then((response) => {
+                res(response);
+            });
+        });
+    }
+
+    static removeFromFavorites(id: number): Promise<IResponseBody> {
+        return new Promise<IResponseBody>((res) => {
+            Request.delete(`/track/like/${id}`).then((response) => {
+                res(response);
+            });
+        });
+    }
+
+    static serializeList(trackList, album = null, artist = null) {
+        return trackList.reduce((acc, elem, index) => {
+            elem.pos = index;
+            elem.album = new AlbumModel(album ? album : elem.album);
+            elem.artist = new ArtistModel(artist ? artist : elem.artist);
+            elem.artwork_color = elem.album.props.artwork_color;
+            acc.push(new TrackModel(elem));
+            return acc;
+        }, []);
     }
 }
 
@@ -105,4 +110,5 @@ export const mockTrack = new TrackModel({
     lossless: false,
     cover: '',
     pos: 0,
+    is_in_favorites: false,
 });
