@@ -54,16 +54,17 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Install rsync
-        run: sudo apt install -y rsync
-        
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: lostpointer-static
 
-      - name: Upload with rsync
-        run: |
-          echo ${{ secrets.PRIVATE_KEY }} > /tmp/priv_key
-          ssh-add /tmp/priv_key
-          rsync 'ssh -i /tmp/priv_key' -avzr ./ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/${{ secrets.DEV_LOCATION }}
+      - name: Rsync Deployments Action
+        uses: Burnett01/rsync-deployments@5.1
+        with:
+          switches: -avzr
+          path: ./
+          remote_path: ${{ secrets.DEV_LOCATION }}
+          remote_host: ${{ secrets.HOST }}
+          remote_user: ${{ secrets.USERNAME }}
+          remote_key: ${{ secrets.PRIVATE_KEY }}
