@@ -64,6 +64,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private currentContext: string;
     private bc: BroadcastChannel;
     private handlersSet: boolean;
+    private timeElapsed: HTMLElement;
+    private timeTotal: HTMLElement;
 
     constructor(props?: IPlayerComponentProps) {
         super(props);
@@ -228,7 +230,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 audio_src: this.audio.src,
                 playlist: this.playlist.toString(),
             });
-            console.log('Posted 1 message');
         });
     }
 
@@ -355,9 +356,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             const seconds = this.audio.currentTime % 60 | 0;
             const zero = seconds < 10 ? '0' : '';
             const fraction = this.audio.currentTime / this.audio.duration || 0;
+            const seekbarWidth = `${fraction * 100}%`;
             document.documentElement.style.setProperty(
                 '--seekbar-current',
-                `${fraction * 100}%`
+                seekbarWidth
             );
             this.props.current_time = `${
                 (this.audio.currentTime / 60) | 0
@@ -372,7 +374,11 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }
             this.props.playerCurrentTime = this.audio.currentTime;
             this.saveLastPlayed();
-            this.bc.postMessage({ type: TIMEUPDATE, ...this.props });
+            this.bc.postMessage({
+                type: TIMEUPDATE,
+                ...this.props,
+                seekbarWidth,
+            });
         };
         this.resizeHandler = () => {
             this.seekbarPos = document
@@ -549,8 +555,30 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         };
         document.addEventListener('click', this.globalPlayButtonHandler);
         this.eventListenersAlreadySet = true;
+        this.timeElapsed = document.getElementById('player-time-current');
+        this.timeTotal = document.getElementById('player-time-total');
         this.bc.onmessage = (event) => {
-            console.log(event);
+            this.timeElapsed.innerHTML = event.data.current_time;
+            if (!this.audio.paused) {
+                this.audio.pause();
+            }
+            switch (event.data.type) {
+                case TIMEUPDATE:
+                    document.documentElement.style.setProperty(
+                        '--seekbar-current',
+                        event.data.seekbarWidth
+                    );
+                    break;
+                case SWITCH_TRACK:
+                    (<HTMLImageElement>(
+                        document.getElementById('player-artwork')
+                    )).src = `${event.data.cover}_128px.webp`;
+                    document.getElementById('track-name').innerHTML =
+                        event.data.track;
+                    document.getElementById('artist-name').innerHTML =
+                        event.data.artist.props.name;
+                    break;
+            }
         };
     }
 
