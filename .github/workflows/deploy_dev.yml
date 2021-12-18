@@ -43,7 +43,7 @@ jobs:
       - name: Precompress static using brotli
         uses: Charlesworth/compress-action@1.0.0
         with:
-          target-directory: '2021_2_LostPointer_front/dist'
+          target-directory: 'dist'
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
