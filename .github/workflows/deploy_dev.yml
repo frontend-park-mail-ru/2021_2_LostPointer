@@ -41,9 +41,8 @@ jobs:
         run: npm run build
 
       - name: Precompress static using brotli
-        uses: Charlesworth/compress-action@1.0.0
-        with:
-          target-directory: 'dist'
+        run: |
+          brotli dist/*.{css,js,svg}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
