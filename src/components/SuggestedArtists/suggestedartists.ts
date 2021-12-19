@@ -18,6 +18,9 @@ export class SuggestedArtists extends Component<ISuggestedArtistsProps> {
     }
 
     render() {
-        return SuggestedArtistsTemplate({ artists: this.props.artists, extra_rounded: this.extraRounded });
+        return SuggestedArtistsTemplate({
+            artists: this.props.artists,
+            extra_rounded: this.extraRounded,
+        });
     }
 }

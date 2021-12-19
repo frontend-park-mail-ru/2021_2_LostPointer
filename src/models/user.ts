@@ -1,6 +1,6 @@
-import {Model} from 'models/model';
-import Request, {IResponseBody} from 'services/request/request';
-import {ContentType} from 'services/request/requestUtils';
+import { Model } from 'models/model';
+import Request, { IResponseBody } from 'services/request/request';
+import { ContentType } from 'services/request/requestUtils';
 
 export interface IAuthResponse {
     authenticated: boolean;
@@ -27,7 +27,7 @@ export class UserModel extends Model<IUserModel> {
                 ContentType.JSON
             ).then((body) => {
                 res(body);
-            })
+            });
         });
     }
 
@@ -39,7 +39,7 @@ export class UserModel extends Model<IUserModel> {
                 ContentType.JSON
             ).then((body) => {
                 res(body);
-            })
+            });
         });
     }
 
@@ -56,18 +56,17 @@ export class UserModel extends Model<IUserModel> {
                     res({
                         authenticated: false,
                         avatar: '/static/img/default_avatar_150px.webp',
-                    })
-                })
-        })
+                    });
+                });
+        });
     }
 
     static getSettings(): Promise<UserModel> {
         return new Promise<UserModel>((res) => {
-            Request.get('/user/settings')
-                .then((body) => {
-                    res(new UserModel(body));
-                });
-        })
+            Request.get('/user/settings').then((body) => {
+                res(new UserModel(body));
+            });
+        });
     }
 
     static logout(): Promise<IResponseBody> {
@@ -75,7 +74,7 @@ export class UserModel extends Model<IUserModel> {
             Request.post('/user/logout').then((body) => {
                 res(body);
             });
-        })
+        });
     }
 
     updateSettings(
@@ -83,15 +82,14 @@ export class UserModel extends Model<IUserModel> {
         email?: string,
         old_password?: string,
         new_password?: string,
-        avatar?: any,
-        ): Promise<IResponseBody> {
-
+        avatar?: any
+    ): Promise<IResponseBody> {
         const formdata = new FormData();
         if (nickname && email) {
             formdata.append('nickname', nickname);
             formdata.append('email', email);
         }
-        if (old_password && new_password ) {
+        if (old_password && new_password) {
             formdata.append('old_password', old_password);
             formdata.append('new_password', new_password);
         }
@@ -100,28 +98,25 @@ export class UserModel extends Model<IUserModel> {
         }
 
         return new Promise<IResponseBody>((res) => {
-            Request.get(
-                '/csrf',
-            )
-                .then((csrfBody) => {
-                    if (csrfBody.status === 200) {
-                        const csrfToken = csrfBody.message;
-                        Request.patch(
-                            '/user/settings',
-                            formdata,
-                            ContentType.FORM,
-                            {
-                                'X-CSRF-Token': csrfToken,
-                            },
-                        ).then((body) => {
-                            if (body.status === 200 && nickname && email) {
-                                this.props.nickname = nickname;
-                                this.props.email = email;
-                            }
-                            res(body);
-                        })
-                    }
-                })
-        })
+            Request.get('/csrf').then((csrfBody) => {
+                if (csrfBody.status === 200) {
+                    const csrfToken = csrfBody.message;
+                    Request.patch(
+                        '/user/settings',
+                        formdata,
+                        ContentType.FORM,
+                        {
+                            'X-CSRF-Token': csrfToken,
+                        }
+                    ).then((body) => {
+                        if (body.status === 200 && nickname && email) {
+                            this.props.nickname = nickname;
+                            this.props.email = email;
+                        }
+                        res(body);
+                    });
+                }
+            });
+        });
     }
 }

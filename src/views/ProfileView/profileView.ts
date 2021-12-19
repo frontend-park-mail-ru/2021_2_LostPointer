@@ -91,13 +91,7 @@ export class ProfileView extends View<IProfileViewProps> {
         }
 
         this.user
-            .updateSettings(
-                null,
-                null,
-                null,
-                null,
-                file,
-            )
+            .updateSettings(null, null, null, null, file)
             .then((body) => {
                 if (body.status === 200) {
                     const smallAvatar = document.querySelector(
@@ -189,8 +183,12 @@ export class ProfileView extends View<IProfileViewProps> {
             .updateSettings(
                 nicknameInput.value,
                 emailInput.value,
-                oldPasswordInput.value && passwordInput.value ? oldPasswordInput.value : null,
-                oldPasswordInput.value && passwordInput.value ? passwordInput.value : null,
+                oldPasswordInput.value && passwordInput.value
+                    ? oldPasswordInput.value
+                    : null,
+                oldPasswordInput.value && passwordInput.value
+                    ? passwordInput.value
+                    : null
             )
             .then((body) => {
                 if (body.status === 200) {
@@ -212,14 +210,13 @@ export class ProfileView extends View<IProfileViewProps> {
 
     logoutHandler(event) {
         event.stopPropagation();
-        UserModel.logout()
-            .then(() => {
-                player.stop();
-                player.clear();
-                store.set('authenticated', false);
-                window.localStorage.removeItem('lastPlayedData');
-                router.go(routerStore.dashboard);
-            })
+        UserModel.logout().then(() => {
+            player.stop();
+            player.clear();
+            store.set('authenticated', false);
+            window.localStorage.removeItem('lastPlayedData');
+            router.go(routerStore.dashboard);
+        });
     }
 
     addListeners() {
@@ -246,7 +243,7 @@ export class ProfileView extends View<IProfileViewProps> {
         const fileInput = document.querySelector('input[name="file"]');
         fileInput.addEventListener('change', this.uploadAvatarFile.bind(this));
 
-        document.querySelectorAll('img').forEach(function(img) {
+        document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });
 
@@ -256,7 +253,7 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function(img) {
+        document.querySelectorAll('img').forEach(function (img) {
             img.removeEventListener('error', disableBrokenImg);
         });
 

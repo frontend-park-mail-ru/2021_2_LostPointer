@@ -9,9 +9,9 @@ import routerStore from 'services/router/routerStore';
 import { IResponseBody } from 'services/request/request';
 
 interface IContextMenuOption {
-    class: string,
-    dataId: number,
-    value: string
+    class: string;
+    dataId: number;
+    value: string;
 }
 
 interface IContextMenuProps {
@@ -42,16 +42,17 @@ export class PlaylistsContextMenu extends Component<IContextMenuProps> {
         this.selectedTrackId = null;
         this.isVisible = false;
         this.playlists = playlists;
-        this.props.options = this.playlists.filter((playlist) => {
-            return playlist.getProps().is_own;
-        })
-        .map((playlist) => {
-            return {
-                class: `js-playlist-track-add`,
-                dataId: playlist.getProps().id,
-                value: playlist.getProps().title,
-            };
-        })
+        this.props.options = this.playlists
+            .filter((playlist) => {
+                return playlist.getProps().is_own;
+            })
+            .map((playlist) => {
+                return {
+                    class: `js-playlist-track-add`,
+                    dataId: playlist.getProps().id,
+                    value: playlist.getProps().title,
+                };
+            });
     }
 
     render(): string {
@@ -63,7 +64,8 @@ export class PlaylistsContextMenu extends Component<IContextMenuProps> {
 
         (<HTMLElement>renderedMenu).style.visibility =
             command === 'show' ? 'visible' : 'hidden';
-        (<HTMLElement>renderedMenu).style.opacity = command === 'show' ? '1' : '0';
+        (<HTMLElement>renderedMenu).style.opacity =
+            command === 'show' ? '1' : '0';
         this.isVisible = command === 'show';
     }
 
@@ -72,7 +74,7 @@ export class PlaylistsContextMenu extends Component<IContextMenuProps> {
             return;
         }
         if (this.isVisible) {
-            this.toggleMenu( 'hide');
+            this.toggleMenu('hide');
         }
     }
 
@@ -101,27 +103,34 @@ export class PlaylistsContextMenu extends Component<IContextMenuProps> {
                 return playlist.getProps().is_own;
             })
             .reduce((newPlaylistName, _, index, array) => {
-                if (array.find((playlist) => {
-                    return playlist.getProps().title == newPlaylistName;
-                })) {
+                if (
+                    array.find((playlist) => {
+                        return playlist.getProps().title == newPlaylistName;
+                    })
+                ) {
                     return 'New playlist ' + (index + 2).toString();
                 } else {
                     return newPlaylistName;
                 }
-            }, 'New playlist')
+            }, 'New playlist');
 
         PlaylistModel.createPlaylist(newPlaylistName).then(({ id }) => {
-            PlaylistModel.addTrack(id, this.selectedTrackId).then((response) => {
-                if (response.status === 201) {
-                    router.go(`${routerStore.playlist}/${id}`);
+            PlaylistModel.addTrack(id, this.selectedTrackId).then(
+                (response) => {
+                    if (response.status === 201) {
+                        router.go(`${routerStore.playlist}/${id}`);
+                    }
                 }
-            });
+            );
         });
     }
 
     removeTrackFromPlaylist(playlist): Promise<IResponseBody> {
         return new Promise<IResponseBody>((res) => {
-            PlaylistModel.removeTrack(playlist.getProps().id, this.selectedTrackId).then((response) => {
+            PlaylistModel.removeTrack(
+                playlist.getProps().id,
+                this.selectedTrackId
+            ).then((response) => {
                 if (response.status === 200) {
                     playlist.getProps().tracks.splice(
                         playlist.getProps().tracks.findIndex((track) => {

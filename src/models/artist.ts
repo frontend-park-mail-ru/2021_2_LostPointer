@@ -100,7 +100,6 @@ export class ArtistModel extends Model<IArtistModel> {
     }
 }
 
-
 export const mockArtist = new ArtistModel({
     id: 0,
     name: 'Loading artist name...',

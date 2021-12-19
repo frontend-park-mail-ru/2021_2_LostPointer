@@ -51,21 +51,30 @@ self.addEventListener('fetch', (event) => {
         const frontPlaylistMatch = frontPlaylistRegex.exec(event.request.url);
         if (frontArtistMatch && !apiArtistRegex.exec(event.request.url)) {
             event.respondWith(
-                caches.match(new Request(frontArtistMatch[1])).then((cachedResponse) => {
-                    return cachedResponse;
-                })
+                caches
+                    .match(new Request(frontArtistMatch[1]))
+                    .then((cachedResponse) => {
+                        return cachedResponse;
+                    })
             );
         } else if (frontAlbumMatch && !apiAlbumRegex.exec(event.request.url)) {
             event.respondWith(
-                caches.match(new Request(frontAlbumMatch[1])).then((cachedResponse) => {
-                    return cachedResponse;
-                })
+                caches
+                    .match(new Request(frontAlbumMatch[1]))
+                    .then((cachedResponse) => {
+                        return cachedResponse;
+                    })
             );
-        } else if (frontPlaylistMatch && !apiPlaylistRegex.exec(event.request.url)) {
+        } else if (
+            frontPlaylistMatch &&
+            !apiPlaylistRegex.exec(event.request.url)
+        ) {
             event.respondWith(
-                caches.match(new Request(frontPlaylistMatch[1])).then((cachedResponse) => {
-                    return cachedResponse;
-                })
+                caches
+                    .match(new Request(frontPlaylistMatch[1]))
+                    .then((cachedResponse) => {
+                        return cachedResponse;
+                    })
             );
         } else {
             event.respondWith(

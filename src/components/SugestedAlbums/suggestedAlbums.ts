@@ -1,5 +1,5 @@
-import {AlbumModel} from 'models/album';
-import {Component} from 'components/Component/component';
+import { AlbumModel } from 'models/album';
+import { Component } from 'components/Component/component';
 
 import SuggestedAlbumsTemplate from './suggestedAlbums.hbs';
 import './suggestedAlbums.scss';
@@ -14,6 +14,6 @@ export class SuggestedAlbums extends Component<ISuggestedAlbums> {
     }
 
     render() {
-        return SuggestedAlbumsTemplate({albums: this.props.albums });
+        return SuggestedAlbumsTemplate({ albums: this.props.albums });
     }
 }

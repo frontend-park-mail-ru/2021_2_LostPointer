@@ -73,14 +73,17 @@ export class AlbumModel extends Model<IAlbumModel> {
                             acc.push(new TrackModel(elem));
                             return acc;
                         },
-                        [],
+                        []
                     );
                     res(new AlbumModel(response));
                 })
                 .catch(() => {
                     const emptyAlbum = mockAlbum;
                     emptyAlbum.props.artist = 'Loading artist name...';
-                    emptyAlbum.props.tracks = Array.from({ length: 4 }, () => mockTrack);
+                    emptyAlbum.props.tracks = Array.from(
+                        { length: 4 },
+                        () => mockTrack
+                    );
                     res(emptyAlbum);
                 });
         });
@@ -101,5 +104,5 @@ export const mockAlbum = new AlbumModel({
     tracks_duration: 0,
     album: false,
     tracks: null,
-    artwork_color: '#000000'
+    artwork_color: '#000000',
 });
