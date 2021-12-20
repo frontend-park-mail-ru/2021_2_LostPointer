@@ -733,6 +733,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     switchTrack(next: boolean) {
+        if (this.audio.paused) {
+            this.bc.postMessage({ type: SWITCH_TRACK, next });
+            return;
+        }
         if (this.currentHandler) {
             this.audio.removeEventListener('play', this.currentHandler);
             this.audio.removeEventListener('pause', this.currentHandler);
