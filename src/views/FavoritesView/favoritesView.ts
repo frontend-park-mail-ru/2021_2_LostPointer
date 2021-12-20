@@ -16,6 +16,7 @@ import { TrackComponent } from 'components/TrackComponent/track';
 
 import FavoritesViewTemplate from './favoritesView.hbs';
 import './favoritesView.scss';
+import baseView from 'views/BaseView/baseView';
 
 export class FavoritesView extends View<never> {
     private userPlaylists: Array<PlaylistModel>;
@@ -77,27 +78,9 @@ export class FavoritesView extends View<never> {
                 this.userPlaylists = playlists;
             })
             .then(() => {
-                playlistsContextMenu.updatePlaylists(this.userPlaylists);
-                const app = document.getElementById('app');
-                if (app.innerHTML == '') {
-                    document.getElementById('app').innerHTML = IndexTemplate({
-                        topbar: TopbarComponent.set({
-                            authenticated: store.get('authenticated'),
-                            avatar: store.get('userAvatar'),
-                            offline: !navigator.onLine,
-                        }).render(),
-                        sidebar: sidebar.render(),
-                        player: player.render(),
-                        contextMenu: playlistsContextMenu.render(),
-                        mobile: mobile.set(player.getNowPlaying()).render(),
-                    });
-                    player.addHandlers();
-                    TopbarComponent.addHandlers();
-                }
-
                 playlistsContextMenu.deleteRemoveButton();
-                document.querySelector('.js-menu-container').innerHTML =
-                    playlistsContextMenu.render();
+                playlistsContextMenu.updatePlaylists(this.userPlaylists);
+                baseView.render();
 
                 UserModel.getFavorites().then((favoritesTracks) => {
                     document.querySelector('.main-layout__content').innerHTML =
@@ -107,7 +90,6 @@ export class FavoritesView extends View<never> {
                                 tracks: favoritesTracks,
                             }).render(),
                         });
-                    player.setup(document.querySelectorAll('.track'));
                     this.addListeners();
                 });
             });
