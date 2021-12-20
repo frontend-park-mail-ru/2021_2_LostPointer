@@ -21,6 +21,7 @@ import { TrackComponent } from 'components/TrackComponent/track';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
+import sidebar from 'components/Sidebar/sidebar';
 
 class IndexView extends View<never> {
     private top_albums: AlbumModel[];
@@ -120,6 +121,7 @@ class IndexView extends View<never> {
     }
 
     unmount() {
+        sidebar.updateHomeLink(false);
         removeDisableBrokenImgListeners();
         playlistsContextMenu.removeListeners();
 
@@ -170,6 +172,7 @@ class IndexView extends View<never> {
                 playlistsContextMenu.updatePlaylists(this.userPlaylists);
                 playlistsContextMenu.deleteRemoveButton();
                 baseView.render();
+                sidebar.updateHomeLink(true);
 
                 const content = document.getElementById('content');
                 content.innerHTML = IndexTemplate({

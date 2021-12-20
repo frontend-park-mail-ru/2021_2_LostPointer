@@ -12,6 +12,7 @@ import baseView from 'views/BaseView/baseView';
 
 import FavoritesViewTemplate from './favoritesView.hbs';
 import './favoritesView.scss';
+import sidebar from 'components/Sidebar/sidebar';
 
 export class FavoritesView extends View<never> {
     private userPlaylists: Array<PlaylistModel>;
@@ -55,6 +56,7 @@ export class FavoritesView extends View<never> {
     }
 
     unmount() {
+        sidebar.updateFavLink(false);
         TrackComponent.removeToggleFavorListeners();
 
         document.querySelectorAll('img').forEach(function (img) {
@@ -76,6 +78,7 @@ export class FavoritesView extends View<never> {
                 playlistsContextMenu.deleteRemoveButton();
                 playlistsContextMenu.updatePlaylists(this.userPlaylists);
                 baseView.render();
+                sidebar.updateFavLink(true);
 
                 UserModel.getFavorites().then((favoritesTracks) => {
                     document.querySelector('.main-layout__content').innerHTML =
@@ -88,10 +91,6 @@ export class FavoritesView extends View<never> {
                     this.addListeners();
                 });
             });
-    }
-
-    didMount(): void {
-        console.log('not implemented');
     }
 }
 
