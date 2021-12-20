@@ -564,7 +564,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
                 target.dataset.playing = 'true';
                 target.src = '/static/img/pause-outline.svg';
-                const track = this.playlist.find(
+                const track = this.playlist?.find(
                     (track) => track.props.id.toString() === target.dataset.id
                 );
                 this.setTrack(track);
