@@ -309,7 +309,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     button.src = '/static/img/pause.svg';
                 }
             });
-            if (this.nowPlaying) {
+            if (this.nowPlaying && this.nowPlaying.props) {
                 const nowPlayingButton = <HTMLImageElement>(
                     document.querySelector(
                         `.track-play[data-id="${this.nowPlaying.props.id}"]`
@@ -654,7 +654,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     console.log('Set volume');
                     if (!this.currentVolume) {
                         this.currentVolume =
-                            document.getElementById('volume-current');
+                            document.querySelector('.volume-current');
                     }
                     this.currentVolume.style.width = `${event.data.pos * 100}%`;
                     this.audio.volume = event.data.pos;
