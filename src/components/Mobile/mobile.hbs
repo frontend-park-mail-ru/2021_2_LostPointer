@@ -5,7 +5,7 @@
             class='mobile-player__artwork'
             id='mobile-player-artwork'
             src="{{ cover }}_512px.webp"
-        />
+            alt />
         <div class='mobile-player__now-playing'>
             <div class='mobile-player__now-playing__title mobile-track-title'>{{track}}</div>
             <div class='mobile-player__now-playing__artist mobile-track-artist'>{{artist.props.name}}</div>
@@ -36,6 +36,7 @@
 <div class='mobile-footer'>
     <div class='mobile-footer__player__progress'></div>
     <div class='mobile-footer__player'>
+        <img alt="" class="track-fav-mobile" src="/static/img/favorite.svg">
         <div class='mobile-footer__player__track'>
             <div class='mobile-footer__player__track__title mobile-track-title'>
                 {{track}}
@@ -56,6 +57,9 @@
     <div class='mobile-footer__menu'>
         <a href='/' class='mobile-footer__menu__item'>
             <i class='fa-solid fa-house'></i>
+        </a>
+        <a href='/search' class='mobile-footer__menu__item' id='mobile-search-btn'>
+            <i class='fa-solid fa-search'></i>
         </a>
         <a href='/profile' class='mobile-footer__menu__item'>
             <i class='fa-solid fa-user'></i>

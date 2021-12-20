@@ -67,6 +67,11 @@
     width: 14px;
     margin: auto 10px auto 13px;
     cursor: pointer;
+
+    &-mobile {
+      height: 20px;
+      width: 60px;
+    }
   }
 
   &-play {

@@ -122,10 +122,7 @@ body {
 
 .listen-now {
   margin: 10px 10px 0;
-
-  @media only screen and (min-width: 768px) {
-    width: 80%;
-  }
+  width: 100%;
 }
 
 .hidden {
