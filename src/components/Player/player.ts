@@ -111,10 +111,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
     saveLastPlayed() {
         if (this.props.playing) {
-            window.localStorage.setItem(
-                'lastPlayedData',
-                JSON.stringify(this.props)
-            );
+            const lastPlayedData = JSON.stringify(this.props);
+            window.localStorage.setItem('lastPlayedData', lastPlayedData);
         }
     }
 
