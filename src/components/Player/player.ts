@@ -439,6 +439,11 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 .querySelector('.player-artwork')
                 .classList.remove('hidden');
         });
+
+        document.querySelectorAll('.player-fav').forEach((favorites) => {
+            favorites.addEventListener('click', this.buttonsHandler);
+        });
+
         document.querySelectorAll('.repeat').forEach((repeat) => {
             repeat.addEventListener('click', this.buttonsHandler);
         });
@@ -518,6 +523,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         nowPlayingButton.dataset.playing = 'false';
                         nowPlayingButton.src = '/static/img/play-outline.svg';
                     }
+                }
+                if (!store.get('authenticated')) {
+                    router.go(routerStore.signin);
+                    return;
                 }
                 TrackModel.getAlbumTracks(target.dataset.id).then((tracks) => {
                     this.setup(tracks);

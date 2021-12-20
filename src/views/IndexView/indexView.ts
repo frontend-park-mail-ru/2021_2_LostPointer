@@ -1,5 +1,4 @@
 import { TopAlbums } from 'components/TopAlbums/topalbums';
-import { FriendActivity } from 'components/FriendActivity/friendactivity';
 import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
 import { TrackList } from 'components/TrackList/tracklist';
 import suggestedPlaylists from 'components/SuggestedPlaylists/suggestedplaylists';
@@ -18,6 +17,7 @@ import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
 import baseView from 'views/BaseView/baseView';
 import player from 'components/Player/player';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 interface IIndexViewProps {
     authenticated: boolean;
@@ -28,7 +28,6 @@ class IndexView extends View<IIndexViewProps> {
     private suggested_artists: ArtistModel[];
     private track_list: TrackModel[];
     private suggested_playlists: PlaylistModel[];
-    private friend_activity: FriendActivity;
     private userAvatar: string;
     private userPlaylists: Array<PlaylistModel>;
     private renderCount: number;
@@ -77,20 +76,6 @@ class IndexView extends View<IIndexViewProps> {
                     extraRounded: true,
                 }).render();
 
-                this.friend_activity = new FriendActivity({
-                    friends: [
-                        {
-                            img: 'default_avatar_150px',
-                            nickname: 'Frank Sinatra',
-                            listening_to: 'Strangers in the Night',
-                        },
-                        {
-                            img: 'default_avatar_150px',
-                            nickname: 'Земфира',
-                            listening_to: 'Трафик',
-                        },
-                    ],
-                }).render();
                 playlistsContextMenu.updatePlaylists(this.userPlaylists);
                 this.isLoaded = true;
                 this.render();
@@ -155,6 +140,9 @@ class IndexView extends View<IIndexViewProps> {
     }
 
     addListeners() {
+        if (store.get('authenticated')) {
+            TrackComponent.addToggleFavorListeners();
+        }
         if (!suggestedPlaylists.publicView()) {
             const createPlaylistBtn = document.querySelector(
                 '.pl-link[href="/playlist/0"]'
@@ -226,7 +214,6 @@ class IndexView extends View<IIndexViewProps> {
         baseView.render();
         const content = document.getElementById('content');
         content.innerHTML = IndexTemplate({
-            friend_activity: this.friend_activity,
             top_albums: this.top_albums,
             suggested_artists: this.suggested_artists,
             track_list: this.rendered_track_list,

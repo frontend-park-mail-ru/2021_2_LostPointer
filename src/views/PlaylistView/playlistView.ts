@@ -13,6 +13,7 @@ import baseView from 'views/BaseView/baseView';
 
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 // TODO аватары пользователей-создателей плейлиста
 // TODO! ссылки на альбомы на альбомах в треклисте
@@ -426,6 +427,9 @@ export class PlaylistView extends View<IPlaylistViewProps> {
     }
 
     addListeners() {
+        if (store.get('authenticated')) {
+            TrackComponent.addToggleFavorListeners();
+        }
         if (this.playlist.getProps().is_own) {
             const link = document.querySelector('.editwindow__link');
             link.addEventListener('click', this.copyLink.bind(this));

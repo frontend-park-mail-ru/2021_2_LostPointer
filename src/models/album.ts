@@ -1,7 +1,6 @@
 import { Model } from './model';
 import Request from '../../src/services/request/request';
 import { mockTrack, TrackModel } from 'models/track';
-import { ArtistModel } from 'models/artist';
 
 export interface IAlbumModel {
     album: boolean;
@@ -65,15 +64,10 @@ export class AlbumModel extends Model<IAlbumModel> {
                         return res(null);
                     }
 
-                    response.tracks = response.tracks.reduce(
-                        (acc, elem, index) => {
-                            elem.pos = index;
-                            elem.album = new AlbumModel(response);
-                            elem.artist = new ArtistModel(response.artist);
-                            acc.push(new TrackModel(elem));
-                            return acc;
-                        },
-                        []
+                    response.tracks = TrackModel.serializeList(
+                        response.tracks,
+                        response,
+                        response.artist
                     );
                     res(new AlbumModel(response));
                 })

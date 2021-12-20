@@ -1,6 +1,7 @@
 import { Model } from 'models/model';
 import Request, { IResponseBody } from 'services/request/request';
 import { ContentType } from 'services/request/requestUtils';
+import { mockTrack, TrackModel } from 'models/track';
 
 export interface IAuthResponse {
     authenticated: boolean;
@@ -66,6 +67,22 @@ export class UserModel extends Model<IUserModel> {
             Request.get('/user/settings').then((body) => {
                 res(new UserModel(body));
             });
+        });
+    }
+
+    static getFavorites(): Promise<Array<TrackModel>> {
+        return new Promise<Array<TrackModel>>((res) => {
+            Request.get('/track/favorites')
+                .then((response) => {
+                    if (response.status) {
+                        res([]);
+                        return;
+                    }
+                    res(TrackModel.serializeList(response));
+                })
+                .catch(() => {
+                    res(Array.from({ length: 4 }, () => mockTrack));
+                });
         });
     }
 

@@ -5,6 +5,16 @@
         <div id="track-name" class="track-name">{{ track }}</div>
         <div id="artist-name" class="artist-name">{{ artist.props.name }}</div>
     </div>
+    <img
+        alt class='player-fav'
+        data-id='{{id}}'
+        {{# if is_in_favorites}}
+        data-in_favorites='{{is_in_favorites}}'
+        src='/static/img/favorite_green.svg'
+        {{ else }}
+        src='/static/img/favorite.svg'
+        {{/if}}
+    />
     <div class="player-controls">
         <img alt src="/static/img/skip.svg"
              id='player-left'

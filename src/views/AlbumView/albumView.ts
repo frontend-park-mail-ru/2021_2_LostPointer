@@ -11,6 +11,8 @@ import AlbumTemplate from './albumView.hbs';
 import './albumView.scss';
 import { TrackModel } from 'models/track';
 import baseView from 'views/BaseView/baseView';
+import { TrackComponent } from 'components/TrackComponent/track';
+import store from 'services/store/store';
 
 interface IAlbumViewProps {
     authenticated: boolean;
@@ -64,6 +66,9 @@ export class AlbumView extends View<IAlbumViewProps> {
     }
 
     addListeners() {
+        if (store.get('authenticated')) {
+            TrackComponent.addToggleFavorListeners();
+        }
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {

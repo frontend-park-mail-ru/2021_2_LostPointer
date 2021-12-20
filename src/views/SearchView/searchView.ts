@@ -9,10 +9,13 @@ import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
 import { TopAlbums } from 'components/TopAlbums/topalbums';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
-
+import IndexTemplate from 'views/IndexView/indexView.hbs';
+import mobile from 'components/Mobile/mobile';
+import store from 'services/store/store';
 import SearchViewTemplate from './searchView.hbs';
 import './searchView.scss';
 import baseView from 'views/BaseView/baseView';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 const SEARCH_TIMEOUT = 200;
 
@@ -79,20 +82,7 @@ export class SearchView extends View<ISearchViewProps> {
                         Request.get(`/music/search?text=${text}`)
                             .then((response) => {
                                 this.tracks = response.tracks
-                                    ? response.tracks.reduce(
-                                          (acc, elem, index) => {
-                                              elem.pos = index;
-                                              elem.album = new AlbumModel(
-                                                  elem.album
-                                              );
-                                              elem.artist = new ArtistModel(
-                                                  elem.artist
-                                              );
-                                              acc.push(new TrackModel(elem));
-                                              return acc;
-                                          },
-                                          []
-                                      )
+                                    ? TrackModel.serializeList(response.tracks)
                                     : [];
                                 this.albums = response.albums
                                     ? response.albums.reduce((acc, elem) => {
@@ -141,6 +131,9 @@ export class SearchView extends View<ISearchViewProps> {
     }
 
     update() {
+        if (store.get('authenticated')) {
+            TrackComponent.removeToggleFavorListeners();
+        }
         document
             .querySelectorAll('.track-list-item-playlist')
             .forEach((element) => {
@@ -218,6 +211,9 @@ export class SearchView extends View<ISearchViewProps> {
                     )
                 );
             });
+        if (store.get('authenticated')) {
+            TrackComponent.addToggleFavorListeners();
+        }
         document.querySelectorAll('img').forEach(function (img) {
             img.addEventListener('error', disableBrokenImg);
         });

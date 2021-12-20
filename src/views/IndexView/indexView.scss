@@ -1,6 +1,5 @@
 * {
   user-select: none;
-  -webkit-user-select: none;
   margin: 0;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0%);
 }
@@ -108,10 +107,7 @@ body {
 
 .listen-now {
   margin: 10px 10px 0;
-
-  @media only screen and (min-width: 768px) {
-    width: 80%;
-  }
+  width: 100%;
 }
 
 .hidden {
