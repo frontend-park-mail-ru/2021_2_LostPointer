@@ -17,6 +17,8 @@ export interface IPlayerComponentProps {
     playing: boolean;
     artist: ArtistModel;
     track: string;
+    track_id: number;
+    track_in_favorites: boolean;
     left_disabled: boolean;
     right_disabled: boolean;
     file: string;
@@ -153,6 +155,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             artist: track.props.artist,
             file: this.audio.src,
             artwork_color: track.props.album.props.artwork_color,
+            track_id: track.props.id,
+            track_in_favorites: track.props.is_in_favorites,
         } as IPlayerComponentProps;
         document.title = `${this.props.track} · ${this.props.artist.props.name}`;
 
@@ -628,6 +632,29 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         if (track) {
             track.innerHTML = this.props.track ? this.props.track : '';
         }
+        const fav_icon = document.querySelector('.player-fav');
+        if (fav_icon) {
+            (<HTMLImageElement>fav_icon).setAttribute(
+                'data-id',
+                String(this.props.track_id)
+            );
+            if (this.props.track_in_favorites) {
+                (<HTMLImageElement>fav_icon).setAttribute(
+                    'data-in_favorites',
+                    'true'
+                );
+                (<HTMLImageElement>(
+                    fav_icon
+                )).src = `${window.location.origin}/static/img/favorite_green.svg`;
+            } else {
+                (<HTMLImageElement>fav_icon).removeAttribute(
+                    'data-in_favorites'
+                );
+                (<HTMLImageElement>(
+                    fav_icon
+                )).src = `${window.location.origin}/static/img/favorite.svg`;
+            }
+        }
         const mobileTrack = document.querySelectorAll('.mobile-track-title');
         if (mobileTrack) {
             mobileTrack.forEach((title) => {
@@ -715,6 +742,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             playing: false,
             artist: new ArtistModel(),
             track: '',
+            track_id: 0,
+            track_in_favorites: false,
             left_disabled: true,
             right_disabled: true,
             file: '',
