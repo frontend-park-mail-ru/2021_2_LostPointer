@@ -22,10 +22,10 @@ import {
     addDisableBrokenImgListeners,
     removeDisableBrokenImgListeners,
 } from 'views/utils';
+import player from 'components/Player/player';
 
 import SignupComponentTemplate from './signupView.hbs';
 import './signupView.scss';
-import player from 'components/Player/player';
 
 interface ISignupComponentProps {
     placeholder_img: string;

@@ -1,22 +1,17 @@
 import { View } from 'views/View/view';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
-import IndexTemplate from 'views/IndexView/indexView.hbs';
-import TopbarComponent from 'components/Topbar/topbar';
 import store from 'services/store/store';
-import sidebar from 'components/Sidebar/sidebar';
-import player from 'components/Player/player';
-import mobile from 'components/Mobile/mobile';
 import { disableBrokenImg } from 'views/utils';
 import { TrackList } from 'components/TrackList/tracklist';
 import { UserModel } from 'models/user';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { TrackComponent } from 'components/TrackComponent/track';
+import baseView from 'views/BaseView/baseView';
 
 import FavoritesViewTemplate from './favoritesView.hbs';
 import './favoritesView.scss';
-import baseView from 'views/BaseView/baseView';
 
 export class FavoritesView extends View<never> {
     private userPlaylists: Array<PlaylistModel>;

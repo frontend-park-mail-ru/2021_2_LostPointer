@@ -20,10 +20,10 @@ import {
     addDisableBrokenImgListeners,
     removeDisableBrokenImgListeners,
 } from 'views/utils';
+import player from 'components/Player/player';
 
 import SigninComponentTemplate from './signinView.hbs';
 import './signinView.scss';
-import player from 'components/Player/player';
 
 interface ISigninComponentProps {
     placeholder_img: string;
