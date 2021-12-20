@@ -23,6 +23,7 @@ import {
 
 import SigninComponentTemplate from './signinView.hbs';
 import './signinView.scss';
+import player from 'components/Player/player';
 
 interface ISigninComponentProps {
     placeholder_img: string;
@@ -43,6 +44,7 @@ export class SigninView extends View<ISigninComponentProps> {
     }
 
     render() {
+        player.eventListenersAlreadySet = false; // TODO так наверное не очень хорошо делать, но времени мало
         baseView.unmount();
         if (store.get('authenticated')) {
             router.go(routerStore.dashboard);

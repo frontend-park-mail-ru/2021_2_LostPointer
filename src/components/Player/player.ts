@@ -1,12 +1,10 @@
 import { Component } from 'components/Component/component';
 import Request from 'services/request/request';
 import { TrackModel } from 'models/track';
-import { TrackList } from 'components/TrackList/tracklist';
 import store from 'services/store/store';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { ArtistModel } from 'models/artist';
-import { TrackComponent } from 'components/TrackComponent/track';
 
 import PlayerTemplate from './player.hbs';
 import './player.scss';
@@ -58,7 +56,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private counted: boolean;
     private seekbarMobileCurrent: HTMLElement;
     private globalPlayButtonHandler: EventListenerOrEventListenerObject;
-    private eventListenersAlreadySet: boolean;
+    eventListenersAlreadySet: boolean;
     private currentContext: string;
 
     constructor(props?: IPlayerComponentProps) {

@@ -25,6 +25,7 @@ import {
 
 import SignupComponentTemplate from './signupView.hbs';
 import './signupView.scss';
+import player from 'components/Player/player';
 
 interface ISignupComponentProps {
     placeholder_img: string;
@@ -46,6 +47,7 @@ export class SignupView extends View<ISignupComponentProps> {
     }
 
     render() {
+        player.eventListenersAlreadySet = false; // TODO так наверное не очень хорошо делать, но времени мало
         baseView.unmount();
         if (store.get('authenticated')) {
             router.go(routerStore.dashboard);
