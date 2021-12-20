@@ -142,7 +142,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
     setTrack(track: TrackModel): void {
         if (!track) {
-            return; // TODO=Почему вообще так происходит
+            return; // TODO=Почему вообще так происходит, потому что на главной треки после каждого f5 перезагружаются, а this.playlist не обновляются (пофиксил)
         }
         this.audio.pause();
         this.counted = false;
@@ -479,13 +479,17 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 return;
             }
             if (target.className === 'track-play') {
-                if (window.location.pathname !== this.currentContext) {
+                if (
+                    window.location.pathname !== this.currentContext ||
+                    window.location.pathname === '/'
+                ) {
                     this.currentContext = window.location.pathname;
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     this.setup(router.getCurrentView().getTracksContext());
                 }
                 if (!store.get('authenticated')) {
+                    this.eventListenersAlreadySet = false;
                     router.go(routerStore.signin);
                     return;
                 }
