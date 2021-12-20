@@ -2,8 +2,6 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [ los-127, dev ]
-  pull_request:
     branches: [ dev ]
 
 jobs:
