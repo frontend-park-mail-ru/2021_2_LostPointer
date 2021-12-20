@@ -14,6 +14,7 @@ import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import baseView from 'views/BaseView/baseView';
 import { TrackComponent } from 'components/TrackComponent/track';
+import store from 'services/store/store';
 
 import SearchViewTemplate from './searchView.hbs';
 import './searchView.scss';
@@ -112,6 +113,9 @@ export class SearchView extends View<never> {
     }
 
     update() {
+        if (store.get('authenticated')) {
+            TrackComponent.removeToggleFavorListeners();
+        }
         playlistsContextMenu.removeListeners();
         playlistsContextMenu.deleteRemoveButton();
         document.querySelector('.js-menu-container').innerHTML =
@@ -152,6 +156,9 @@ export class SearchView extends View<never> {
             albums: this.data.albums,
             not_found: this.noResults,
         });
+        if (store.get('authenticated')) {
+            TrackComponent.addToggleFavorListeners();
+        }
         addDisableBrokenImgListeners();
     }
 

@@ -1,14 +1,15 @@
 import { Component } from 'components/Component/component';
-
 import Request from 'services/request/request';
-
-import PlayerTemplate from './player.hbs';
-import './player.scss';
 import { TrackModel } from 'models/track';
+import { TrackList } from 'components/TrackList/tracklist';
 import store from 'services/store/store';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { ArtistModel } from 'models/artist';
+import { TrackComponent } from 'components/TrackComponent/track';
+
+import PlayerTemplate from './player.hbs';
+import './player.scss';
 
 export interface IPlayerComponentProps {
     artwork_color: string;
@@ -109,13 +110,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     saveLastPlayed() {
-        // TODO
-        // if (this.props.playing) {
-        //     window.localStorage.setItem(
-        //         'lastPlayedData',
-        //         JSON.stringify(this.props)
-        //     );
-        // }
+        if (this.props.playing) {
+            window.localStorage.setItem(
+                'lastPlayedData',
+                JSON.stringify(this.props)
+            );
+        }
     }
 
     getLastPlayed(): boolean {
@@ -132,10 +132,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.props.hide_artwork = false;
             this.props.recovered = true;
             this.audio.preload = 'metadata';
-            document.documentElement.style.setProperty(
-                '--artwork-accent-color',
-                this.props.artwork_color
-            );
+            if (this.props.artwork_color) {
+                document.documentElement.style.setProperty(
+                    '--artwork-accent-color',
+                    this.props.artwork_color
+                );
+            }
         }
         return typeof data === 'string';
     }
@@ -154,7 +156,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             track: track.props.title,
             artist: track.props.artist,
             file: this.audio.src,
-            // artwork_color: track.artworkcolor, //TODO
+            artwork_color: track.props.album.props.artwork_color,
         } as IPlayerComponentProps;
         document.title = `${this.props.track} · ${this.props.artist.props.name}`;
 
@@ -385,6 +387,11 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 .querySelector('.player-artwork')
                 .classList.remove('hidden');
         });
+
+        document.querySelectorAll('.player-fav').forEach((favorites) => {
+            favorites.addEventListener('click', this.buttonsHandler);
+        });
+
         document.querySelectorAll('.repeat').forEach((repeat) => {
             repeat.addEventListener('click', this.buttonsHandler);
         });

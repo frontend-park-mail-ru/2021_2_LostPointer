@@ -12,6 +12,8 @@ import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsConte
 import { PlaylistModel } from 'models/playlist';
 import { TrackModel } from 'models/track';
 import baseView from 'views/BaseView/baseView';
+import store from 'services/store/store';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 import ArtistTemplate from './artistView.hbs';
 import './artistView.scss';
@@ -24,6 +26,9 @@ export class ArtistView extends View<never> {
     private tracks: TrackModel[];
 
     addListeners() {
+        if (store.get('authenticated')) {
+            TrackComponent.addToggleFavorListeners();
+        }
         const video = document.querySelector('.artist__background-video');
         if (video) {
             video.addEventListener('ended', () => {
@@ -44,6 +49,10 @@ export class ArtistView extends View<never> {
             video.removeEventListener('ended', () => {
                 video.classList.add('transition');
             });
+        }
+
+        if (store.get('authenticated')) {
+            TrackComponent.removeToggleFavorListeners();
         }
     }
 

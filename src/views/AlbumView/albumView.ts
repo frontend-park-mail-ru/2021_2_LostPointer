@@ -11,6 +11,8 @@ import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import baseView from 'views/BaseView/baseView';
 import { TrackModel } from 'models/track';
+import { TrackComponent } from 'components/TrackComponent/track';
+import store from 'services/store/store';
 
 import AlbumTemplate from './albumView.hbs';
 import './albumView.scss';
@@ -23,6 +25,9 @@ export class AlbumView extends View<never> {
     private albumID: string;
 
     addListeners() {
+        if (store.get('authenticated')) {
+            TrackComponent.addToggleFavorListeners();
+        }
         playlistsContextMenu.addListeners();
         addDisableBrokenImgListeners();
     }
@@ -30,6 +35,9 @@ export class AlbumView extends View<never> {
     unmount() {
         removeDisableBrokenImgListeners();
         playlistsContextMenu.removeListeners();
+        if (store.get('authenticated')) {
+            TrackComponent.removeToggleFavorListeners();
+        }
     }
 
     render() {

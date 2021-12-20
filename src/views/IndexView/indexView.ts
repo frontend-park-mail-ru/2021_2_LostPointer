@@ -27,7 +27,6 @@ class IndexView extends View<never> {
     private suggested_artists: ArtistModel[];
     private track_list: TrackModel[];
     private suggested_playlists: PlaylistModel[];
-    private friend_activity: FriendActivity;
     private userPlaylists: Array<PlaylistModel>;
     private rendered_track_list: string;
 
@@ -88,6 +87,9 @@ class IndexView extends View<never> {
     }
 
     addListeners() {
+        if (store.get('authenticated')) {
+            TrackComponent.addToggleFavorListeners();
+        }
         if (!suggestedPlaylists.publicView()) {
             const createPlaylistBtn = document.querySelector(
                 '.pl-link[href="/playlist/0"]'
@@ -120,6 +122,12 @@ class IndexView extends View<never> {
     unmount() {
         removeDisableBrokenImgListeners();
         playlistsContextMenu.removeListeners();
+
+        // TODO удалить лисенеры, специфичные для этой страницы
+
+        if (store.get('authenticated')) {
+            TrackComponent.removeToggleFavorListeners();
+        }
     }
 
     render() {
@@ -159,28 +167,12 @@ class IndexView extends View<never> {
                     extraRounded: true,
                 }).render();
 
-                this.friend_activity = new FriendActivity({
-                    friends: [
-                        {
-                            img: 'default_avatar_150px',
-                            nickname: 'Frank Sinatra',
-                            listening_to: 'Strangers in the Night',
-                        },
-                        {
-                            img: 'default_avatar_150px',
-                            nickname: 'Земфира',
-                            listening_to: 'Трафик',
-                        },
-                    ],
-                }).render();
-
                 playlistsContextMenu.updatePlaylists(this.userPlaylists);
                 playlistsContextMenu.deleteRemoveButton();
                 baseView.render();
 
                 const content = document.getElementById('content');
                 content.innerHTML = IndexTemplate({
-                    friend_activity: this.friend_activity,
                     top_albums: this.top_albums,
                     suggested_artists: this.suggested_artists,
                     track_list: this.rendered_track_list,

@@ -12,6 +12,7 @@ import { InputFormComponent } from 'components/InputForm/inputform';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import { TrackModel } from 'models/track';
 import baseView from 'views/BaseView/baseView';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
@@ -369,6 +370,9 @@ export class PlaylistView extends View<never> {
     }
 
     addListeners() {
+        if (store.get('authenticated')) {
+            TrackComponent.addToggleFavorListeners();
+        }
         if (this.playlist.getProps().is_own) {
             const link = document.querySelector('.editwindow__link');
             link.addEventListener('click', this.copyLink.bind(this));
@@ -438,6 +442,7 @@ export class PlaylistView extends View<never> {
     unmount() {
         removeDisableBrokenImgListeners();
         playlistsContextMenu.removeListeners();
+        playlistsContextMenu.deleteRemoveButton();
 
         const link = document.querySelector('.editwindow__link');
         if (link) {
@@ -515,6 +520,10 @@ export class PlaylistView extends View<never> {
                 'click',
                 this.removeTrack.bind(this)
             );
+        }
+
+        if (store.get('authenticated')) {
+            TrackComponent.removeToggleFavorListeners();
         }
     }
 

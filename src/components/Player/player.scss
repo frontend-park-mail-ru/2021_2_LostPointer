@@ -46,6 +46,11 @@
     display: flex;
   }
 
+  &-fav {
+    width: 20px;
+    cursor: pointer;
+  }
+
   &-skip-right {
     cursor: pointer;
     transform: rotate(180deg);

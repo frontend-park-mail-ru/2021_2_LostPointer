@@ -64,8 +64,14 @@
 
   &-fav {
     height: 13px;
+    width: 14px;
     margin: auto 10px auto 13px;
     cursor: pointer;
+
+    &-mobile {
+      height: 20px;
+      width: 60px;
+    }
   }
 
   &-play {
@@ -88,7 +94,8 @@
 
 .playlist__content .track__container,
 .album__content .track__container,
-.artist__content .track__container {
+.artist__content .track__container,
+.favorites__content .track__container {
 
   &__name,
   &__artist {
