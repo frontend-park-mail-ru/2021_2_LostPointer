@@ -15,6 +15,8 @@ const TIMEUPDATE = 1;
 const SWITCH_TRACK = 2;
 const PLAY = 3;
 const PAUSE = 4;
+const SEEK = 5;
+const SET_VOLUME = 6;
 
 export interface IPlayerComponentProps {
     artwork_color: string;
@@ -100,6 +102,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.gotSeekPos = true;
         }
         const seek = (xPos - this.seekbarPos.left) / this.seekbarPos.width;
+        if (this.audio.paused) {
+            this.bc.postMessage({ type: SEEK, pos: seek });
+        }
         document.documentElement.style.setProperty(
             '--seekbar-current',
             `${seek * 100}%`
@@ -123,6 +128,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         }
         this.audio.volume = vol;
         window.localStorage.setItem('playerVolume', `${vol}`);
+        this.bc.postMessage({ type: SET_VOLUME, pos: vol });
     }
 
     saveLastPlayed() {
@@ -569,18 +575,23 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.timeElapsed = document.getElementById('player-time-current');
         this.timeTotal = document.getElementById('player-time-total');
         this.bc.onmessage = (event) => {
-            this.timeElapsed.innerHTML = event.data.current_time;
-            if (!this.audio.paused) {
-                this.audio.pause();
+            if (event.data.current_time) {
+                this.timeElapsed.innerHTML = event.data.current_time;
             }
+            // if (!this.audio.paused) {
+            //     this.audio.pause();
+            // }
             switch (event.data.type) {
                 case TIMEUPDATE:
+                    console.log('Timeupdate event');
                     document.documentElement.style.setProperty(
                         '--seekbar-current',
                         event.data.seekbarWidth
                     );
                     break;
                 case SET_TRACK:
+                    this.audio.pause();
+                    console.log('Set track event');
                     (<HTMLImageElement>(
                         document.getElementById('player-artwork')
                     )).src = `${event.data.cover}_128px.webp`;
@@ -612,19 +623,45 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     )).src = `/static/img/${
                         event.data.playing ? 'pause' : 'play'
                     }.svg`;
+                    document.title = `${event.data.track} · ${event.data.artist.props.name}`;
                     break;
                 case SWITCH_TRACK:
+                    console.log('Switch track event');
                     this.switchTrack(event.data.next);
                     break;
                 case PLAY:
+                    console.log('Play event');
                     (<HTMLImageElement>(
                         document.getElementById('player-play')
                     )).src = `/static/img/pause.svg`;
                     break;
                 case PAUSE:
+                    console.log('Pause event');
                     (<HTMLImageElement>(
                         document.getElementById('player-play')
                     )).src = `/static/img/play.svg`;
+                    break;
+                case SEEK:
+                    console.log('Seek event');
+                    document.documentElement.style.setProperty(
+                        '--seekbar-current',
+                        `${event.data.pos * 100}%`
+                    );
+                    this.audio.currentTime =
+                        this.audio.duration * event.data.pos;
+                    break;
+                case SET_VOLUME:
+                    console.log('Set volume');
+                    if (!this.currentVolume) {
+                        this.currentVolume =
+                            document.getElementById('volume-current');
+                    }
+                    this.currentVolume.style.width = `${event.data.pos * 100}%`;
+                    this.audio.volume = event.data.pos;
+                    window.localStorage.setItem(
+                        'playerVolume',
+                        `${event.data.pos}`
+                    );
                     break;
             }
         };
@@ -716,7 +753,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.nowPlaying = this.playlist[this.playlistIndices[--this.pos]];
             allowed = true;
         }
-        if (allowed) {
+        if (allowed && this.nowPlaying.props) {
             const nowPlayingButton = <HTMLImageElement>(
                 document.querySelector(
                     `.track-play[data-id="${this.nowPlaying.props.id}"]`
@@ -826,13 +863,15 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         if (playButton) {
             playButton.src = '/static/img/play.svg'; //TODO=Почему хэндлер паузы это не отрабатывает - большой вопрос
         }
-        const nowPlayingButton = <HTMLImageElement>(
-            document.querySelector(
-                `.track-play[data-id="${this.nowPlaying.props.id}"]`
-            )
-        );
-        if (nowPlayingButton) {
-            nowPlayingButton.src = '/static/img/play-outline.svg';
+        if (this.nowPlaying.props) {
+            const nowPlayingButton = <HTMLImageElement>(
+                document.querySelector(
+                    `.track-play[data-id="${this.nowPlaying.props.id}"]`
+                )
+            );
+            if (nowPlayingButton) {
+                nowPlayingButton.src = '/static/img/play-outline.svg';
+            }
         }
         this.update();
         localStorage.removeItem('lastPlayedData');
