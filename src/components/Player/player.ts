@@ -699,7 +699,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     document.title = `${event.data.track} · ${event.data.artist.props.name}`;
                     break;
                 case SWITCH_TRACK:
-                    this.audio.src = null;
                     console.log('Switch track event');
                     this.switchTrack(event.data.next);
                     break;
