@@ -5,6 +5,9 @@ import store from 'services/store/store';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { ArtistModel } from 'models/artist';
+import PlayerTemplate from './player.hbs';
+import './player.scss';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 const SET_TRACK = 0;
 const TIMEUPDATE = 1;
@@ -16,9 +19,6 @@ const SET_VOLUME = 6;
 const MASTER_TAB_CLOSING = 7;
 
 const SLAVE_TIMEOUT = 1000;
-import PlayerTemplate from './player.hbs';
-import './player.scss';
-import { TrackComponent } from 'components/TrackComponent/track';
 
 export interface IPlayerComponentProps {
     artwork_color: string;
@@ -43,6 +43,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     pos: number;
     nowPlaying: TrackModel;
     currentHandler: EventListenerOrEventListenerObject;
+    eventListenersAlreadySet: boolean;
     private playlist: TrackModel[];
     private audio: HTMLAudioElement;
     private firstTime: boolean;
