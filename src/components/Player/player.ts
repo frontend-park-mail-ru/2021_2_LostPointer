@@ -190,7 +190,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
     setTrack(track: TrackModel): void {
         if (!track) {
-            return; // TODO=Почему вообще так происходит, потому что на главной треки после каждого f5 перезагружаются, а this.playlist не обновляются (пофиксил)
+            return;
         }
         this.audio.pause();
         this.counted = false;
@@ -697,6 +697,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     this.playButton.src = `/static/img/${
                         event.data.playing ? 'pause' : 'play'
                     }.svg`;
+                    if (!this.timeTotal) {
+                        this.timeTotal = <HTMLImageElement>(
+                            document.getElementById('player-time-total')
+                        );
+                    }
+                    this.timeTotal.innerHTML = event.data.total_time;
                     document.title = `${event.data.track} · ${event.data.artist.props.name}`;
                     break;
                 case SWITCH_TRACK:
