@@ -17,6 +17,9 @@ const PLAY = 3;
 const PAUSE = 4;
 const SEEK = 5;
 const SET_VOLUME = 6;
+const MASTER_TAB_CLOSING = 7;
+
+const SLAVE_TIMEOUT = 1000;
 
 export interface IPlayerComponentProps {
     artwork_color: string;
@@ -72,6 +75,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private timeElapsed: HTMLElement;
     private timeTotal: HTMLElement;
     private playButton: HTMLImageElement;
+    private isSlave: boolean;
+    private slaveTimeout: number;
 
     constructor(props?: IPlayerComponentProps) {
         super(props);
@@ -243,7 +248,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 ...this.props,
                 type: SET_TRACK,
                 audio_src: this.audio.src,
-                playlist: this.playlist,
             });
         });
     }
@@ -360,6 +364,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.volumeHandler = (e: MouseEvent) => this.volume(e.x);
         this.playButtonHandler = (e) => {
             e.stopPropagation();
+            if (this.isSlave) {
+                this.bc.postMessage({ type: PAUSE });
+                return;
+            }
             this.props.playing ? this.audio.pause() : this.audio.play();
             this.props.playing = !this.props.playing;
         };
@@ -401,6 +409,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 type: TIMEUPDATE,
                 ...this.props,
                 seekbarWidth,
+                playlist: this.playlist,
             });
         };
         this.resizeHandler = () => {
@@ -599,6 +608,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }
             switch (event.data.type) {
                 case TIMEUPDATE:
+                    console.log('Timeupdate event');
+                    this.isSlave = true;
+                    window.clearTimeout(this.slaveTimeout);
+                    this.slaveTimeout = window.setTimeout(() => {
+                        this.isSlave = false;
+                    }, SLAVE_TIMEOUT);
                     if (!this.playButton) {
                         this.playButton = <HTMLImageElement>(
                             document.getElementById('player-play')
@@ -607,7 +622,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     if (this.playButton.src !== '/static/img/pause.svg') {
                         this.playButton.src = '/static/img/pause.svg';
                     }
-                    console.log('Timeupdate event');
+                    this.playlist = event.data.playlist;
                     document.documentElement.style.setProperty(
                         '--seekbar-current',
                         event.data.seekbarWidth
@@ -671,6 +686,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                             document.getElementById('player-play')
                         );
                     }
+                    this.audio.pause();
                     this.playButton.src = `/static/img/play.svg`;
                     break;
                 case SEEK:
@@ -695,8 +711,30 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         `${event.data.pos}`
                     );
                     break;
+                case MASTER_TAB_CLOSING:
+                    this.setup(event.data.playlist);
+
+                    this.nowPlaying = event.data.nowPlaying;
+                    this.playlistIndices = event.data.playlistIndices;
+
+                    this.setTrack(this.nowPlaying);
+                    this.audio.currentTime = event.data.currentTime;
+
+                    console.log('Master tab closing');
+                    break;
             }
         };
+        window.addEventListener('beforeunload', () => {
+            if (!this.audio.paused) {
+                this.bc.postMessage({
+                    type: MASTER_TAB_CLOSING,
+                    playlist: this.playlist,
+                    playlistIndices: this.playlistIndices,
+                    nowPlaying: this.nowPlaying,
+                    currentTime: this.audio.currentTime,
+                });
+            }
+        });
     }
 
     setup([...playlist]: TrackModel[]) {
