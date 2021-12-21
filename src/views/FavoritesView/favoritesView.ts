@@ -9,13 +9,15 @@ import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { TrackComponent } from 'components/TrackComponent/track';
 import baseView from 'views/BaseView/baseView';
+import sidebar from 'components/Sidebar/sidebar';
+import { TrackModel } from 'models/track';
 
 import FavoritesViewTemplate from './favoritesView.hbs';
 import './favoritesView.scss';
-import sidebar from 'components/Sidebar/sidebar';
 
 export class FavoritesView extends View<never> {
     private userPlaylists: Array<PlaylistModel>;
+    private tracks: Array<TrackModel>;
 
     addListeners() {
         TrackComponent.addToggleFavorListeners();
@@ -81,6 +83,7 @@ export class FavoritesView extends View<never> {
                 sidebar.updateFavLink(true);
 
                 UserModel.getFavorites().then((favoritesTracks) => {
+                    this.tracks = favoritesTracks;
                     document.querySelector('.main-layout__content').innerHTML =
                         FavoritesViewTemplate({
                             trackList: new TrackList({
@@ -91,6 +94,10 @@ export class FavoritesView extends View<never> {
                     this.addListeners();
                 });
             });
+    }
+
+    getTracksContext(): TrackModel[] {
+        return this.tracks;
     }
 }
 
