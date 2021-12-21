@@ -77,6 +77,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private playButton: HTMLImageElement;
     private isSlave: boolean;
     private slaveTimeout: number;
+    private slavePaused: boolean;
+    private slaveCurrentTime: number;
 
     constructor(props?: IPlayerComponentProps) {
         super(props);
@@ -358,11 +360,20 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.bc.postMessage({
                 ...this.props,
                 type: PAUSE,
+                playlist: this.playlist,
+                playlistIndices: this.playlistIndices,
+                nowPlaying: this.nowPlaying,
+                currentTime: this.audio.currentTime,
             });
         };
         this.seekbarHandler = (e: MouseEvent) => this.seek(e.x);
         this.volumeHandler = (e: MouseEvent) => this.volume(e.x);
         this.playButtonHandler = (e) => {
+            if (this.slavePaused) {
+                this.setTrack(this.nowPlaying);
+                this.audio.currentTime = this.slaveCurrentTime;
+                this.slavePaused = false;
+            }
             e.stopPropagation();
             if (this.isSlave) {
                 this.bc.postMessage({ type: PAUSE });
@@ -687,7 +698,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         );
                     }
                     this.audio.pause();
+                    this.setup(event.data.playlist);
+                    this.nowPlaying = event.data.nowPlaying;
+                    this.playlistIndices = event.data.playlistIndices;
                     this.playButton.src = `/static/img/play.svg`;
+                    this.slavePaused = true;
+                    this.slaveCurrentTime = event.data.currentTime;
                     break;
                 case SEEK:
                     console.log('Seek event');
