@@ -1,24 +1,23 @@
 import { View } from 'views/View/view';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
-import IndexTemplate from 'views/IndexView/indexView.hbs';
-import TopbarComponent from 'components/Topbar/topbar';
 import store from 'services/store/store';
-import sidebar from 'components/Sidebar/sidebar';
-import player from 'components/Player/player';
-import mobile from 'components/Mobile/mobile';
 import { disableBrokenImg } from 'views/utils';
 import { TrackList } from 'components/TrackList/tracklist';
 import { UserModel } from 'models/user';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { TrackComponent } from 'components/TrackComponent/track';
+import baseView from 'views/BaseView/baseView';
+import sidebar from 'components/Sidebar/sidebar';
+import { TrackModel } from 'models/track';
 
 import FavoritesViewTemplate from './favoritesView.hbs';
 import './favoritesView.scss';
 
 export class FavoritesView extends View<never> {
     private userPlaylists: Array<PlaylistModel>;
+    private tracks: Array<TrackModel>;
 
     addListeners() {
         TrackComponent.addToggleFavorListeners();
@@ -59,6 +58,7 @@ export class FavoritesView extends View<never> {
     }
 
     unmount() {
+        sidebar.updateFavLink(false);
         TrackComponent.removeToggleFavorListeners();
 
         document.querySelectorAll('img').forEach(function (img) {
@@ -77,29 +77,13 @@ export class FavoritesView extends View<never> {
                 this.userPlaylists = playlists;
             })
             .then(() => {
-                playlistsContextMenu.updatePlaylists(this.userPlaylists);
-                const app = document.getElementById('app');
-                if (app.innerHTML == '') {
-                    document.getElementById('app').innerHTML = IndexTemplate({
-                        topbar: TopbarComponent.set({
-                            authenticated: store.get('authenticated'),
-                            avatar: store.get('userAvatar'),
-                            offline: !navigator.onLine,
-                        }).render(),
-                        sidebar: sidebar.render(),
-                        player: player.render(),
-                        contextMenu: playlistsContextMenu.render(),
-                        mobile: mobile.set(player.getNowPlaying()).render(),
-                    });
-                    player.addHandlers();
-                    TopbarComponent.addHandlers();
-                }
-
                 playlistsContextMenu.deleteRemoveButton();
-                document.querySelector('.js-menu-container').innerHTML =
-                    playlistsContextMenu.render();
+                playlistsContextMenu.updatePlaylists(this.userPlaylists);
+                baseView.render();
+                sidebar.updateFavLink(true);
 
                 UserModel.getFavorites().then((favoritesTracks) => {
+                    this.tracks = favoritesTracks;
                     document.querySelector('.main-layout__content').innerHTML =
                         FavoritesViewTemplate({
                             trackList: new TrackList({
@@ -107,14 +91,13 @@ export class FavoritesView extends View<never> {
                                 tracks: favoritesTracks,
                             }).render(),
                         });
-                    player.setup(document.querySelectorAll('.track'));
                     this.addListeners();
                 });
             });
     }
 
-    didMount(): void {
-        console.log('not implemented');
+    getTracksContext(): TrackModel[] {
+        return this.tracks;
     }
 }
 

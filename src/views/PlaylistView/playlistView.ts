@@ -1,84 +1,31 @@
 import { View } from 'views/View/view';
-import sidebar from 'components/Sidebar/sidebar';
-import TopbarComponent from 'components/Topbar/topbar';
 import { TrackList } from 'components/TrackList/tracklist';
 import { DEFAULT_ARTWORK, PlaylistModel } from 'models/playlist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import store from 'services/store/store';
-import { disableBrokenImg } from 'views/utils';
-import player from 'components/Player/player';
+import {
+    addDisableBrokenImgListeners,
+    removeDisableBrokenImgListeners,
+} from 'views/utils';
 import { InputFormComponent } from 'components/InputForm/inputform';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
+import { TrackModel } from 'models/track';
+import baseView from 'views/BaseView/baseView';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
-import mobile from 'components/Mobile/mobile';
-import { TrackComponent } from 'components/TrackComponent/track';
 
 // TODO аватары пользователей-создателей плейлиста
 
-interface IPlaylistViewProps {
-    authenticated: boolean;
-}
-
-export class PlaylistView extends View<IPlaylistViewProps> {
-    private userAvatar: string;
+export class PlaylistView extends View<never> {
     private playlist: PlaylistModel;
     private userPlaylists: Array<PlaylistModel>;
     private trackList: TrackList;
     private inputs: Array<string>;
     private renderedMenu: HTMLElement;
-
-    constructor(props?: IPlaylistViewProps) {
-        super(props);
-        this.isLoaded = false;
-    }
-
-    didMount(): void {
-        const regex = /^\/playlist\/(\d+)$/gm;
-        const match = regex.exec(window.location.pathname);
-        if (!match) {
-            router.go(routerStore.dashboard);
-        }
-        const playlistId = parseInt(match[1]);
-
-        const playlist = PlaylistModel.getPlaylist(playlistId).then(
-            (playlist) => {
-                if (!playlist) {
-                    router.go(routerStore.dashboard);
-                }
-                this.playlist = playlist;
-            }
-        );
-
-        const userPlaylists = PlaylistModel.getUserPlaylists().then(
-            (playlists) => {
-                this.userPlaylists = playlists;
-            }
-        );
-
-        Promise.all([playlist, userPlaylists]).then(() => {
-            const props = this.playlist.getProps();
-            this.trackList = new TrackList({
-                title: 'Tracks',
-                tracks: props.tracks,
-            });
-            this.inputs = [
-                new InputFormComponent({
-                    class: 'editwindow__form-input',
-                    name: 'title',
-                    type: 'text',
-                    placeholder: 'Title',
-                    value: props.title,
-                }).render(),
-            ];
-            playlistsContextMenu.addRemoveButton();
-            playlistsContextMenu.updatePlaylists(this.userPlaylists);
-            this.isLoaded = true;
-            this.render();
-        });
-    }
+    private tracks: Array<TrackModel>;
 
     displayEditWindow(event) {
         if (!store.get('authenticated') || !this.playlist.getProps().is_own) {
@@ -286,7 +233,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
         }
     }
 
-    deleteAvatar(event) {
+    deleteAvatar() {
         if (!this.playlist.getProps().is_own) {
             return;
         }
@@ -413,7 +360,7 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             });
     }
 
-    copyLink() {
+    copyLink(event) {
         event.stopPropagation();
         const msg = document.querySelector('.editwindow__form-msg');
         msg.classList.remove('fail');
@@ -488,187 +435,181 @@ export class PlaylistView extends View<IPlaylistViewProps> {
             );
         }
 
-        document
-            .querySelectorAll('.track-list-item-playlist')
-            .forEach((element) => {
-                element.addEventListener(
-                    'click',
-                    playlistsContextMenu.showContextMenu.bind(
-                        playlistsContextMenu
-                    )
-                );
-            });
-
-        const createPlaylistBtn = document.querySelector('.js-playlist-create');
-        createPlaylistBtn.addEventListener(
-            'click',
-            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
-        );
-
-        const addTrackToPlaylistBtns = document.querySelectorAll(
-            '.js-playlist-track-add'
-        );
-        addTrackToPlaylistBtns.forEach((button) => {
-            button.addEventListener(
-                'click',
-                playlistsContextMenu.addTrackToPlaylist.bind(
-                    playlistsContextMenu
-                )
-            );
-        });
-
-        document.querySelectorAll('img').forEach(function (img) {
-            img.addEventListener('error', disableBrokenImg);
-        });
+        playlistsContextMenu.addListeners();
+        addDisableBrokenImgListeners();
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function (img) {
-            img.removeEventListener('error', disableBrokenImg);
-        });
-        document
-            .querySelectorAll('.track-list-item-playlist')
-            .forEach((element) => {
-                element.removeEventListener(
-                    'click',
-                    playlistsContextMenu.showContextMenu.bind(
-                        playlistsContextMenu
-                    )
-                );
-            });
-
+        removeDisableBrokenImgListeners();
+        playlistsContextMenu.removeListeners();
         playlistsContextMenu.deleteRemoveButton();
-
-        if (this.playlist && this.playlist.getProps().is_own) {
-            document
-                .querySelector('.js-playlist-track-remove')
-                .removeEventListener('click', this.removeTrack.bind(this));
-
-            document
-                .querySelector('.playlist__description-avatar')
-                .removeEventListener(
-                    'click',
-                    this.displayEditWindow.bind(this)
-                );
-
-            document
-                .querySelector('.playlist__description-edit-btn')
-                .removeEventListener(
-                    'click',
-                    this.displayEditWindow.bind(this)
-                );
-
-            document
-                .querySelector('input[name="file"]')
-                .removeEventListener(
-                    'change',
-                    this.uploadAvatarFile.bind(this)
-                );
-
-            document
-                .querySelector('.editwindow__form')
-                .removeEventListener(
-                    'submit',
-                    this.submitChangePlaylistInfoForm.bind(this)
-                );
-
-            document
-                .querySelector('.editwindow__delete')
-                .removeEventListener(
-                    'click',
-                    this.deleteButtonClick.bind(this)
-                );
-
-            document
-                .querySelector('.editwindow__avatar-delete')
-                .removeEventListener('click', this.deleteAvatar.bind(this));
-        }
-
-        const createPlaylistBtn = document.querySelector('.js-playlist-create');
-        if (createPlaylistBtn) {
-            createPlaylistBtn.removeEventListener(
-                'click',
-                playlistsContextMenu.createNewPlaylist.bind(
-                    playlistsContextMenu
-                )
-            );
-        }
-        document
-            .querySelectorAll('.js-playlist-track-add')
-            .forEach((button) => {
-                button.removeEventListener(
-                    'click',
-                    playlistsContextMenu.addTrackToPlaylist.bind(
-                        playlistsContextMenu
-                    )
-                );
-            });
 
         const link = document.querySelector('.editwindow__link');
         if (link) {
             link.removeEventListener('click', this.copyLink.bind(this));
         }
 
-        if (store.get('authenticated')) {
-            TrackComponent.removeToggleFavorListeners();
-        }
-
-        this.isLoaded = false;
-    }
-
-    render(): void {
-        if (!this.isLoaded) {
-            this.didMount();
-            return;
-        }
-
-        document.getElementById('app').innerHTML = PlaylistTemplate({
-            title: this.playlist.getProps().title,
-            avatar: this.playlist.getProps().artwork,
-            is_own: this.playlist.getProps().is_own,
-            is_public: this.playlist.getProps().is_public,
-            topbar: TopbarComponent.set({
-                authenticated: store.get('authenticated'),
-                avatar: store.get('userAvatar'),
-                offline: !navigator.onLine,
-            }).render(),
-            sidebar: sidebar.render(),
-            trackList: this.trackList
-                .set({
-                    title: 'Tracks',
-                    tracks: this.playlist.getProps().tracks,
-                })
-                .render(),
-            player: player.render(),
-            contextMenu: playlistsContextMenu.render(),
-            inputs: this.inputs,
-            link: window.location.href,
-            mobile: mobile.render(),
-        });
-        TopbarComponent.addHandlers();
-        TopbarComponent.didMount();
-        this.renderedMenu = document.querySelector('.menu');
-
         const deleteAvatarBtn = document.querySelector(
             '.editwindow__avatar-delete'
         );
-        if (
-            this.playlist.getProps().is_own &&
-            this.playlist.getProps().artwork === DEFAULT_ARTWORK
-        ) {
-            (<HTMLElement>deleteAvatarBtn).style.display = 'none';
+        if (deleteAvatarBtn) {
+            deleteAvatarBtn.removeEventListener(
+                'click',
+                this.deleteAvatar.bind(this)
+            );
         }
-        const backgroundOverlay = document.querySelector(
-            '.playlist__background-container'
-        );
-        (<HTMLElement>(
-            backgroundOverlay
-        )).style.backgroundImage = `linear-gradient(to bottom, ${
-            this.playlist.getProps().artwork_color
-        }, black)`;
-        this.addListeners();
 
-        player.setup(document.querySelectorAll('.track'));
+        const publicityCheckbox = document.querySelector(
+            '.editwindow__form-switch input'
+        );
+        if (publicityCheckbox) {
+            publicityCheckbox.removeEventListener(
+                'click',
+                this.togglePublicity.bind(this)
+            );
+        }
+
+        const deleteBtn = document.querySelector('.editwindow__delete');
+        if (deleteBtn) {
+            deleteBtn.removeEventListener(
+                'click',
+                this.deleteButtonClick.bind(this)
+            );
+        }
+
+        const form = document.querySelector('.editwindow__form');
+        if (form) {
+            form.removeEventListener(
+                'submit',
+                this.submitChangePlaylistInfoForm.bind(this)
+            );
+        }
+        const fileInput = document.querySelector('input[name="file"]');
+        if (fileInput) {
+            fileInput.removeEventListener(
+                'change',
+                this.uploadAvatarFile.bind(this)
+            );
+        }
+
+        const editPlaylistBtn = document.querySelector(
+            '.playlist__description-edit-btn'
+        );
+        if (editPlaylistBtn) {
+            editPlaylistBtn.removeEventListener(
+                'click',
+                this.displayEditWindow.bind(this)
+            );
+        }
+
+        const playlistAvatar = document.querySelector(
+            '.playlist__description-avatar'
+        );
+        if (playlistAvatar) {
+            playlistAvatar.removeEventListener(
+                'click',
+                this.displayEditWindow.bind(this)
+            );
+        }
+
+        const removeTrackFromPlaylistBtn = document.querySelector(
+            '.js-playlist-track-remove'
+        );
+        if (removeTrackFromPlaylistBtn) {
+            removeTrackFromPlaylistBtn.removeEventListener(
+                'click',
+                this.removeTrack.bind(this)
+            );
+        }
+
+        if (store.get('authenticated')) {
+            TrackComponent.removeToggleFavorListeners();
+        }
+    }
+
+    render(): void {
+        const regex = /^\/playlist\/(\d+)$/gm;
+        const match = regex.exec(window.location.pathname);
+        if (!match) {
+            router.go(routerStore.dashboard);
+        }
+        const playlistId = parseInt(match[1]);
+
+        const playlist = PlaylistModel.getPlaylist(playlistId).then(
+            (playlist) => {
+                if (!playlist) {
+                    router.go(routerStore.dashboard);
+                }
+                this.playlist = playlist;
+            }
+        );
+
+        const userPlaylists = PlaylistModel.getUserPlaylists().then(
+            (playlists) => {
+                this.userPlaylists = playlists;
+            }
+        );
+
+        Promise.all([playlist, userPlaylists]).then(() => {
+            const props = this.playlist.getProps();
+            this.tracks = props.tracks;
+            this.trackList = new TrackList({
+                title: 'Tracks',
+                tracks: props.tracks,
+            });
+            this.inputs = [
+                new InputFormComponent({
+                    class: 'editwindow__form-input',
+                    name: 'title',
+                    type: 'text',
+                    placeholder: 'Title',
+                    value: props.title,
+                }).render(),
+            ];
+
+            playlistsContextMenu.addRemoveButton();
+            playlistsContextMenu.updatePlaylists(this.userPlaylists);
+            baseView.render();
+
+            document.getElementById('content').innerHTML = PlaylistTemplate({
+                title: this.playlist.getProps().title,
+                avatar: this.playlist.getProps().artwork,
+                is_own: this.playlist.getProps().is_own,
+                is_public: this.playlist.getProps().is_public,
+                trackList: this.trackList
+                    .set({
+                        title: 'Tracks',
+                        tracks: this.playlist.getProps().tracks,
+                    })
+                    .render(),
+                inputs: this.inputs,
+                link: window.location.href,
+            });
+            this.renderedMenu = document.querySelector('.menu');
+
+            const deleteAvatarBtn = document.querySelector(
+                '.editwindow__avatar-delete'
+            );
+            if (
+                this.playlist.getProps().is_own &&
+                this.playlist.getProps().artwork === DEFAULT_ARTWORK
+            ) {
+                (<HTMLElement>deleteAvatarBtn).style.display = 'none';
+            }
+            const backgroundOverlay = document.querySelector(
+                '.playlist__background-container'
+            );
+            (<HTMLElement>(
+                backgroundOverlay
+            )).style.backgroundImage = `linear-gradient(to bottom, ${
+                this.playlist.getProps().artwork_color
+            }, black)`;
+            this.addListeners();
+        });
+    }
+
+    getTracksContext(): TrackModel[] {
+        return this.tracks;
     }
 }
 

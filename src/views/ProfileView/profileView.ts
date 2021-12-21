@@ -1,9 +1,7 @@
 import { View } from 'views/View/view';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import TopbarComponent from 'components/Topbar/topbar';
 import player from 'components/Player/player';
-import sidebar from 'components/Sidebar/sidebar';
 import { ICustomInput } from 'interfaces/CustomInput';
 import { CustomValidation, isValidForm } from 'services/validation/validation';
 import {
@@ -15,45 +13,19 @@ import {
 } from 'services/validation/validityChecks';
 import { ProfileForm } from 'components/ProfileForm/profileForm';
 import { UserModel } from 'models/user';
-import { disableBrokenImg } from 'views/utils';
+import {
+    addDisableBrokenImgListeners,
+    removeDisableBrokenImgListeners,
+} from 'views/utils';
 import store from 'services/store/store';
-import mobile from 'components/Mobile/mobile';
+import baseView from 'views/BaseView/baseView';
 
 import ProfileTemplate from './profileView.hbs';
 import './profileView.scss';
 
-interface IProfileViewProps {
-    authenticated: boolean;
-}
-
-export class ProfileView extends View<IProfileViewProps> {
+export class ProfileView extends View<never> {
     private profileform: ProfileForm;
-    private userAvatar: string;
     private user: UserModel;
-
-    constructor(props?: IProfileViewProps) {
-        super(props);
-        this.isLoaded = false;
-    }
-
-    didMount() {
-        if (!store.get('authenticated')) {
-            router.go(routerStore.signin);
-            return;
-        }
-
-        UserModel.getSettings().then((user) => {
-            this.user = user;
-            TopbarComponent.set({
-                authenticated: store.get('authenticated'),
-                avatar: user.getProps().small_avatar,
-                offline: !navigator.onLine,
-            });
-            this.profileform = new ProfileForm(user.getProps());
-            this.isLoaded = true;
-            this.render();
-        });
-    }
 
     uploadAvatarFile(event) {
         event.preventDefault();
@@ -92,13 +64,7 @@ export class ProfileView extends View<IProfileViewProps> {
         }
 
         this.user
-            .updateSettings(
-                null,
-                null,
-                null,
-                null,
-                file,
-            )
+            .updateSettings(null, null, null, null, file)
             .then((body) => {
                 if (body.status === 200) {
                     const smallAvatar = document.querySelector(
@@ -190,8 +156,12 @@ export class ProfileView extends View<IProfileViewProps> {
             .updateSettings(
                 nicknameInput.value,
                 emailInput.value,
-                oldPasswordInput.value && passwordInput.value ? oldPasswordInput.value : null,
-                oldPasswordInput.value && passwordInput.value ? passwordInput.value : null,
+                oldPasswordInput.value && passwordInput.value
+                    ? oldPasswordInput.value
+                    : null,
+                oldPasswordInput.value && passwordInput.value
+                    ? passwordInput.value
+                    : null
             )
             .then((body) => {
                 if (body.status === 200) {
@@ -213,14 +183,13 @@ export class ProfileView extends View<IProfileViewProps> {
 
     logoutHandler(event) {
         event.stopPropagation();
-        UserModel.logout()
-            .then(() => {
-                player.stop();
-                player.clear();
-                store.set('authenticated', false);
-                window.localStorage.removeItem('lastPlayedData');
-                router.go(routerStore.dashboard);
-            })
+        UserModel.logout().then(() => {
+            player.stop();
+            player.clear();
+            store.set('authenticated', false);
+            window.localStorage.removeItem('lastPlayedData');
+            router.go(routerStore.dashboard);
+        });
     }
 
     addListeners() {
@@ -247,9 +216,7 @@ export class ProfileView extends View<IProfileViewProps> {
         const fileInput = document.querySelector('input[name="file"]');
         fileInput.addEventListener('change', this.uploadAvatarFile.bind(this));
 
-        document.querySelectorAll('img').forEach(function (img) {
-            img.addEventListener('error', disableBrokenImg);
-        });
+        addDisableBrokenImgListeners();
 
         document.querySelectorAll('.js-logout').forEach((el) => {
             el.addEventListener('click', this.logoutHandler.bind(this));
@@ -257,36 +224,45 @@ export class ProfileView extends View<IProfileViewProps> {
     }
 
     unmount() {
-        document.querySelectorAll('img').forEach(function (img) {
-            img.removeEventListener('error', disableBrokenImg);
-        });
-
+        removeDisableBrokenImgListeners();
         document.querySelectorAll('.js-logout').forEach((el) => {
             el.removeEventListener('click', this.logoutHandler.bind(this));
         });
-        this.isLoaded = false;
+
+        const form = document.querySelector('.profile-form');
+        if (form) {
+            form.removeEventListener(
+                'submit',
+                this.submitChangeProfileForm.bind(this)
+            );
+        }
+        const fileInput = document.querySelector('input[name="file"]');
+        if (fileInput) {
+            fileInput.removeEventListener(
+                'change',
+                this.uploadAvatarFile.bind(this)
+            );
+        }
     }
 
     render() {
-        if (!this.isLoaded) {
-            this.didMount();
+        if (!store.get('authenticated')) {
+            router.go(routerStore.signin);
             return;
         }
 
-        document.getElementById('app').innerHTML = ProfileTemplate({
-            topbar: TopbarComponent.set({
-                authenticated: store.get('authenticated'),
-                avatar: store.get('userAvatar'),
-                offline: !navigator.onLine,
-            }).render(),
-            sidebar: sidebar.render(),
-            profileform: this.profileform.render(),
-            player: player.render(),
-            mobile: mobile.render(),
+        UserModel.getSettings().then((user) => {
+            this.user = user;
+            this.profileform = new ProfileForm(user.getProps());
+
+            baseView.render();
+
+            document.querySelector('.main-layout__content').innerHTML =
+                ProfileTemplate({
+                    profileform: this.profileform.render(),
+                });
+            this.addListeners();
         });
-        TopbarComponent.addHandlers();
-        TopbarComponent.didMount();
-        this.addListeners();
     }
 }
 
