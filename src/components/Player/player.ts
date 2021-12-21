@@ -80,6 +80,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private slaveTimeout: number;
     private slavePaused: boolean;
     private slaveCurrentTime: number;
+    private ignorePauseEvent: boolean;
 
     constructor(props?: IPlayerComponentProps) {
         super(props);
@@ -548,6 +549,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             return;
         }
         this.globalPlayButtonHandler = (e) => {
+            this.ignorePauseEvent = true;
+            setTimeout(() => {
+                this.ignorePauseEvent = false;
+            }, 1000);
             const target = <HTMLImageElement>e.target;
             if (target.classList.contains('top-album__play')) {
                 e.preventDefault();
@@ -694,6 +699,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     document.title = `${event.data.track} · ${event.data.artist.props.name}`;
                     break;
                 case SWITCH_TRACK:
+                    this.audio.src = null;
                     console.log('Switch track event');
                     this.switchTrack(event.data.next);
                     break;
@@ -707,8 +713,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     this.playButton.src = `/static/img/pause.svg`;
                     break;
                 case PAUSE:
-                    if (this.audio.src !== '') {
-                        break;
+                    if (this.ignorePauseEvent) {
+                        return;
                     }
                     console.log('Pause event');
                     if (!this.playButton) {
