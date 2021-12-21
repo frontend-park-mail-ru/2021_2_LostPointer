@@ -707,6 +707,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     this.playButton.src = `/static/img/pause.svg`;
                     break;
                 case PAUSE:
+                    if (this.audio.src !== '') {
+                        break;
+                    }
                     console.log('Pause event');
                     if (!this.playButton) {
                         this.playButton = <HTMLImageElement>(
