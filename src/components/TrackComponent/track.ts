@@ -36,6 +36,9 @@ export class TrackComponent extends Component<ITrackProps> {
         const fav_icon_in_player = document.querySelector(
             `.player-fav[data-id="${trackId}"]`
         );
+        const mobile_fav_icon = document.querySelector(
+            `.track-fav-mobile[data-id="${trackId}"]`
+        );
 
         if (target.attributes.getNamedItem('data-in_favorites')) {
             TrackModel.removeFromFavorites(trackId).then(() => {
@@ -49,6 +52,12 @@ export class TrackComponent extends Component<ITrackProps> {
                     fav_icon_in_player.removeAttribute('data-in_favorites');
                     (<HTMLImageElement>(
                         fav_icon_in_player
+                    )).src = `${window.location.origin}/static/img/favorite.svg`;
+                }
+                if (mobile_fav_icon) {
+                    mobile_fav_icon.removeAttribute('data-in_favorites');
+                    (<HTMLImageElement>(
+                        mobile_fav_icon
                     )).src = `${window.location.origin}/static/img/favorite.svg`;
                 }
             });
@@ -70,6 +79,12 @@ export class TrackComponent extends Component<ITrackProps> {
                     );
                     (<HTMLImageElement>(
                         fav_icon_in_player
+                    )).src = `${window.location.origin}/static/img/favorite_green.svg`;
+                }
+                if (mobile_fav_icon) {
+                    mobile_fav_icon.setAttribute('data-in_favorites', 'true');
+                    (<HTMLImageElement>(
+                        mobile_fav_icon
                     )).src = `${window.location.origin}/static/img/favorite_green.svg`;
                 }
             });

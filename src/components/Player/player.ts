@@ -427,6 +427,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 mobileFooter.classList.add('mobile-footer__menu__hidden');
             });
         document
+            .querySelector('.track-fav-mobile')
+            .addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                TrackComponent.toggleFavor(e);
+            });
+        document
             .querySelector('.player-volume')
             .addEventListener('click', this.volumeHandler);
         document.querySelectorAll('.player-play').forEach((play) => {
@@ -655,6 +662,29 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 );
                 (<HTMLImageElement>(
                     fav_icon
+                )).src = `${window.location.origin}/static/img/favorite.svg`;
+            }
+        }
+        const mobile_fav_icon = document.querySelector('.track-fav-mobile');
+        if (mobile_fav_icon) {
+            (<HTMLImageElement>mobile_fav_icon).setAttribute(
+                'data-id',
+                String(this.props.track_id)
+            );
+            if (this.props.track_in_favorites) {
+                (<HTMLImageElement>mobile_fav_icon).setAttribute(
+                    'data-in_favorites',
+                    'true'
+                );
+                (<HTMLImageElement>(
+                    mobile_fav_icon
+                )).src = `${window.location.origin}/static/img/favorite_green.svg`;
+            } else {
+                (<HTMLImageElement>mobile_fav_icon).removeAttribute(
+                    'data-in_favorites'
+                );
+                (<HTMLImageElement>(
+                    mobile_fav_icon
                 )).src = `${window.location.origin}/static/img/favorite.svg`;
             }
         }
