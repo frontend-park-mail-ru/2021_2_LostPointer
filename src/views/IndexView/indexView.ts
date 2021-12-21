@@ -21,7 +21,6 @@ import { TrackComponent } from 'components/TrackComponent/track';
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
 import sidebar from 'components/Sidebar/sidebar';
-import player from 'components/Player/player';
 
 class IndexView extends View<never> {
     private top_albums: AlbumModel[];
@@ -106,12 +105,12 @@ class IndexView extends View<never> {
         const publicPlaylistsBtn = document.querySelector(
             '.js_public_playlists'
         );
-        publicPlaylistsBtn.addEventListener(
+        publicPlaylistsBtn?.addEventListener(
             'click',
             this.showPublicPlaylists.bind(this)
         );
         const ownPlaylistsBtn = document.querySelector('.js_own_playlists');
-        ownPlaylistsBtn.addEventListener(
+        ownPlaylistsBtn?.addEventListener(
             'click',
             this.showOwnPlaylists.bind(this)
         );
@@ -185,7 +184,6 @@ class IndexView extends View<never> {
                 this.addListeners();
             }
         );
-        player.setEventListeners(); // !!
         this.addListeners();
     }
 

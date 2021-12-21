@@ -70,7 +70,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private counted: boolean;
     private seekbarMobileCurrent: HTMLElement;
     private globalPlayButtonHandler: EventListenerOrEventListenerObject;
-    eventListenersAlreadySet: boolean;
     private currentContext: string;
     private bc: BroadcastChannel;
     private handlersSet: boolean;
