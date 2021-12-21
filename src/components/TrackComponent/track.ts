@@ -1,10 +1,10 @@
 import { Component } from 'components/Component/component';
 import { ArtistModel } from 'models/artist';
 import { TrackModel } from 'models/track';
+import router from 'services/router/router';
 
 import TrackTemplate from './track.hbs';
 import './track.scss';
-import router from 'services/router/router';
 
 interface ITrackProps {
     cover: string;

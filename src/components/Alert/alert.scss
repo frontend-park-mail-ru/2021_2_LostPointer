@@ -1,0 +1,60 @@
+.note-item {
+  max-height: 12em;
+  opacity: 100%;
+  will-change: opacity, transform;
+  transition: all 0.2s linear;
+  -webkit-transition: all 0.2s linear;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  width: 50vw;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  z-index: 2;
+  pointer-events: auto;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  -moz-align-items: flex-start;
+  align-items: flex-start;
+
+  @media all and (max-width: 30em) {
+    width: 75vw;
+    max-width: none;
+  }
+
+  max-width: 20em;
+  font: inherit;
+  line-height: 10.25em;
+  color: #ffffff;
+  margin: 0 auto 1em;
+  transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  padding: 0.75em 1em;
+
+  .note-item-text {
+    flex: auto;
+    -webkit-flex: auto;
+    -moz-flex: auto;
+    -ms-flex: auto;
+    padding-right: 0.5em;
+    max-width: calc(100% - 10.25em);
+    max-width: -webkit-calc(100% - 10.25em);
+  }
+}
