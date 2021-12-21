@@ -8,6 +8,7 @@ import { ArtistModel } from 'models/artist';
 
 import PlayerTemplate from './player.hbs';
 import './player.scss';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 export interface IPlayerComponentProps {
     artwork_color: string;
@@ -259,6 +260,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 (element as HTMLImageElement).src = `/static/img/${
                     this.audio.muted ? 'muted.svg' : 'volume.svg'
                 }`;
+            } else if (element.classList.contains('player-fav')) {
+                TrackComponent.toggleFavor(e);
             }
         };
         this.playHandler = () => {
