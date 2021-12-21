@@ -2,8 +2,7 @@ name: Build and Deploy
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
@@ -25,6 +24,13 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      - name: Get fonts
+        run: |
+          curl https://raw.githubusercontent.com/23-yo-designer-from-san-francisco/lostpointer-static/main/fonts.tgz --output fonts.tgz
+          mkdir fonts
+          cd fonts
+          tar xf ../fonts.tgz
 
       - name: Build
         run: npm run build
@@ -52,7 +58,7 @@ jobs:
       - name: Rsync Deployments Action
         uses: Burnett01/rsync-deployments@5.1
         with:
-          switches: -avzr --delete
+          switches: -avzr
           path: ./
           remote_path: ${{ secrets.LOCATION }}
           remote_host: ${{ secrets.HOST }}
