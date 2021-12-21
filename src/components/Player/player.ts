@@ -81,6 +81,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private slavePaused: boolean;
     private slaveCurrentTime: number;
     private ignorePauseEvent: boolean;
+    private switchTrackDebounce: boolean;
 
     constructor(props?: IPlayerComponentProps) {
         super(props);
@@ -699,6 +700,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     document.title = `${event.data.track} · ${event.data.artist.props.name}`;
                     break;
                 case SWITCH_TRACK:
+                    if (this.switchTrackDebounce) {
+                        break;
+                    }
+                    this.switchTrackDebounce = true;
+                    setTimeout(() => {
+                        this.switchTrackDebounce = false;
+                    }, 500);
                     console.log('Switch track event');
                     this.switchTrack(event.data.next);
                     break;
