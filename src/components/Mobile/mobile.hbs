@@ -36,7 +36,17 @@
 <div class='mobile-footer'>
     <div class='mobile-footer__player__progress'></div>
     <div class='mobile-footer__player'>
-        <img alt="" class="track-fav-mobile" src="/static/img/favorite.svg">
+        <img
+            alt=""
+            class="track-fav-mobile"
+            data-id='{{track_id}}'
+            {{# if track_in_favorites}}
+            data-in_favorites='{{track_in_favorites}}'
+            src='/static/img/favorite_green.svg'
+            {{ else }}
+            src='/static/img/favorite.svg'
+            {{/if}}
+        >
         <div class='mobile-footer__player__track'>
             <div class='mobile-footer__player__track__title mobile-track-title'>
                 {{track}}
@@ -60,6 +70,9 @@
         </a>
         <a href='/search' class='mobile-footer__menu__item' id='mobile-search-btn'>
             <i class='fa-solid fa-search'></i>
+        </a>
+        <a href='/favorites' class='mobile-footer__menu__item' id='mobile-fav-btn'>
+            <i class='fa-solid fa-heart'></i>
         </a>
         <a href='/profile' class='mobile-footer__menu__item'>
             <i class='fa-solid fa-user'></i>

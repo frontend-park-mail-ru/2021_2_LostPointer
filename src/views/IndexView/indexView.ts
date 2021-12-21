@@ -8,80 +8,28 @@ import { AlbumModel } from 'models/album';
 import { View } from 'views/View/view';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
-import { disableBrokenImg } from 'views/utils';
+import {
+    addDisableBrokenImgListeners,
+    removeDisableBrokenImgListeners,
+} from 'views/utils';
 import store from 'services/store/store';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
+import baseView from 'views/BaseView/baseView';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
-import baseView from 'views/BaseView/baseView';
+import sidebar from 'components/Sidebar/sidebar';
 import player from 'components/Player/player';
-import { TrackComponent } from 'components/TrackComponent/track';
 
-interface IIndexViewProps {
-    authenticated: boolean;
-}
-
-class IndexView extends View<IIndexViewProps> {
+class IndexView extends View<never> {
     private top_albums: AlbumModel[];
     private suggested_artists: ArtistModel[];
     private track_list: TrackModel[];
     private suggested_playlists: PlaylistModel[];
-    private userAvatar: string;
     private userPlaylists: Array<PlaylistModel>;
-    private renderCount: number;
     private rendered_track_list: string;
-
-    constructor(props?: IIndexViewProps) {
-        super(props);
-        this.isLoaded = false;
-        this.renderCount = 0;
-    }
-
-    didMount() {
-        const tracks = TrackModel.getHomepageTracks().then((tracks) => {
-            this.track_list = tracks;
-        });
-        const artists = ArtistModel.getHomepageArtists().then((artists) => {
-            this.suggested_artists = artists;
-        });
-        const albums = AlbumModel.getHomepageAlbums().then((albums) => {
-            this.top_albums = albums;
-        });
-        const playlists = PlaylistModel.getUserPlaylists().then((playlists) => {
-            this.suggested_playlists = playlists;
-        });
-
-        const userPlaylists = PlaylistModel.getUserPlaylists().then(
-            (playlists) => {
-                this.userPlaylists = playlists;
-            }
-        );
-
-        Promise.all([tracks, artists, albums, playlists, userPlaylists]).then(
-            () => {
-                this.rendered_track_list = new TrackList({
-                    title: 'Tracks of the Week',
-                    tracks: this.track_list,
-                }).render();
-
-                suggestedPlaylists.set(this.suggested_playlists);
-
-                this.top_albums = new TopAlbums({
-                    albums: this.top_albums,
-                }).render();
-                this.suggested_artists = new SuggestedArtists({
-                    artists: this.suggested_artists,
-                    extraRounded: true,
-                }).render();
-
-                playlistsContextMenu.updatePlaylists(this.userPlaylists);
-                this.isLoaded = true;
-                this.render();
-            }
-        );
-    }
 
     createPlaylist(event) {
         event.preventDefault();
@@ -168,58 +116,75 @@ class IndexView extends View<IIndexViewProps> {
             this.showOwnPlaylists.bind(this)
         );
 
-        const createPlaylistContextMenuBtn = document.querySelector(
-            '.js-playlist-create'
-        );
-        createPlaylistContextMenuBtn.addEventListener(
-            'click',
-            playlistsContextMenu.createNewPlaylist.bind(playlistsContextMenu)
-        );
-        const addTrackToPlaylistBtns = document.querySelectorAll(
-            '.js-playlist-track-add'
-        );
-        addTrackToPlaylistBtns.forEach((button) => {
-            button.addEventListener(
-                'click',
-                playlistsContextMenu.addTrackToPlaylist.bind(
-                    playlistsContextMenu
-                )
-            );
-        });
-
-        document
-            .querySelectorAll('.track-list-item-playlist')
-            .forEach((element) => {
-                element.addEventListener(
-                    'click',
-                    playlistsContextMenu.showContextMenu.bind(
-                        playlistsContextMenu
-                    )
-                );
-            });
-        document.querySelectorAll('img').forEach(function (img) {
-            img.addEventListener('error', disableBrokenImg);
-        });
+        playlistsContextMenu.addListeners();
+        addDisableBrokenImgListeners();
     }
 
     unmount() {
-        // this.isLoaded = false;
+        sidebar.updateHomeLink(false);
+        removeDisableBrokenImgListeners();
+        playlistsContextMenu.removeListeners();
+
+        // TODO удалить лисенеры, специфичные для этой страницы
+
+        if (store.get('authenticated')) {
+            TrackComponent.removeToggleFavorListeners();
+        }
     }
 
     render() {
-        if (!this.isLoaded) {
-            this.didMount();
-            return;
-        }
-        baseView.render();
-        const content = document.getElementById('content');
-        content.innerHTML = IndexTemplate({
-            top_albums: this.top_albums,
-            suggested_artists: this.suggested_artists,
-            track_list: this.rendered_track_list,
-            suggested_playlists: suggestedPlaylists.render(),
+        const tracks = TrackModel.getHomepageTracks().then((tracks) => {
+            this.track_list = tracks;
+        });
+        const artists = ArtistModel.getHomepageArtists().then((artists) => {
+            this.suggested_artists = artists;
+        });
+        const albums = AlbumModel.getHomepageAlbums().then((albums) => {
+            this.top_albums = albums;
+        });
+        const playlists = PlaylistModel.getUserPlaylists().then((playlists) => {
+            this.suggested_playlists = playlists;
         });
 
+        const userPlaylists = PlaylistModel.getUserPlaylists().then(
+            (playlists) => {
+                this.userPlaylists = playlists;
+            }
+        );
+
+        Promise.all([tracks, artists, albums, playlists, userPlaylists]).then(
+            () => {
+                this.rendered_track_list = new TrackList({
+                    title: 'Tracks of the Week',
+                    tracks: this.track_list,
+                }).render();
+
+                suggestedPlaylists.set(this.suggested_playlists);
+
+                this.top_albums = new TopAlbums({
+                    albums: this.top_albums,
+                }).render();
+                this.suggested_artists = new SuggestedArtists({
+                    artists: this.suggested_artists,
+                    extraRounded: true,
+                }).render();
+
+                playlistsContextMenu.updatePlaylists(this.userPlaylists);
+                playlistsContextMenu.deleteRemoveButton();
+                baseView.render();
+                sidebar.updateHomeLink(true);
+
+                const content = document.getElementById('content');
+                content.innerHTML = IndexTemplate({
+                    top_albums: this.top_albums,
+                    suggested_artists: this.suggested_artists,
+                    track_list: this.rendered_track_list,
+                    suggested_playlists: suggestedPlaylists.render(),
+                });
+
+                this.addListeners();
+            }
+        );
         player.setEventListeners(); // !!
         this.addListeners();
     }

@@ -1,9 +1,5 @@
 import { Component } from 'components/Component/component';
-
 import Request from 'services/request/request';
-
-import PlayerTemplate from './player.hbs';
-import './player.scss';
 import { TrackModel } from 'models/track';
 import store from 'services/store/store';
 import router from 'services/router/router';
@@ -20,6 +16,9 @@ const SET_VOLUME = 6;
 const MASTER_TAB_CLOSING = 7;
 
 const SLAVE_TIMEOUT = 1000;
+import PlayerTemplate from './player.hbs';
+import './player.scss';
+import { TrackComponent } from 'components/TrackComponent/track';
 
 export interface IPlayerComponentProps {
     artwork_color: string;
@@ -29,6 +28,8 @@ export interface IPlayerComponentProps {
     playing: boolean;
     artist: ArtistModel;
     track: string;
+    track_id: number;
+    track_in_favorites: boolean;
     left_disabled: boolean;
     right_disabled: boolean;
     file: string;
@@ -68,7 +69,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private counted: boolean;
     private seekbarMobileCurrent: HTMLElement;
     private globalPlayButtonHandler: EventListenerOrEventListenerObject;
-    private eventListenersAlreadySet: boolean;
+    eventListenersAlreadySet: boolean;
     private currentContext: string;
     private bc: BroadcastChannel;
     private handlersSet: boolean;
@@ -187,7 +188,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
     setTrack(track: TrackModel): void {
         if (!track) {
-            return; // TODO=Почему вообще так происходит
+            return; // TODO=Почему вообще так происходит, потому что на главной треки после каждого f5 перезагружаются, а this.playlist не обновляются (пофиксил)
         }
         this.audio.pause();
         this.counted = false;
@@ -199,7 +200,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             track: track.props.title,
             artist: track.props.artist,
             file: this.audio.src,
-            // artwork_color: track.artworkcolor, //TODO
+            artwork_color: track.props.album.props.artwork_color,
+            track_id: track.props.id,
+            track_in_favorites: track.props.is_in_favorites,
         } as IPlayerComponentProps;
         document.title = `${this.props.track} · ${this.props.artist.props.name}`;
 
@@ -309,6 +312,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 (element as HTMLImageElement).src = `/static/img/${
                     this.audio.muted ? 'muted.svg' : 'volume.svg'
                 }`;
+            } else if (element.classList.contains('player-fav')) {
+                TrackComponent.toggleFavor(e);
             }
         };
         this.playHandler = () => {
@@ -502,6 +507,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 mobileFooter.classList.add('mobile-footer__menu__hidden');
             });
         document
+            .querySelector('.track-fav-mobile')
+            .addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                TrackComponent.toggleFavor(e);
+            });
+        document
             .querySelector('.player-volume')
             .addEventListener('click', this.volumeHandler);
         document.querySelectorAll('.player-play').forEach((play) => {
@@ -563,13 +575,17 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 return;
             }
             if (target.className === 'track-play') {
-                if (window.location.pathname !== this.currentContext) {
+                if (
+                    window.location.pathname !== this.currentContext ||
+                    window.location.pathname === '/'
+                ) {
                     this.currentContext = window.location.pathname;
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     this.setup(router.getCurrentView().getTracksContext());
                 }
                 if (!store.get('authenticated')) {
+                    this.eventListenersAlreadySet = false;
                     router.go(routerStore.signin);
                     return;
                 }
@@ -877,6 +893,52 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         if (track) {
             track.innerHTML = this.props.track ? this.props.track : '';
         }
+        const fav_icon = document.querySelector('.player-fav');
+        if (fav_icon) {
+            (<HTMLImageElement>fav_icon).setAttribute(
+                'data-id',
+                String(this.props.track_id)
+            );
+            if (this.props.track_in_favorites) {
+                (<HTMLImageElement>fav_icon).setAttribute(
+                    'data-in_favorites',
+                    'true'
+                );
+                (<HTMLImageElement>(
+                    fav_icon
+                )).src = `${window.location.origin}/static/img/favorite_green.svg`;
+            } else {
+                (<HTMLImageElement>fav_icon).removeAttribute(
+                    'data-in_favorites'
+                );
+                (<HTMLImageElement>(
+                    fav_icon
+                )).src = `${window.location.origin}/static/img/favorite.svg`;
+            }
+        }
+        const mobile_fav_icon = document.querySelector('.track-fav-mobile');
+        if (mobile_fav_icon) {
+            (<HTMLImageElement>mobile_fav_icon).setAttribute(
+                'data-id',
+                String(this.props.track_id)
+            );
+            if (this.props.track_in_favorites) {
+                (<HTMLImageElement>mobile_fav_icon).setAttribute(
+                    'data-in_favorites',
+                    'true'
+                );
+                (<HTMLImageElement>(
+                    mobile_fav_icon
+                )).src = `${window.location.origin}/static/img/favorite_green.svg`;
+            } else {
+                (<HTMLImageElement>mobile_fav_icon).removeAttribute(
+                    'data-in_favorites'
+                );
+                (<HTMLImageElement>(
+                    mobile_fav_icon
+                )).src = `${window.location.origin}/static/img/favorite.svg`;
+            }
+        }
         const mobileTrack = document.querySelectorAll('.mobile-track-title');
         if (mobileTrack) {
             mobileTrack.forEach((title) => {
@@ -979,6 +1041,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             playing: false,
             artist: new ArtistModel(),
             track: '',
+            track_id: 0,
+            track_in_favorites: false,
             left_disabled: true,
             right_disabled: true,
             file: '',

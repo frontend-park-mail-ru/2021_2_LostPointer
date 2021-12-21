@@ -1,12 +1,12 @@
 import { Component } from 'components/Component/component';
-
-import ContextMenuTemplate from './playlistsContextMenu.hbs';
-import './playlistsContextMenu.scss';
 import { PlaylistModel } from 'models/playlist';
 import store from 'services/store/store';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { IResponseBody } from 'services/request/request';
+
+import ContextMenuTemplate from './playlistsContextMenu.hbs';
+import './playlistsContextMenu.scss';
 
 interface IContextMenuOption {
     class: string;
@@ -57,6 +57,57 @@ export class PlaylistsContextMenu extends Component<IContextMenuProps> {
 
     render(): string {
         return ContextMenuTemplate(this.props);
+    }
+
+    addListeners() {
+        document
+            .querySelectorAll('.track-list-item-playlist')
+            .forEach((element) => {
+                element.addEventListener(
+                    'click',
+                    this.showContextMenu.bind(this)
+                );
+            });
+
+        document.querySelectorAll('.js-playlist-create').forEach((item) => {
+            item.addEventListener('click', this.createNewPlaylist.bind(this));
+        });
+
+        document
+            .querySelectorAll('.js-playlist-track-add')
+            .forEach((button) => {
+                button.addEventListener(
+                    'click',
+                    this.addTrackToPlaylist.bind(this)
+                );
+            });
+    }
+
+    removeListeners() {
+        document
+            .querySelectorAll('.track-list-item-playlist')
+            .forEach((element) => {
+                element.removeEventListener(
+                    'click',
+                    this.showContextMenu.bind(this)
+                );
+            });
+
+        document.querySelectorAll('.js-playlist-create').forEach((item) => {
+            item.removeEventListener(
+                'click',
+                this.createNewPlaylist.bind(this)
+            );
+        });
+
+        document
+            .querySelectorAll('.js-playlist-track-add')
+            .forEach((button) => {
+                button.removeEventListener(
+                    'click',
+                    this.addTrackToPlaylist.bind(this)
+                );
+            });
     }
 
     toggleMenu(command) {

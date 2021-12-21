@@ -12,12 +12,10 @@ import './baseView.scss';
 class BaseView extends View<never> {
     private mounted: boolean;
 
-    constructor() {
-        super();
-    }
-
     render() {
         if (this.mounted) {
+            document.querySelector('.js-menu-container').innerHTML =
+                playlistsContextMenu.render();
             return;
         }
         document.getElementById('app').innerHTML = BaseViewTemplate({
@@ -38,9 +36,6 @@ class BaseView extends View<never> {
 
         player.setEventListeners();
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    didMount(): void {}
 
     unmount(): void {
         this.mounted = false;

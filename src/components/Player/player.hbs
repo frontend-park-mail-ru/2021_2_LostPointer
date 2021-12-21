@@ -7,9 +7,9 @@
     </div>
     <img
         alt class='player-fav'
-        data-id='{{id}}'
-        {{# if is_in_favorites}}
-        data-in_favorites='{{is_in_favorites}}'
+        data-id='{{track_id}}'
+        {{# if track_in_favorites}}
+        data-in_favorites='{{track_in_favorites}}'
         src='/static/img/favorite_green.svg'
         {{ else }}
         src='/static/img/favorite.svg'

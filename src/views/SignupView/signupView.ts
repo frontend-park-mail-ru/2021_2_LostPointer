@@ -15,12 +15,17 @@ import {
 import { ICustomInput } from 'interfaces/CustomInput';
 import routerStore from 'services/router/routerStore';
 import { View } from 'views/View/view';
-
-import SignupComponentTemplate from './signupView.hbs';
-import './signupView.scss';
 import { UserModel } from 'models/user';
 import store from 'services/store/store';
 import baseView from 'views/BaseView/baseView';
+import {
+    addDisableBrokenImgListeners,
+    removeDisableBrokenImgListeners,
+} from 'views/utils';
+import player from 'components/Player/player';
+
+import SignupComponentTemplate from './signupView.hbs';
+import './signupView.scss';
 
 interface ISignupComponentProps {
     placeholder_img: string;
@@ -41,11 +46,8 @@ export class SignupView extends View<ISignupComponentProps> {
         };
     }
 
-    didMount(): void {
-        throw new Error('Method not implemented.');
-    }
-
     render() {
+        player.eventListenersAlreadySet = false; // TODO так наверное не очень хорошо делать, но времени мало
         baseView.unmount();
         if (store.get('authenticated')) {
             router.go(routerStore.dashboard);
@@ -81,9 +83,11 @@ export class SignupView extends View<ISignupComponentProps> {
 
         addInputsEventListeners(form);
         form.addEventListener('submit', this.submitSignupForm);
+        addDisableBrokenImgListeners();
     }
 
     unmount() {
+        removeDisableBrokenImgListeners();
         const form = document.querySelector('.auth-form');
         if (form) {
             form.removeEventListener('submit', this.submitSignupForm);

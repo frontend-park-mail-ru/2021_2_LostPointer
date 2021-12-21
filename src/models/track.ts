@@ -61,7 +61,11 @@ export class TrackModel extends Model<ITrackModel> {
         return new Promise((resolve) => {
             Request.get(`/album/${id}`).then((response) => {
                 const tracks = response
-                    ? TrackModel.serializeList(response.tracks, response)
+                    ? TrackModel.serializeList(
+                          response.tracks,
+                          response,
+                          response.artist
+                      )
                     : [];
                 resolve(tracks);
             });
