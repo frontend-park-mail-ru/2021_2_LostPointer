@@ -71,10 +71,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private handlersSet: boolean;
     private timeElapsed: HTMLElement;
     private timeTotal: HTMLElement;
+    private playButton: HTMLImageElement;
 
     constructor(props?: IPlayerComponentProps) {
         super(props);
         this.audio = new Audio();
+        this.audio.volume = 0.5;
         this.audio.preload = 'auto';
         if (!this.getLastPlayed()) {
             this.props = {
@@ -153,7 +155,11 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.props = json;
             this.audio.currentTime = this.props.playerCurrentTime || 0;
             this.audio.src = this.props.file;
-            document.title = `${this.props.track} · ${this.props.artist.props.name}`;
+            if (this.props?.artist?.props?.name) {
+                document.title = `${this.props.track} · ${this.props?.artist?.props?.name}`;
+            } else {
+                document.title = 'LostPointer Music';
+            }
             this.props.hide_artwork = false;
             this.props.recovered = true;
             this.audio.preload = 'metadata';
@@ -237,7 +243,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 ...this.props,
                 type: SET_TRACK,
                 audio_src: this.audio.src,
-                playlist: this.playlist.toString(),
+                playlist: this.playlist,
             });
         });
     }
@@ -573,10 +579,14 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
                 target.dataset.playing = 'true';
                 target.src = '/static/img/pause-outline.svg';
-                const track = this.playlist?.find(
-                    (track) => track.props.id.toString() === target.dataset.id
-                );
-                this.setTrack(track);
+                if (this.playlist) {
+                    console.log(this.playlist);
+                    const track = this.playlist?.find(
+                        (track) =>
+                            track.props.id.toString() === target.dataset.id
+                    );
+                    this.setTrack(track);
+                }
             }
         };
         document.addEventListener('click', this.globalPlayButtonHandler);
@@ -587,11 +597,16 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             if (event.data.current_time) {
                 this.timeElapsed.innerHTML = event.data.current_time;
             }
-            // if (!this.audio.paused) {
-            //     this.audio.pause();
-            // }
             switch (event.data.type) {
                 case TIMEUPDATE:
+                    if (!this.playButton) {
+                        this.playButton = <HTMLImageElement>(
+                            document.getElementById('player-play')
+                        );
+                    }
+                    if (this.playButton.src !== '/static/img/pause.svg') {
+                        this.playButton.src = '/static/img/pause.svg';
+                    }
                     console.log('Timeupdate event');
                     document.documentElement.style.setProperty(
                         '--seekbar-current',
@@ -608,7 +623,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         event.data.track;
                     document.getElementById('artist-name').innerHTML =
                         event.data.artist.props.name;
-                    this.playlist = event.data.playlist;
                     if (event.data.right_disabled) {
                         document
                             .getElementById('player-right')
@@ -627,9 +641,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                             .getElementById('player-left')
                             .classList.remove('disabled');
                     }
-                    (<HTMLImageElement>(
-                        document.getElementById('player-play')
-                    )).src = `/static/img/${
+                    if (!this.playButton) {
+                        this.playButton = <HTMLImageElement>(
+                            document.getElementById('player-play')
+                        );
+                    }
+                    this.playButton.src = `/static/img/${
                         event.data.playing ? 'pause' : 'play'
                     }.svg`;
                     document.title = `${event.data.track} · ${event.data.artist.props.name}`;
@@ -640,15 +657,21 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     break;
                 case PLAY:
                     console.log('Play event');
-                    (<HTMLImageElement>(
-                        document.getElementById('player-play')
-                    )).src = `/static/img/pause.svg`;
+                    if (!this.playButton) {
+                        this.playButton = <HTMLImageElement>(
+                            document.getElementById('player-play')
+                        );
+                    }
+                    this.playButton.src = `/static/img/pause.svg`;
                     break;
                 case PAUSE:
                     console.log('Pause event');
-                    (<HTMLImageElement>(
-                        document.getElementById('player-play')
-                    )).src = `/static/img/play.svg`;
+                    if (!this.playButton) {
+                        this.playButton = <HTMLImageElement>(
+                            document.getElementById('player-play')
+                        );
+                    }
+                    this.playButton.src = `/static/img/play.svg`;
                     break;
                 case SEEK:
                     console.log('Seek event');
@@ -874,6 +897,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             document.querySelector('.player-play')
         );
         if (playButton) {
+            this.playButton = playButton;
             playButton.src = '/static/img/play.svg'; //TODO=Почему хэндлер паузы это не отрабатывает - большой вопрос
         }
         if (this.nowPlaying.props) {
