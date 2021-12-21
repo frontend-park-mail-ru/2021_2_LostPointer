@@ -737,6 +737,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     this.audio.currentTime = event.data.currentTime;
 
                     console.log('Master tab closing');
+                    this.slavePaused = false;
                     break;
             }
         };
