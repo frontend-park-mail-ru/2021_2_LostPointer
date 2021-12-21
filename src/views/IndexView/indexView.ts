@@ -154,7 +154,7 @@ class IndexView extends View<never> {
         Promise.all([tracks, artists, albums, playlists, userPlaylists]).then(
             () => {
                 this.rendered_track_list = new TrackList({
-                    title: 'Tracks of the Week',
+                    title: 'Suggested Tracks',
                     tracks: this.track_list,
                 }).render();
 
