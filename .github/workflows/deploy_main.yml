@@ -58,7 +58,7 @@ jobs:
       - name: Rsync Deployments Action
         uses: Burnett01/rsync-deployments@5.1
         with:
-          switches: -avzr
+          switches: -av --delete
           path: ./
           remote_path: ${{ secrets.LOCATION }}
           remote_host: ${{ secrets.HOST }}
