@@ -106,7 +106,11 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.gotSeekPos = false;
         this.gotVolPos = false;
         this.props.playing = false;
-        this.bc = new BroadcastChannel('lostpointer_player');
+        try {
+            this.bc = new BroadcastChannel('lostpointer_player');
+        } catch (e) {
+            this.bc = null;
+        }
         this.handlersSet = false;
     }
 
@@ -119,7 +123,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         }
         const seek = (xPos - this.seekbarPos.left) / this.seekbarPos.width;
         if (this.audio.paused) {
-            this.bc.postMessage({ type: SEEK, pos: seek });
+            if (this.bc) {
+                this.bc.postMessage({ type: SEEK, pos: seek });
+            }
         }
         document.documentElement.style.setProperty(
             '--seekbar-current',
@@ -144,7 +150,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         }
         this.audio.volume = vol;
         window.localStorage.setItem('playerVolume', `${vol}`);
-        this.bc.postMessage({ type: SET_VOLUME, pos: vol });
+        if (this.bc) {
+            this.bc.postMessage({ type: SET_VOLUME, pos: vol });
+        }
     }
 
     saveLastPlayed() {
@@ -257,15 +265,17 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         document.getElementById('mobile-player-artwork').style.display = '';
         this.audio.play().then(() => {
             this.props.playing = true;
-            this.bc.postMessage({
-                ...this.props,
-                type: SET_TRACK,
-                trackID: this.playlist[this.pos].props.id,
-                audio_src: this.audio.src,
-                likeSrc: (<HTMLImageElement>(
-                    document.querySelector('.player-fav')
-                )).src,
-            });
+            if (this.bc) {
+                this.bc.postMessage({
+                    ...this.props,
+                    type: SET_TRACK,
+                    trackID: this.playlist[this.pos].props.id,
+                    audio_src: this.audio.src,
+                    likeSrc: (<HTMLImageElement>(
+                        document.querySelector('.player-fav')
+                    )).src,
+                });
+            }
         });
     }
 
@@ -293,7 +303,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             const element = e.target as HTMLElement;
             if (element.classList.contains('repeat')) {
                 this.audio.loop = !element.classList.contains('enabled');
-                this.bc.postMessage({ type: REPEAT, loop: this.audio.loop });
+                if (this.bc) {
+                    this.bc.postMessage({
+                        type: REPEAT,
+                        loop: this.audio.loop,
+                    });
+                }
                 this.audio.loop
                     ? element.classList.add('enabled')
                     : element.classList.remove('enabled');
@@ -303,7 +318,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 );
             } else if (element.classList.contains('shuffle')) {
                 this.shuffle = !element.classList.contains('enabled');
-                this.bc.postMessage({ type: SHUFFLE, shuffle: this.shuffle });
+                if (this.bc) {
+                    this.bc.postMessage({
+                        type: SHUFFLE,
+                        shuffle: this.shuffle,
+                    });
+                }
                 this.pos = -1;
                 if (this.shuffle) {
                     element.classList.add('enabled');
@@ -316,7 +336,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 }
             } else if (element.classList.contains('mute')) {
                 this.audio.muted = !this.audio.muted;
-                this.bc.postMessage({ type: MUTE, muted: this.audio.muted });
+                if (this.bc) {
+                    this.bc.postMessage({
+                        type: MUTE,
+                        muted: this.audio.muted,
+                    });
+                }
                 this.audio.muted
                     ? element.classList.add('enabled')
                     : element.classList.remove('enabled');
@@ -335,13 +360,15 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                             document.querySelector('.player-fav')
                         )).src
                     );
-                    this.bc.postMessage({
-                        type: LIKE,
-                        src: (<HTMLImageElement>(
-                            document.querySelector('.player-fav')
-                        )).src,
-                        fav,
-                    });
+                    if (this.bc) {
+                        this.bc.postMessage({
+                            type: LIKE,
+                            src: (<HTMLImageElement>(
+                                document.querySelector('.player-fav')
+                            )).src,
+                            fav,
+                        });
+                    }
                 });
             }
         };
@@ -365,10 +392,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     nowPlayingButton.src = '/static/img/pause-outline.svg';
                 }
             }
-            this.bc.postMessage({
-                ...this.props,
-                type: PLAY,
-            });
+            if (this.bc) {
+                this.bc.postMessage({
+                    ...this.props,
+                    type: PLAY,
+                });
+            }
         };
 
         this.pauseHandler = () => {
@@ -391,14 +420,16 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     nowPlayingButton.src = '/static/img/play-outline.svg';
                 }
             }
-            this.bc.postMessage({
-                ...this.props,
-                type: PAUSE,
-                playlist: this.playlist,
-                playlistIndices: this.playlistIndices,
-                nowPlaying: this.nowPlaying,
-                currentTime: this.audio.currentTime,
-            });
+            if (this.bc) {
+                this.bc.postMessage({
+                    ...this.props,
+                    type: PAUSE,
+                    playlist: this.playlist,
+                    playlistIndices: this.playlistIndices,
+                    nowPlaying: this.nowPlaying,
+                    currentTime: this.audio.currentTime,
+                });
+            }
         };
         this.seekbarHandler = (e: MouseEvent) => this.seek(e.x);
         this.volumeHandler = (e: MouseEvent) => this.volume(e.x);
@@ -410,7 +441,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }
             e.stopPropagation();
             if (this.isSlave) {
-                this.bc.postMessage({ type: PAUSE });
+                if (this.bc) {
+                    this.bc.postMessage({ type: PAUSE });
+                }
                 return;
             }
             this.props.playing ? this.audio.pause() : this.audio.play();
@@ -450,12 +483,14 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }
             this.props.playerCurrentTime = this.audio.currentTime;
             this.saveLastPlayed();
-            this.bc.postMessage({
-                type: TIMEUPDATE,
-                ...this.props,
-                seekbarWidth,
-                playlist: this.playlist,
-            });
+            if (this.bc) {
+                this.bc.postMessage({
+                    type: TIMEUPDATE,
+                    ...this.props,
+                    seekbarWidth,
+                    playlist: this.playlist,
+                });
+            }
         };
         this.resizeHandler = () => {
             this.seekbarPos = document
@@ -662,229 +697,237 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.eventListenersAlreadySet = true;
         this.timeElapsed = document.getElementById('player-time-current');
         this.timeTotal = document.getElementById('player-time-total');
-        this.bc.onmessage = (event) => {
-            if (event.data.current_time) {
-                this.timeElapsed.innerHTML = event.data.current_time;
-            }
-            switch (event.data.type) {
-                case TIMEUPDATE:
-                    console.log('Timeupdate event');
-                    this.isSlave = true;
-                    window.clearTimeout(this.slaveTimeout);
-                    this.slaveTimeout = window.setTimeout(() => {
-                        this.isSlave = false;
-                    }, SLAVE_TIMEOUT);
-                    if (!this.playButton) {
-                        this.playButton = <HTMLImageElement>(
-                            document.getElementById('player-play')
+        if (this.bc) {
+            this.bc.onmessage = (event) => {
+                if (event.data.current_time) {
+                    this.timeElapsed.innerHTML = event.data.current_time;
+                }
+                switch (event.data.type) {
+                    case TIMEUPDATE:
+                        console.log('Timeupdate event');
+                        this.isSlave = true;
+                        window.clearTimeout(this.slaveTimeout);
+                        this.slaveTimeout = window.setTimeout(() => {
+                            this.isSlave = false;
+                        }, SLAVE_TIMEOUT);
+                        if (!this.playButton) {
+                            this.playButton = <HTMLImageElement>(
+                                document.getElementById('player-play')
+                            );
+                        }
+                        if (this.playButton.src !== '/static/img/pause.svg') {
+                            this.playButton.src = '/static/img/pause.svg';
+                        }
+                        this.playlist = event.data.playlist;
+                        document.documentElement.style.setProperty(
+                            '--seekbar-current',
+                            event.data.seekbarWidth
                         );
-                    }
-                    if (this.playButton.src !== '/static/img/pause.svg') {
-                        this.playButton.src = '/static/img/pause.svg';
-                    }
-                    this.playlist = event.data.playlist;
-                    document.documentElement.style.setProperty(
-                        '--seekbar-current',
-                        event.data.seekbarWidth
-                    );
-                    break;
-                case SET_TRACK:
-                    this.audio.pause();
-                    console.log('Set track event');
-                    (<HTMLImageElement>(
-                        document.getElementById('player-artwork')
-                    )).src = `${event.data.cover}_128px.webp`;
-                    document.getElementById('track-name').innerHTML =
-                        event.data.track;
-                    document.getElementById('artist-name').innerHTML =
-                        event.data.artist.props.name;
-                    if (event.data.right_disabled) {
-                        document
-                            .getElementById('player-right')
-                            .classList.add('disabled');
-                    } else {
-                        document
-                            .getElementById('player-right')
-                            .classList.remove('disabled');
-                    }
-                    if (event.data.left_disabled) {
-                        document
-                            .getElementById('player-left')
-                            .classList.add('disabled');
-                    } else {
-                        document
-                            .getElementById('player-left')
-                            .classList.remove('disabled');
-                    }
-                    if (!this.playButton) {
-                        this.playButton = <HTMLImageElement>(
-                            document.getElementById('player-play')
-                        );
-                    }
-                    this.playButton.src = `/static/img/${
-                        event.data.playing ? 'pause' : 'play'
-                    }.svg`;
-                    if (!this.timeTotal) {
-                        this.timeTotal = <HTMLImageElement>(
-                            document.getElementById('player-time-total')
-                        );
-                    }
-                    this.timeTotal.innerHTML = event.data.total_time;
-                    document.title = `${event.data.track} · ${event.data.artist.props.name}`;
-                    console.log('data', event.data);
-                    (<HTMLElement>(
-                        document.querySelector('.player-fav')
-                    )).dataset.id = event.data.trackID;
-                    (<HTMLImageElement>(
-                        document.querySelector('.player-fav')
-                    )).src = event.data.likeSrc;
-                    break;
-                case SWITCH_TRACK:
-                    if (this.switchTrackDebounce) {
                         break;
-                    }
-                    this.switchTrackDebounce = true;
-                    setTimeout(() => {
-                        this.switchTrackDebounce = false;
-                    }, 500);
-                    console.log('Switch track event');
-                    this.switchTrack(event.data.next);
-                    break;
-                case PLAY:
-                    console.log('Play event');
-                    if (!this.playButton) {
-                        this.playButton = <HTMLImageElement>(
-                            document.getElementById('player-play')
+                    case SET_TRACK:
+                        this.audio.pause();
+                        console.log('Set track event');
+                        (<HTMLImageElement>(
+                            document.getElementById('player-artwork')
+                        )).src = `${event.data.cover}_128px.webp`;
+                        document.getElementById('track-name').innerHTML =
+                            event.data.track;
+                        document.getElementById('artist-name').innerHTML =
+                            event.data.artist.props.name;
+                        if (event.data.right_disabled) {
+                            document
+                                .getElementById('player-right')
+                                .classList.add('disabled');
+                        } else {
+                            document
+                                .getElementById('player-right')
+                                .classList.remove('disabled');
+                        }
+                        if (event.data.left_disabled) {
+                            document
+                                .getElementById('player-left')
+                                .classList.add('disabled');
+                        } else {
+                            document
+                                .getElementById('player-left')
+                                .classList.remove('disabled');
+                        }
+                        if (!this.playButton) {
+                            this.playButton = <HTMLImageElement>(
+                                document.getElementById('player-play')
+                            );
+                        }
+                        this.playButton.src = `/static/img/${
+                            event.data.playing ? 'pause' : 'play'
+                        }.svg`;
+                        if (!this.timeTotal) {
+                            this.timeTotal = <HTMLImageElement>(
+                                document.getElementById('player-time-total')
+                            );
+                        }
+                        this.timeTotal.innerHTML = event.data.total_time;
+                        document.title = `${event.data.track} · ${event.data.artist.props.name}`;
+                        console.log('data', event.data);
+                        (<HTMLElement>(
+                            document.querySelector('.player-fav')
+                        )).dataset.id = event.data.trackID;
+                        (<HTMLImageElement>(
+                            document.querySelector('.player-fav')
+                        )).src = event.data.likeSrc;
+                        break;
+                    case SWITCH_TRACK:
+                        if (this.switchTrackDebounce) {
+                            break;
+                        }
+                        this.switchTrackDebounce = true;
+                        setTimeout(() => {
+                            this.switchTrackDebounce = false;
+                        }, 500);
+                        console.log('Switch track event');
+                        this.switchTrack(event.data.next);
+                        break;
+                    case PLAY:
+                        console.log('Play event');
+                        if (!this.playButton) {
+                            this.playButton = <HTMLImageElement>(
+                                document.getElementById('player-play')
+                            );
+                        }
+                        this.playButton.src = `/static/img/pause.svg`;
+                        break;
+                    case PAUSE:
+                        if (this.ignorePauseEvent) {
+                            return;
+                        }
+                        console.log('Pause event');
+                        if (!this.playButton) {
+                            this.playButton = <HTMLImageElement>(
+                                document.getElementById('player-play')
+                            );
+                        }
+                        this.audio.pause();
+                        this.setup(event.data.playlist);
+                        this.nowPlaying = event.data.nowPlaying;
+                        this.playlistIndices = event.data.playlistIndices;
+                        this.playButton.src = `/static/img/play.svg`;
+                        this.slavePaused = true;
+                        this.slaveCurrentTime = event.data.currentTime;
+                        break;
+                    case SEEK:
+                        console.log('Seek event');
+                        document.documentElement.style.setProperty(
+                            '--seekbar-current',
+                            `${event.data.pos * 100}%`
                         );
-                    }
-                    this.playButton.src = `/static/img/pause.svg`;
-                    break;
-                case PAUSE:
-                    if (this.ignorePauseEvent) {
-                        return;
-                    }
-                    console.log('Pause event');
-                    if (!this.playButton) {
-                        this.playButton = <HTMLImageElement>(
-                            document.getElementById('player-play')
+                        this.audio.currentTime =
+                            this.audio.duration * event.data.pos;
+                        break;
+                    case SET_VOLUME:
+                        console.log('Set volume');
+                        if (!this.currentVolume) {
+                            this.currentVolume =
+                                document.querySelector('.volume-current');
+                        }
+                        this.currentVolume.style.width = `${
+                            event.data.pos * 100
+                        }%`;
+                        this.audio.volume = event.data.pos;
+                        window.localStorage.setItem(
+                            'playerVolume',
+                            `${event.data.pos}`
                         );
-                    }
-                    this.audio.pause();
-                    this.setup(event.data.playlist);
-                    this.nowPlaying = event.data.nowPlaying;
-                    this.playlistIndices = event.data.playlistIndices;
-                    this.playButton.src = `/static/img/play.svg`;
-                    this.slavePaused = true;
-                    this.slaveCurrentTime = event.data.currentTime;
-                    break;
-                case SEEK:
-                    console.log('Seek event');
-                    document.documentElement.style.setProperty(
-                        '--seekbar-current',
-                        `${event.data.pos * 100}%`
-                    );
-                    this.audio.currentTime =
-                        this.audio.duration * event.data.pos;
-                    break;
-                case SET_VOLUME:
-                    console.log('Set volume');
-                    if (!this.currentVolume) {
-                        this.currentVolume =
-                            document.querySelector('.volume-current');
-                    }
-                    this.currentVolume.style.width = `${event.data.pos * 100}%`;
-                    this.audio.volume = event.data.pos;
-                    window.localStorage.setItem(
-                        'playerVolume',
-                        `${event.data.pos}`
-                    );
-                    break;
-                case MASTER_TAB_CLOSING:
-                    this.setup(event.data.playlist);
+                        break;
+                    case MASTER_TAB_CLOSING:
+                        this.setup(event.data.playlist);
 
-                    this.nowPlaying = event.data.nowPlaying;
-                    this.playlistIndices = event.data.playlistIndices;
+                        this.nowPlaying = event.data.nowPlaying;
+                        this.playlistIndices = event.data.playlistIndices;
 
-                    this.setTrack(this.nowPlaying);
-                    this.audio.currentTime = event.data.currentTime;
+                        this.setTrack(this.nowPlaying);
+                        this.audio.currentTime = event.data.currentTime;
 
-                    console.log('Master tab closing');
-                    this.slavePaused = false;
-                    break;
-                case SHUFFLE:
-                    console.log('Shuffle event');
-                    this.shuffle = event.data.shuffle;
-                    this.pos = -1;
-                    if (this.shuffle) {
-                        document
-                            .querySelector('.shuffle')
-                            .classList.add('enabled');
-                        shuffle(this.playlistIndices);
-                    } else {
-                        document
-                            .querySelector('.shuffle')
-                            .classList.remove('enabled');
-                        this.playlistIndices = [
-                            ...Array(this.playlist.length).keys(),
-                        ];
-                    }
-                    break;
-                case REPEAT:
-                    console.log('Repeat event');
-                    this.audio.loop = event.data.loop;
-                    this.audio.loop
-                        ? document
-                              .querySelector('.repeat')
-                              .classList.add('enabled')
-                        : document
-                              .querySelector('.repeat')
-                              .classList.remove('enabled');
-                    window.localStorage.setItem(
-                        'playerLooped',
-                        `${this.audio.loop}`
-                    );
-                    break;
-                case MUTE:
-                    console.log('Mute event');
-                    console.log(event.data);
-                    this.audio.muted = event.data.muted;
-                    this.audio.muted
-                        ? document
-                              .querySelector('.mute')
-                              .classList.add('enabled')
-                        : document
-                              .querySelector('.mute')
-                              .classList.remove('enabled');
-                    window.localStorage.setItem(
-                        'playerMuted',
-                        `${this.audio.muted}`
-                    );
-                    (<HTMLImageElement>(
-                        document.querySelector('.mute')
-                    )).src = `/static/img/${
-                        this.audio.muted ? 'muted.svg' : 'volume.svg'
-                    }`;
-                    break;
-                case LIKE:
-                    console.log('Like event');
-                    (<HTMLImageElement>(
-                        document.querySelector('.player-fav')
-                    )).src = event.data.src;
-                    (<HTMLImageElement>(
-                        document.querySelector('.player-fav')
-                    )).dataset.in_favorites = event.data.fav ? 'true' : null;
-                    break;
-            }
-        };
+                        console.log('Master tab closing');
+                        this.slavePaused = false;
+                        break;
+                    case SHUFFLE:
+                        console.log('Shuffle event');
+                        this.shuffle = event.data.shuffle;
+                        this.pos = -1;
+                        if (this.shuffle) {
+                            document
+                                .querySelector('.shuffle')
+                                .classList.add('enabled');
+                            shuffle(this.playlistIndices);
+                        } else {
+                            document
+                                .querySelector('.shuffle')
+                                .classList.remove('enabled');
+                            this.playlistIndices = [
+                                ...Array(this.playlist.length).keys(),
+                            ];
+                        }
+                        break;
+                    case REPEAT:
+                        console.log('Repeat event');
+                        this.audio.loop = event.data.loop;
+                        this.audio.loop
+                            ? document
+                                  .querySelector('.repeat')
+                                  .classList.add('enabled')
+                            : document
+                                  .querySelector('.repeat')
+                                  .classList.remove('enabled');
+                        window.localStorage.setItem(
+                            'playerLooped',
+                            `${this.audio.loop}`
+                        );
+                        break;
+                    case MUTE:
+                        console.log('Mute event');
+                        console.log(event.data);
+                        this.audio.muted = event.data.muted;
+                        this.audio.muted
+                            ? document
+                                  .querySelector('.mute')
+                                  .classList.add('enabled')
+                            : document
+                                  .querySelector('.mute')
+                                  .classList.remove('enabled');
+                        window.localStorage.setItem(
+                            'playerMuted',
+                            `${this.audio.muted}`
+                        );
+                        (<HTMLImageElement>(
+                            document.querySelector('.mute')
+                        )).src = `/static/img/${
+                            this.audio.muted ? 'muted.svg' : 'volume.svg'
+                        }`;
+                        break;
+                    case LIKE:
+                        console.log('Like event');
+                        (<HTMLImageElement>(
+                            document.querySelector('.player-fav')
+                        )).src = event.data.src;
+                        (<HTMLImageElement>(
+                            document.querySelector('.player-fav')
+                        )).dataset.in_favorites = event.data.fav
+                            ? 'true'
+                            : null;
+                        break;
+                }
+            };
+        }
         window.addEventListener('beforeunload', () => {
             if (!this.audio.paused) {
-                this.bc.postMessage({
-                    type: MASTER_TAB_CLOSING,
-                    playlist: this.playlist,
-                    playlistIndices: this.playlistIndices,
-                    nowPlaying: this.nowPlaying,
-                    currentTime: this.audio.currentTime,
-                });
+                if (this.bc) {
+                    this.bc.postMessage({
+                        type: MASTER_TAB_CLOSING,
+                        playlist: this.playlist,
+                        playlistIndices: this.playlistIndices,
+                        nowPlaying: this.nowPlaying,
+                        currentTime: this.audio.currentTime,
+                    });
+                }
             }
         });
     }
@@ -956,7 +999,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
     switchTrack(next: boolean) {
         if (this.audio.paused) {
-            this.bc.postMessage({ type: SWITCH_TRACK, next });
+            if (this.bc) {
+                this.bc.postMessage({ type: SWITCH_TRACK, next });
+            }
             return;
         }
         if (this.currentHandler) {
