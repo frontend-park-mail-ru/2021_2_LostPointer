@@ -7,6 +7,7 @@ import { IResponseBody } from 'services/request/request';
 
 import ContextMenuTemplate from './playlistsContextMenu.hbs';
 import './playlistsContextMenu.scss';
+import { Alert } from 'components/Alert/alert';
 
 interface IContextMenuOption {
     class: string;
@@ -145,7 +146,15 @@ export class PlaylistsContextMenu extends Component<IContextMenuProps> {
 
     addTrackToPlaylist(event) {
         const playlistId = parseInt(event.target.getAttribute('data-id'));
-        PlaylistModel.addTrack(playlistId, this.selectedTrackId);
+        PlaylistModel.addTrack(playlistId, this.selectedTrackId).then(
+            ({ status, message }) => {
+                if (status === 400) {
+                    Alert.alert('Track is already in the playlist');
+                } else if (status === 201) {
+                    Alert.alert('Track added to playlist');
+                }
+            }
+        );
     }
 
     createNewPlaylist() {

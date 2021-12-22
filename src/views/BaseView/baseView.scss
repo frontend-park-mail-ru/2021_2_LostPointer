@@ -12,3 +12,10 @@
     }
   }
 }
+
+.alerts {
+  position: fixed;
+  z-index: 10;
+  left: 50%;
+  bottom: 150px;
+}

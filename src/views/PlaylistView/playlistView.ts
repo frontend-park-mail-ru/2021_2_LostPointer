@@ -41,8 +41,12 @@ export class PlaylistView extends View<never> {
             return;
         }
         const playlistEditWindow = document.querySelector('.editwindow');
+        const closeEditWindowBtn = document.querySelector('.editwindow__close');
 
-        if (event.target == playlistEditWindow) {
+        if (
+            event.target == playlistEditWindow ||
+            event.target == closeEditWindowBtn
+        ) {
             (<HTMLElement>playlistEditWindow).style.display = 'none';
         }
 
@@ -210,7 +214,7 @@ export class PlaylistView extends View<never> {
             const msg = document.querySelector('.editwindow__form-msg');
             (<HTMLElement>event.target).classList.add('confirm');
             msg.classList.remove('success');
-            msg.innerHTML = 'Are you sure?';
+            msg.innerHTML = 'Click again to confirm';
             msg.classList.add('fail', 'visible');
             event.stopPropagation();
         }
@@ -393,6 +397,10 @@ export class PlaylistView extends View<never> {
                 this.togglePublicity.bind(this)
             );
 
+            document
+                .querySelector('.editwindow__close')
+                .addEventListener('click', this.removeEditWindow.bind(this));
+
             const deleteBtn = document.querySelector('.editwindow__delete');
             deleteBtn.addEventListener(
                 'click',
@@ -568,7 +576,11 @@ export class PlaylistView extends View<never> {
             ];
 
             playlistsContextMenu.addRemoveButton();
-            playlistsContextMenu.updatePlaylists(this.userPlaylists);
+            playlistsContextMenu.updatePlaylists(
+                this.userPlaylists.filter((playlist) => {
+                    return playlist.props.id !== playlistId;
+                })
+            );
             baseView.render();
 
             document.getElementById('content').innerHTML = PlaylistTemplate({

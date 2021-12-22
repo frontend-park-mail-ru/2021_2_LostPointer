@@ -64,22 +64,24 @@ export class SignupView extends View<ISignupComponentProps> {
         const confirmPasswordInput = form.querySelector(
             'input[name="confirm_password"]'
         );
-        const invalidities = document.querySelector('.auth-form__invalidities');
 
         (<ICustomInput>nicknameInput).CustomValidation = new CustomValidation(
             nameValidityChecks,
-            invalidities
+            document.querySelector('.nickname__invalidities')
         );
         (<ICustomInput>emailInput).CustomValidation = new CustomValidation(
             emailValidityChecks,
-            invalidities
+            document.querySelector('.email__invalidities')
         );
         (<ICustomInput>passwordInput).CustomValidation = new CustomValidation(
             passwordValidityChecks,
-            invalidities
+            document.querySelector('.password__invalidities')
         );
         (<ICustomInput>confirmPasswordInput).CustomValidation =
-            new CustomValidation(confirmPasswordValidityChecks, invalidities);
+            new CustomValidation(
+                confirmPasswordValidityChecks,
+                document.querySelector('.password__invalidities')
+            );
 
         addInputsEventListeners(form);
         form.addEventListener('submit', this.submitSignupForm);

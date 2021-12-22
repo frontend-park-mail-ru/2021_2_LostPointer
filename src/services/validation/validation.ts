@@ -57,29 +57,35 @@ export function checkInput(input) {
         });
     }
     let amountOfDeletedDivs = 0;
-    const invaliditiesListNew = <HTMLInputElement>(
-        document.querySelector('.form__invalidities')
+    const invaliditiesListNewArray = document.querySelectorAll(
+        '.form__invalidities'
     );
-    const invalidsArray = invaliditiesListNew.innerText.split('\n');
-    const innerElements = invaliditiesListNew.getElementsByTagName('div');
-    for (let i = 0; i < invalidsArray.length; i++) {
-        const res = input.CustomValidation.invalidities.indexOf(
-            invalidsArray[i]
-        );
-        if (res === -1 && innerElements.length !== 0) {
-            let flag = false;
-            const pos = i - amountOfDeletedDivs;
-            input.CustomValidation.validityChecks.forEach((msg) => {
-                if (msg.invalidityMessage === innerElements[pos].innerText) {
-                    flag = true; //TODO=Завершать цикл сразу, а не идти дальше
+    invaliditiesListNewArray.forEach((invaliditiesListNew) => {
+        const invalidsArray = (<HTMLInputElement>(
+            invaliditiesListNew
+        )).innerText.split('\n');
+        const innerElements = invaliditiesListNew.getElementsByTagName('div');
+        for (let i = 0; i < invalidsArray.length; i++) {
+            const res = input.CustomValidation.invalidities.indexOf(
+                invalidsArray[i]
+            );
+            if (res === -1 && innerElements.length !== 0) {
+                let flag = false;
+                const pos = i - amountOfDeletedDivs;
+                input.CustomValidation.validityChecks.forEach((msg) => {
+                    if (
+                        msg.invalidityMessage === innerElements[pos].innerText
+                    ) {
+                        flag = true; //TODO=Завершать цикл сразу, а не идти дальше
+                    }
+                });
+                if (flag) {
+                    innerElements[pos].remove();
+                    amountOfDeletedDivs++;
                 }
-            });
-            if (flag) {
-                innerElements[pos].remove();
-                amountOfDeletedDivs++;
             }
         }
-    }
+    });
 
     const isEmpty = input.value === '';
     const isValid = input.CustomValidation.invalidities.length === 0;
