@@ -22,10 +22,14 @@ html {
 }
 
 .nickname__invalidities {
-  margin-top: 10px;
-  height: 75px;
+  @media only screen and (min-width: 768px) {
+    margin-top: 10px;
+    height: 75px;
+  }
 }
 
 .email__invalidities {
-  height: 75px;
+  @media only screen and (min-width: 768px) {
+    height: 75px;
+  }
 }

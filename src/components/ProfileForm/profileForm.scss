@@ -141,5 +141,7 @@
 }
 
 .profile__invalidities {
-  height: 200px;
+  @media only screen and (min-width: 768px) {
+    height: 200px;
+  }
 }
