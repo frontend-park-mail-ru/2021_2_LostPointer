@@ -65,7 +65,7 @@ export class TrackComponent extends Component<ITrackProps> {
                     )).src = `${window.location.origin}/static/img/favorite.svg`;
                 }
                 if (track) {
-                    track.props.is_in_favorites = false;
+                    track.props.is_in_favorites = true;
                 }
                 callback();
             });
