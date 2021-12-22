@@ -56,6 +56,7 @@ export class TrackComponent extends Component<ITrackProps> {
                         mobile_fav_icon
                     )).src = `${window.location.origin}/static/img/favorite.svg`;
                 }
+                callback();
             });
         } else {
             TrackModel.addInFavorites(trackId).then(() => {

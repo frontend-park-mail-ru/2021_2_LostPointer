@@ -323,13 +323,19 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     this.audio.muted ? 'muted.svg' : 'volume.svg'
                 }`;
             } else if (element.classList.contains('player-fav')) {
-                TrackComponent.toggleFavor(e, () => {
-                    console.log(document.querySelector('.player-fav'));
+                TrackComponent.toggleFavor(e, (fav) => {
+                    console.log('Callback called');
+                    console.log(
+                        (<HTMLImageElement>(
+                            document.querySelector('.player-fav')
+                        )).src
+                    );
                     this.bc.postMessage({
                         type: LIKE,
                         src: (<HTMLImageElement>(
                             document.querySelector('.player-fav')
                         )).src,
+                        fav,
                     });
                 });
             }
@@ -856,6 +862,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     (<HTMLImageElement>(
                         document.querySelector('.player-fav')
                     )).src = event.data.src;
+                    (<HTMLImageElement>(
+                        document.querySelector('.player-fav')
+                    )).dataset.in_favorites = event.data.fav ? 'true' : null;
                     break;
             }
         };
