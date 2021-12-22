@@ -1,5 +1,4 @@
 import { TopAlbums } from 'components/TopAlbums/topalbums';
-import { FriendActivity } from 'components/FriendActivity/friendactivity';
 import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
 import { TrackList } from 'components/TrackList/tracklist';
 import suggestedPlaylists from 'components/SuggestedPlaylists/suggestedplaylists';
@@ -106,12 +105,12 @@ class IndexView extends View<never> {
         const publicPlaylistsBtn = document.querySelector(
             '.js_public_playlists'
         );
-        publicPlaylistsBtn.addEventListener(
+        publicPlaylistsBtn?.addEventListener(
             'click',
             this.showPublicPlaylists.bind(this)
         );
         const ownPlaylistsBtn = document.querySelector('.js_own_playlists');
-        ownPlaylistsBtn.addEventListener(
+        ownPlaylistsBtn?.addEventListener(
             'click',
             this.showOwnPlaylists.bind(this)
         );
@@ -155,7 +154,7 @@ class IndexView extends View<never> {
         Promise.all([tracks, artists, albums, playlists, userPlaylists]).then(
             () => {
                 this.rendered_track_list = new TrackList({
-                    title: 'Tracks of the Week',
+                    title: 'Suggested Tracks',
                     tracks: this.track_list,
                 }).render();
 
@@ -185,6 +184,7 @@ class IndexView extends View<never> {
                 this.addListeners();
             }
         );
+        this.addListeners();
     }
 
     getTracksContext(): TrackModel[] {

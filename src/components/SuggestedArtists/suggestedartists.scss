@@ -4,6 +4,7 @@
   }
 
   &__container {
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     padding-top: 12px;
@@ -27,7 +28,7 @@
   object-fit: cover;
   cursor: pointer;
   display: inline-block;
-  margin: 5px auto;
+  margin: 2px;
 
   & img {
     border-radius: 20px;
@@ -39,7 +40,7 @@
     object-fit: cover;
     cursor: pointer;
     display: inline-block;
-    margin: 5px auto;
+    margin: 2px;
 
     @media only screen and (max-width: 768px) {
       width: 128px;

@@ -6,12 +6,12 @@ import { TrackModel } from 'models/track';
 import './tracklist.scss';
 
 interface ITrackListProps {
-    title: string
+    title: string;
     tracks: Array<TrackModel>;
 }
 
 export class TrackList extends Component<ITrackListProps> {
-    private title: string
+    private title: string;
     private trackComponents: Array<TrackComponent>;
 
     constructor(props?) {

@@ -1,7 +1,6 @@
 import { Model } from './model';
 import Request from '../../src/services/request/request';
 import { mockTrack, TrackModel } from 'models/track';
-import { ArtistModel } from 'models/artist';
 
 export interface IAlbumModel {
     album: boolean;
@@ -65,13 +64,20 @@ export class AlbumModel extends Model<IAlbumModel> {
                         return res(null);
                     }
 
-                    response.tracks = TrackModel.serializeList(response.tracks, response, response.artist);
+                    response.tracks = TrackModel.serializeList(
+                        response.tracks,
+                        response,
+                        response.artist
+                    );
                     res(new AlbumModel(response));
                 })
                 .catch(() => {
                     const emptyAlbum = mockAlbum;
                     emptyAlbum.props.artist = 'Loading artist name...';
-                    emptyAlbum.props.tracks = Array.from({ length: 4 }, () => mockTrack);
+                    emptyAlbum.props.tracks = Array.from(
+                        { length: 4 },
+                        () => mockTrack
+                    );
                     res(emptyAlbum);
                 });
         });
@@ -92,5 +98,5 @@ export const mockAlbum = new AlbumModel({
     tracks_duration: 0,
     album: false,
     tracks: null,
-    artwork_color: '#000000'
+    artwork_color: '#000000',
 });

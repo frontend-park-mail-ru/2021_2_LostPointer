@@ -25,6 +25,9 @@ export class TopAlbums extends Component<ITopAlbumsProps> {
     }
 
     render() {
-        return TopAlbumsTemplate({ albums: this.albums, compact: this.compact });
+        return TopAlbumsTemplate({
+            albums: this.albums,
+            compact: this.compact,
+        });
     }
 }
