@@ -260,6 +260,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 type: SET_TRACK,
                 trackID: this.playlist[this.pos].props.id,
                 audio_src: this.audio.src,
+                likeSrc: (<HTMLImageElement>(
+                    document.querySelector('.player-fav')
+                )).src,
             });
         });
     }
@@ -730,6 +733,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     (<HTMLElement>(
                         document.querySelector('.player-fav')
                     )).dataset.id = event.data.trackID;
+                    (<HTMLImageElement>(
+                        document.querySelector('.player-fav')
+                    )).src = event.data.likeSrc;
                     break;
                 case SWITCH_TRACK:
                     if (this.switchTrackDebounce) {
