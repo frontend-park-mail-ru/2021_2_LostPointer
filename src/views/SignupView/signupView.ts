@@ -67,20 +67,20 @@ export class SignupView extends View<ISignupComponentProps> {
 
         (<ICustomInput>nicknameInput).CustomValidation = new CustomValidation(
             nameValidityChecks,
-            document.querySelector('.nickname-form__invalidities')
+            document.querySelector('.nickname__invalidities')
         );
         (<ICustomInput>emailInput).CustomValidation = new CustomValidation(
             emailValidityChecks,
-            document.querySelector('.email-form__invalidities')
+            document.querySelector('.email__invalidities')
         );
         (<ICustomInput>passwordInput).CustomValidation = new CustomValidation(
             passwordValidityChecks,
-            document.querySelector('.password-form__invalidities')
+            document.querySelector('.password__invalidities')
         );
         (<ICustomInput>confirmPasswordInput).CustomValidation =
             new CustomValidation(
                 confirmPasswordValidityChecks,
-                document.querySelector('.password-form__invalidities')
+                document.querySelector('.password__invalidities')
             );
 
         addInputsEventListeners(form);
