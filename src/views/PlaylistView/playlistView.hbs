@@ -3,10 +3,10 @@
 <div class='playlist'>
     <div class='playlist__description'>
         <div class='playlist__description-avatar'>
-            <img class='playlist__description-img' src='{{{avatar}}}' />
+            <img alt class='playlist__description-img' src='{{{avatar}}}' />
             {{#if is_own}}
                 <div class='playlist__description-edit'>
-                    <img class='playlist__description-edit-img' src='/static/img/edit.svg' />
+                    <img alt class='playlist__description-edit-img' src='/static/img/edit.svg' />
                     <div class='playlist__description-edit-msg'>
                         Edit
                     </div>
@@ -41,9 +41,9 @@
             <div class='editwindow__content-flex'>
                 <form class='editwindow__avatar' action='#' novalidate>
                     <div class='editwindow__avatar-block'>
-                        <img class='editwindow__avatar-img' src='{{{avatar}}}' />
+                        <img alt='Profile' class='editwindow__avatar-img' src='{{{avatar}}}' />
                         <div class='editwindow__avatar-delete'>
-                            <img src='/static/img/delete.svg' />
+                            <img alt='Delete avatar' src='/static/img/delete.svg' />
                         </div>
                     </div>
                     <input
@@ -59,7 +59,7 @@
                     <div class='editwindow__form-title'>
                         Edit Details
                     </div>
-                    <img class='editwindow__delete' src='/static/img/trash.svg' />
+                    <img alt='Delete playlist' class='editwindow__delete' src='/static/img/trash.svg' />
                     <div class='editwindow__public'>
                         <label class='editwindow__form-label'>Make playlist public</label>
                         <label class='editwindow__form-switch'>

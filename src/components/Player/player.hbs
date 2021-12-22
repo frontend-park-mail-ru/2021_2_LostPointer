@@ -1,4 +1,4 @@
-<div class="player">
+<div class="player" id='player'>
     <img alt id="player-artwork" class="player-artwork{{#if hide_artwork}} hidden{{/if}}"
          src="{{ cover }}_128px.webp" />
     <div class="player-track">
@@ -17,14 +17,15 @@
     />
     <div class="player-controls">
         <img alt src="/static/img/skip.svg"
+             id='player-left'
              class="player-skip-left{{# if left_disabled }} disabled{{/if}}">
         {{# if playing}}
-            <img alt src="/static/img/pause.svg" class="player-play">
+            <img alt src="/static/img/pause.svg" class="player-play" id='player-play'>
         {{ else }}
-            <img alt src="/static/img/play.svg" class="player-play">
+            <img alt src="/static/img/play.svg" class="player-play" id='player-play'>
         {{/if}}
         <img alt src="/static/img/skip.svg"
-             class="player-skip-right{{# if right_disabled }} disabled{{/if}}">
+             id="player-right" class="player-skip-right{{# if right_disabled }} disabled{{/if}}">
     </div>
     <div class="player__time" id="player-time-current"> {{ current_time }} </div>
     <div class="player__seekbar" id="player-seekbar">

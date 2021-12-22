@@ -5,6 +5,9 @@
     placeholder='{{{placeholder}}}'
     autocomplete="new-password"
     {{#if value}}
-        value='{{{value}}}'
+    value='{{{value}}}'
+    {{/if}}
+    {{#if maxlength}}
+    maxlength='{{maxlength}}'
     {{/if}}
 />

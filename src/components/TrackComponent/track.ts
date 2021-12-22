@@ -20,11 +20,7 @@ export class TrackComponent extends Component<ITrackProps> {
         super(props);
     }
 
-    render() {
-        return TrackTemplate(this.props);
-    }
-
-    static toggleFavor(event) {
+    static toggleFavor(event, callback?) {
         const { target } = event;
         const trackId = parseInt(
             target.attributes.getNamedItem('data-id').value
@@ -60,6 +56,7 @@ export class TrackComponent extends Component<ITrackProps> {
                         mobile_fav_icon
                     )).src = `${window.location.origin}/static/img/favorite.svg`;
                 }
+                callback();
             });
         } else {
             TrackModel.addInFavorites(trackId).then(() => {
@@ -87,6 +84,7 @@ export class TrackComponent extends Component<ITrackProps> {
                         mobile_fav_icon
                     )).src = `${window.location.origin}/static/img/favorite_green.svg`;
                 }
+                callback();
             });
         }
     }
@@ -101,5 +99,9 @@ export class TrackComponent extends Component<ITrackProps> {
         document.querySelectorAll('.track-fav').forEach((button) => {
             button.removeEventListener('click', this.toggleFavor);
         });
+    }
+
+    render() {
+        return TrackTemplate(this.props);
     }
 }

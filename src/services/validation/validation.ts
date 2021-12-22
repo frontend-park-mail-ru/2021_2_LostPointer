@@ -44,9 +44,7 @@ export function checkInput(input) {
     input.CustomValidation.clearInvalidities();
     input.CustomValidation.checkValidity(input);
 
-    const invaliditiesArray = document.querySelectorAll(
-        '.form__invalidities'
-    );
+    const invaliditiesArray = document.querySelectorAll('.form__invalidities');
     if (input.value.length !== 0) {
         input.CustomValidation.invalidities.forEach((message) => {
             const hasMessage = findInvalidMessage(invaliditiesArray, message);
@@ -122,10 +120,10 @@ export function isValidForm(amountOfInputs) {
     ).reverse();
     let isValid = true;
     let emptyFields = 0;
-    inputsArray.filter((item) => Object.prototype.hasOwnProperty.call(
-        item,
-        'CustomValidation',
-    ))
+    inputsArray
+        .filter((item) =>
+            Object.prototype.hasOwnProperty.call(item, 'CustomValidation')
+        )
         .forEach((item) => {
             let isEmpty = false;
             let isValidTmp = false;

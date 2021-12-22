@@ -5,10 +5,24 @@ import store from 'services/store/store';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import { ArtistModel } from 'models/artist';
-
 import PlayerTemplate from './player.hbs';
 import './player.scss';
 import { TrackComponent } from 'components/TrackComponent/track';
+
+const SET_TRACK = 0;
+const TIMEUPDATE = 1;
+const SWITCH_TRACK = 2;
+const PLAY = 3;
+const PAUSE = 4;
+const SEEK = 5;
+const SET_VOLUME = 6;
+const MASTER_TAB_CLOSING = 7;
+const SHUFFLE = 8;
+const REPEAT = 9;
+const MUTE = 10;
+const LIKE = 11;
+
+const SLAVE_TIMEOUT = 1000;
 
 export interface IPlayerComponentProps {
     artwork_color: string;
@@ -33,6 +47,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     pos: number;
     nowPlaying: TrackModel;
     currentHandler: EventListenerOrEventListenerObject;
+    eventListenersAlreadySet: boolean;
     private playlist: TrackModel[];
     private audio: HTMLAudioElement;
     private firstTime: boolean;
@@ -59,12 +74,23 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     private counted: boolean;
     private seekbarMobileCurrent: HTMLElement;
     private globalPlayButtonHandler: EventListenerOrEventListenerObject;
-    eventListenersAlreadySet: boolean;
     private currentContext: string;
+    private bc: BroadcastChannel;
+    private handlersSet: boolean;
+    private timeElapsed: HTMLElement;
+    private timeTotal: HTMLElement;
+    private playButton: HTMLImageElement;
+    private isSlave: boolean;
+    private slaveTimeout: number;
+    private slavePaused: boolean;
+    private slaveCurrentTime: number;
+    private ignorePauseEvent: boolean;
+    private switchTrackDebounce: boolean;
 
     constructor(props?: IPlayerComponentProps) {
         super(props);
         this.audio = new Audio();
+        this.audio.volume = 0.5;
         this.audio.preload = 'auto';
         if (!this.getLastPlayed()) {
             this.props = {
@@ -80,6 +106,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.gotSeekPos = false;
         this.gotVolPos = false;
         this.props.playing = false;
+        this.bc = new BroadcastChannel('lostpointer_player');
+        this.handlersSet = false;
     }
 
     seek(xPos) {
@@ -90,6 +118,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.gotSeekPos = true;
         }
         const seek = (xPos - this.seekbarPos.left) / this.seekbarPos.width;
+        if (this.audio.paused) {
+            this.bc.postMessage({ type: SEEK, pos: seek });
+        }
         document.documentElement.style.setProperty(
             '--seekbar-current',
             `${seek * 100}%`
@@ -105,45 +136,65 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.gotVolPos = true;
         }
         const vol = (xPos - this.volumePos.left) / this.volumePos.width;
-        this.currentVolume.style.width = `${vol * 100}%`;
+        if (this.currentVolume) {
+            this.currentVolume.style.width = `${vol * 100}%`;
+        } else {
+            this.currentVolume = document.querySelector('.volume-current');
+            this.currentVolume.style.width = `${vol * 100}%`;
+        }
         this.audio.volume = vol;
         window.localStorage.setItem('playerVolume', `${vol}`);
+        this.bc.postMessage({ type: SET_VOLUME, pos: vol });
     }
 
     saveLastPlayed() {
+        // TODO
         if (this.props.playing) {
-            const lastPlayedData = JSON.stringify(this.props);
-            window.localStorage.setItem('lastPlayedData', lastPlayedData);
+            window.localStorage.setItem(
+                'lastPlayedData',
+                JSON.stringify({ pos: this.pos, ...this.props })
+            );
         }
     }
 
     getLastPlayed(): boolean {
         const data = window.localStorage.getItem('lastPlayedData');
+        const playlist = JSON.parse(window.localStorage.getItem('playlist'));
+        const playlistIndices = JSON.parse(
+            window.localStorage.getItem('playlistIndices')
+        );
         if (data) {
             const json = JSON.parse(data);
             json.playing = false;
             this.props = json;
             this.audio.currentTime = this.props.playerCurrentTime || 0;
             this.audio.src = this.props.file;
-            this.props.right_disabled = true;
-            this.props.left_disabled = true;
-            document.title = `${this.props.track} · ${this.props.artist.props.name}`;
+            if (this.props?.artist?.props?.name) {
+                document.title = `${this.props.track} · ${this.props?.artist?.props?.name}`;
+            } else {
+                document.title = 'LostPointer Music';
+            }
             this.props.hide_artwork = false;
             this.props.recovered = true;
             this.audio.preload = 'metadata';
-            if (this.props.artwork_color) {
-                document.documentElement.style.setProperty(
-                    '--artwork-accent-color',
-                    this.props.artwork_color
-                );
-            }
+            this.pos = json.pos;
+            document.documentElement.style.setProperty(
+                '--artwork-accent-color',
+                this.props.artwork_color
+            );
+
+            this.playlistIndices = playlistIndices;
+            this.playlist = playlist.reduce((acc, track) => {
+                acc.push(new TrackModel(track.props));
+                return acc;
+            }, []);
         }
         return typeof data === 'string';
     }
 
     setTrack(track: TrackModel): void {
         if (!track) {
-            return; // TODO=Почему вообще так происходит, потому что на главной треки после каждого f5 перезагружаются, а this.playlist не обновляются (пофиксил)
+            return;
         }
         this.audio.pause();
         this.counted = false;
@@ -167,7 +218,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             album: track.props.album.props.title,
             artwork: [96, 128, 192, 256, 384, 512].reduce((acc, elem) => {
                 acc.push({
-                    src: `${track.props.cover}_${elem}px.webp`,
+                    src: `/static/artworks/${track.props.album.props.artwork}_${elem}px.webp`,
                     sizes: `${elem}x${elem}`,
                     type: 'image/webp',
                 });
@@ -202,7 +253,18 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
         document.getElementById('player-artwork').style.display = '';
         document.getElementById('mobile-player-artwork').style.display = '';
-        this.audio.play().then(() => (this.props.playing = true));
+        this.audio.play().then(() => {
+            this.props.playing = true;
+            this.bc.postMessage({
+                ...this.props,
+                type: SET_TRACK,
+                trackID: this.playlist[this.pos].props.id,
+                audio_src: this.audio.src,
+                likeSrc: (<HTMLImageElement>(
+                    document.querySelector('.player-fav')
+                )).src,
+            });
+        });
     }
 
     toggle() {
@@ -229,6 +291,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             const element = e.target as HTMLElement;
             if (element.classList.contains('repeat')) {
                 this.audio.loop = !element.classList.contains('enabled');
+                this.bc.postMessage({ type: REPEAT, loop: this.audio.loop });
                 this.audio.loop
                     ? element.classList.add('enabled')
                     : element.classList.remove('enabled');
@@ -238,6 +301,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 );
             } else if (element.classList.contains('shuffle')) {
                 this.shuffle = !element.classList.contains('enabled');
+                this.bc.postMessage({ type: SHUFFLE, shuffle: this.shuffle });
                 this.pos = -1;
                 if (this.shuffle) {
                     element.classList.add('enabled');
@@ -250,6 +314,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 }
             } else if (element.classList.contains('mute')) {
                 this.audio.muted = !this.audio.muted;
+                this.bc.postMessage({ type: MUTE, muted: this.audio.muted });
                 this.audio.muted
                     ? element.classList.add('enabled')
                     : element.classList.remove('enabled');
@@ -261,7 +326,21 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     this.audio.muted ? 'muted.svg' : 'volume.svg'
                 }`;
             } else if (element.classList.contains('player-fav')) {
-                TrackComponent.toggleFavor(e);
+                TrackComponent.toggleFavor(e, (fav) => {
+                    console.log('Callback called');
+                    console.log(
+                        (<HTMLImageElement>(
+                            document.querySelector('.player-fav')
+                        )).src
+                    );
+                    this.bc.postMessage({
+                        type: LIKE,
+                        src: (<HTMLImageElement>(
+                            document.querySelector('.player-fav')
+                        )).src,
+                        fav,
+                    });
+                });
             }
         };
         this.playHandler = () => {
@@ -274,7 +353,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     button.src = '/static/img/pause.svg';
                 }
             });
-            if (this.nowPlaying) {
+            if (this.nowPlaying && this.nowPlaying.props) {
                 const nowPlayingButton = <HTMLImageElement>(
                     document.querySelector(
                         `.track-play[data-id="${this.nowPlaying.props.id}"]`
@@ -284,6 +363,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     nowPlayingButton.src = '/static/img/pause-outline.svg';
                 }
             }
+            this.bc.postMessage({
+                ...this.props,
+                type: PLAY,
+            });
         };
 
         this.pauseHandler = () => {
@@ -306,11 +389,28 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     nowPlayingButton.src = '/static/img/play-outline.svg';
                 }
             }
+            this.bc.postMessage({
+                ...this.props,
+                type: PAUSE,
+                playlist: this.playlist,
+                playlistIndices: this.playlistIndices,
+                nowPlaying: this.nowPlaying,
+                currentTime: this.audio.currentTime,
+            });
         };
         this.seekbarHandler = (e: MouseEvent) => this.seek(e.x);
         this.volumeHandler = (e: MouseEvent) => this.volume(e.x);
         this.playButtonHandler = (e) => {
+            if (this.slavePaused) {
+                this.setTrack(this.nowPlaying);
+                this.audio.currentTime = this.slaveCurrentTime;
+                this.slavePaused = false;
+            }
             e.stopPropagation();
+            if (this.isSlave) {
+                this.bc.postMessage({ type: PAUSE });
+                return;
+            }
             this.props.playing ? this.audio.pause() : this.audio.play();
             this.props.playing = !this.props.playing;
         };
@@ -330,9 +430,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             const seconds = this.audio.currentTime % 60 | 0;
             const zero = seconds < 10 ? '0' : '';
             const fraction = this.audio.currentTime / this.audio.duration || 0;
+            const seekbarWidth = `${fraction * 100}%`;
             document.documentElement.style.setProperty(
                 '--seekbar-current',
-                `${fraction * 100}%`
+                seekbarWidth
             );
             this.props.current_time = `${
                 (this.audio.currentTime / 60) | 0
@@ -347,6 +448,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }
             this.props.playerCurrentTime = this.audio.currentTime;
             this.saveLastPlayed();
+            this.bc.postMessage({
+                type: TIMEUPDATE,
+                ...this.props,
+                seekbarWidth,
+                playlist: this.playlist,
+            });
         };
         this.resizeHandler = () => {
             this.seekbarPos = document
@@ -468,6 +575,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             return;
         }
         this.globalPlayButtonHandler = (e) => {
+            this.ignorePauseEvent = true;
+            setTimeout(() => {
+                this.ignorePauseEvent = false;
+            }, 1000);
             const target = <HTMLImageElement>e.target;
             if (target.classList.contains('top-album__play')) {
                 e.preventDefault();
@@ -481,6 +592,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         nowPlayingButton.dataset.playing = 'false';
                         nowPlayingButton.src = '/static/img/play-outline.svg';
                     }
+                }
+                if (!store.get('authenticated')) {
+                    router.go(routerStore.signin);
+                    return;
                 }
                 TrackModel.getAlbumTracks(target.dataset.id).then((tracks) => {
                     this.setup(tracks);
@@ -531,14 +646,245 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
                 target.dataset.playing = 'true';
                 target.src = '/static/img/pause-outline.svg';
-                const track = this.playlist.find(
-                    (track) => track.props.id.toString() === target.dataset.id
-                );
-                this.setTrack(track);
+                if (this.playlist) {
+                    console.log(this.playlist);
+                    const track = this.playlist?.find(
+                        (track) =>
+                            track.props.id.toString() === target.dataset.id
+                    );
+                    this.setTrack(track);
+                }
             }
         };
         document.addEventListener('click', this.globalPlayButtonHandler);
         this.eventListenersAlreadySet = true;
+        this.timeElapsed = document.getElementById('player-time-current');
+        this.timeTotal = document.getElementById('player-time-total');
+        this.bc.onmessage = (event) => {
+            if (event.data.current_time) {
+                this.timeElapsed.innerHTML = event.data.current_time;
+            }
+            switch (event.data.type) {
+                case TIMEUPDATE:
+                    console.log('Timeupdate event');
+                    this.isSlave = true;
+                    window.clearTimeout(this.slaveTimeout);
+                    this.slaveTimeout = window.setTimeout(() => {
+                        this.isSlave = false;
+                    }, SLAVE_TIMEOUT);
+                    if (!this.playButton) {
+                        this.playButton = <HTMLImageElement>(
+                            document.getElementById('player-play')
+                        );
+                    }
+                    if (this.playButton.src !== '/static/img/pause.svg') {
+                        this.playButton.src = '/static/img/pause.svg';
+                    }
+                    this.playlist = event.data.playlist;
+                    document.documentElement.style.setProperty(
+                        '--seekbar-current',
+                        event.data.seekbarWidth
+                    );
+                    break;
+                case SET_TRACK:
+                    this.audio.pause();
+                    console.log('Set track event');
+                    (<HTMLImageElement>(
+                        document.getElementById('player-artwork')
+                    )).src = `${event.data.cover}_128px.webp`;
+                    document.getElementById('track-name').innerHTML =
+                        event.data.track;
+                    document.getElementById('artist-name').innerHTML =
+                        event.data.artist.props.name;
+                    if (event.data.right_disabled) {
+                        document
+                            .getElementById('player-right')
+                            .classList.add('disabled');
+                    } else {
+                        document
+                            .getElementById('player-right')
+                            .classList.remove('disabled');
+                    }
+                    if (event.data.left_disabled) {
+                        document
+                            .getElementById('player-left')
+                            .classList.add('disabled');
+                    } else {
+                        document
+                            .getElementById('player-left')
+                            .classList.remove('disabled');
+                    }
+                    if (!this.playButton) {
+                        this.playButton = <HTMLImageElement>(
+                            document.getElementById('player-play')
+                        );
+                    }
+                    this.playButton.src = `/static/img/${
+                        event.data.playing ? 'pause' : 'play'
+                    }.svg`;
+                    if (!this.timeTotal) {
+                        this.timeTotal = <HTMLImageElement>(
+                            document.getElementById('player-time-total')
+                        );
+                    }
+                    this.timeTotal.innerHTML = event.data.total_time;
+                    document.title = `${event.data.track} · ${event.data.artist.props.name}`;
+                    console.log('data', event.data);
+                    (<HTMLElement>(
+                        document.querySelector('.player-fav')
+                    )).dataset.id = event.data.trackID;
+                    (<HTMLImageElement>(
+                        document.querySelector('.player-fav')
+                    )).src = event.data.likeSrc;
+                    break;
+                case SWITCH_TRACK:
+                    if (this.switchTrackDebounce) {
+                        break;
+                    }
+                    this.switchTrackDebounce = true;
+                    setTimeout(() => {
+                        this.switchTrackDebounce = false;
+                    }, 500);
+                    console.log('Switch track event');
+                    this.switchTrack(event.data.next);
+                    break;
+                case PLAY:
+                    console.log('Play event');
+                    if (!this.playButton) {
+                        this.playButton = <HTMLImageElement>(
+                            document.getElementById('player-play')
+                        );
+                    }
+                    this.playButton.src = `/static/img/pause.svg`;
+                    break;
+                case PAUSE:
+                    if (this.ignorePauseEvent) {
+                        return;
+                    }
+                    console.log('Pause event');
+                    if (!this.playButton) {
+                        this.playButton = <HTMLImageElement>(
+                            document.getElementById('player-play')
+                        );
+                    }
+                    this.audio.pause();
+                    this.setup(event.data.playlist);
+                    this.nowPlaying = event.data.nowPlaying;
+                    this.playlistIndices = event.data.playlistIndices;
+                    this.playButton.src = `/static/img/play.svg`;
+                    this.slavePaused = true;
+                    this.slaveCurrentTime = event.data.currentTime;
+                    break;
+                case SEEK:
+                    console.log('Seek event');
+                    document.documentElement.style.setProperty(
+                        '--seekbar-current',
+                        `${event.data.pos * 100}%`
+                    );
+                    this.audio.currentTime =
+                        this.audio.duration * event.data.pos;
+                    break;
+                case SET_VOLUME:
+                    console.log('Set volume');
+                    if (!this.currentVolume) {
+                        this.currentVolume =
+                            document.querySelector('.volume-current');
+                    }
+                    this.currentVolume.style.width = `${event.data.pos * 100}%`;
+                    this.audio.volume = event.data.pos;
+                    window.localStorage.setItem(
+                        'playerVolume',
+                        `${event.data.pos}`
+                    );
+                    break;
+                case MASTER_TAB_CLOSING:
+                    this.setup(event.data.playlist);
+
+                    this.nowPlaying = event.data.nowPlaying;
+                    this.playlistIndices = event.data.playlistIndices;
+
+                    this.setTrack(this.nowPlaying);
+                    this.audio.currentTime = event.data.currentTime;
+
+                    console.log('Master tab closing');
+                    this.slavePaused = false;
+                    break;
+                case SHUFFLE:
+                    console.log('Shuffle event');
+                    this.shuffle = event.data.shuffle;
+                    this.pos = -1;
+                    if (this.shuffle) {
+                        document
+                            .querySelector('.shuffle')
+                            .classList.add('enabled');
+                        shuffle(this.playlistIndices);
+                    } else {
+                        document
+                            .querySelector('.shuffle')
+                            .classList.remove('enabled');
+                        this.playlistIndices = [
+                            ...Array(this.playlist.length).keys(),
+                        ];
+                    }
+                    break;
+                case REPEAT:
+                    console.log('Repeat event');
+                    this.audio.loop = event.data.loop;
+                    this.audio.loop
+                        ? document
+                              .querySelector('.repeat')
+                              .classList.add('enabled')
+                        : document
+                              .querySelector('.repeat')
+                              .classList.remove('enabled');
+                    window.localStorage.setItem(
+                        'playerLooped',
+                        `${this.audio.loop}`
+                    );
+                    break;
+                case MUTE:
+                    console.log('Mute event');
+                    console.log(event.data);
+                    this.audio.muted = event.data.muted;
+                    this.audio.muted
+                        ? document
+                              .querySelector('.mute')
+                              .classList.add('enabled')
+                        : document
+                              .querySelector('.mute')
+                              .classList.remove('enabled');
+                    window.localStorage.setItem(
+                        'playerMuted',
+                        `${this.audio.muted}`
+                    );
+                    (<HTMLImageElement>(
+                        document.querySelector('.mute')
+                    )).src = `/static/img/${
+                        this.audio.muted ? 'muted.svg' : 'volume.svg'
+                    }`;
+                    break;
+                case LIKE:
+                    console.log('Like event');
+                    (<HTMLImageElement>(
+                        document.querySelector('.player-fav')
+                    )).src = event.data.src;
+                    (<HTMLImageElement>(
+                        document.querySelector('.player-fav')
+                    )).dataset.in_favorites = event.data.fav ? 'true' : null;
+                    break;
+            }
+        };
+        window.addEventListener('beforeunload', () => {
+            if (!this.audio.paused) {
+                this.bc.postMessage({
+                    type: MASTER_TAB_CLOSING,
+                    playlist: this.playlist,
+                    playlistIndices: this.playlistIndices,
+                    nowPlaying: this.nowPlaying,
+                    currentTime: this.audio.currentTime,
+                });
+            }
+        });
     }
 
     setup([...playlist]: TrackModel[]) {
@@ -549,7 +895,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         const vol = parseFloat(window.localStorage.getItem('playerVolume'));
         if (!Number.isNaN(vol)) {
             this.audio.volume = vol;
-            this.currentVolume.style.width = `${vol * 100}%`;
+            this.currentVolume &&
+                (this.currentVolume.style.width = `${vol * 100}%`);
         }
         const seekbarWidth = `${
             (this.audio.currentTime / this.audio.duration) * 100
@@ -578,6 +925,23 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
         this.playlist = playlist;
         this.playlistIndices = [...Array(this.playlist.length).keys()];
+
+        window.localStorage.setItem(
+            'playlist',
+            JSON.stringify(
+                this.playlist.reduce((acc, track) => {
+                    const t = { ...track };
+                    delete t.props.album.props.tracks; // Иначе цикл
+                    delete t.props.artist.props.tracks;
+                    acc.push(t);
+                    return acc;
+                }, [])
+            )
+        );
+        window.localStorage.setItem(
+            'playlistIndices',
+            JSON.stringify(this.playlistIndices)
+        );
     }
 
     render() {
@@ -589,6 +953,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     switchTrack(next: boolean) {
+        if (this.audio.paused) {
+            this.bc.postMessage({ type: SWITCH_TRACK, next });
+            return;
+        }
         if (this.currentHandler) {
             this.audio.removeEventListener('play', this.currentHandler);
             this.audio.removeEventListener('pause', this.currentHandler);
@@ -601,7 +969,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 const nowPlaying =
                     this.playlist[this.playlistIndices[++this.pos]];
                 if (nowPlaying) {
-                    this.nowPlaying = nowPlaying; //TODO=Сделать плейлист компонентом + потом отрисовывать
+                    this.nowPlaying = nowPlaying;
                     allowed = true;
                 }
             }
@@ -609,7 +977,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.nowPlaying = this.playlist[this.playlistIndices[--this.pos]];
             allowed = true;
         }
-        if (allowed) {
+        if (allowed && this.nowPlaying.props) {
             const nowPlayingButton = <HTMLImageElement>(
                 document.querySelector(
                     `.track-play[data-id="${this.nowPlaying.props.id}"]`
@@ -723,6 +1091,18 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         const mobileArtwork = <HTMLImageElement>(
             document.getElementById('mobile-player-artwork')
         );
+        const right = document.getElementById('player-right');
+        const left = document.getElementById('player-left');
+        if (this.props.right_disabled) {
+            right.classList.add('disabled');
+        } else {
+            right.classList.remove('disabled');
+        }
+        if (this.props.left_disabled) {
+            left.classList.add('disabled');
+        } else {
+            left.classList.remove('disabled');
+        }
         if (this.props.hide_artwork) {
             if (artwork) {
                 artwork.classList.add('hidden');
@@ -751,15 +1131,18 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             document.querySelector('.player-play')
         );
         if (playButton) {
+            this.playButton = playButton;
             playButton.src = '/static/img/play.svg'; //TODO=Почему хэндлер паузы это не отрабатывает - большой вопрос
         }
-        const nowPlayingButton = <HTMLImageElement>(
-            document.querySelector(
-                `.track-play[data-id="${this.nowPlaying.props.id}"]`
-            )
-        );
-        if (nowPlayingButton) {
-            nowPlayingButton.src = '/static/img/play-outline.svg';
+        if (this.nowPlaying.props) {
+            const nowPlayingButton = <HTMLImageElement>(
+                document.querySelector(
+                    `.track-play[data-id="${this.nowPlaying.props.id}"]`
+                )
+            );
+            if (nowPlayingButton) {
+                nowPlayingButton.src = '/static/img/play-outline.svg';
+            }
         }
         this.update();
         localStorage.removeItem('lastPlayedData');
