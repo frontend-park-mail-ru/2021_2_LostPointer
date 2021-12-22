@@ -1,6 +1,5 @@
-import { TopAlbums } from 'components/TopAlbums/topalbums';
+import { TopAlbums, TrackList } from 'lostpointer-storybook';
 import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
-import { TrackList } from 'lostpointer-storybook';
 import suggestedPlaylists from 'components/SuggestedPlaylists/suggestedplaylists';
 import { TrackModel } from 'models/track';
 import { ArtistModel } from 'models/artist';
