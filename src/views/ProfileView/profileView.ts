@@ -108,11 +108,11 @@ export class ProfileView extends View<never> {
         const confirmPasswordInput = event.target.querySelector(
             'input[name="confirm_password"]'
         );
-        const invalidities = document.querySelector(
-            '.profile-form__invalidities'
+        const passwordInvalidities = document.querySelector(
+            '.password__invalidities'
         );
         const msg = event.target.querySelector('.profile-form__msg');
-        invalidities.innerHTML = '';
+        passwordInvalidities.innerHTML = '';
         msg.innerHTML = '';
 
         let requiredInputsNumber = 2;
@@ -124,14 +124,17 @@ export class ProfileView extends View<never> {
             (<ICustomInput>oldPasswordInput).CustomValidation =
                 new CustomValidation(
                     simplePasswordValidityChecks,
-                    invalidities
+                    passwordInvalidities
                 );
             (<ICustomInput>passwordInput).CustomValidation =
-                new CustomValidation(passwordValidityChecks, invalidities);
+                new CustomValidation(
+                    passwordValidityChecks,
+                    passwordInvalidities
+                );
             (<ICustomInput>confirmPasswordInput).CustomValidation =
                 new CustomValidation(
                     confirmPasswordValidityChecks,
-                    invalidities
+                    passwordInvalidities
                 );
             requiredInputsNumber = 5;
         } else {
@@ -196,9 +199,7 @@ export class ProfileView extends View<never> {
         const form = document.querySelector('.profile-form');
         const nicknameInput = form.querySelector('input[name="nickname"]');
         const emailInput = form.querySelector('input[name="email"]');
-        const invalidities = document.querySelector(
-            '.profile-form__invalidities'
-        );
+        const invalidities = document.querySelector('.profile__invalidities');
 
         (<ICustomInput>nicknameInput).CustomValidation = new CustomValidation(
             nameValidityChecks,

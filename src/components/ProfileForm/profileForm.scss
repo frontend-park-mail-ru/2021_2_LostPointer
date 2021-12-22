@@ -43,7 +43,6 @@
     max-width: 320px;
     margin: 50px 0;
     color: #969696;
-    height: 265px;
 
     @media only screen and (max-width: 768px) {
       margin: 0 auto;
@@ -139,4 +138,8 @@
     position: absolute;
     z-index: -1;
   }
+}
+
+.profile__invalidities {
+  height: 200px;
 }
