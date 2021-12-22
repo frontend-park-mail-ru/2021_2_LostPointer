@@ -146,9 +146,15 @@ export class PlaylistsContextMenu extends Component<IContextMenuProps> {
 
     addTrackToPlaylist(event) {
         const playlistId = parseInt(event.target.getAttribute('data-id'));
-        PlaylistModel.addTrack(playlistId, this.selectedTrackId).then(() => {
-            Alert.alert('Track add to playlist');
-        });
+        PlaylistModel.addTrack(playlistId, this.selectedTrackId).then(
+            ({ status, message }) => {
+                if (status === 400) {
+                    Alert.alert('Track is already in the playlist');
+                } else if (status === 201) {
+                    Alert.alert('Track added to playlist');
+                }
+            }
+        );
     }
 
     createNewPlaylist() {

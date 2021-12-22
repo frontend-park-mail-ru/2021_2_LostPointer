@@ -3,7 +3,7 @@ import { Component } from 'components/Component/component';
 import AlertTemplate from './alert.hbs';
 import './alert.scss';
 
-const alertTimeout = 1000;
+const alertTimeout = 1500;
 
 interface IAlertProps {
     text: string;
@@ -22,8 +22,8 @@ export class Alert extends Component<IAlertProps> {
         document.querySelector('.alerts').innerHTML = new Alert({
             text: text,
         }).render();
-        const alert = document.querySelector('.alert-item');
         window.setTimeout(() => {
+            const alert = document.querySelector('.alert');
             alert.remove();
         }, alertTimeout);
     }
