@@ -17,6 +17,10 @@ const PAUSE = 4;
 const SEEK = 5;
 const SET_VOLUME = 6;
 const MASTER_TAB_CLOSING = 7;
+const SHUFFLE = 8;
+const REPEAT = 9;
+const MUTE = 10;
+const LIKE = 11;
 
 const SLAVE_TIMEOUT = 1000;
 
@@ -254,6 +258,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             this.bc.postMessage({
                 ...this.props,
                 type: SET_TRACK,
+                trackID: this.playlist[this.pos].props.id,
                 audio_src: this.audio.src,
             });
         });
@@ -283,6 +288,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             const element = e.target as HTMLElement;
             if (element.classList.contains('repeat')) {
                 this.audio.loop = !element.classList.contains('enabled');
+                this.bc.postMessage({ type: REPEAT, loop: this.audio.loop });
                 this.audio.loop
                     ? element.classList.add('enabled')
                     : element.classList.remove('enabled');
@@ -292,6 +298,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 );
             } else if (element.classList.contains('shuffle')) {
                 this.shuffle = !element.classList.contains('enabled');
+                this.bc.postMessage({ type: SHUFFLE, shuffle: this.shuffle });
                 this.pos = -1;
                 if (this.shuffle) {
                     element.classList.add('enabled');
@@ -304,6 +311,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 }
             } else if (element.classList.contains('mute')) {
                 this.audio.muted = !this.audio.muted;
+                this.bc.postMessage({ type: MUTE, muted: this.audio.muted });
                 this.audio.muted
                     ? element.classList.add('enabled')
                     : element.classList.remove('enabled');
@@ -315,7 +323,15 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     this.audio.muted ? 'muted.svg' : 'volume.svg'
                 }`;
             } else if (element.classList.contains('player-fav')) {
-                TrackComponent.toggleFavor(e);
+                TrackComponent.toggleFavor(e, () => {
+                    console.log(document.querySelector('.player-fav'));
+                    this.bc.postMessage({
+                        type: LIKE,
+                        src: (<HTMLImageElement>(
+                            document.querySelector('.player-fav')
+                        )).src,
+                    });
+                });
             }
         };
         this.playHandler = () => {
@@ -704,6 +720,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     }
                     this.timeTotal.innerHTML = event.data.total_time;
                     document.title = `${event.data.track} · ${event.data.artist.props.name}`;
+                    console.log('data', event.data);
+                    (<HTMLElement>(
+                        document.querySelector('.player-fav')
+                    )).dataset.id = event.data.trackID;
                     break;
                 case SWITCH_TRACK:
                     if (this.switchTrackDebounce) {
@@ -776,6 +796,66 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
                     console.log('Master tab closing');
                     this.slavePaused = false;
+                    break;
+                case SHUFFLE:
+                    console.log('Shuffle event');
+                    this.shuffle = event.data.shuffle;
+                    this.pos = -1;
+                    if (this.shuffle) {
+                        document
+                            .querySelector('.shuffle')
+                            .classList.add('enabled');
+                        shuffle(this.playlistIndices);
+                    } else {
+                        document
+                            .querySelector('.shuffle')
+                            .classList.remove('enabled');
+                        this.playlistIndices = [
+                            ...Array(this.playlist.length).keys(),
+                        ];
+                    }
+                    break;
+                case REPEAT:
+                    console.log('Repeat event');
+                    this.audio.loop = event.data.loop;
+                    this.audio.loop
+                        ? document
+                              .querySelector('.repeat')
+                              .classList.add('enabled')
+                        : document
+                              .querySelector('.repeat')
+                              .classList.remove('enabled');
+                    window.localStorage.setItem(
+                        'playerLooped',
+                        `${this.audio.loop}`
+                    );
+                    break;
+                case MUTE:
+                    console.log('Mute event');
+                    console.log(event.data);
+                    this.audio.muted = event.data.muted;
+                    this.audio.muted
+                        ? document
+                              .querySelector('.mute')
+                              .classList.add('enabled')
+                        : document
+                              .querySelector('.mute')
+                              .classList.remove('enabled');
+                    window.localStorage.setItem(
+                        'playerMuted',
+                        `${this.audio.muted}`
+                    );
+                    (<HTMLImageElement>(
+                        document.querySelector('.mute')
+                    )).src = `/static/img/${
+                        this.audio.muted ? 'muted.svg' : 'volume.svg'
+                    }`;
+                    break;
+                case LIKE:
+                    console.log('Like event');
+                    (<HTMLImageElement>(
+                        document.querySelector('.player-fav')
+                    )).src = event.data.src;
                     break;
             }
         };
