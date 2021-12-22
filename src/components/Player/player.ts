@@ -184,10 +184,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             );
 
             this.playlistIndices = playlistIndices;
-            this.playlist = playlist.reduce((acc, track) => {
-                acc.push(new TrackModel(track.props));
-                return acc;
-            }, []);
+            if (playlist) {
+                this.playlist = playlist.reduce((acc, track) => {
+                    acc.push(new TrackModel(track.props));
+                    return acc;
+                }, []);
+            }
         }
         return typeof data === 'string';
     }
