@@ -576,7 +576,11 @@ export class PlaylistView extends View<never> {
             ];
 
             playlistsContextMenu.addRemoveButton();
-            playlistsContextMenu.updatePlaylists(this.userPlaylists);
+            playlistsContextMenu.updatePlaylists(
+                this.userPlaylists.filter((playlist) => {
+                    return playlist.props.id !== playlistId;
+                })
+            );
             baseView.render();
 
             document.getElementById('content').innerHTML = PlaylistTemplate({
