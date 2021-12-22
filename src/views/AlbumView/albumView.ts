@@ -1,6 +1,6 @@
 import { View } from 'views/View/view';
 import { AlbumModel } from 'models/album';
-import { TrackList } from 'components/TrackList/tracklist';
+import { TrackList } from 'lostpointer-storybook';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import {
@@ -16,7 +16,6 @@ import { TrackModel } from 'models/track';
 import baseView from 'views/BaseView/baseView';
 import { TrackComponent } from 'components/TrackComponent/track';
 import store from 'services/store/store';
-import './albumView.scss';
 
 export class AlbumView extends View<never> {
     private album: AlbumModel;
@@ -65,9 +64,9 @@ export class AlbumView extends View<never> {
         Promise.all([album, userPlaylists]).then(() => {
             const props = this.album.getProps();
             this.tracks = props.tracks;
-            this.trackList = new TrackList({
+            this.trackList = new TrackList<TrackModel>({
                 title: 'Tracks',
-                tracks: props.tracks,
+                tracks: props.tracks.map((track) => track.getProps()),
             }).render();
 
             playlistsContextMenu.updatePlaylists(this.userPlaylists);

@@ -1,4 +1,4 @@
-import { SignupAuthForm } from 'components/SignupForm/signupform';
+import { SignupAuthForm } from 'lostpointer-storybook';
 import {
     addInputsEventListeners,
     CustomValidation,

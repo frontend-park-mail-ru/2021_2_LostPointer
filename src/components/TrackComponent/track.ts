@@ -2,8 +2,7 @@ import { Component } from 'components/Component/component';
 import { ArtistModel } from 'models/artist';
 import { TrackModel } from 'models/track';
 
-import TrackTemplate from './track.hbs';
-import './track.scss';
+import { Track } from 'lostpointer-storybook';
 import router from 'services/router/router';
 
 interface ITrackProps {
@@ -116,6 +115,6 @@ export class TrackComponent extends Component<ITrackProps> {
     }
 
     render() {
-        return TrackTemplate(this.props);
+        return new Track<ITrackProps>(this.props).render();
     }
 }

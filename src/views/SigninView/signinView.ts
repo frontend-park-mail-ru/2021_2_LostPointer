@@ -1,4 +1,4 @@
-import { SigninAuthForm } from 'components/SigninForm/signinform';
+import { SigninAuthForm } from 'lostpointer-storybook';
 import {
     addInputsEventListeners,
     CustomValidation,
