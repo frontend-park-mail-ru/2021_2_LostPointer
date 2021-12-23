@@ -2,18 +2,18 @@
 
 ## Деплой
 
-http://lostpointer.site
+https://lostpointer.site
 
 ## Авторы
 
 * [**Алексей Косенко**](https://github.com/saptded) - *Фуллстек*
-* [**Алексей Кучерявенко**](https://github.com/frbgd) - *Фуллстек*
-* [**Виталий Ершов**](https://github.com/VErshovBMSTU) - *Фуллстек*
-* [**Леонид Беляев**](https://github.com/23-yo-designer-from-san-francisco) - *Фуллстек*
+* [**Алексей Кучерявенко**](https://github.com/frbgd) - *Фронтенд*
+* [**Виталий Ершов**](https://github.com/VErshovBMSTU) - *Бэкенд*
+* [**Леонид Беляев**](https://github.com/23-yo-designer-from-san-francisco) - *Фронтенд*
 
 ## Менторы
 
-* [**Александр Долгавин**](https://github.com/esuwu) - *Бэкенд*
+* [**Михаил Трущелев**](https://github.com/ThePsina) - *Бэкенд*
 * [**Александр Сарафанников**](https://github.com/Sarafa2n) - *Фронтенд*
 
 ## Ссылка на backend
