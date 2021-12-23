@@ -3,7 +3,7 @@ import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import store from 'services/store/store';
 import { disableBrokenImg } from 'views/utils';
-import { TrackList } from 'components/TrackList/tracklist';
+import { TrackList } from 'lostpointer-storybook';
 import { UserModel } from 'models/user';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
@@ -86,9 +86,11 @@ export class FavoritesView extends View<never> {
                     this.tracks = favoritesTracks;
                     document.querySelector('.main-layout__content').innerHTML =
                         FavoritesViewTemplate({
-                            trackList: new TrackList({
+                            trackList: new TrackList<TrackModel>({
                                 title: 'Tracks',
-                                tracks: favoritesTracks,
+                                tracks: favoritesTracks.map((track) =>
+                                    track.getProps()
+                                ),
                             }).render(),
                         });
                     this.addListeners();

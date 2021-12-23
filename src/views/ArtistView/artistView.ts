@@ -1,6 +1,5 @@
 import { View } from 'views/View/view';
-import { SuggestedAlbums } from 'components/SugestedAlbums/suggestedAlbums';
-import { TrackList } from 'components/TrackList/tracklist';
+import { SuggestedAlbums, TrackList } from 'lostpointer-storybook';
 import { ArtistModel } from 'models/artist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
@@ -90,9 +89,9 @@ export class ArtistView extends View<never> {
                 return track;
             });
             this.tracks = tracks;
-            this.trackList = new TrackList({
+            this.trackList = new TrackList<TrackModel>({
                 title: 'Tracks',
-                tracks: tracks,
+                tracks: tracks.map((track) => track.getProps()),
             }).render();
 
             playlistsContextMenu.updatePlaylists(this.userPlaylists);

@@ -1,5 +1,5 @@
 import { Component } from '../Component/component';
-import { SuggestedPlaylist } from '../Playlist/suggestedplaylist';
+import { Playlist } from 'lostpointer-storybook';
 import SuggestedPlaylistsTemplate from './suggestedplaylists.hbs';
 import { PlaylistModel } from 'models/playlist';
 
@@ -16,7 +16,7 @@ export class SuggestedPlaylists extends Component<ISuggestedPlaylistsProps> {
         super();
         this.props.publicView = false;
         this.props.playlists = [
-            new SuggestedPlaylist({
+            new Playlist({
                 props: {
                     artwork: '',
                     title: 'Create new...',
@@ -40,15 +40,15 @@ export class SuggestedPlaylists extends Component<ISuggestedPlaylistsProps> {
                         playlist.getProps().is_public
                     );
                 })
-                .map((pl) => new SuggestedPlaylist(pl).render());
+                .map((pl) => new Playlist(pl).render());
         } else {
             this.props.playlists = playlists
                 .filter((playlist) => {
                     return playlist.getProps().is_own;
                 })
-                .map((pl) => new SuggestedPlaylist(pl).render());
+                .map((pl) => new Playlist(pl).render());
             this.props.playlists.push(
-                new SuggestedPlaylist({
+                new Playlist({
                     props: {
                         artwork: '',
                         title: 'Create new...',

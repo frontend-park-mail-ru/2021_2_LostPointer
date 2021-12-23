@@ -1,6 +1,5 @@
-import { TopAlbums } from 'components/TopAlbums/topalbums';
+import { TopAlbums, TrackList } from 'lostpointer-storybook';
 import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
-import { TrackList } from 'components/TrackList/tracklist';
 import suggestedPlaylists from 'components/SuggestedPlaylists/suggestedplaylists';
 import { TrackModel } from 'models/track';
 import { ArtistModel } from 'models/artist';
@@ -153,9 +152,9 @@ class IndexView extends View<never> {
 
         Promise.all([tracks, artists, albums, playlists, userPlaylists]).then(
             () => {
-                this.rendered_track_list = new TrackList({
+                this.rendered_track_list = new TrackList<TrackModel>({
                     title: 'Suggested Tracks',
-                    tracks: this.track_list,
+                    tracks: this.track_list.map((track) => track.getProps()),
                 }).render();
 
                 suggestedPlaylists.set(this.suggested_playlists);

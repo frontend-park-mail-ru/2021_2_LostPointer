@@ -7,7 +7,7 @@ import { IResponseBody } from 'services/request/request';
 
 import ContextMenuTemplate from './playlistsContextMenu.hbs';
 import './playlistsContextMenu.scss';
-import { Alert } from 'components/Alert/alert';
+import { Alert } from 'lostpointer-storybook';
 
 interface IContextMenuOption {
     class: string;
@@ -149,9 +149,9 @@ export class PlaylistsContextMenu extends Component<IContextMenuProps> {
         PlaylistModel.addTrack(playlistId, this.selectedTrackId).then(
             ({ status, message }) => {
                 if (status === 400) {
-                    Alert.alert('Track is already in the playlist');
+                    Alert.add('Track is already in the playlist');
                 } else if (status === 201) {
-                    Alert.alert('Track added to playlist');
+                    Alert.add('Track added to playlist');
                 }
             }
         );

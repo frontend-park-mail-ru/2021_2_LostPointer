@@ -7,9 +7,8 @@ import {
 import { TrackModel } from 'models/track';
 import { AlbumModel } from 'models/album';
 import { ArtistModel } from 'models/artist';
-import { TrackList } from 'components/TrackList/tracklist';
+import { TopAlbums, TrackList } from 'lostpointer-storybook';
 import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
-import { TopAlbums } from 'components/TopAlbums/topalbums';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import baseView from 'views/BaseView/baseView';
@@ -124,9 +123,9 @@ export class SearchView extends View<never> {
 
         this.data.tracks =
             this.tracks.length !== 0
-                ? new TrackList({
+                ? new TrackList<TrackModel>({
                       title: 'Tracks',
-                      tracks: this.tracks,
+                      tracks: this.tracks.map((track) => track.getProps()),
                   }).render()
                 : [];
         this.data.artists =

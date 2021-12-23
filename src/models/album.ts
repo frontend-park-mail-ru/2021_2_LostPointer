@@ -18,6 +18,7 @@ export interface IAlbumModel {
 export class AlbumModel extends Model<IAlbumModel> {
     constructor(props: IAlbumModel = null) {
         super(props);
+        this.props.album = this.props.tracks_count > 1;
     }
 
     static getHomepageAlbums(): Promise<AlbumModel[]> | Promise<[]> {
@@ -81,10 +82,6 @@ export class AlbumModel extends Model<IAlbumModel> {
                     res(emptyAlbum);
                 });
         });
-    }
-
-    isSingle(): boolean {
-        return this.props.tracks_count === 1;
     }
 }
 

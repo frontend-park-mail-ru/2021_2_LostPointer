@@ -30,25 +30,21 @@
     {{/if}}
     <span class='topbar-icons'>
         <a href='/profile'>
-        <i
-            class='topbar-icon fa-solid fa-gear'
-        ></i>
-        {{#if authenticated}}
-        </a>
-            <a id='signin-button'>
+            <i
+                class='topbar-icon fa-solid fa-gear'
+            ></i>
+            {{#if authenticated}}
+            </a>
+                <a id='signin-button'>
                 <i
                     class='topbar-icon js-logout fa-solid fa-right-from-bracket'
                 ></i>
             </a>
-            <div class='topbar-profile'>
-                <a href='/profile'>
-                    <img alt class='topbar-profile__img' src='{{avatar}}' />
-                </a>
-            </div>
-        {{else}}
-            <a href='/signin' id='signin-button'>
+                {{{user}}}
+            {{else}}
+                <a href='/signin' id='signin-button'>
                 <i class='topbar-icon fa-solid fa-right-to-bracket'></i>
             </a>
-        {{/if}}
+            {{/if}}
     </span>
 </div>

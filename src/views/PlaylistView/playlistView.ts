@@ -1,5 +1,5 @@
 import { View } from 'views/View/view';
-import { TrackList } from 'components/TrackList/tracklist';
+import { InputComponent, TrackList } from 'lostpointer-storybook';
 import { DEFAULT_ARTWORK, PlaylistModel } from 'models/playlist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
@@ -8,7 +8,6 @@ import {
     addDisableBrokenImgListeners,
     removeDisableBrokenImgListeners,
 } from 'views/utils';
-import { InputFormComponent } from 'components/InputForm/inputform';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import { TrackModel } from 'models/track';
 import baseView from 'views/BaseView/baseView';
@@ -333,10 +332,6 @@ export class PlaylistView extends View<never> {
             .removeTrackFromPlaylist(this.playlist)
             .then((response) => {
                 if (response.status === 200) {
-                    this.trackList.set({
-                        title: 'Tracks',
-                        tracks: this.playlist.getProps().tracks,
-                    });
                     const trackList =
                         document.querySelector('.playlist__content');
                     document
@@ -349,6 +344,12 @@ export class PlaylistView extends View<never> {
                                 )
                             );
                         });
+                    this.trackList = new TrackList<TrackModel>({
+                        title: 'Tracks',
+                        tracks: this.playlist
+                            .getProps()
+                            .tracks.map((track) => track.getProps()),
+                    });
                     trackList.innerHTML = this.trackList.render();
                     document
                         .querySelectorAll('.track-list-item-playlist')
@@ -561,12 +562,12 @@ export class PlaylistView extends View<never> {
         Promise.all([playlist, userPlaylists]).then(() => {
             const props = this.playlist.getProps();
             this.tracks = props.tracks;
-            this.trackList = new TrackList({
+            this.trackList = new TrackList<TrackModel>({
                 title: 'Tracks',
-                tracks: props.tracks,
+                tracks: props.tracks.map((track) => track.getProps()),
             });
             this.inputs = [
-                new InputFormComponent({
+                new InputComponent({
                     class: 'editwindow__form-input',
                     name: 'title',
                     type: 'text',
@@ -588,12 +589,12 @@ export class PlaylistView extends View<never> {
                 avatar: this.playlist.getProps().artwork,
                 is_own: this.playlist.getProps().is_own,
                 is_public: this.playlist.getProps().is_public,
-                trackList: this.trackList
-                    .set({
-                        title: 'Tracks',
-                        tracks: this.playlist.getProps().tracks,
-                    })
-                    .render(),
+                trackList: new TrackList<TrackModel>({
+                    title: 'Tracks',
+                    tracks: this.playlist
+                        .getProps()
+                        .tracks.map((track) => track.getProps()),
+                }).render(),
                 inputs: this.inputs,
                 link: window.location.href,
             });
