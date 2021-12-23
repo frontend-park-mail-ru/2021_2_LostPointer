@@ -7,6 +7,7 @@ import store from 'services/store/store';
 
 import TopbarTemplate from './topbar.hbs';
 import './topbar.scss';
+import { Avatar } from 'lostpointer-storybook';
 
 interface ITopbarComponentProps {
     authenticated: boolean;
@@ -29,7 +30,11 @@ export class Topbar extends Component<ITopbarComponentProps> {
     }
 
     render() {
-        return TopbarTemplate(this.props);
+        return TopbarTemplate({
+            authenticated: this.props.authenticated,
+            offline: this.props.offline,
+            user: new Avatar<ITopbarComponentProps>(this.props).render(),
+        });
     }
 
     set(props: ITopbarComponentProps): this {
