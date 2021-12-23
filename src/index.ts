@@ -73,6 +73,9 @@ class App {
 
     _dataLinkRoute(event) {
         const target = event.target;
+        if (target.classList.contains('top-album__play')) {
+            return;
+        }
         if (target.tagName === 'A' && target.getAttribute('href')) {
             event.preventDefault();
             router.go(target.getAttribute('href'));
