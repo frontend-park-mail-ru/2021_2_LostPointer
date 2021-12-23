@@ -29,6 +29,18 @@ class BaseView extends View<never> {
             contextMenu: playlistsContextMenu.render(),
             mobile: mobile.set(player.getNowPlaying()).render(),
         });
+        if (!player.isDisplayed()) {
+            document
+                .querySelector('.mobile-footer__player')
+                .classList.add('none');
+            document
+                .querySelector('.mobile-footer__player__progress')
+                .classList.add('none');
+            document.documentElement.style.setProperty(
+                '--mobile-footer-height',
+                '50px'
+            );
+        }
         this.mounted = true;
 
         TopbarComponent.addHandlers();

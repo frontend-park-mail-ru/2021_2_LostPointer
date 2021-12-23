@@ -41,6 +41,7 @@ export interface IPlayerComponentProps {
     cover: string;
     playButton: HTMLImageElement;
     hide_artwork: boolean;
+    displayed: boolean;
 }
 
 export class PlayerComponent extends Component<IPlayerComponentProps> {
@@ -92,6 +93,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.audio = new Audio();
         this.audio.volume = 0.5;
         this.audio.preload = 'auto';
+        this.props.displayed = false;
         if (!this.getLastPlayed()) {
             this.props = {
                 hide_artwork: true,
@@ -199,11 +201,25 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     return acc;
                 }, []);
             }
+            this.props.displayed = true;
         }
         return typeof data === 'string';
     }
 
     setTrack(track: TrackModel): void {
+        if (!this.isDisplayed()) {
+            document
+                .querySelector('.mobile-footer__player')
+                .classList.remove('none');
+            document
+                .querySelector('.mobile-footer__player__progress')
+                .classList.remove('none');
+            this.props.displayed = true;
+            document.documentElement.style.setProperty(
+                '--mobile-footer-height',
+                '100px'
+            );
+        }
         if (!track) {
             return;
         }
@@ -1195,6 +1211,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             playButton: null,
             hide_artwork: true,
             recovered: false,
+            displayed: false,
         };
         (<HTMLElement>document.querySelector('.seekbar-current')).style.width =
             '0';
@@ -1208,6 +1225,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         } else {
             this.nowPlaying = this.playlist[pos];
         }
+    }
+
+    isDisplayed() {
+        return this.props.displayed;
     }
 }
 

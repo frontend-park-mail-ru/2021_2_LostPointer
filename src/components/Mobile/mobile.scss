@@ -28,6 +28,7 @@
       height: var(--mobile-footer-height);
       width: 100%;
       background: var(--background-color);
+      justify-content: center;
 
       &__player {
         display: flex;
@@ -224,4 +225,8 @@
       top: 100vh;
     }
   }
+}
+
+.none {
+  display: none;
 }
