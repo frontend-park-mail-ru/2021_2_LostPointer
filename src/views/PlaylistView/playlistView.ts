@@ -586,11 +586,9 @@ export class PlaylistView extends View<never> {
             );
             baseView.render();
             const getPropsResult = this.playlist.getProps();
-            const tracks = [];
+            let tracks = [];
             if (props.tracks) {
-                const tracks = getPropsResult.tracks.map((track) =>
-                    track.getProps()
-                );
+                tracks = getPropsResult.tracks.map((track) => track.getProps());
             }
             document.getElementById('content').innerHTML = PlaylistTemplate({
                 title: this.playlist.getProps().title,
