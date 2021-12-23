@@ -116,9 +116,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
     seek(xPos) {
         if (!this.gotSeekPos) {
-            this.seekbarPos = document
-                .getElementById('player-seekbar')
-                .getBoundingClientRect();
+            const seekbar = document.getElementById('player-seekbar');
+            if (seekbar) {
+                this.seekbarPos = seekbar.getBoundingClientRect();
+            }
             this.gotSeekPos = true;
         }
         const seek = (xPos - this.seekbarPos.left) / this.seekbarPos.width;
@@ -488,7 +489,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         };
         this.resizeHandler = () => {
             this.seekbarPos = document
-                .querySelector('.player__seekbar')
+                .getElementById('player-seekbar')
                 .getBoundingClientRect();
             this.volumePos = document
                 .querySelector('.player-volume')
@@ -507,7 +508,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }
         };
         this.endedHandler = () => {
-            this.switchTrack(true);
+            this.switchTrack(true, true);
         };
 
         this.audio.addEventListener('loadedmetadata', () => {
@@ -976,8 +977,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         return this.props;
     }
 
-    switchTrack(next: boolean) {
-        if (this.audio.paused) {
+    switchTrack(next: boolean, ignorebc?: boolean) {
+        if (this.audio.paused && !ignorebc) {
             if (this.bc) {
                 this.bc.postMessage({ type: SWITCH_TRACK, next });
             }
