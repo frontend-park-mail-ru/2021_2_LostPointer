@@ -67,7 +67,7 @@ export class Topbar extends Component<ITopbarComponentProps> {
                         document
                             .getElementById('signin-button')
                             .setAttribute('href', '/signin');
-                        const ava = document.querySelector('.topbar-profile');
+                        const ava = document.querySelector('.avatar');
                         if (ava) {
                             ava.remove();
                         }

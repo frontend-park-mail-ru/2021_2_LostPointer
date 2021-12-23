@@ -354,12 +354,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 }`;
             } else if (element.classList.contains('player-fav')) {
                 TrackComponent.toggleFavor(e, (fav) => {
-                    console.log('Callback called');
-                    console.log(
-                        (<HTMLImageElement>(
-                            document.querySelector('.player-fav')
-                        )).src
-                    );
                     if (this.bc) {
                         this.bc.postMessage({
                             type: LIKE,
@@ -684,7 +678,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 target.dataset.playing = 'true';
                 target.src = '/static/img/pause-outline.svg';
                 if (this.playlist) {
-                    console.log(this.playlist);
                     const track = this.playlist?.find(
                         (track) =>
                             track.props.id.toString() === target.dataset.id
@@ -704,7 +697,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 }
                 switch (event.data.type) {
                     case TIMEUPDATE:
-                        console.log('Timeupdate event');
                         this.isSlave = true;
                         window.clearTimeout(this.slaveTimeout);
                         this.slaveTimeout = window.setTimeout(() => {
@@ -726,7 +718,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         break;
                     case SET_TRACK:
                         this.audio.pause();
-                        console.log('Set track event');
                         (<HTMLImageElement>(
                             document.getElementById('player-artwork')
                         )).src = `${event.data.cover}_128px.webp`;
@@ -767,7 +758,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         }
                         this.timeTotal.innerHTML = event.data.total_time;
                         document.title = `${event.data.track} · ${event.data.artist.props.name}`;
-                        console.log('data', event.data);
                         (<HTMLElement>(
                             document.querySelector('.player-fav')
                         )).dataset.id = event.data.trackID;
@@ -783,11 +773,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         setTimeout(() => {
                             this.switchTrackDebounce = false;
                         }, 500);
-                        console.log('Switch track event');
                         this.switchTrack(event.data.next);
                         break;
                     case PLAY:
-                        console.log('Play event');
                         if (!this.playButton) {
                             this.playButton = <HTMLImageElement>(
                                 document.getElementById('player-play')
@@ -799,7 +787,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         if (this.ignorePauseEvent) {
                             return;
                         }
-                        console.log('Pause event');
                         if (!this.playButton) {
                             this.playButton = <HTMLImageElement>(
                                 document.getElementById('player-play')
@@ -814,7 +801,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         this.slaveCurrentTime = event.data.currentTime;
                         break;
                     case SEEK:
-                        console.log('Seek event');
                         document.documentElement.style.setProperty(
                             '--seekbar-current',
                             `${event.data.pos * 100}%`
@@ -823,7 +809,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                             this.audio.duration * event.data.pos;
                         break;
                     case SET_VOLUME:
-                        console.log('Set volume');
                         if (!this.currentVolume) {
                             this.currentVolume =
                                 document.querySelector('.volume-current');
@@ -846,11 +831,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         this.setTrack(this.nowPlaying);
                         this.audio.currentTime = event.data.currentTime;
 
-                        console.log('Master tab closing');
                         this.slavePaused = false;
                         break;
                     case SHUFFLE:
-                        console.log('Shuffle event');
                         this.shuffle = event.data.shuffle;
                         this.pos = -1;
                         if (this.shuffle) {
@@ -868,7 +851,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         }
                         break;
                     case REPEAT:
-                        console.log('Repeat event');
                         this.audio.loop = event.data.loop;
                         this.audio.loop
                             ? document
@@ -883,8 +865,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         );
                         break;
                     case MUTE:
-                        console.log('Mute event');
-                        console.log(event.data);
                         this.audio.muted = event.data.muted;
                         this.audio.muted
                             ? document
@@ -904,7 +884,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         }`;
                         break;
                     case LIKE:
-                        console.log('Like event');
                         (<HTMLImageElement>(
                             document.querySelector('.player-fav')
                         )).src = event.data.src;

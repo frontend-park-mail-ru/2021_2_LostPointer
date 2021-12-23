@@ -54,11 +54,11 @@
     "webpack": "^5.59.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.3.1",
-    "webpack-pwa-manifest": "^4.3.0"
+    "webpack-pwa-manifest": "^4.3.0",
+    "lostpointer-storybook": "^1.1.0",
+    "glob": "^7.2.0",
+    "handlebars": "^4.7.7"
   },
   "dependencies": {
-    "glob": "^7.2.0",
-    "handlebars": "^4.7.7",
-    "lostpointer-storybook": "^1.1.0"
   }
 }
