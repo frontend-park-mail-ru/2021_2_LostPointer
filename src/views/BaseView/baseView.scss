@@ -7,6 +7,10 @@
     display: flex;
     height: calc(100% - 80px);
 
+    &-without-player {
+      height: calc(100%);
+    }
+
     @media only screen and (max-width: 768px) {
       height: calc(100% - var(--mobile-footer-height));
     }
