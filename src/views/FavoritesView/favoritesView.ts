@@ -2,7 +2,11 @@ import { View } from 'views/View/view';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import store from 'services/store/store';
-import { disableBrokenImg, scrollUp } from 'views/utils';
+import {
+    addDisableBrokenImgListeners,
+    removeDisableBrokenImgListeners,
+    scrollUp,
+} from 'views/utils';
 import { TrackList } from 'lostpointer-uikit';
 import { UserModel } from 'models/user';
 import router from 'services/router/router';
@@ -41,29 +45,15 @@ export class FavoritesView extends View<never> {
                 )
             );
 
-        document
-            .querySelectorAll('.track-list-item-playlist')
-            .forEach((element) => {
-                element.addEventListener(
-                    'click',
-                    playlistsContextMenu.showContextMenu.bind(
-                        playlistsContextMenu
-                    )
-                );
-            });
-        //
-        document.querySelectorAll('img').forEach(function (img) {
-            img.addEventListener('error', disableBrokenImg);
-        });
+        playlistsContextMenu.addListeners();
+        addDisableBrokenImgListeners();
     }
 
     unmount() {
         sidebar.updateFavLink(false);
         TrackComponent.removeToggleFavorListeners();
-
-        document.querySelectorAll('img').forEach(function (img) {
-            img.removeEventListener('error', disableBrokenImg);
-        });
+        removeDisableBrokenImgListeners();
+        playlistsContextMenu.removeListeners();
     }
 
     render(): void {

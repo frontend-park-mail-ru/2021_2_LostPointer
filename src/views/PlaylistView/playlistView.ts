@@ -333,16 +333,7 @@ export class PlaylistView extends View<never> {
                 if (response.status === 200) {
                     const trackList =
                         document.querySelector('.playlist__content');
-                    document
-                        .querySelectorAll('.track-list-item-playlist')
-                        .forEach((element) => {
-                            element.removeEventListener(
-                                'click',
-                                playlistsContextMenu.showContextMenu.bind(
-                                    playlistsContextMenu
-                                )
-                            );
-                        });
+                    playlistsContextMenu.removeListeners();
                     this.trackList = new TrackList<TrackModel>({
                         title: 'Tracks',
                         tracks: this.playlist
@@ -350,16 +341,7 @@ export class PlaylistView extends View<never> {
                             .tracks.map((track) => track.getProps()),
                     });
                     trackList.innerHTML = this.trackList.render();
-                    document
-                        .querySelectorAll('.track-list-item-playlist')
-                        .forEach((element) => {
-                            element.addEventListener(
-                                'click',
-                                playlistsContextMenu.showContextMenu.bind(
-                                    playlistsContextMenu
-                                )
-                            );
-                        });
+                    playlistsContextMenu.addListeners();
                 }
             });
     }

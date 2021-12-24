@@ -119,7 +119,6 @@ export class SearchView extends View<never> {
         playlistsContextMenu.deleteRemoveButton();
         document.querySelector('.js-menu-container').innerHTML =
             playlistsContextMenu.render();
-        playlistsContextMenu.addListeners();
 
         this.data.tracks =
             this.tracks.length !== 0
@@ -155,6 +154,7 @@ export class SearchView extends View<never> {
             albums: this.data.albums,
             not_found: this.noResults,
         });
+        playlistsContextMenu.addListeners();
         if (store.get('authenticated')) {
             TrackComponent.addToggleFavorListeners();
         }
