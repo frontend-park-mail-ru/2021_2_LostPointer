@@ -66,7 +66,7 @@ export class PlaylistModel extends Model<IPlaylistModel> {
 
     static createPlaylist(title: string): Promise<IPlaylistModel> {
         const formdata = new FormData();
-        formdata.append('title', title);
+        formdata.append('title', title.trim());
 
         return new Promise<IPlaylistModel>((res) => {
             Request.post('/playlists', formdata, ContentType.FORM).then(
@@ -128,7 +128,7 @@ export class PlaylistModel extends Model<IPlaylistModel> {
     ): Promise<IResponseBody> | Promise<IPlaylistModel> {
         const formdata = new FormData();
         if (title != null) {
-            formdata.append('title', title);
+            formdata.append('title', title.trim());
         }
         if (is_public != null) {
             formdata.append('is_public', is_public.toString());

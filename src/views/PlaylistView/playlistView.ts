@@ -153,7 +153,7 @@ export class PlaylistView extends View<never> {
         msg.innerHTML = '';
         if (
             !titleInput.value ||
-            titleInput.value.length < 4 ||
+            titleInput.value.length < 3 ||
             titleInput.value.length > 30
         ) {
             msg.innerHTML =
@@ -164,7 +164,7 @@ export class PlaylistView extends View<never> {
         if (titleInput.value === this.playlist.getProps().title) {
             return;
         }
-
+        titleInput.value = titleInput.value.trim();
         this.playlist
             .updateInformation(
                 titleInput.value,
