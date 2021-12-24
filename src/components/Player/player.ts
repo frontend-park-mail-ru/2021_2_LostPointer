@@ -119,9 +119,12 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     seek(xPos) {
         if (!this.gotSeekPos) {
             const seekbar = document.getElementById('player-seekbar');
-            if (seekbar) {
-                this.seekbarPos = seekbar.getBoundingClientRect();
-            }
+            const mobileSeekbar = document.querySelector(
+                '.mobile-player__container'
+            );
+            this.seekbarPos = mobileSeekbar
+                ? mobileSeekbar.getBoundingClientRect()
+                : seekbar.getBoundingClientRect();
             this.gotSeekPos = true;
         }
         const seek = (xPos - this.seekbarPos.left) / this.seekbarPos.width;
@@ -563,6 +566,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         window.addEventListener('resize', this.resizeHandler);
         document
             .querySelector('.player__seekbar')
+            .addEventListener('click', this.seekbarHandler);
+        document
+            .querySelector('.mobile-player__progress__bar')
             .addEventListener('click', this.seekbarHandler);
         const playerElement: HTMLElement =
             document.querySelector('.mobile-player');
