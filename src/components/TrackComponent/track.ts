@@ -66,7 +66,9 @@ export class TrackComponent extends Component<ITrackProps> {
                 if (track) {
                     track.props.is_in_favorites = false;
                 }
-                callback();
+                if (callback) {
+                    callback();
+                }
             });
         } else {
             TrackModel.addInFavorites(trackId).then(() => {
@@ -97,7 +99,9 @@ export class TrackComponent extends Component<ITrackProps> {
                 if (track) {
                     track.props.is_in_favorites = true;
                 }
-                callback();
+                if (callback) {
+                    callback();
+                }
             });
         }
     }

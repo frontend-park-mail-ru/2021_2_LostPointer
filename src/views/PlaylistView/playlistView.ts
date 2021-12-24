@@ -7,6 +7,7 @@ import store from 'services/store/store';
 import {
     addDisableBrokenImgListeners,
     removeDisableBrokenImgListeners,
+    scrollUp,
 } from 'views/utils';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import { TrackModel } from 'models/track';
@@ -15,8 +16,6 @@ import { TrackComponent } from 'components/TrackComponent/track';
 
 import PlaylistTemplate from './playlistView.hbs';
 import './playlistView.scss';
-
-// TODO аватары пользователей-создателей плейлиста
 
 export class PlaylistView extends View<never> {
     private playlist: PlaylistModel;
@@ -622,6 +621,7 @@ export class PlaylistView extends View<never> {
                 this.playlist.getProps().artwork_color
             }, black)`;
             this.addListeners();
+            scrollUp();
         });
     }
 

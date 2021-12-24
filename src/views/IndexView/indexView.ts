@@ -10,16 +10,17 @@ import routerStore from 'services/router/routerStore';
 import {
     addDisableBrokenImgListeners,
     removeDisableBrokenImgListeners,
+    scrollUp,
 } from 'views/utils';
 import store from 'services/store/store';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import baseView from 'views/BaseView/baseView';
 import { TrackComponent } from 'components/TrackComponent/track';
+import sidebar from 'components/Sidebar/sidebar';
 
 import IndexTemplate from './indexView.hbs';
 import './indexView.scss';
-import sidebar from 'components/Sidebar/sidebar';
 
 class IndexView extends View<never> {
     private top_albums: AlbumModel[];
@@ -181,9 +182,9 @@ class IndexView extends View<never> {
                 });
 
                 this.addListeners();
+                scrollUp();
             }
         );
-        this.addListeners();
     }
 
     getTracksContext(): TrackModel[] {

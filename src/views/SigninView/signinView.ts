@@ -19,8 +19,8 @@ import baseView from 'views/BaseView/baseView';
 import {
     addDisableBrokenImgListeners,
     removeDisableBrokenImgListeners,
+    scrollUp,
 } from 'views/utils';
-import player from 'components/Player/player';
 
 import SigninComponentTemplate from './signinView.hbs';
 import './signinView.scss';
@@ -44,7 +44,6 @@ export class SigninView extends View<ISigninComponentProps> {
     }
 
     render() {
-        player.eventListenersAlreadySet = false; // TODO так наверное не очень хорошо делать, но времени мало
         baseView.unmount();
         if (store.get('authenticated')) {
             router.go(routerStore.dashboard);
@@ -70,6 +69,7 @@ export class SigninView extends View<ISigninComponentProps> {
         addInputsEventListeners(form);
         form.addEventListener('submit', this.submitSigninForm);
         addDisableBrokenImgListeners();
+        scrollUp();
     }
 
     unmount() {
