@@ -30,6 +30,10 @@ class BaseView extends View<never> {
             mobile: mobile.set(player.getNowPlaying()).render(),
         });
         if (!player.isDisplayed()) {
+            document.querySelector('.player').classList.add('none');
+            document
+                .querySelector('.app__content')
+                .classList.add('app__content-without-player');
             document
                 .querySelector('.mobile-footer__player')
                 .classList.add('none');

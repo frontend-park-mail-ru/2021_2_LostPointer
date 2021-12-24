@@ -208,6 +208,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
     setTrack(track: TrackModel): void {
         if (!this.isDisplayed()) {
+            document.querySelector('.player').classList.remove('none');
+            document
+                .querySelector('.app__content')
+                .classList.remove('app__content-without-player');
             document
                 .querySelector('.mobile-footer__player')
                 .classList.remove('none');
