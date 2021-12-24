@@ -663,7 +663,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             if (target.className === 'track-play') {
                 if (
                     window.location.pathname !== this.currentContext ||
-                    window.location.pathname === '/'
+                    window.location.pathname === '/' ||
+                    window.location.pathname === '/search'
                 ) {
                     this.currentContext = window.location.pathname;
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
