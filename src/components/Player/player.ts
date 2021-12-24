@@ -142,7 +142,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.audio.volume = vol;
         window.localStorage.setItem('playerVolume', `${vol}`);
         if (this.bc) {
-            this.bc.postMessage({ type: SET_VOLUME, pos: vol });
+            this.bc.postMessage({ type: SET_VOLUME, vol });
         }
     }
 
@@ -819,18 +819,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                             this.audio.duration * event.data.pos;
                         break;
                     case SET_VOLUME:
-                        if (!this.currentVolume) {
-                            this.currentVolume =
-                                document.querySelector('.volume-current');
-                        }
-                        this.currentVolume.style.width = `${
-                            event.data.pos * 100
-                        }%`;
-                        this.audio.volume = event.data.pos;
-                        window.localStorage.setItem(
-                            'playerVolume',
-                            `${event.data.pos}`
-                        );
+                        this.audio.volume = event.data.vol;
+                        (<HTMLInputElement>(
+                            document.getElementById('player-volume')
+                        )).value = this.audio.volume.toString();
                         break;
                     case MASTER_TAB_CLOSING:
                         this.setup(event.data.playlist);
