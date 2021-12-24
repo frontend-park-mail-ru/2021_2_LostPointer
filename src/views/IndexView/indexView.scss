@@ -82,6 +82,10 @@ body {
   margin-top: 50px;
   display: flex;
   justify-content: space-between;
+
+  & .track-list {
+    width: 50%;
+  }
 }
 
 .listen-now {

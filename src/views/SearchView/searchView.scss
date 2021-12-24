@@ -12,7 +12,7 @@
   }
 
   &__albums-header {
-    padding: 12px 0;
+    padding: 0 0 12px;
     color: white;
     font-family: Montserrat, sans-serif;
     font-weight: 700;
@@ -35,6 +35,10 @@
       width: 100px;
       height: 100px;
     }
+  }
+
+  & listen-now__top-albums {
+    display: block;
   }
 }
 
