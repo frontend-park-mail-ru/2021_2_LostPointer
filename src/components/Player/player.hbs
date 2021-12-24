@@ -34,8 +34,6 @@
     <div class="player__time" id="player-time-total"> {{ total_time }} </div>
     <img alt class="shuffle" src="/static/img/shuffle.svg">
     <img alt class="repeat" src="/static/img/repeat.svg">
-    <div id="player-volume" class="player__seekbar player-volume">
-        <span class="volume-current"></span>
-    </div>
+    <input id='player-volume' min='0' max='1' step='0.01' class="player__seekbar player-volume" type='range' />
     <img alt class="mute" src="/static/img/volume.svg">
 </div>
