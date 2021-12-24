@@ -16,6 +16,7 @@ import { UserModel } from 'models/user';
 import {
     addDisableBrokenImgListeners,
     removeDisableBrokenImgListeners,
+    scrollUp,
 } from 'views/utils';
 import store from 'services/store/store';
 import baseView from 'views/BaseView/baseView';
@@ -261,6 +262,7 @@ export class ProfileView extends View<never> {
                     profileform: this.profileform.render(),
                 });
             this.addListeners();
+            scrollUp();
         });
     }
 }

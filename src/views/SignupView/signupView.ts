@@ -21,8 +21,8 @@ import baseView from 'views/BaseView/baseView';
 import {
     addDisableBrokenImgListeners,
     removeDisableBrokenImgListeners,
+    scrollUp,
 } from 'views/utils';
-import player from 'components/Player/player';
 
 import SignupComponentTemplate from './signupView.hbs';
 import './signupView.scss';
@@ -85,6 +85,7 @@ export class SignupView extends View<ISignupComponentProps> {
         addInputsEventListeners(form);
         form.addEventListener('submit', this.submitSignupForm);
         addDisableBrokenImgListeners();
+        scrollUp();
     }
 
     unmount() {

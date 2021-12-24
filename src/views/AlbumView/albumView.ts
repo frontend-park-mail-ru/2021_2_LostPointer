@@ -6,16 +6,17 @@ import routerStore from 'services/router/routerStore';
 import {
     addDisableBrokenImgListeners,
     removeDisableBrokenImgListeners,
+    scrollUp,
 } from 'views/utils';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
-
-import AlbumTemplate from './albumView.hbs';
-import './albumView.scss';
 import { TrackModel } from 'models/track';
 import baseView from 'views/BaseView/baseView';
 import { TrackComponent } from 'components/TrackComponent/track';
 import store from 'services/store/store';
+
+import AlbumTemplate from './albumView.hbs';
+import './albumView.scss';
 
 export class AlbumView extends View<never> {
     private album: AlbumModel;
@@ -92,6 +93,7 @@ export class AlbumView extends View<never> {
                 });
 
             this.addListeners();
+            scrollUp();
         });
     }
 

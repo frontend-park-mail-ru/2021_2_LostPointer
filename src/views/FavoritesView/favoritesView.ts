@@ -2,7 +2,7 @@ import { View } from 'views/View/view';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import store from 'services/store/store';
-import { disableBrokenImg } from 'views/utils';
+import { disableBrokenImg, scrollUp } from 'views/utils';
 import { TrackList } from 'lostpointer-uikit';
 import { UserModel } from 'models/user';
 import router from 'services/router/router';
@@ -94,6 +94,7 @@ export class FavoritesView extends View<never> {
                             }).render(),
                         });
                     this.addListeners();
+                    scrollUp();
                 });
             });
     }

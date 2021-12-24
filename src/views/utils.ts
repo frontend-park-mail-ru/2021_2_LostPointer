@@ -13,3 +13,10 @@ export function removeDisableBrokenImgListeners() {
         img.removeEventListener('error', disableBrokenImg);
     });
 }
+
+export function scrollUp() {
+    const app = document.querySelector('.main-layout__content');
+    if (app) {
+        app.scrollTo(0, 0);
+    }
+}

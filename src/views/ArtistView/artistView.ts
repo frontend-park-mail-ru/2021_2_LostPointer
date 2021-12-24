@@ -6,6 +6,7 @@ import routerStore from 'services/router/routerStore';
 import {
     addDisableBrokenImgListeners,
     removeDisableBrokenImgListeners,
+    scrollUp,
 } from 'views/utils';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 import { PlaylistModel } from 'models/playlist';
@@ -106,6 +107,8 @@ export class ArtistView extends View<never> {
                 trackList: this.trackList,
             });
             this.addListeners();
+
+            scrollUp();
         });
     }
 
