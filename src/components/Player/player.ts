@@ -512,7 +512,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 .getBoundingClientRect();
         };
         this.switchTrackHandler = (e: MediaSessionActionDetails) => {
-            console.log(e);
             this.switchTrack(e.action === 'nexttrack');
         };
         this.arrowKeysHandler = (e) => {
