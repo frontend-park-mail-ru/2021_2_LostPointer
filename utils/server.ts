@@ -5,12 +5,14 @@ import { parse } from 'node-html-parser';
 import fetch from 'node-fetch';
 
 const origin = 'https://lostpointer.site';
-const api = '/api/v1'
+const api = '/api/v1';
 
-const indexFile = String(fs.readFileSync(path.join(__dirname + '/../dist/index.html')));
+const indexFile = String(
+    fs.readFileSync(path.join(__dirname + '/../dist/index.html'))
+);
 
 http.createServer(function (req, res) {
-    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.writeHead(200, { 'Content-Type': 'text/html' });
 
     let regex = /^\/artist\/(\d+)$/gm;
     let match = regex.exec(req.url);
@@ -28,16 +30,17 @@ http.createServer(function (req, res) {
                 }
 
                 const document = parse(indexFile);
-                document.querySelector('meta[property="og:title"]')
+                document
+                    .querySelector('meta[property="og:title"]')
                     .setAttribute('content', data.name);
-                document.querySelector('meta[property="og:image"]')
-                    .setAttribute(
-                        'content',
-                        `${origin}${data.avatar}`
-                    );
-                document.querySelector('meta[property="og:url"]')
+                document
+                    .querySelector('meta[property="og:image"]')
+                    .setAttribute('content', `${origin}${data.avatar}`);
+                document
+                    .querySelector('meta[property="og:url"]')
                     .setAttribute('content', `${origin}${req.url}`);
-                document.querySelector('meta[property="og:description"]')
+                document
+                    .querySelector('meta[property="og:description"]')
                     .setAttribute('content', '');
 
                 res.write(document.toString());
@@ -64,16 +67,23 @@ http.createServer(function (req, res) {
                 }
 
                 const document = parse(indexFile);
-                document.querySelector('meta[property="og:title"]')
-                    .setAttribute('content', `${data.artist.name} - ${data.title}`);
-                document.querySelector('meta[property="og:image"]')
+                document
+                    .querySelector('meta[property="og:title"]')
+                    .setAttribute(
+                        'content',
+                        `${data.artist.name} - ${data.title}`
+                    );
+                document
+                    .querySelector('meta[property="og:image"]')
                     .setAttribute(
                         'content',
                         `${origin}/static/artworks/${data.artwork}_512px.webp`
                     );
-                document.querySelector('meta[property="og:url"]')
+                document
+                    .querySelector('meta[property="og:url"]')
                     .setAttribute('content', `${origin}${req.url}`);
-                document.querySelector('meta[property="og:description"]')
+                document
+                    .querySelector('meta[property="og:description"]')
                     .setAttribute('content', '');
 
                 res.write(document.toString());
@@ -89,7 +99,6 @@ http.createServer(function (req, res) {
     if (match) {
         const playlistId = match[1];
 
-
         fetch(`${origin}${api}/playlists/${playlistId}`)
             .then((response) => {
                 return response.json();
@@ -102,16 +111,17 @@ http.createServer(function (req, res) {
                 }
 
                 const document = parse(indexFile);
-                document.querySelector('meta[property="og:title"]')
+                document
+                    .querySelector('meta[property="og:title"]')
                     .setAttribute('content', `Playlist: ${data.title}`);
-                document.querySelector('meta[property="og:image"]')
-                    .setAttribute(
-                        'content',
-                        `${origin}${data.artwork}`
-                    );
-                document.querySelector('meta[property="og:url"]')
+                document
+                    .querySelector('meta[property="og:image"]')
+                    .setAttribute('content', `${origin}${data.artwork}`);
+                document
+                    .querySelector('meta[property="og:url"]')
                     .setAttribute('content', `${origin}${req.url}`);
-                document.querySelector('meta[property="og:description"]')
+                document
+                    .querySelector('meta[property="og:description"]')
                     .setAttribute('content', '');
 
                 res.write(document.toString());
@@ -123,6 +133,8 @@ http.createServer(function (req, res) {
             });
     }
 
-}).listen(8888, function(){
-    console.log("server start at port 8888"); //the server object listens on port 3000
+    res.write(indexFile);
+    res.end();
+}).listen(8888, function () {
+    console.log('server start at port 8888'); //the server object listens on port 3000
 });
