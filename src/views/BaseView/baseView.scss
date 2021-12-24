@@ -22,4 +22,11 @@
   z-index: 10;
   left: 50%;
   bottom: 150px;
+
+  @media only screen and (max-width: 768px) {
+    left: auto;
+    right: 225px;
+    bottom: auto;
+    top: 33px;
+  }
 }
