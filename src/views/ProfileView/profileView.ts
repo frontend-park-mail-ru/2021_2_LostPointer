@@ -67,9 +67,7 @@ export class ProfileView extends View<never> {
             .updateSettings(null, null, null, null, file)
             .then((body) => {
                 if (body.status === 200) {
-                    const smallAvatar = document.querySelector(
-                        '.topbar-profile__img'
-                    );
+                    const smallAvatar = document.querySelector('.avatar__img');
                     smallAvatar.setAttribute('src', readFile);
                     (<HTMLElement>smallAvatar).style.display = 'block';
                     msg.classList.remove('fail');

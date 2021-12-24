@@ -41,6 +41,7 @@ export interface IPlayerComponentProps {
     cover: string;
     playButton: HTMLImageElement;
     hide_artwork: boolean;
+    displayed: boolean;
 }
 
 export class PlayerComponent extends Component<IPlayerComponentProps> {
@@ -92,6 +93,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.audio = new Audio();
         this.audio.volume = 0.5;
         this.audio.preload = 'auto';
+        this.props.displayed = false;
         if (!this.getLastPlayed()) {
             this.props = {
                 hide_artwork: true,
@@ -116,9 +118,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
     seek(xPos) {
         if (!this.gotSeekPos) {
-            this.seekbarPos = document
-                .getElementById('player-seekbar')
-                .getBoundingClientRect();
+            const seekbar = document.getElementById('player-seekbar');
+            if (seekbar) {
+                this.seekbarPos = seekbar.getBoundingClientRect();
+            }
             this.gotSeekPos = true;
         }
         const seek = (xPos - this.seekbarPos.left) / this.seekbarPos.width;
@@ -198,11 +201,25 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     return acc;
                 }, []);
             }
+            this.props.displayed = true;
         }
         return typeof data === 'string';
     }
 
     setTrack(track: TrackModel): void {
+        if (!this.isDisplayed()) {
+            document
+                .querySelector('.mobile-footer__player')
+                .classList.remove('none');
+            document
+                .querySelector('.mobile-footer__player__progress')
+                .classList.remove('none');
+            this.props.displayed = true;
+            document.documentElement.style.setProperty(
+                '--mobile-footer-height',
+                '100px'
+            );
+        }
         if (!track) {
             return;
         }
@@ -354,12 +371,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 }`;
             } else if (element.classList.contains('player-fav')) {
                 TrackComponent.toggleFavor(e, (fav) => {
-                    console.log('Callback called');
-                    console.log(
-                        (<HTMLImageElement>(
-                            document.querySelector('.player-fav')
-                        )).src
-                    );
                     if (this.bc) {
                         this.bc.postMessage({
                             type: LIKE,
@@ -494,7 +505,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         };
         this.resizeHandler = () => {
             this.seekbarPos = document
-                .querySelector('.player__seekbar')
+                .getElementById('player-seekbar')
                 .getBoundingClientRect();
             this.volumePos = document
                 .querySelector('.player-volume')
@@ -513,7 +524,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }
         };
         this.endedHandler = () => {
-            this.switchTrack(true);
+            this.switchTrack(true, true);
         };
 
         this.audio.addEventListener('loadedmetadata', () => {
@@ -684,7 +695,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 target.dataset.playing = 'true';
                 target.src = '/static/img/pause-outline.svg';
                 if (this.playlist) {
-                    console.log(this.playlist);
                     const track = this.playlist?.find(
                         (track) =>
                             track.props.id.toString() === target.dataset.id
@@ -704,7 +714,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 }
                 switch (event.data.type) {
                     case TIMEUPDATE:
-                        console.log('Timeupdate event');
                         this.isSlave = true;
                         window.clearTimeout(this.slaveTimeout);
                         this.slaveTimeout = window.setTimeout(() => {
@@ -726,7 +735,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         break;
                     case SET_TRACK:
                         this.audio.pause();
-                        console.log('Set track event');
                         (<HTMLImageElement>(
                             document.getElementById('player-artwork')
                         )).src = `${event.data.cover}_128px.webp`;
@@ -767,7 +775,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         }
                         this.timeTotal.innerHTML = event.data.total_time;
                         document.title = `${event.data.track} · ${event.data.artist.props.name}`;
-                        console.log('data', event.data);
                         (<HTMLElement>(
                             document.querySelector('.player-fav')
                         )).dataset.id = event.data.trackID;
@@ -783,11 +790,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         setTimeout(() => {
                             this.switchTrackDebounce = false;
                         }, 500);
-                        console.log('Switch track event');
                         this.switchTrack(event.data.next);
                         break;
                     case PLAY:
-                        console.log('Play event');
                         if (!this.playButton) {
                             this.playButton = <HTMLImageElement>(
                                 document.getElementById('player-play')
@@ -799,7 +804,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         if (this.ignorePauseEvent) {
                             return;
                         }
-                        console.log('Pause event');
                         if (!this.playButton) {
                             this.playButton = <HTMLImageElement>(
                                 document.getElementById('player-play')
@@ -814,7 +818,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         this.slaveCurrentTime = event.data.currentTime;
                         break;
                     case SEEK:
-                        console.log('Seek event');
                         document.documentElement.style.setProperty(
                             '--seekbar-current',
                             `${event.data.pos * 100}%`
@@ -823,7 +826,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                             this.audio.duration * event.data.pos;
                         break;
                     case SET_VOLUME:
-                        console.log('Set volume');
                         if (!this.currentVolume) {
                             this.currentVolume =
                                 document.querySelector('.volume-current');
@@ -846,11 +848,9 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         this.setTrack(this.nowPlaying);
                         this.audio.currentTime = event.data.currentTime;
 
-                        console.log('Master tab closing');
                         this.slavePaused = false;
                         break;
                     case SHUFFLE:
-                        console.log('Shuffle event');
                         this.shuffle = event.data.shuffle;
                         this.pos = -1;
                         if (this.shuffle) {
@@ -868,7 +868,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         }
                         break;
                     case REPEAT:
-                        console.log('Repeat event');
                         this.audio.loop = event.data.loop;
                         this.audio.loop
                             ? document
@@ -883,8 +882,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         );
                         break;
                     case MUTE:
-                        console.log('Mute event');
-                        console.log(event.data);
                         this.audio.muted = event.data.muted;
                         this.audio.muted
                             ? document
@@ -904,7 +901,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                         }`;
                         break;
                     case LIKE:
-                        console.log('Like event');
                         (<HTMLImageElement>(
                             document.querySelector('.player-fav')
                         )).src = event.data.src;
@@ -997,8 +993,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         return this.props;
     }
 
-    switchTrack(next: boolean) {
-        if (this.audio.paused) {
+    switchTrack(next: boolean, ignorebc?: boolean) {
+        if (this.audio.paused && !ignorebc) {
             if (this.bc) {
                 this.bc.postMessage({ type: SWITCH_TRACK, next });
             }
@@ -1215,6 +1211,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             playButton: null,
             hide_artwork: true,
             recovered: false,
+            displayed: false,
         };
         (<HTMLElement>document.querySelector('.seekbar-current')).style.width =
             '0';
@@ -1228,6 +1225,10 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         } else {
             this.nowPlaying = this.playlist[pos];
         }
+    }
+
+    isDisplayed() {
+        return this.props.displayed;
     }
 }
 

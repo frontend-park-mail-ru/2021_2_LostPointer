@@ -562,10 +562,12 @@ export class PlaylistView extends View<never> {
         Promise.all([playlist, userPlaylists]).then(() => {
             const props = this.playlist.getProps();
             this.tracks = props.tracks;
-            this.trackList = new TrackList<TrackModel>({
-                title: 'Tracks',
-                tracks: props.tracks.map((track) => track.getProps()),
-            });
+            if (props.tracks) {
+                this.trackList = new TrackList<TrackModel>({
+                    title: 'Tracks',
+                    tracks: props.tracks.map((track) => track.getProps()),
+                });
+            }
             this.inputs = [
                 new InputComponent({
                     class: 'editwindow__form-input',
@@ -583,7 +585,11 @@ export class PlaylistView extends View<never> {
                 })
             );
             baseView.render();
-
+            const getPropsResult = this.playlist.getProps();
+            let tracks = [];
+            if (props.tracks) {
+                tracks = getPropsResult.tracks.map((track) => track.getProps());
+            }
             document.getElementById('content').innerHTML = PlaylistTemplate({
                 title: this.playlist.getProps().title,
                 avatar: this.playlist.getProps().artwork,
@@ -591,9 +597,7 @@ export class PlaylistView extends View<never> {
                 is_public: this.playlist.getProps().is_public,
                 trackList: new TrackList<TrackModel>({
                     title: 'Tracks',
-                    tracks: this.playlist
-                        .getProps()
-                        .tracks.map((track) => track.getProps()),
+                    tracks: tracks,
                 }).render(),
                 inputs: this.inputs,
                 link: window.location.href,
