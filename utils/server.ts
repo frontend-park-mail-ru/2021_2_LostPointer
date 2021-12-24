@@ -14,10 +14,14 @@ const indexFile = String(
 http.createServer(function (req, res) {
     res.writeHead(200, { 'Content-Type': 'text/html' });
 
-    let regex = /^\/artist\/(\d+)$/gm;
-    let match = regex.exec(req.url);
-    if (match) {
-        const artistId = match[1];
+    const artistRegex = /^\/artist\/(\d+)$/gm;
+    const albumRegex = /^\/album\/(\d+)$/gm;
+    const playlistRegex = /^\/playlist\/(\d+)$/gm;
+    const artistMatch = artistRegex.exec(req.url);
+    const albumMatch = albumRegex.exec(req.url);
+    const playlistMatch = playlistRegex.exec(req.url);
+    if (artistMatch) {
+        const artistId = artistMatch[1];
         fetch(`${origin}${api}/artist/${artistId}`)
             .then((response) => {
                 return response.json();
@@ -35,7 +39,10 @@ http.createServer(function (req, res) {
                     .setAttribute('content', data.name);
                 document
                     .querySelector('meta[property="og:image"]')
-                    .setAttribute('content', `${origin}${data.avatar}`);
+                    .setAttribute(
+                        'content',
+                        `${origin}${data.avatar}`.replace('.webp', '.jpg')
+                    );
                 document
                     .querySelector('meta[property="og:url"]')
                     .setAttribute('content', `${origin}${req.url}`);
@@ -50,11 +57,8 @@ http.createServer(function (req, res) {
                 res.write(indexFile);
                 res.end();
             });
-    }
-    regex = /^\/album\/(\d+)$/gm;
-    match = regex.exec(req.url);
-    if (match) {
-        const albumId = match[1];
+    } else if (albumMatch) {
+        const albumId = albumMatch[1];
         fetch(`${origin}${api}/album/${albumId}`)
             .then((response) => {
                 return response.json();
@@ -77,7 +81,10 @@ http.createServer(function (req, res) {
                     .querySelector('meta[property="og:image"]')
                     .setAttribute(
                         'content',
-                        `${origin}/static/artworks/${data.artwork}_512px.webp`
+                        `${origin}/static/artworks/${data.artwork}_512px.webp`.replace(
+                            '.webp',
+                            '.jpg'
+                        )
                     );
                 document
                     .querySelector('meta[property="og:url"]')
@@ -93,11 +100,8 @@ http.createServer(function (req, res) {
                 res.write(indexFile);
                 res.end();
             });
-    }
-    regex = /^\/playlist\/(\d+)$/gm;
-    match = regex.exec(req.url);
-    if (match) {
-        const playlistId = match[1];
+    } else if (playlistMatch) {
+        const playlistId = playlistMatch[1];
 
         fetch(`${origin}${api}/playlists/${playlistId}`)
             .then((response) => {
@@ -116,7 +120,10 @@ http.createServer(function (req, res) {
                     .setAttribute('content', `Playlist: ${data.title}`);
                 document
                     .querySelector('meta[property="og:image"]')
-                    .setAttribute('content', `${origin}${data.artwork}`);
+                    .setAttribute(
+                        'content',
+                        `${origin}${data.artwork}`.replace('.webp', '.jpg')
+                    );
                 document
                     .querySelector('meta[property="og:url"]')
                     .setAttribute('content', `${origin}${req.url}`);
@@ -131,10 +138,10 @@ http.createServer(function (req, res) {
                 res.write(indexFile);
                 res.end();
             });
+    } else {
+        res.write(indexFile);
+        res.end();
     }
-
-    res.write(indexFile);
-    res.end();
 }).listen(8888, function () {
     console.log('server start at port 8888'); //the server object listens on port 3000
 });
