@@ -162,6 +162,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         const playlistIndices = JSON.parse(
             window.localStorage.getItem('playlistIndices')
         );
+        this.audio.volume =
+            parseFloat(window.localStorage.getItem('playerVolume')) || 0;
         if (data) {
             const json = JSON.parse(data);
             json.playing = false;
@@ -917,6 +919,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 }
             }
         });
+        (<HTMLInputElement>document.getElementById('player-volume')).value =
+            this.audio.volume.toString();
     }
 
     setup([...playlist]: TrackModel[]) {
