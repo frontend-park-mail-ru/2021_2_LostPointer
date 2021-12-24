@@ -117,16 +117,13 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     seek(xPos) {
-        if (!this.gotSeekPos) {
-            const seekbar = document.getElementById('player-seekbar');
-            const mobileSeekbar = document.querySelector(
-                '.mobile-player__container'
-            );
-            this.seekbarPos = mobileSeekbar
-                ? mobileSeekbar.getBoundingClientRect()
-                : seekbar.getBoundingClientRect();
-            this.gotSeekPos = true;
-        }
+        const seekbar = document.getElementById('player-seekbar');
+        const mobileSeekbar = document.querySelector(
+            '.mobile-player__container'
+        );
+        const mobile = mobileSeekbar.getBoundingClientRect();
+        const desktop = seekbar.getBoundingClientRect();
+        this.seekbarPos = mobile.x ? mobile : desktop;
         const seek = (xPos - this.seekbarPos.left) / this.seekbarPos.width;
         if (this.audio.paused) {
             if (this.bc) {
