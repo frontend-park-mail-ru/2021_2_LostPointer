@@ -1000,7 +1000,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     }
 
     switchTrack(next: boolean, ignorebc?: boolean) {
-        if (this.audio.paused && !ignorebc) {
+        if (this.audio.paused && ignorebc === true) {
             if (this.bc) {
                 this.bc.postMessage({ type: SWITCH_TRACK, next });
             }
