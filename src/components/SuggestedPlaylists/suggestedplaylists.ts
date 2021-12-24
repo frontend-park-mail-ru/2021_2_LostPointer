@@ -1,5 +1,5 @@
 import { Component } from '../Component/component';
-import { Playlist } from 'lostpointer-storybook';
+import { Playlist } from 'lostpointer-uikit';
 import SuggestedPlaylistsTemplate from './suggestedplaylists.hbs';
 import { PlaylistModel } from 'models/playlist';
 

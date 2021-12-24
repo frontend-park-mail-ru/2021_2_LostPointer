@@ -11,7 +11,7 @@ import {
     passwordValidityChecks,
     simplePasswordValidityChecks,
 } from 'services/validation/validityChecks';
-import { ProfileForm } from 'lostpointer-storybook';
+import { ProfileForm } from 'lostpointer-uikit';
 import { UserModel } from 'models/user';
 import {
     addDisableBrokenImgListeners,

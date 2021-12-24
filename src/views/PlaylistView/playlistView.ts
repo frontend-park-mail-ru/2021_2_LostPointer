@@ -1,5 +1,5 @@
 import { View } from 'views/View/view';
-import { InputComponent, TrackList } from 'lostpointer-storybook';
+import { InputComponent, TrackList } from 'lostpointer-uikit';
 import { DEFAULT_ARTWORK, PlaylistModel } from 'models/playlist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';

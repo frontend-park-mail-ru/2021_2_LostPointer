@@ -7,7 +7,7 @@ import { IResponseBody } from 'services/request/request';
 
 import ContextMenuTemplate from './playlistsContextMenu.hbs';
 import './playlistsContextMenu.scss';
-import { Alert } from 'lostpointer-storybook';
+import { Alert } from 'lostpointer-uikit';
 
 interface IContextMenuOption {
     class: string;

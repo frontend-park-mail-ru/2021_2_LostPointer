@@ -2,7 +2,7 @@ import { Component } from 'components/Component/component';
 import { ArtistModel } from 'models/artist';
 import { TrackModel } from 'models/track';
 
-import { Track } from 'lostpointer-storybook';
+import { Track } from 'lostpointer-uikit';
 import router from 'services/router/router';
 
 interface ITrackProps {
