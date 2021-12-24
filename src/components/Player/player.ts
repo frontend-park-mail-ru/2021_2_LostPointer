@@ -91,7 +91,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
     constructor(props?: IPlayerComponentProps) {
         super(props);
         this.audio = new Audio();
-        this.audio.volume = 0.5;
+        this.audio.volume = 1;
         this.audio.preload = 'auto';
         this.props.displayed = false;
         if (!this.getLastPlayed()) {
@@ -163,7 +163,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             window.localStorage.getItem('playlistIndices')
         );
         this.audio.volume =
-            parseFloat(window.localStorage.getItem('playerVolume')) || 0;
+            parseFloat(window.localStorage.getItem('playerVolume')) || 1;
         if (data) {
             const json = JSON.parse(data);
             json.playing = false;
