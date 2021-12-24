@@ -137,20 +137,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         this.audio.currentTime = this.audio.duration * seek;
     }
 
-    volume(xPos) {
-        if (!this.gotVolPos) {
-            this.volumePos = document
-                .getElementById('player-volume')
-                .getBoundingClientRect();
-            this.gotVolPos = true;
-        }
-        const vol = (xPos - this.volumePos.left) / this.volumePos.width;
-        if (this.currentVolume) {
-            this.currentVolume.style.width = `${vol * 100}%`;
-        } else {
-            this.currentVolume = document.querySelector('.volume-current');
-            this.currentVolume.style.width = `${vol * 100}%`;
-        }
+    volume(event) {
+        const vol = event.target.value;
         this.audio.volume = vol;
         window.localStorage.setItem('playerVolume', `${vol}`);
         if (this.bc) {
@@ -174,6 +162,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
         const playlistIndices = JSON.parse(
             window.localStorage.getItem('playlistIndices')
         );
+        this.audio.volume =
+            parseFloat(window.localStorage.getItem('playerVolume')) || 0;
         if (data) {
             const json = JSON.parse(data);
             json.playing = false;
@@ -447,7 +437,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             }
         };
         this.seekbarHandler = (e: MouseEvent) => this.seek(e.x);
-        this.volumeHandler = (e: MouseEvent) => this.volume(e.x);
+        this.volumeHandler = (e: InputEvent) => this.volume(e);
         this.playButtonHandler = (e) => {
             if (this.slavePaused) {
                 this.setTrack(this.nowPlaying);
@@ -597,7 +587,7 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
             });
         document
             .querySelector('.player-volume')
-            .addEventListener('click', this.volumeHandler);
+            .addEventListener('input', this.volumeHandler);
         document.querySelectorAll('.player-play').forEach((play) => {
             play.addEventListener('click', this.playButtonHandler);
         });
@@ -933,6 +923,8 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                 }
             }
         });
+        (<HTMLInputElement>document.getElementById('player-volume')).value =
+            this.audio.volume.toString();
     }
 
     setup([...playlist]: TrackModel[]) {
