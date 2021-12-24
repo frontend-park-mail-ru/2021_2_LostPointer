@@ -54,6 +54,7 @@ class BaseView extends View<never> {
     }
 
     unmount(): void {
+        player.unmount();
         this.mounted = false;
     }
 }

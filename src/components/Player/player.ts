@@ -671,7 +671,6 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
                     this.setup(router.getCurrentView().getTracksContext());
                 }
                 if (!store.get('authenticated')) {
-                    this.eventListenersAlreadySet = false;
                     router.go(routerStore.signin);
                     return;
                 }
@@ -1236,6 +1235,95 @@ export class PlayerComponent extends Component<IPlayerComponentProps> {
 
     isDisplayed() {
         return this.props.displayed;
+    }
+
+    unmount() {
+        this.eventListenersAlreadySet = false;
+
+        document.removeEventListener('click', this.globalPlayButtonHandler);
+
+        document
+            .querySelectorAll('.player-skip-right')
+            .forEach((arrow) =>
+                arrow.removeEventListener('click', this.arrowKeysHandler)
+            );
+
+        document
+            .querySelectorAll('.player-skip-left')
+            .forEach((arrow) =>
+                arrow.removeEventListener('click', this.arrowKeysHandler)
+            );
+
+        this.audio.removeEventListener('timeupdate', this.timeUpdateHandler);
+        this.audio.removeEventListener('pause', this.pauseHandler);
+        this.audio.removeEventListener('play', this.playHandler);
+        this.audio.removeEventListener('ended', this.endedHandler);
+
+        document.querySelectorAll('.player-play').forEach((play) => {
+            play.removeEventListener('click', this.playButtonHandler);
+        });
+
+        const playerVolume = document.querySelector('.player-volume');
+        if (playerVolume) {
+            playerVolume.removeEventListener('click', this.volumeHandler);
+        }
+
+        const playerElement: HTMLElement =
+            document.querySelector('.mobile-player');
+        const mobileFooter: HTMLElement = document.querySelector(
+            '.mobile-footer__menu'
+        );
+        const mobilePlayerClose = document.querySelector(
+            '.mobile-player__close'
+        );
+        if (mobilePlayerClose) {
+            mobilePlayerClose.removeEventListener('click', () => {
+                playerElement.classList.add('mobile-player__hidden');
+                mobileFooter.classList.remove('mobile-footer__menu__hidden');
+            });
+        }
+        const mobileFooterPlayer = document.querySelector(
+            '.mobile-footer__player'
+        );
+        if (mobileFooterPlayer) {
+            mobileFooterPlayer.removeEventListener('click', () => {
+                playerElement.classList.remove('mobile-player__hidden');
+                mobileFooter.classList.add('mobile-footer__menu__hidden');
+            });
+        }
+        const favMobile = document.querySelector('.track-fav-mobile');
+        if (favMobile) {
+            favMobile.removeEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                TrackComponent.toggleFavor(e);
+            });
+        }
+
+        const progressBar = document.querySelector(
+            '.mobile-player__progress__bar'
+        );
+        if (progressBar) {
+            progressBar.removeEventListener('click', this.seekbarHandler);
+        }
+        const seekbar = document.querySelector('.player__seekbar');
+        if (seekbar) {
+            seekbar.removeEventListener('click', this.seekbarHandler);
+        }
+        window.removeEventListener('resize', this.resizeHandler);
+        const mute = document.querySelector('.mute');
+        if (mute) {
+            mute.removeEventListener('click', this.buttonsHandler);
+        }
+        document.querySelectorAll('.shuffle').forEach((shuffle) => {
+            shuffle.removeEventListener('click', this.buttonsHandler);
+        });
+        document.querySelectorAll('.repeat').forEach((repeat) => {
+            repeat.removeEventListener('click', this.buttonsHandler);
+        });
+        document.querySelectorAll('.player-fav').forEach((favorites) => {
+            favorites.removeEventListener('click', this.buttonsHandler);
+        });
     }
 }
 

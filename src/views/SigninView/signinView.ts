@@ -44,7 +44,6 @@ export class SigninView extends View<ISigninComponentProps> {
     }
 
     render() {
-        player.eventListenersAlreadySet = false; // TODO так наверное не очень хорошо делать, но времени мало
         baseView.unmount();
         if (store.get('authenticated')) {
             router.go(routerStore.dashboard);
