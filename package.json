@@ -41,7 +41,7 @@
     "handlebars-loader": "^1.7.1",
     "html-webpack-plugin": "^5.4.0",
     "husky": "^7.0.2",
-    "lostpointer-uikit": "^1.0.2",
+    "lostpointer-uikit": "^1.0.3",
     "mini-css-extract-plugin": "^2.4.3",
     "node-fetch": "2.0.0",
     "node-html-parser": "^5.1.0",
