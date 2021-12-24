@@ -18,7 +18,7 @@ import store from 'services/store/store';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './static/css/fonts.css';
-import 'lostpointer-storybook/dist/uikit.css';
+import 'lostpointer-uikit/dist/uikit.css';
 
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';
 

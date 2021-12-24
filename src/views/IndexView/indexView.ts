@@ -1,4 +1,4 @@
-import { TopAlbums, TrackList } from 'lostpointer-storybook';
+import { TopAlbums, TrackList } from 'lostpointer-uikit';
 import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
 import suggestedPlaylists from 'components/SuggestedPlaylists/suggestedplaylists';
 import { TrackModel } from 'models/track';

@@ -1,5 +1,5 @@
 import { View } from 'views/View/view';
-import { SuggestedAlbums, TrackList } from 'lostpointer-storybook';
+import { SuggestedAlbums, TrackList } from 'lostpointer-uikit';
 import { ArtistModel } from 'models/artist';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';

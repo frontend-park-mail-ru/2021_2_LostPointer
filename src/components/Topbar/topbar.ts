@@ -7,7 +7,7 @@ import store from 'services/store/store';
 
 import TopbarTemplate from './topbar.hbs';
 import './topbar.scss';
-import { Avatar } from 'lostpointer-storybook';
+import { Avatar } from 'lostpointer-uikit';
 
 interface ITopbarComponentProps {
     authenticated: boolean;

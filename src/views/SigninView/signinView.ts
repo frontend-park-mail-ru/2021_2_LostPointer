@@ -1,4 +1,4 @@
-import { SigninAuthForm } from 'lostpointer-storybook';
+import { SigninAuthForm } from 'lostpointer-uikit';
 import {
     addInputsEventListeners,
     CustomValidation,

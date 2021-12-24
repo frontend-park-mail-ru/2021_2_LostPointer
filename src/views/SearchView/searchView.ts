@@ -7,7 +7,7 @@ import {
 import { TrackModel } from 'models/track';
 import { AlbumModel } from 'models/album';
 import { ArtistModel } from 'models/artist';
-import { TopAlbums, TrackList } from 'lostpointer-storybook';
+import { TopAlbums, TrackList } from 'lostpointer-uikit';
 import { SuggestedArtists } from 'components/SuggestedArtists/suggestedartists';
 import { PlaylistModel } from 'models/playlist';
 import playlistsContextMenu from 'components/PlaylistsContextMenu/playlistsContextMenu';

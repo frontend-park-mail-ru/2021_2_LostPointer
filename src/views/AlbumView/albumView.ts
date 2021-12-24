@@ -1,6 +1,6 @@
 import { View } from 'views/View/view';
 import { AlbumModel } from 'models/album';
-import { TrackList } from 'lostpointer-storybook';
+import { TrackList } from 'lostpointer-uikit';
 import router from 'services/router/router';
 import routerStore from 'services/router/routerStore';
 import {
